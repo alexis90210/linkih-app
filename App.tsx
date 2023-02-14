@@ -18,6 +18,9 @@ import InscriptionVendeurScreen from './screens/inscription_vendeur';
 import InscriptionVendeurScreen2 from './screens/inscription_vendeur_2';
 import InscriptionVendeurScreen3 from './screens/inscription_vendeur_3';
 import Main from './screens/main';
+import Compte from './screens/compte';
+import Rdv from './screens/rdv';
+import Map from './screens/map';
 
 const Stack = createNativeStackNavigator();
 
@@ -148,9 +151,53 @@ export default function App(): JSX.Element {
             animation: 'slide_from_right',
           }}
         />
+
+        <Stack.Screen
+          name="compte"
+          component={Compte}
+          options={{
+            title:'Mon compte',
+            headerShadowVisible:false,
+            headerTitleStyle:{ fontSize: 18, fontWeight: '700'},
+            headerShown: false,
+            presentation: 'modal',
+            animationTypeForReplace: 'push',
+            animation: 'slide_from_right',
+          }}
+        />
+
+        <Stack.Screen
+          name="rdv"
+          component={Rdv}
+          options={{
+            title:'Mon rdv',
+            headerShadowVisible:false,
+            headerTitleStyle:{ fontSize: 18, fontWeight: '700'},
+            headerShown: false,
+            presentation: 'modal',
+            animationTypeForReplace: 'push',
+            animation: 'slide_from_right',
+          }}
+        />
+
+        <Stack.Screen
+          name="map"
+          component={Map}
+          options={{
+            title:'La carte',
+            headerShadowVisible:false,
+            headerTitleStyle:{ fontSize: 18, fontWeight: '700'},
+            headerShown: false,
+            presentation: 'modal',
+            animationTypeForReplace: 'push',
+            animation: 'slide_from_right',
+          }}
+        />
         {/* end */}
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
+
+
 

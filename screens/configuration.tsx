@@ -1,26 +1,26 @@
 import React from 'react';
 
 import {
-    SafeAreaView,
-    ScrollView,
-    StyleSheet,
-    Text,
-    View,
-    Pressable,
-    PixelRatio,
-    TextInput,
-  } from 'react-native';
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+  Pressable,
+  PixelRatio,
+  TextInput,
+} from 'react-native';
 
 // ConfigurationScreen
-export default function ConfigurationScreen ({navigation}: {navigation: any}) {
-
+export default function ConfigurationScreen({navigation}: {navigation: any}) {
   return (
     <>
-      <SafeAreaView style={{
-    width: '100%',
-    height: '100%',
-    backgroundColor: '#fff',
-  }}>
+      <SafeAreaView
+        style={{
+          width: '100%',
+          height: '100%',
+          backgroundColor: '#fff',
+        }}>
         <ScrollView
           contentInsetAdjustmentBehavior="automatic"
           style={{
@@ -59,7 +59,7 @@ export default function ConfigurationScreen ({navigation}: {navigation: any}) {
                   flexDirection: 'column',
                   justifyContent: 'flex-start',
                   alignItems: 'flex-start',
-                  paddingTop:20
+                  paddingTop: 20,
                 }}>
                 <Text
                   style={{
@@ -79,11 +79,9 @@ export default function ConfigurationScreen ({navigation}: {navigation: any}) {
                     borderBottomColor: '#E2C6BB',
                     color: '#7B4C7A',
                     width: '100%',
-                    fontWeight:'600',
-                    padding:0
+                    fontWeight: '600',
+                    padding: 0,
                   }}></TextInput>
-
-
               </View>
 
               <View
@@ -112,34 +110,38 @@ export default function ConfigurationScreen ({navigation}: {navigation: any}) {
                     borderBottomWidth: 1,
                     borderBottomColor: '#E2C6BB',
                     color: '#7B4C7A',
-                    fontWeight:'600',
+                    fontWeight: '600',
                     width: '100%',
-                    padding:0
+                    padding: 0,
                   }}></TextInput>
               </View>
 
-              <View style={{alignItems:'center',
-                  backgroundColor: '#7B4C7A' ,borderRadius: 30, marginBottom:30}}>
-              <Pressable
-              android_ripple={{color: '7B4C7A'}}
+              <View
                 style={{
-                  
-                  paddingHorizontal: 10,
-                  width:'70%'
-                }}
-                onPress={() => navigation.navigate('identification')}>
-                <Text
+                  alignItems: 'center',
+                  backgroundColor: '#7B4C7A',
+                  borderRadius: 30,
+                  marginBottom: 30,
+                }}>
+                <Pressable
+                  android_ripple={{color: '7B4C7A'}}
                   style={{
-                    textAlign: 'center',
-                    padding: 10,
-                    paddingHorizontal: 20,
-                    fontSize: 14,
-                    fontWeight: '500',
-                    color: '#fff',
-                  }}>
-                  Contiunez
-                </Text>
-              </Pressable>
+                    paddingHorizontal: 10,
+                    width: '70%',
+                  }}
+                  onPress={() => navigation.navigate('identification')}>
+                  <Text
+                    style={{
+                      textAlign: 'center',
+                      padding: 10,
+                      paddingHorizontal: 20,
+                      fontSize: 14,
+                      fontWeight: '500',
+                      color: '#fff',
+                    }}>
+                    Contiunez
+                  </Text>
+                </Pressable>
               </View>
             </View>
           </View>
@@ -147,4 +149,4 @@ export default function ConfigurationScreen ({navigation}: {navigation: any}) {
       </SafeAreaView>
     </>
   );
-};
+}
