@@ -19,12 +19,12 @@ export default function IdentificationScreen({navigation}: {navigation: any}) {
         style={{
           width: '100%',
           height: '100%',
-          backgroundColor: '#fff',
+          backgroundColor: '#f6f6f6f6',
         }}>
         <ScrollView
           contentInsetAdjustmentBehavior="automatic"
           style={{
-            backgroundColor: '#fff',
+            backgroundColor: '#f6f6f6f6',
           }}>
           <View
             style={{
@@ -32,46 +32,45 @@ export default function IdentificationScreen({navigation}: {navigation: any}) {
               flexDirection: 'column',
               justifyContent: 'center',
               alignItems: 'center',
-              marginTop: '20%',
+              marginTop: 40,
             }}>
             <Text
               style={{
                 textAlign: 'left',
                 color: '#000',
-                fontWeight: '900',
-                fontSize: 27,
+                fontWeight: 'bold',
+                fontSize: 25,
                 width: '90%',
               }}>
-              Veuillez-vous identifier, pour continuer
+              S'identifier en tant que
             </Text>
             <View
               style={{
-                backgroundColor: '#fff',
                 borderRadius: 11,
-                padding: 20,
+                padding: 10,
                 width: '100%',
                 marginTop: '10%',
               }}>
               <View
                 style={{
                   display: 'flex',
-                  flexDirection: 'row',
+                  flexDirection: 'column',
                   justifyContent: 'space-between',
                   alignItems: 'flex-start',
                   flexWrap: 'wrap',
-                  gap: 5,
+                  gap: 10,
                 }}>
                 <Pressable
-                android_ripple={{color: '7B4C7A'}}
+                  android_ripple={{color: '7B4C7A'}}
                   style={{
-                    borderRadius: 10,
+                    borderRadius: 15,
                     paddingHorizontal: 10,
-                    backgroundColor: 'transparent',
+                    backgroundColor: '#7B4C7A',
                     borderWidth: 1,
                     borderColor: '#7B4C7A',
                     padding: 18,
-                    width: '48%',
-                    height: 125,
+                    width: '100%',
+                    height: 60,
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'center',
@@ -82,57 +81,27 @@ export default function IdentificationScreen({navigation}: {navigation: any}) {
                     <Text
                       style={{
                         textAlign: 'center',
-                        color: '#7B4C7A',
-                        fontWeight: '700',
-                        fontSize: 13,
-                        opacity: 0.85,
-                      }}>
-                      Je suis un client
-                    </Text>
-                  </View>
-                </Pressable>
-
-                <Pressable
-                android_ripple={{color: '7B4C7A'}}
-                  style={{
-                    borderRadius: 10,
-                    paddingHorizontal: 10,
-                    backgroundColor: '#7B4C7A',
-                    padding: 18,
-                    width: '48%',
-                    height: 125,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}
-                  
-                  onPress={() => navigation.navigate('identification_vendeur')}>
-                  <View>
-                    <Text
-                      style={{
-                        textAlign: 'center',
                         color: '#fff',
-                        fontWeight: '700',
-                        fontSize: 13,
+                        fontWeight: 'normal',
+                        fontSize: 15,
                         opacity: 0.85,
                       }}>
-                      Je suis une societe
+                      Client
                     </Text>
                   </View>
                 </Pressable>
 
                 <Pressable
-                android_ripple={{color: '7B4C7A'}}
+                  android_ripple={{color: '7B4C7A'}}
                   style={{
-                    borderRadius: 10,
+                    borderRadius: 15,
                     paddingHorizontal: 10,
                     backgroundColor: '#7B4C7A',
+                    borderWidth: 1,
+                    borderColor: '#7B4C7A',
                     padding: 18,
-                    width: '48%',
-                    height: 125,
-                    marginTop: 10,
-
+                    width: '100%',
+                    height: 60,
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'center',
@@ -144,11 +113,11 @@ export default function IdentificationScreen({navigation}: {navigation: any}) {
                       style={{
                         textAlign: 'center',
                         color: '#fff',
-                        fontWeight: '700',
-                        fontSize: 13,
+                        fontWeight: 'normal',
+                        fontSize: 15,
                         opacity: 0.85,
                       }}>
-                      Je suis un auto-entrepreneur
+                      Societe / Auto-entrepreneur
                     </Text>
                   </View>
                 </Pressable>

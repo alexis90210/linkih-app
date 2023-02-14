@@ -23,31 +23,23 @@ export default function InscriptionVendeurScreen({
         style={{
           width: '100%',
           height: '100%',
-          backgroundColor: '#fff',
+          backgroundColor: '#f6f6f6f6',
         }}>
         <ScrollView
           contentInsetAdjustmentBehavior="automatic"
           style={{
-            backgroundColor: '#7B4C7A',
+            backgroundColor: '#f6f6f6f6',
           }}>
-          <View
+
+<View
             style={{
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'center',
               alignItems: 'center',
-              marginTop: '13%',
+              marginTop: 10,
             }}>
-            <Text
-              style={{
-                textAlign: 'left',
-                color: '#fff',
-                fontWeight: '900',
-                fontSize: 27,
-                width: '90%',
-              }}>
-              Informations du proprietaire
-            </Text>
+  
             <View
               style={{
                 marginVertical: 10,
@@ -55,7 +47,7 @@ export default function InscriptionVendeurScreen({
                 borderRadius: 11,
                 padding: 20,
                 width: '90%',
-                marginTop: '10%',
+                marginTop: 10,
               }}>
               <View
                 style={{
@@ -68,9 +60,94 @@ export default function InscriptionVendeurScreen({
                   style={{
                     textAlign: 'center',
                     color: '#000',
-                    fontWeight: '700',
-                    fontSize: 10,
-                    height: 13,
+                    fontSize: 15,
+                    height: 30,
+                    opacity: 0.85,
+                    
+                  }}>
+                  Login
+                </Text>
+                <TextInput
+                  style={{
+                    backgroundColor: 'transparent',
+                    borderBottomWidth: 1,
+                    borderBottomColor: '#E2C6BB',
+                    color: '#7B4C7A',
+                    width: '100%',
+                    fontWeight: '600',
+                    padding:0
+                  }}></TextInput>
+              </View>
+
+              <View
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'flex-start',
+                  alignItems: 'flex-start',
+                  marginTop: 20,
+                  marginBottom: 0,
+                }}>
+                <Text
+                  style={{
+                    textAlign: 'center',
+                    color: '#000',
+                    fontSize: 15,
+                    height: 30,
+                    opacity: 0.85,
+                    
+                  }}>
+                  Mot de passe
+                </Text>
+                <TextInput
+                  style={{
+                    backgroundColor: 'transparent',
+                    borderBottomWidth: 1,
+                    borderBottomColor: '#E2C6BB',
+                    color: '#7B4C7A',
+                    fontWeight: '600',
+                    width: '100%',
+                    padding:0
+                  }}></TextInput>
+              </View>
+      
+          
+            </View>
+
+       
+          </View>
+         
+
+          <View
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+  
+            <View
+              style={{
+                marginVertical: 10,
+                backgroundColor: '#fff',
+                borderRadius: 11,
+                padding: 20,
+                width: '90%',
+                marginTop: 10,
+              }}>
+              <View
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'flex-start',
+                  alignItems: 'flex-start',
+                }}>
+                <Text
+                  style={{
+                    textAlign: 'center',
+                    color: '#000',
+                    fontSize: 15,
+                    height: 30,
                     opacity: 0.85,
                     
                   }}>
@@ -101,9 +178,8 @@ export default function InscriptionVendeurScreen({
                   style={{
                     textAlign: 'center',
                     color: '#000',
-                    fontWeight: '700',
-                    fontSize: 10,
-                    height: 13,
+                    fontSize: 15,
+                    height: 30,
                     opacity: 0.85,
                     
                   }}>
@@ -134,9 +210,8 @@ export default function InscriptionVendeurScreen({
                   style={{
                     textAlign: 'center',
                     color: '#000',
-                    fontWeight: '700',
-                    fontSize: 10,
-                    height: 13,
+                    fontSize: 15,
+                    height: 30,
                     opacity: 0.85,
                     
                   }}>
@@ -167,9 +242,8 @@ export default function InscriptionVendeurScreen({
                   style={{
                     textAlign: 'center',
                     color: '#000',
-                    fontWeight: '700',
-                    fontSize: 10,
-                    height: 13,
+                    fontSize: 15,
+                    height: 30,
                     opacity: 0.85,
                     
                   }}>

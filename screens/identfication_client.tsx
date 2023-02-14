@@ -10,6 +10,7 @@ import {
   PixelRatio,
   TextInput,
 } from 'react-native';
+import ArrowLeftIcon from '../components/ArrowLeft';
 
 // IdentificationClientScreen
 export default function IdentificationClientScreen({
@@ -23,12 +24,13 @@ export default function IdentificationClientScreen({
         style={{
           width: '100%',
           height: '100%',
-          backgroundColor: '#fff',
+          backgroundColor: '#f6f6f6f6',
         }}>
+         
         <ScrollView
           contentInsetAdjustmentBehavior="automatic"
           style={{
-            backgroundColor: '#7B4C7A',
+            backgroundColor: '#f6f6f6f6',
           }}>
           <View
             style={{
@@ -36,18 +38,8 @@ export default function IdentificationClientScreen({
               flexDirection: 'column',
               justifyContent: 'center',
               alignItems: 'center',
-              marginTop: '20%',
+              marginTop: 10,
             }}>
-            <Text
-              style={{
-                textAlign: 'left',
-                color: '#fff',
-                fontWeight: '900',
-                fontSize: 27,
-                width: '90%',
-              }}>
-              Se connecter
-            </Text>
             <View
               style={{
                 marginVertical: 10,
@@ -55,7 +47,7 @@ export default function IdentificationClientScreen({
                 borderRadius: 11,
                 padding: 20,
                 width: '90%',
-                marginTop: '10%',
+                marginTop: 20,
               }}>
               <View
                 style={{
@@ -68,9 +60,8 @@ export default function IdentificationClientScreen({
                   style={{
                     textAlign: 'center',
                     color: '#000',
-                    fontWeight: '700',
-                    fontSize: 10,
-                    height: 15,
+                    fontSize: 15,
+                    height: 30,
                     opacity: 0.85,
                   }}>
                   Identifiant
@@ -100,14 +91,16 @@ export default function IdentificationClientScreen({
                   style={{
                     textAlign: 'center',
                     color: '#000',
-                    fontWeight: '700',
-                    fontSize: 10,
-                    height: 15,
+                    fontSize: 15,
+                    height: 30,
                     opacity: 0.85,
                   }}>
                   Password
                 </Text>
                 <TextInput
+                textContentType='password'
+                keyboardType='default'
+                secureTextEntry={true} 
                   style={{
                     backgroundColor: 'transparent',
                     borderBottomWidth: 1,
@@ -132,7 +125,7 @@ export default function IdentificationClientScreen({
                     paddingHorizontal: 10,
                     width: '70%',
                   }}
-                  onPress={() => navigation.navigate('identification')}>
+                  onPress={() => navigation.navigate('main')}>
                   <Text
                     style={{
                       textAlign: 'center',
@@ -145,38 +138,38 @@ export default function IdentificationClientScreen({
                     Se connecter
                   </Text>
                 </Pressable>
-              </View>             
-            </View>
+              </View>   
 
-            <View
+              <View
                 style={{
                   alignItems: 'center',
                   backgroundColor: 'transparent',
                   borderRadius: 30,
-                  marginBottom: 50,
+                  display:'flex',
+                  flexDirection:'row',
+                  justifyContent:'flex-end'
                 }}>
                 <Pressable
                   android_ripple={{color: '7B4C7A'}}
                   style={{
                     paddingHorizontal: 10,
-                    width: '70%',
                   }}
                   onPress={() => navigation.navigate('creation_compte_client')}>
                   <Text
                     style={{
                       textAlign: 'center',
-                      padding: 10,
-                      paddingHorizontal: 20,
                       fontSize: 13,
                       fontWeight: '500',
-                      color: '#fff',
-                      textDecorationLine:'underline',
+                      color: '#841584',
                       
                     }}>
                     Je n'ai pas encore un compte
                   </Text>
                 </Pressable>
-              </View>
+              </View>          
+            </View>
+
+            
           </View>
         </ScrollView>
       </SafeAreaView>

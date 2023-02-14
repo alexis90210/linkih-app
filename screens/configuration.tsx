@@ -21,10 +21,11 @@ export default function ConfigurationScreen({navigation}: {navigation: any}) {
           height: '100%',
           backgroundColor: '#fff',
         }}>
+           
         <ScrollView
           contentInsetAdjustmentBehavior="automatic"
           style={{
-            backgroundColor: '#7B4C7A',
+            backgroundColor: '#f6f6f6f6',
           }}>
           <View
             style={{
@@ -32,17 +33,18 @@ export default function ConfigurationScreen({navigation}: {navigation: any}) {
               flexDirection: 'column',
               justifyContent: 'center',
               alignItems: 'center',
-              marginTop: '20%',
+              marginTop: 40,
             }}>
             <Text
               style={{
                 textAlign: 'left',
-                color: '#fff',
-                fontWeight: '900',
-                fontSize: 27,
+                color: '#000',
+                fontWeight: 'bold',
+                fontSize: 25,
+                paddingRight:10,
                 width: '90%',
               }}>
-              Selectionnez le pays , region et la langue
+              Selectionnez le pays ou region et la langue
             </Text>
             <View
               style={{
@@ -51,7 +53,7 @@ export default function ConfigurationScreen({navigation}: {navigation: any}) {
                 borderRadius: 11,
                 padding: 20,
                 width: '90%',
-                marginTop: '20%',
+                marginTop: 40,
               }}>
               <View
                 style={{
@@ -65,10 +67,10 @@ export default function ConfigurationScreen({navigation}: {navigation: any}) {
                   style={{
                     textAlign: 'center',
                     color: '#000',
-                    fontWeight: '700',
-                    fontSize: 10,
-                    height: 15,
+                    fontSize: 15,
+                    height: 20,
                     opacity: 0.85,
+                    marginBottom:10
                   }}>
                   Pays/Region
                 </Text>
@@ -97,10 +99,10 @@ export default function ConfigurationScreen({navigation}: {navigation: any}) {
                   style={{
                     textAlign: 'center',
                     color: '#000',
-                    fontWeight: '700',
-                    fontSize: 10,
-                    height: 15,
+                    fontSize: 15,
+                    height: 20,
                     opacity: 0.85,
+                    marginBottom:10
                   }}>
                   Langue
                 </Text>

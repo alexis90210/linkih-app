@@ -21,6 +21,7 @@ import Main from './screens/main';
 import Compte from './screens/compte';
 import Rdv from './screens/rdv';
 import Map from './screens/map';
+import ResultatRechercheScreen from './screens/resultat_recherche';
 
 const Stack = createNativeStackNavigator();
 
@@ -28,6 +29,8 @@ export default function App(): JSX.Element {
   return (
     <NavigationContainer>
       <Stack.Navigator>
+
+        {/* splash */}
         <Stack.Screen
           name="splash"
           component={SplashScreen}
@@ -38,6 +41,8 @@ export default function App(): JSX.Element {
             animation: 'slide_from_right',
           }}
         />
+
+        {/* configuration */}
         <Stack.Screen
           name="configuration"
           component={ConfigurationScreen}
@@ -48,6 +53,8 @@ export default function App(): JSX.Element {
             animation: 'slide_from_right',
           }}
         />
+
+        {/* identification */}
         <Stack.Screen
           name="identification"
           component={IdentificationScreen}
@@ -58,13 +65,15 @@ export default function App(): JSX.Element {
             animation: 'slide_from_right',
           }}
         />
+
+        {/* identification_client */}
         <Stack.Screen
           name="identification_client"
           component={IdentificationClientScreen}
           options={{
-            title:'connexion client',
-            headerShadowVisible:false,
-            headerTitleStyle:{ fontSize: 18, fontWeight: '700'},
+            title: 'connexion client',
+            headerShadowVisible: false,
+            headerTitleStyle: {fontSize: 18, fontWeight: '700'},
             headerShown: true,
             presentation: 'modal',
             animationTypeForReplace: 'push',
@@ -72,13 +81,14 @@ export default function App(): JSX.Element {
           }}
         />
 
+        {/* creation_compte_client */}
         <Stack.Screen
           name="creation_compte_client"
           component={InscriptionClientScreen}
           options={{
-            title:'Creation du compte client',
-            headerShadowVisible:false,
-            headerTitleStyle:{ fontSize: 18, fontWeight: '700'},
+            title: 'Inscription client',
+            headerShadowVisible: false,
+            headerTitleStyle: {fontSize: 18, fontWeight: '700'},
             headerShown: true,
             presentation: 'modal',
             animationTypeForReplace: 'push',
@@ -86,13 +96,14 @@ export default function App(): JSX.Element {
           }}
         />
 
+        {/* identification_vendeur */}
         <Stack.Screen
           name="identification_vendeur"
           component={IdentificationVendeurScreen}
           options={{
-            title:'connexion societe ou auto-entrepreneur',
-            headerShadowVisible:false,
-            headerTitleStyle:{ fontSize: 18, fontWeight: '700'},
+            title: 'connexion proprietaire',
+            headerShadowVisible: false,
+            headerTitleStyle: {fontSize: 18, fontWeight: '700'},
             headerShown: true,
             presentation: 'modal',
             animationTypeForReplace: 'push',
@@ -100,51 +111,58 @@ export default function App(): JSX.Element {
           }}
         />
 
+        {/* inscription_vendeur */}
         <Stack.Screen
           name="inscription_vendeur"
           component={InscriptionVendeurScreen}
           options={{
-            title:'creation du compte societe ou auto-entrepreneur',
-            headerShadowVisible:false,
-            headerTitleStyle:{ fontSize: 18, fontWeight: '700'},
+            title: 'creation du compte proprietaire',
+            headerShadowVisible: false,
+            headerTitleStyle: {fontSize: 18, fontWeight: '700'},
             headerShown: true,
             presentation: 'modal',
             animationTypeForReplace: 'push',
             animation: 'slide_from_right',
           }}
         />
+
+        {/* inscription_vendeur_2 */}
         <Stack.Screen
           name="inscription_vendeur_2"
           component={InscriptionVendeurScreen2}
           options={{
-            title:'creation du compte  soc...',
-            headerShadowVisible:false,
-            headerTitleStyle:{ fontSize: 18, fontWeight: '700'},
+            title: 'creation du compte proprietaire',
+            headerShadowVisible: false,
+            headerTitleStyle: {fontSize: 18, fontWeight: '700'},
             headerShown: true,
             presentation: 'modal',
             animationTypeForReplace: 'push',
             animation: 'slide_from_right',
           }}
         />
+
+        {/* inscription_vendeur_3 */}
         <Stack.Screen
           name="inscription_vendeur_3"
           component={InscriptionVendeurScreen3}
           options={{
-            title:'creation du compte  soc...',
-            headerShadowVisible:false,
-            headerTitleStyle:{ fontSize: 18, fontWeight: '700'},
+            title: 'creation du compte proprietaire',
+            headerShadowVisible: false,
+            headerTitleStyle: {fontSize: 18, fontWeight: '700'},
             headerShown: false,
             presentation: 'modal',
             animationTypeForReplace: 'push',
             animation: 'slide_from_right',
           }}
         />
+
+        {/* main */}
         <Stack.Screen
           name="main"
           component={Main}
           options={{
-            headerShadowVisible:true,
-            headerTitleStyle:{ fontSize: 18, fontWeight: '700'},
+            headerShadowVisible: true,
+            headerTitleStyle: {fontSize: 18, fontWeight: '700'},
             headerShown: false,
             presentation: 'modal',
             animationTypeForReplace: 'push',
@@ -152,13 +170,14 @@ export default function App(): JSX.Element {
           }}
         />
 
+        {/* compte */}
         <Stack.Screen
           name="compte"
           component={Compte}
           options={{
-            title:'Mon compte',
-            headerShadowVisible:false,
-            headerTitleStyle:{ fontSize: 18, fontWeight: '700'},
+            title: 'Mon compte',
+            headerShadowVisible: false,
+            headerTitleStyle: {fontSize: 18, fontWeight: '700'},
             headerShown: false,
             presentation: 'modal',
             animationTypeForReplace: 'push',
@@ -166,13 +185,14 @@ export default function App(): JSX.Element {
           }}
         />
 
+        {/* rdv */}
         <Stack.Screen
           name="rdv"
           component={Rdv}
           options={{
-            title:'Mon rdv',
-            headerShadowVisible:false,
-            headerTitleStyle:{ fontSize: 18, fontWeight: '700'},
+            title: 'Mon rdv',
+            headerShadowVisible: false,
+            headerTitleStyle: {fontSize: 18, fontWeight: '700'},
             headerShown: false,
             presentation: 'modal',
             animationTypeForReplace: 'push',
@@ -180,24 +200,38 @@ export default function App(): JSX.Element {
           }}
         />
 
+        {/*  map  */}
         <Stack.Screen
           name="map"
           component={Map}
           options={{
-            title:'La carte',
-            headerShadowVisible:false,
-            headerTitleStyle:{ fontSize: 18, fontWeight: '700'},
+            title: 'La carte',
+            headerShadowVisible: false,
+            headerTitleStyle: {fontSize: 18, fontWeight: '700'},
             headerShown: false,
             presentation: 'modal',
             animationTypeForReplace: 'push',
             animation: 'slide_from_right',
           }}
         />
+
+        {/* resultat_recherche */}
+        <Stack.Screen
+          name="resultat_recherche"
+          component={ResultatRechercheScreen}
+          options={{
+            title: 'Resultat de la recherche',
+            headerShadowVisible: false,
+            headerTitleStyle: {fontSize: 18, fontWeight: '700'},
+            headerShown: false,
+            presentation: 'modal',
+            animationTypeForReplace: 'push',
+            animation: 'slide_from_right',
+          }}
+        />
+
         {/* end */}
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
-
-
-

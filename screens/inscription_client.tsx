@@ -10,6 +10,7 @@ import {
   PixelRatio,
   TextInput,
 } from 'react-native';
+import ArrowLeftIcon from '../components/ArrowLeft';
 
 // InscriptionClientScreen
 export default function InscriptionClientScreen({
@@ -25,10 +26,12 @@ export default function InscriptionClientScreen({
           height: '100%',
           backgroundColor: '#fff',
         }}>
+ 
+        
         <ScrollView
           contentInsetAdjustmentBehavior="automatic"
           style={{
-            backgroundColor: '#7B4C7A',
+            backgroundColor: '#f6f6f6f6',
           }}>
           <View
             style={{
@@ -36,18 +39,9 @@ export default function InscriptionClientScreen({
               flexDirection: 'column',
               justifyContent: 'center',
               alignItems: 'center',
-              marginTop: '13%',
+              marginTop: 20,
             }}>
-            <Text
-              style={{
-                textAlign: 'left',
-                color: '#fff',
-                fontWeight: '900',
-                fontSize: 27,
-                width: '90%',
-              }}>
-              Veuillez renseigner le formulaire
-            </Text>
+          
             <View
               style={{
                 marginVertical: 10,
@@ -55,7 +49,83 @@ export default function InscriptionClientScreen({
                 borderRadius: 11,
                 padding: 20,
                 width: '90%',
-                marginTop: '10%',
+                marginTop: 10
+              }}>
+            
+              <View
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'flex-start',
+                  alignItems: 'flex-start',                
+                  marginBottom: 0,
+                }}>
+                <Text
+                  style={{
+                    textAlign: 'center',
+                    color: '#000',
+                    fontSize: 15,
+                    height: 25,
+                    opacity: 0.85,
+                  }}>
+                  Login
+                </Text>
+                <TextInput
+                keyboardType='default'
+                  style={{
+                    backgroundColor: 'transparent',
+                    borderBottomWidth: 1,
+                    borderBottomColor: '#E2C6BB',
+                    color: '#7B4C7A',
+                    fontWeight: '600',
+                    width: '100%',
+                    padding: 0,
+                  }}></TextInput>
+              </View>
+
+              <View
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'flex-start',
+                  alignItems: 'flex-start',
+                  marginTop: 20,
+                  marginBottom: 0,
+                }}>
+                <Text
+                  style={{
+                    textAlign: 'center',
+                    color: '#000',
+                    fontSize: 15,
+                    height: 25,
+                    opacity: 0.85,
+                  }}>
+                  Mot de passe
+                </Text>
+                <TextInput
+                textContentType='password'
+                keyboardType='default'
+                secureTextEntry={true} 
+                  style={{
+                    backgroundColor: 'transparent',
+                    borderBottomWidth: 1,
+                    borderBottomColor: '#E2C6BB',
+                    color: '#7B4C7A',
+                    fontWeight: '600',
+                    width: '100%',
+                    padding: 0,
+                  }}></TextInput>
+              </View>
+            </View>
+
+            <View
+              style={{
+                marginVertical: 10,
+                backgroundColor: '#fff',
+                borderRadius: 11,
+                padding: 20,
+                width: '90%',
+                marginTop: 10
               }}>
               <View
                 style={{
@@ -68,15 +138,15 @@ export default function InscriptionClientScreen({
                   style={{
                     textAlign: 'center',
                     color: '#000',
-                    fontWeight: '700',
-                    fontSize: 10,
-                    height: 13,
+                    fontSize: 15,
+                    height: 25,
                     opacity: 0.85,
-                    
                   }}>
                   Nom
                 </Text>
                 <TextInput
+                textContentType='familyName'
+                keyboardType='default'
                   style={{
                     backgroundColor: 'transparent',
                     borderBottomWidth: 1,
@@ -84,7 +154,7 @@ export default function InscriptionClientScreen({
                     color: '#7B4C7A',
                     width: '100%',
                     fontWeight: '600',
-                    padding:0
+                    padding: 0,
                   }}></TextInput>
               </View>
 
@@ -101,15 +171,15 @@ export default function InscriptionClientScreen({
                   style={{
                     textAlign: 'center',
                     color: '#000',
-                    fontWeight: '700',
-                    fontSize: 10,
-                    height: 13,
+                    fontSize: 15,
+                    height: 25,
                     opacity: 0.85,
-                    
                   }}>
                   Prenom
                 </Text>
                 <TextInput
+                textContentType='name'
+                keyboardType='default'
                   style={{
                     backgroundColor: 'transparent',
                     borderBottomWidth: 1,
@@ -117,7 +187,7 @@ export default function InscriptionClientScreen({
                     color: '#7B4C7A',
                     fontWeight: '600',
                     width: '100%',
-                    padding:0
+                    padding: 0,
                   }}></TextInput>
               </View>
 
@@ -134,15 +204,15 @@ export default function InscriptionClientScreen({
                   style={{
                     textAlign: 'center',
                     color: '#000',
-                    fontWeight: '700',
-                    fontSize: 10,
-                    height: 13,
+                    fontSize: 15,
+                    height: 25,
                     opacity: 0.85,
-                    
                   }}>
                   email
                 </Text>
                 <TextInput
+                textContentType='emailAddress'
+                keyboardType='email-address'
                   style={{
                     backgroundColor: 'transparent',
                     borderBottomWidth: 1,
@@ -150,7 +220,7 @@ export default function InscriptionClientScreen({
                     color: '#7B4C7A',
                     fontWeight: '600',
                     width: '100%',
-                    padding:0
+                    padding: 0,
                   }}></TextInput>
               </View>
 
@@ -167,15 +237,15 @@ export default function InscriptionClientScreen({
                   style={{
                     textAlign: 'center',
                     color: '#000',
-                    fontWeight: '700',
-                    fontSize: 10,
-                    height: 13,
+                    fontSize: 15,
+                    height: 25,
                     opacity: 0.85,
-                    
                   }}>
                   Adresse
                 </Text>
                 <TextInput
+                textContentType='addressCityAndState'
+                keyboardType='default'
                   style={{
                     backgroundColor: 'transparent',
                     borderBottomWidth: 1,
@@ -183,77 +253,11 @@ export default function InscriptionClientScreen({
                     color: '#7B4C7A',
                     fontWeight: '600',
                     width: '100%',
-                    padding:0
+                    padding: 0,
                   }}></TextInput>
               </View>
 
-              <View
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'flex-start',
-                  alignItems: 'flex-start',
-                  marginTop: 20,
-                  marginBottom: 0,
-                }}>
-                <Text
-                  style={{
-                    textAlign: 'center',
-                    color: '#000',
-                    fontWeight: '700',
-                    fontSize: 10,
-                    height: 13,
-                    opacity: 0.85,
-                    
-                  }}>
-                  Login
-                </Text>
-                <TextInput
-                  style={{
-                    backgroundColor: 'transparent',
-                    borderBottomWidth: 1,
-                    borderBottomColor: '#E2C6BB',
-                    color: '#7B4C7A',
-                    fontWeight: '600',
-                    width: '100%',
-                    padding:0
-                  }}></TextInput>
-              </View>
-
-              <View
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'flex-start',
-                  alignItems: 'flex-start',
-                  marginTop: 20,
-                  marginBottom: 0,
-                }}>
-                <Text
-                  style={{
-                    textAlign: 'center',
-                    color: '#000',
-                    fontWeight: '700',
-                    fontSize: 10,
-                    height: 13,
-                    opacity: 0.85,
-                    
-                  }}>
-                  Mot de passe
-                </Text>
-                <TextInput
-                  style={{
-                    backgroundColor: 'transparent',
-                    borderBottomWidth: 1,
-                    borderBottomColor: '#E2C6BB',
-                    color: '#7B4C7A',
-                    fontWeight: '600',
-                    width: '100%',
-                    padding:0
-                    
-                  }}></TextInput>
-              </View>
-
+          
               <View
                 style={{
                   alignItems: 'center',
@@ -267,7 +271,7 @@ export default function InscriptionClientScreen({
                     paddingHorizontal: 10,
                     width: '70%',
                   }}
-                  onPress={() => navigation.navigate('identification')}>
+                  onPress={() => navigation.navigate('main')}>
                   <Text
                     style={{
                       textAlign: 'center',
@@ -280,10 +284,8 @@ export default function InscriptionClientScreen({
                     S'inscrire
                   </Text>
                 </Pressable>
-              </View>             
+              </View>
             </View>
-
-       
           </View>
         </ScrollView>
       </SafeAreaView>

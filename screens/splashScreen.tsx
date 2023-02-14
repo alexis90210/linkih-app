@@ -19,16 +19,16 @@ export default function SplashScreen({navigation}: {navigation: any}) {
         style={{
           width: '100%',
           height: '100%',
-          backgroundColor: '#fff',
+          backgroundColor: '#f6f6f6f6',
         }}>
         <ScrollView contentInsetAdjustmentBehavior="automatic">
           <View
             style={{
-              display: 'flex',
+              flex:1,
               flexDirection: 'column',
               justifyContent: 'center',
               alignItems: 'center',
-              marginTop: '70%',
+              marginTop: '60%',
             }}>
             <Text
               style={{

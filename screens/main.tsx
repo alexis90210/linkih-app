@@ -291,7 +291,7 @@ function Main({navigation}: {navigation: any}) {
           <ScrollView
             contentInsetAdjustmentBehavior="automatic"
             style={{
-              backgroundColor: '#7d4979',
+              backgroundColor: '#fff',
             }}>
             {/* Banner Image */}
             <Image
@@ -299,8 +299,8 @@ function Main({navigation}: {navigation: any}) {
               style={{
                 height: 200,
                 width: '100%',
-                borderBottomLeftRadius: 15,
-                borderBottomRightRadius: 15,
+                borderBottomLeftRadius: 40,
+                borderBottomRightRadius: 40,
               }}
             />
 
@@ -322,9 +322,10 @@ function Main({navigation}: {navigation: any}) {
               style={{
                 fontSize: 15,
                 textAlign: 'center',
-                color: '#E2C6BB',
-                fontWeight: '700',
-                padding: 30,
+                color: 'rgba(0,0,0,.4)',
+                fontWeight: '600',
+                paddingHorizontal: 50,
+                paddingVertical:20
               }}>
               Decouvrez et reservez le salon qui vous correpond !
             </Text>
@@ -379,7 +380,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingVertical: 10,
     alignItems: 'center',
-    backgroundColor: '#f9f9fe',
+    backgroundColor: '#f6f6f6f6',
   },
   activeTab: {
     backgroundColor: '#6e3b6e',

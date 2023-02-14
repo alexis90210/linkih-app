@@ -10,6 +10,7 @@ import {
   PixelRatio,
   TextInput,
 } from 'react-native';
+import CloseIcon from '../components/close';
 
 // InscriptionVendeurScreen2
 export default function InscriptionVendeurScreen2({
@@ -23,201 +24,135 @@ export default function InscriptionVendeurScreen2({
         style={{
           width: '100%',
           height: '100%',
-          backgroundColor: '#fff',
+          backgroundColor: '#f6f6f6f6',
         }}>
         <ScrollView
           contentInsetAdjustmentBehavior="automatic"
           style={{
-            backgroundColor: '#7B4C7A',
+            backgroundColor: '#f6f6f6f6',
           }}>
-          <View
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              alignItems: 'center',
-              marginTop: '13%',
-            }}>
+          <View style={{marginTop: 20}}></View>
+          <View style={{paddingVertical: 10}}>
             <Text
               style={{
-                textAlign: 'left',
-                color: '#fff',
-                fontWeight: '900',
-                fontSize: 27,
-                width: '90%',
+                fontWeight: '600',
+                fontSize: 15,
+                paddingBottom: 12,
+                color: '#000',
+                paddingLeft: 20,
               }}>
-              Informations de l'etablissement
+              Adresse de l'etablissement
             </Text>
-            <View
-              style={{
-                marginVertical: 10,
-                backgroundColor: '#fff',
-                borderRadius: 11,
-                padding: 20,
-                width: '90%',
-                marginTop: '10%',
-              }}>
-              <View
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'flex-start',
-                  alignItems: 'flex-start',
-                }}>
-                <Text
-                  style={{
-                    textAlign: 'center',
-                    color: '#000',
-                    fontWeight: '700',
-                    fontSize: 10,
-                    height: 13,
-                    opacity: 0.85,
-                    
-                  }}>
-                  Nom
-                </Text>
-                <TextInput
-                  style={{
-                    backgroundColor: 'transparent',
-                    borderBottomWidth: 1,
-                    borderBottomColor: '#E2C6BB',
-                    color: '#7B4C7A',
-                    width: '100%',
-                    fontWeight: '600',
-                    padding:0
-                  }}></TextInput>
-              </View>
-
-              <View
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'flex-start',
-                  alignItems: 'flex-start',
-                  marginTop: 20,
-                  marginBottom: 0,
-                }}>
-                <Text
-                  style={{
-                    textAlign: 'center',
-                    color: '#000',
-                    fontWeight: '700',
-                    fontSize: 10,
-                    height: 13,
-                    opacity: 0.85,
-                    
-                  }}>
-                  email
-                </Text>
-                <TextInput
-                  style={{
-                    backgroundColor: 'transparent',
-                    borderBottomWidth: 1,
-                    borderBottomColor: '#E2C6BB',
-                    color: '#7B4C7A',
-                    fontWeight: '600',
-                    width: '100%',
-                    padding:0
-                  }}></TextInput>
-              </View>
-
-              <View
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'flex-start',
-                  alignItems: 'flex-start',
-                  marginTop: 20,
-                  marginBottom: 0,
-                }}>
-                <Text
-                  style={{
-                    textAlign: 'center',
-                    color: '#000',
-                    fontWeight: '700',
-                    fontSize: 10,
-                    height: 13,
-                    opacity: 0.85,
-                    
-                  }}>
-                  Corps du metier
-                </Text>
-                <TextInput
-                  style={{
-                    backgroundColor: 'transparent',
-                    borderBottomWidth: 1,
-                    borderBottomColor: '#E2C6BB',
-                    color: '#7B4C7A',
-                    fontWeight: '600',
-                    width: '100%',
-                    padding:0
-                  }}></TextInput>
-              </View>
-
-              <View
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'flex-start',
-                  alignItems: 'flex-start',
-                  marginTop: 20,
-                  marginBottom: 0,
-                }}>
-                <Text
-                  style={{
-                    textAlign: 'center',
-                    color: '#000',
-                    fontWeight: '700',
-                    fontSize: 10,
-                    height: 13,
-                    opacity: 0.85,
-                    
-                  }}>
-                  Adresse
-                </Text>
-                <TextInput
-                  style={{
-                    backgroundColor: 'transparent',
-                    borderBottomWidth: 1,
-                    borderBottomColor: '#E2C6BB',
-                    color: '#7B4C7A',
-                    fontWeight: '600',
-                    width: '100%',
-                    padding:0
-                  }}></TextInput>
-              </View>
-
-                    
-              <View
-                style={{
-                  alignItems: 'center',
-                  backgroundColor: '#7B4C7A',
-                  borderRadius: 30,
-                  marginVertical: 30,
-                }}>
-                <Pressable
-                  android_ripple={{color: '7B4C7A'}}
-                  style={{
-                    paddingHorizontal: 10,
-                    width: '70%',
-                  }}
-                  onPress={() => navigation.navigate('inscription_vendeur_3')}>
-                  <Text
-                    style={{
-                      textAlign: 'center',
-                      padding: 10,
-                      paddingHorizontal: 20,
-                      fontSize: 14,
-                      fontWeight: '500',
-                      color: '#fff',
-                    }}>
-                    suivant
-                  </Text>
-                </Pressable>
-              </View>             
+            <View style={{backgroundColor: '#fff', paddingLeft: 20}}>
+              <TextInput placeholder="Entrez votre adresse"></TextInput>
             </View>
+          </View>
 
-       
+          <View style={{paddingVertical: 10}}>
+            <Text
+              style={{
+                fontWeight: '600',
+                fontSize: 15,
+                paddingBottom: 12,
+                color: '#000',
+                paddingLeft: 20,
+              }}>
+              Categories selectionnees
+            </Text>
+            <View style={{backgroundColor: '#fff', paddingLeft: 20}}>
+              <TextInput placeholder="choisir ..."></TextInput>
+            </View>
+          </View>
+
+          <View
+            style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap:4, paddingHorizontal:10}}>
+           {[1,1,1,1,1,1,1,1].map( (row, key) => (
+             <View
+             key={key}
+             style={{
+               display: 'flex',
+               flexDirection: 'row',
+               gap: 10,
+               backgroundColor: '#fff',
+               padding: 10,
+               borderRadius: 50,
+             }}>
+             <Text style={{color: '#000'}}>Categorie 1</Text>
+             <CloseIcon color={'#841584'} />
+           </View>
+           )
+
+          )}
+            
+          </View>
+
+          <View style={{paddingVertical: 10}}>
+            <Text
+              style={{
+                fontWeight: '600',
+                fontSize: 15,
+                paddingBottom: 12,
+                color: '#000',
+                paddingLeft: 20,
+              }}>
+              Heure d'ouverture
+            </Text>
+            <View style={{backgroundColor: '#fff', paddingLeft: 20}}>
+              <TextInput placeholder="choisir ..."></TextInput>
+            </View>
+          </View>
+
+          <View style={{paddingVertical: 10}}>
+            <Text
+              style={{
+                fontWeight: '600',
+                fontSize: 15,
+                paddingBottom: 12,
+                color: '#000',
+                paddingLeft: 20,
+              }}>
+              Lien reseaux sociaux
+            </Text>
+            <View style={{backgroundColor: '#fff', paddingLeft: 20}}>
+              <TextInput placeholder="choisir ..."></TextInput>
+            </View>
+          </View>
+
+          <View
+            style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap:10, paddingHorizontal:5, marginBottom:40}}>
+           {[1,1,1,1].map( (row, key) => (
+             <View
+             key={key}
+             style={{
+               display: 'flex',
+               flexDirection: 'row',
+               gap: 10,
+               backgroundColor: '#fff',
+               padding: 5,
+               paddingHorizontal:15,
+               borderRadius: 50,
+               alignItems:'center',
+               width:'100%',
+               justifyContent:'space-between'
+             }}>
+             <View style={{
+               display: 'flex',
+               flexDirection: 'column',
+               gap: 3,
+               backgroundColor: '#fff',
+               padding: 10,
+               borderRadius: 50,
+
+             }}>
+             <Text style={{color: '#000'}}>Facebook</Text>
+             <Text style={{color: '#841584', fontSize:12}}>https://facebook.com</Text>
+             </View>
+             <CloseIcon color={'#841584'} />
+           </View>
+           )
+
+          )}
+            
           </View>
         </ScrollView>
       </SafeAreaView>
