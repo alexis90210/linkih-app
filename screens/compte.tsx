@@ -250,7 +250,7 @@ export default function Compte({navigation}: {navigation: any}) {
                   fontWeight: '600',
                   opacity: 0.8,
                 }}>
-                Pack vendeur
+                Pack Proprietaire
               </Text>
               <View
                 style={{

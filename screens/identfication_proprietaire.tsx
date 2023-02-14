@@ -12,8 +12,8 @@ import {
 } from 'react-native';
 import ArrowLeftIcon from '../components/ArrowLeft';
 
-// IdentificationVendeurScreen
-export default function IdentificationVendeurScreen({
+// IdentificationProprietaireScreen
+export default function IdentificationProprietaireScreen({
   navigation,
 }: {
   navigation: any;
@@ -26,7 +26,6 @@ export default function IdentificationVendeurScreen({
           height: '100%',
           backgroundColor: '#f6f6f6f6',
         }}>
-    
         <ScrollView
           contentInsetAdjustmentBehavior="automatic"
           style={{
@@ -40,7 +39,6 @@ export default function IdentificationVendeurScreen({
               alignItems: 'center',
               marginTop: 10,
             }}>
-          
             <View
               style={{
                 marginVertical: 10,
@@ -50,7 +48,7 @@ export default function IdentificationVendeurScreen({
                 width: '90%',
                 marginTop: 10,
               }}>
-              <View
+             <View
                 style={{
                   display: 'flex',
                   flexDirection: 'column',
@@ -75,7 +73,7 @@ export default function IdentificationVendeurScreen({
                     color: '#7B4C7A',
                     width: '100%',
                     fontWeight: '600',
-                    padding: 0,
+                    padding:0
                   }}></TextInput>
               </View>
 
@@ -109,9 +107,10 @@ export default function IdentificationVendeurScreen({
                     color: '#7B4C7A',
                     fontWeight: '600',
                     width: '100%',
-                    padding: 0,
+                    padding:0
                   }}></TextInput>
               </View>
+
 
               <View
                 style={{
@@ -141,38 +140,34 @@ export default function IdentificationVendeurScreen({
                 </Pressable>
               </View>
 
-
               <View
                 style={{
                   alignItems: 'center',
                   backgroundColor: 'transparent',
                   borderRadius: 30,
-                  display:'flex',
-                  flexDirection:'row',
-                  justifyContent:'flex-end'
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'flex-end',
+                  marginVertical:10
                 }}>
                 <Pressable
                   android_ripple={{color: '7B4C7A'}}
                   style={{
                     paddingHorizontal: 10,
                   }}
-                  onPress={() => navigation.navigate('inscription_vendeur')}>
+                  onPress={() => navigation.navigate('inscription_proprietaire_1')}>
                   <Text
                     style={{
                       textAlign: 'center',
-                      fontSize: 13,
+                      fontSize: 15,
                       fontWeight: '500',
                       color: '#841584',
-                      
                     }}>
-                    Je n'ai pas encore un compte
+                    Je n'ai pas encore un compte 
                   </Text>
                 </Pressable>
               </View>
-
             </View>
-
-          
           </View>
         </ScrollView>
       </SafeAreaView>

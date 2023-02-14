@@ -13,22 +13,23 @@ import ConfigurationScreen from './screens/configuration';
 import IdentificationScreen from './screens/identification';
 import IdentificationClientScreen from './screens/identfication_client';
 import InscriptionClientScreen from './screens/inscription_client';
-import IdentificationVendeurScreen from './screens/identfication_vendeur';
-import InscriptionVendeurScreen from './screens/inscription_vendeur';
-import InscriptionVendeurScreen2 from './screens/inscription_vendeur_2';
-import InscriptionVendeurScreen3 from './screens/inscription_vendeur_3';
 import Main from './screens/main';
 import Compte from './screens/compte';
 import Rdv from './screens/rdv';
 import Map from './screens/map';
 import ResultatRechercheScreen from './screens/resultat_recherche';
+import InscriptionProprietaireScreen2 from './screens/inscription_proprietaire_2';
+import InscriptionProprietaireScreen1 from './screens/inscription_proprietaire_1';
+import InscriptionProprietaire3 from './screens/inscription_proprietaire_3';
+import IdentificationProprietaireScreen from './screens/identfication_proprietaire';
 
 const Stack = createNativeStackNavigator();
 
 export default function App(): JSX.Element {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator
+      initialRouteName='main'>
 
         {/* splash */}
         <Stack.Screen
@@ -96,10 +97,10 @@ export default function App(): JSX.Element {
           }}
         />
 
-        {/* identification_vendeur */}
+        {/* identification_proprietaire */}
         <Stack.Screen
-          name="identification_vendeur"
-          component={IdentificationVendeurScreen}
+          name="identification_proprietaire"
+          component={IdentificationProprietaireScreen}
           options={{
             title: 'connexion proprietaire',
             headerShadowVisible: false,
@@ -111,10 +112,10 @@ export default function App(): JSX.Element {
           }}
         />
 
-        {/* inscription_vendeur */}
+        {/* inscription_proprietaire */}
         <Stack.Screen
-          name="inscription_vendeur"
-          component={InscriptionVendeurScreen}
+          name="inscription_proprietaire_1"
+          component={InscriptionProprietaireScreen1}
           options={{
             title: 'creation du compte proprietaire',
             headerShadowVisible: false,
@@ -126,10 +127,10 @@ export default function App(): JSX.Element {
           }}
         />
 
-        {/* inscription_vendeur_2 */}
+        {/* inscription_proprietaire_2 */}
         <Stack.Screen
-          name="inscription_vendeur_2"
-          component={InscriptionVendeurScreen2}
+          name="inscription_proprietaire_2"
+          component={InscriptionProprietaireScreen2}
           options={{
             title: 'creation du compte proprietaire',
             headerShadowVisible: false,
@@ -141,10 +142,10 @@ export default function App(): JSX.Element {
           }}
         />
 
-        {/* inscription_vendeur_3 */}
+        {/* inscription_proprietaire_3 */}
         <Stack.Screen
-          name="inscription_vendeur_3"
-          component={InscriptionVendeurScreen3}
+          name="inscription_proprietaire_3"
+          component={InscriptionProprietaire3}
           options={{
             title: 'creation du compte proprietaire',
             headerShadowVisible: false,

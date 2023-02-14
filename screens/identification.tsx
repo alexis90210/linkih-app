@@ -107,7 +107,7 @@ export default function IdentificationScreen({navigation}: {navigation: any}) {
                     justifyContent: 'center',
                     alignItems: 'center',
                   }}
-                  onPress={() => navigation.navigate('identification_vendeur')}>
+                  onPress={() => navigation.navigate('identification_proprietaire')}>
                   <View>
                     <Text
                       style={{

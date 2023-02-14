@@ -11,8 +11,8 @@ import {
   TextInput,
 } from 'react-native';
 
-// InscriptionVendeurScreen3
-export default function InscriptionVendeurScreen3({navigation}: {navigation: any}) {
+// InscriptionProprietaire3
+export default function InscriptionProprietaire3({navigation}: {navigation: any}) {
   return (
     <>
       <SafeAreaView
@@ -40,7 +40,7 @@ export default function InscriptionVendeurScreen3({navigation}: {navigation: any
                 width:'80%'
               }}>
               Felicitations,
-              votre compte vendeur a ete cree avec succes
+              votre compte Proprietaire a ete cree avec succes
             </Text>
             <Text
               style={{

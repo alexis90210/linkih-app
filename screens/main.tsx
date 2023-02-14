@@ -43,9 +43,7 @@ var FirstRoute = ({navigation}: {navigation: any}) => (
         style={{
           textAlign: 'center',
           color: '#000',
-          fontWeight: '700',
-          fontSize: 10,
-          height: 15,
+          fontSize: 15,
           opacity: 0.85,
         }}>
         Pays/Region
@@ -59,6 +57,7 @@ var FirstRoute = ({navigation}: {navigation: any}) => (
           width: '100%',
           fontWeight: '600',
           padding: 0,
+          marginTop:10
         }}></TextInput>
     </View>
 
@@ -75,9 +74,7 @@ var FirstRoute = ({navigation}: {navigation: any}) => (
         style={{
           textAlign: 'center',
           color: '#000',
-          fontWeight: '700',
-          fontSize: 10,
-          height: 15,
+          fontSize: 15,
           opacity: 0.85,
         }}>
         Categorie
@@ -91,6 +88,7 @@ var FirstRoute = ({navigation}: {navigation: any}) => (
           width: '100%',
           fontWeight: '600',
           padding: 0,
+          marginTop:10
         }}></TextInput>
     </View>
 
@@ -148,9 +146,7 @@ var SecondRoute = ({navigation}: {navigation: any}) => (
         style={{
           textAlign: 'center',
           color: '#000',
-          fontWeight: '700',
-          fontSize: 10,
-          height: 15,
+          fontSize: 15,
           opacity: 0.85,
         }}>
         Etablissement
@@ -164,6 +160,7 @@ var SecondRoute = ({navigation}: {navigation: any}) => (
           width: '100%',
           fontWeight: '600',
           padding: 0,
+          marginTop:10
         }}></TextInput>
     </View>
 
