@@ -552,7 +552,7 @@ export default function MonEtablissement({
               }}>
               {[1, 1, 1, 1, 1, 1, 1].map((row, key) => (
                 <View
-                  key={key}
+                  key={key + Math.random()}
                   style={{
                     display: 'flex',
                     flexDirection: 'row',
@@ -608,7 +608,7 @@ export default function MonEtablissement({
               }}>
               {[1, 1, 1, 1].map((row, key) => (
                 <View
-                  key={key}
+                  key={key + Math.random()}
                   style={{
                     display: 'flex',
                     flexDirection: 'row',
@@ -790,7 +790,7 @@ export default function MonEtablissement({
                       {[1, 1, 1, 1].map((row, key) => (
                         <View style={{width: '100%'}}>
                           <View
-                            key={key}
+                            key={key + Math.random()}
                             style={{
                               display: 'flex',
                               flexDirection: 'row',
@@ -891,7 +891,7 @@ export default function MonEtablissement({
                       {[1, 1].map((row, key) => (
                         <View style={{width: '100%'}}>
                           <View
-                            key={key}
+                            key={key + Math.random()}
                             style={{
                               display: 'flex',
                               flexDirection: 'row',

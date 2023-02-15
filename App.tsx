@@ -24,6 +24,7 @@ import InscriptionProprietaire3 from './screens/inscription_proprietaire_3';
 import IdentificationProprietaireScreen from './screens/identfication_proprietaire';
 import CompteProprietaire from './screens/compte_proprietaire';
 import MonEtablissement from './screens/mon_etablissement';
+import MenuScreen from './screens/menu';
 
 const Stack = createNativeStackNavigator();
 
@@ -267,9 +268,23 @@ export default function App(): JSX.Element {
           }}
         />
 
+        {/* Menu */}
+        <Stack.Screen
+          name="menu"
+          component={MenuScreen}
+          options={{
+            title: 'Menu screen',
+            headerShadowVisible: false,
+            headerTitleStyle: {fontSize: 18, fontWeight: '700'},
+            headerShown: false,
+            presentation: 'modal',
+            animationTypeForReplace: 'push',
+            animation: 'slide_from_left',
+          }}
+        />
+
         {/* end */} 
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
-

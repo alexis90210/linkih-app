@@ -444,7 +444,14 @@ export default function ConfigurationScreen({navigation}: {navigation: any}) {
                       <LanguageList />
 
                       <View style={{padding: 15, paddingVertical: 30}}>
-                        <Pressable onPress={handleCloseModalLanguages}>
+                        <Pressable onPress={handleCloseModalLanguages} style={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      gap: 10,
+                      justifyContent: 'flex-start',
+                    }}>
+                    <CloseIcon color={'#841584'} />
                           <Text style={{color: 'rgba(100,100,100,.8)'}}>
                             Quitter
                           </Text>

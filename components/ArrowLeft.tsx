@@ -1,6 +1,5 @@
 import * as React from 'react';
 import Svg, {Path, SvgProps} from 'react-native-svg';
-import { ColorValue } from 'react-native/types';
 
 var ArrowLeftIcon = () => (
   <Svg

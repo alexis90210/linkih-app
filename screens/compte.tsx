@@ -29,7 +29,7 @@ export default function Compte({navigation}: {navigation: any}) {
             paddingVertical: 15,
             paddingHorizontal: 10,
           }}>
-          <Pressable onPress={() => navigation.navigate('main')}>
+          <Pressable onPress={() => navigation.goBack()}>
             <ArrowLeftIcon />
           </Pressable>
           <Text style={{color: '#000', fontSize: 18, fontWeight: '700'}}>
