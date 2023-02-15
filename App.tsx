@@ -5,7 +5,7 @@
  * @format
  */
 
-import React from 'react';
+import React, { useState } from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import SplashScreen from './screens/splashScreen';
@@ -22,14 +22,20 @@ import InscriptionProprietaireScreen2 from './screens/inscription_proprietaire_2
 import InscriptionProprietaireScreen1 from './screens/inscription_proprietaire_1';
 import InscriptionProprietaire3 from './screens/inscription_proprietaire_3';
 import IdentificationProprietaireScreen from './screens/identfication_proprietaire';
+import CompteProprietaire from './screens/compte_proprietaire';
+import MonEtablissement from './screens/mon_etablissement';
 
 const Stack = createNativeStackNavigator();
 
 export default function App(): JSX.Element {
+
+  const [initialRouteName, setInitialRouteName] = useState('main')
+  
   return (
     <NavigationContainer>
       <Stack.Navigator
-      initialRouteName='main'>
+      initialRouteName={initialRouteName}
+      >
 
         {/* splash */}
         <Stack.Screen
@@ -231,8 +237,39 @@ export default function App(): JSX.Element {
           }}
         />
 
-        {/* end */}
+         {/* compte directeur */}
+         <Stack.Screen
+          name="CompteProprietaire"
+          component={CompteProprietaire}
+          options={{
+            title: 'Resultat de la recherche',
+            headerShadowVisible: false,
+            headerTitleStyle: {fontSize: 18, fontWeight: '700'},
+            headerShown: false,
+            presentation: 'modal',
+            animationTypeForReplace: 'push',
+            animation: 'slide_from_right',
+          }}
+        />
+
+        {/* espace etablissement */}
+        <Stack.Screen
+          name="espace_etab"
+          component={MonEtablissement}
+          options={{
+            title: 'Espace etablissement',
+            headerShadowVisible: false,
+            headerTitleStyle: {fontSize: 18, fontWeight: '700'},
+            headerShown: false,
+            presentation: 'modal',
+            animationTypeForReplace: 'push',
+            animation: 'slide_from_right',
+          }}
+        />
+
+        {/* end */} 
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
+

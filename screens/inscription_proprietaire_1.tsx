@@ -30,7 +30,6 @@ export default function InscriptionProprietaireScreen1({
           style={{
             backgroundColor: '#f6f6f6f6',
           }}>
-
           <View style={{paddingVertical: 10}}>
             <Text
               style={{
@@ -111,36 +110,44 @@ export default function InscriptionProprietaireScreen1({
             </View>
           </View>
 
-         <View style={{display:'flex', flexDirection:'row', width:'100%' , justifyContent:'flex-end' , paddingHorizontal:10}}>
-         <View
+          <View
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              width: '100%',
+              justifyContent: 'flex-end',
+              paddingHorizontal: 10,
+            }}>
+            <View
+              style={{
+                alignItems: 'center',
+                backgroundColor: '#7B4C7A',
+                borderRadius: 30,
+                marginVertical: 30,
+              }}>
+              <Pressable
+                android_ripple={{color: '7B4C7A'}}
                 style={{
-                  alignItems: 'center',
-                  backgroundColor: '#7B4C7A',
-                  borderRadius: 30,
-                  marginVertical: 30,
-                }}>
-                <Pressable
-                  android_ripple={{color: '7B4C7A'}}
+                  paddingHorizontal: 10,
+                  width: '100%',
+                }}
+                onPress={() =>
+                  navigation.navigate('inscription_proprietaire_2')
+                }>
+                <Text
                   style={{
-                    paddingHorizontal: 10,
-                    width: '100%',
-                  }}
-                  onPress={() => navigation.navigate('inscription_proprietaire_2')}>
-                  <Text
-                    style={{
-                      textAlign: 'center',
-                      padding: 10,
-                      paddingHorizontal: 20,
-                      fontSize: 14,
-                      fontWeight: '500',
-                      color: '#fff',
-                    }}>
-                    Suivant
-                  </Text>
-                </Pressable>
-              </View>
-         </View>
-
+                    textAlign: 'center',
+                    padding: 10,
+                    paddingHorizontal: 20,
+                    fontSize: 14,
+                    fontWeight: '500',
+                    color: '#fff',
+                  }}>
+                  Suivant
+                </Text>
+              </Pressable>
+            </View>
+          </View>
         </ScrollView>
       </SafeAreaView>
     </>

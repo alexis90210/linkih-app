@@ -40,7 +40,7 @@ export default function InscriptionProprietaire3({navigation}: {navigation: any}
                 width:'80%'
               }}>
               Felicitations,
-              votre compte Proprietaire a ete cree avec succes
+              votre compte a ete cree avec succes
             </Text>
             <Text
               style={{
@@ -52,7 +52,7 @@ export default function InscriptionProprietaire3({navigation}: {navigation: any}
                 marginVertical: 13,
                 width:'80%'
               }}>
-              Veuillez completer vos Informations dans le profile de votre etablissement
+              Veuillez completer vos Informations dans votre profile
             </Text>
             <View
               style={{

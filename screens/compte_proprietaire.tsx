@@ -12,7 +12,7 @@ import {
 import ArrowLeftIcon from '../components/ArrowLeft';
 import EditIcon from '../components/Edit';
 
-export default function Compte({navigation}: {navigation: any}) {
+export default function CompteProprietaire({navigation}: {navigation: any}) {
   return (
     <View>
       <SafeAreaView
@@ -33,7 +33,7 @@ export default function Compte({navigation}: {navigation: any}) {
             <ArrowLeftIcon />
           </Pressable>
           <Text style={{color: '#000', fontSize: 18, fontWeight: '700'}}>
-            Mon compte
+            Mon etablissement
           </Text>
         </View>
         <ScrollView
@@ -188,7 +188,97 @@ export default function Compte({navigation}: {navigation: any}) {
               </Text>
             </View>
 
-         
+            <View
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}>
+              <View>
+                <Text
+                  style={{
+                    color: '#000',
+                    paddingVertical: 3,
+                    fontSize: 16,
+                    fontWeight: '800',
+                    marginVertical: 15,
+                  }}>
+                  Mon abonnement
+                </Text>
+              </View>
+              <View
+                style={{
+                  display: 'flex',
+                  justifyContent: 'flex-start',
+                  flexDirection: 'row',
+                  gap: 10,
+                }}>
+                <Text
+                  style={{
+                    color: '#000',
+                    paddingVertical: 3,
+                    fontSize: 15,
+                    fontWeight: '600',
+                  }}>
+                  expire le
+                </Text>
+                <Text
+                  style={{
+                    color: '#841584',
+                    paddingVertical: 3,
+                    fontSize: 15,
+                    fontWeight: '600',
+                  }}>
+                  14-02-2023
+                </Text>
+              </View>
+            </View>
+
+            <View
+              style={{
+                borderRadius: 15,
+                backgroundColor: '#fff',
+                padding: 14,
+                width: '100%',
+              }}>
+              <Text
+                style={{
+                  color: '#000',
+                  paddingVertical: 3,
+                  fontSize: 16,
+                  fontWeight: '600',
+                  opacity: 0.8,
+                }}>
+                Pack Proprietaire
+              </Text>
+              <View
+                style={{
+                  display: 'flex',
+                  justifyContent: 'flex-start',
+                  flexDirection: 'row',
+                  gap: 10,
+                }}>
+                <Text
+                  style={{
+                    color: '#000',
+                    paddingVertical: 3,
+                    fontSize: 15,
+                    fontWeight: '800',
+                  }}>
+                  13
+                </Text>
+                <Text
+                  style={{
+                    color: '#841584',
+                    paddingVertical: 3,
+                    fontSize: 14,
+                    fontWeight: '600',
+                  }}>
+                  € TTC / mois
+                </Text>
+              </View>
+            </View>
 
             <View
               style={{

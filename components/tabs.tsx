@@ -4,7 +4,7 @@ import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 const App = () => {
   const [activeTab, setActiveTab] = useState('Tab 1');
 
-  const handleTabPress = tabName => {
+  const handleTabPress = (tabName:any) => {
     setActiveTab(tabName);
   };
 

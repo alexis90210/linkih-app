@@ -11,8 +11,9 @@ import {
 
 import ArrowLeftIcon from '../components/ArrowLeft';
 import EditIcon from '../components/Edit';
+import CloseIcon from '../components/close';
 
-export default function Compte({navigation}: {navigation: any}) {
+export default function MonEtablissement({navigation}: {navigation: any}) {
   return (
     <View>
       <SafeAreaView
@@ -33,7 +34,7 @@ export default function Compte({navigation}: {navigation: any}) {
             <ArrowLeftIcon />
           </Pressable>
           <Text style={{color: '#000', fontSize: 18, fontWeight: '700'}}>
-            Mon compte
+            Mon Etablissement
           </Text>
         </View>
         <ScrollView
@@ -80,7 +81,7 @@ export default function Compte({navigation}: {navigation: any}) {
                   fontSize: 17,
                   fontWeight: '700',
                 }}>
-                Hisoka Tegiro
+                Salon beaute plus
               </Text>
               <Text
                 style={{
@@ -188,7 +189,98 @@ export default function Compte({navigation}: {navigation: any}) {
               </Text>
             </View>
 
-         
+            <View
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}>
+              <View>
+                <Text
+                  style={{
+                    color: '#000',
+                    paddingVertical: 3,
+                    fontSize: 16,
+                    fontWeight: '800',
+                    marginVertical: 15,
+                  }}>
+                  Mon abonnement
+                </Text>
+              </View>
+              <View
+                style={{
+                  display: 'flex',
+                  justifyContent: 'flex-start',
+                  flexDirection: 'row',
+                  gap: 10,
+                }}>
+                <Text
+                  style={{
+                    color: '#000',
+                    paddingVertical: 3,
+                    fontSize: 15,
+                    fontWeight: '600',
+                  }}>
+                  expire le
+                </Text>
+                <Text
+                  style={{
+                    color: '#841584',
+                    paddingVertical: 3,
+                    fontSize: 15,
+                    fontWeight: '600',
+                  }}>
+                  14-02-2023
+                </Text>
+              </View>
+            </View>
+
+            <View
+              style={{
+                borderRadius: 15,
+                backgroundColor: '#fff',
+                padding: 14,
+                width: '100%',
+              }}>
+              <Text
+                style={{
+                  color: '#000',
+                  paddingVertical: 3,
+                  fontSize: 16,
+                  fontWeight: '600',
+                  opacity: 0.8,
+                }}>
+                Pack Proprietaire
+              </Text>
+              <View
+                style={{
+                  display: 'flex',
+                  justifyContent: 'flex-start',
+                  flexDirection: 'row',
+                  gap: 10,
+                }}>
+                <Text
+                  style={{
+                    color: '#000',
+                    paddingVertical: 3,
+                    fontSize: 15,
+                    fontWeight: '800',
+                  }}>
+                  13
+                </Text>
+                <Text
+                  style={{
+                    color: '#841584',
+                    paddingVertical: 3,
+                    fontSize: 14,
+                    fontWeight: '600',
+                  }}>
+                  € TTC / mois
+                </Text>
+              </View>
+            </View>
+
 
             <View
               style={{
@@ -381,6 +473,117 @@ export default function Compte({navigation}: {navigation: any}) {
                 </Pressable>
               </View>
             </View>
+
+            <View style={{paddingVertical: 10}}>
+            <Text
+              style={{
+                fontWeight: '600',
+                fontSize: 15,
+                paddingBottom: 12,
+                color: '#000',
+                paddingLeft: 20,
+              }}>
+              Heure d'ouverture
+            </Text>
+          </View>
+
+          <View
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              flexWrap: 'wrap',
+              gap: 10,
+              paddingHorizontal: 5,
+              marginBottom: 40,
+            }}>
+            {[1, 1, 1, 1, 1, 1, 1].map((row, key) => (
+              <View
+                key={key}
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  gap: 4,
+                  backgroundColor: '#fff',
+                  padding: 5,
+                  paddingHorizontal: 15,
+                  borderRadius: 50,
+                  alignItems: 'center',
+                  width: '31%',
+                  justifyContent: 'space-between',
+                }}>
+                <View
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: 3,
+                    backgroundColor: '#fff',
+                    padding: 6,
+                    borderRadius: 50,
+                  }}>
+                  <Text style={{color: '#000'}}>Mercredi</Text>
+                  <Text style={{color: '#841584', fontSize: 11}}>08h-12h</Text>
+                </View>
+                {/* <CloseIcon color={'#841584'} /> */}
+              </View>
+            ))}
+          </View>
+
+            <View style={{paddingVertical: 10}}>
+            <Text
+              style={{
+                fontWeight: '700',
+                fontSize: 15,
+                paddingBottom: 12,
+                color: '#000',
+                paddingLeft: 20,
+              }}>
+              Lien reseaux sociaux
+            </Text>
+           
+          </View>
+
+          <View
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              flexWrap: 'wrap',
+              gap: 10,
+              paddingHorizontal: 5,
+              marginBottom: 40,
+            }}>
+            {[1, 1, 1, 1].map((row, key) => (
+              <View
+                key={key}
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  gap: 10,
+                  backgroundColor: '#fff',
+                  padding: 5,
+                  paddingHorizontal: 15,
+                  borderRadius: 50,
+                  alignItems: 'center',
+                  width: '100%',
+                  justifyContent: 'space-between',
+                }}>
+                <View
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: 3,
+                    backgroundColor: '#fff',
+                    padding: 10,
+                    borderRadius: 50,
+                  }}>
+                  <Text style={{color: '#000'}}>Facebook</Text>
+                  <Text style={{color: '#841584', fontSize: 12}}>
+                    https://facebook.com
+                  </Text>
+                </View>
+                {/* <CloseIcon color={'#841584'} /> */}
+              </View>
+            ))}
+          </View>
           </View>
 
           {/* Welcome text */}

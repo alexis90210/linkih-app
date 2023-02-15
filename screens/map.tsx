@@ -81,7 +81,7 @@ export default function Map({navigation}: {navigation: any}) {
           top: 10,
           left: 10,
         }}>
-        <Pressable onPress={() => navigation.goBack()}>
+        <Pressable onPress={() => navigation.navigate('resultat_recherche')}>
         <SearchIcon color={'#fff'}/>
         </Pressable>
       </View>
@@ -116,7 +116,7 @@ export default function Map({navigation}: {navigation: any}) {
                 padding: 10,
                 backgroundColor: '#7B4C7A',
               }}>
-              <CloseIcon />
+              <CloseIcon color={'#fff'} />
             </View>
           </View>
 
@@ -133,7 +133,9 @@ export default function Map({navigation}: {navigation: any}) {
               style={{
                 paddingHorizontal: 10,
               }}
-              onPress={() => navigation.navigate('resultat_recherche')}>
+              onPress={() => navigation.navigate('resultat_recherche', {
+                title:'Les etablissements'
+              })}>
               <View
                 style={{
                   alignItems: 'center',
