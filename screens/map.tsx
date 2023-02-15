@@ -192,7 +192,9 @@ export default function Map({navigation}: {navigation: any}) {
             height: 155,
             borderRadius: 15,
           }}>
-          <Pressable onPress={() => navigation.navigate('espace_etab')}>
+          <Pressable onPress={() => navigation.navigate('espace_etab', {
+            nomEtab:'Maison de beaute'
+          })}>
             <View
               style={{
                 borderRadius: 15,

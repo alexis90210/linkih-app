@@ -24,6 +24,7 @@ import SearchIcon from '../components/search';
 import FlagPlaceIcon from '../components/flag';
 import LanguageIcon from '../components/language';
 import WorldIcon from '../components/world';
+import CloseIcon from '../components/close';
 
 function Main({navigation}: {navigation: any}) {
   const drawer = useRef<DrawerLayoutAndroid>(null);
@@ -62,7 +63,7 @@ function Main({navigation}: {navigation: any}) {
           onPress={() => {
             drawer.current?.closeDrawer(), navigation.navigate('compte');
           }}>
-          <AccountIcon color={"#E2C6BB"} />
+          <AccountIcon color={'#E2C6BB'} />
           <Text style={{fontSize: 16, marginVertical: 10, color: '#E2C6BB'}}>
             Mon compte
           </Text>
@@ -197,13 +198,13 @@ function Main({navigation}: {navigation: any}) {
         <Pressable onPress={() => selectCategorie(item)}>
           <View
             style={{
-              display:'flex',
+              display: 'flex',
               flexDirection: 'row',
               alignItems: 'center',
               marginVertical: 10,
-              gap:10
+              gap: 10,
             }}>
-            <ShopIcon color={'#841584'}  />
+            <ShopIcon color={'#841584'} />
             <Text style={{color: 'rgba(100,100,100,1)'}}>{item.name}</Text>
           </View>
         </Pressable>
@@ -230,66 +231,76 @@ function Main({navigation}: {navigation: any}) {
   };
 
   // etablissement
-   const [modalVisibleEtablissement, setModalVisibleEtablissement] = useState(false);
-   const [currentEtablissement, setCurrentEtablissement] = useState({name: ''});
- 
-   const etablissements = [
-     {name: 'Etablissement 1', flag: 'https://www.countryflags.io/AF/flat/64.png'},
-     {name: 'Etablissement 2', flag: 'https://www.countryflags.io/AL/flat/64.png'},
-     {name: 'Etablissement 3', flag: 'https://www.countryflags.io/DZ/flat/64.png'},
-     // add more categories here
-   ];
- 
-   const handleOpenModalEtablissement = () => {
-     setModalVisibleEtablissement(true);
-   };
- 
-   const handleCloseModalEtablissement = () => {
-     setModalVisibleEtablissement(false);
-   };
- 
-   const selectEtablissement = (item: any) => {
-     setCurrentEtablissement(item);
-     handleCloseModalEtablissement();
-   };
- 
-   const EtablissementList = () => {
-     const renderItem = ({item}: {item: any}) => (
-       <View>
-         <Pressable onPress={() => selectEtablissement(item)}>
-           <View
-             style={{
-               display:'flex',
-               flexDirection: 'row',
-               alignItems: 'center',
-               marginVertical: 10,
-               gap:10
-             }}>
-             <ShopIcon color={'#841584'} />
-             <Text style={{color: 'rgba(100,100,100,1)'}}>{item.name}</Text>
-           </View>
-         </Pressable>
- 
-         <View style={{height: 1, overflow: 'hidden', paddingHorizontal: 10}}>
-           <View
-             style={{
-               height: 1,
-               borderWidth: 1,
-               borderColor: '#84158490',
-               borderStyle: 'dashed',
-             }}></View>
-         </View>
-       </View>
-     );
- 
-     return (
-       <FlatList
-         data={etablissements}
-         renderItem={renderItem}
-         keyExtractor={(item, index) => index.toString()}
-       />
-     );
-   };
+  const [modalVisibleEtablissement, setModalVisibleEtablissement] =
+    useState(false);
+  const [currentEtablissement, setCurrentEtablissement] = useState({name: ''});
+
+  const etablissements = [
+    {
+      name: 'Etablissement 1',
+      flag: 'https://www.countryflags.io/AF/flat/64.png',
+    },
+    {
+      name: 'Etablissement 2',
+      flag: 'https://www.countryflags.io/AL/flat/64.png',
+    },
+    {
+      name: 'Etablissement 3',
+      flag: 'https://www.countryflags.io/DZ/flat/64.png',
+    },
+    // add more categories here
+  ];
+
+  const handleOpenModalEtablissement = () => {
+    setModalVisibleEtablissement(true);
+  };
+
+  const handleCloseModalEtablissement = () => {
+    setModalVisibleEtablissement(false);
+  };
+
+  const selectEtablissement = (item: any) => {
+    setCurrentEtablissement(item);
+    handleCloseModalEtablissement();
+  };
+
+  const EtablissementList = () => {
+    const renderItem = ({item}: {item: any}) => (
+      <View>
+        <Pressable onPress={() => selectEtablissement(item)}>
+          <View
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginVertical: 10,
+              gap: 10,
+            }}>
+            <ShopIcon color={'#841584'} />
+            <Text style={{color: 'rgba(100,100,100,1)'}}>{item.name}</Text>
+          </View>
+        </Pressable>
+
+        <View style={{height: 1, overflow: 'hidden', paddingHorizontal: 10}}>
+          <View
+            style={{
+              height: 1,
+              borderWidth: 1,
+              borderColor: '#84158490',
+              borderStyle: 'dashed',
+            }}></View>
+        </View>
+      </View>
+    );
+
+    return (
+      <FlatList
+        data={etablissements}
+        renderItem={renderItem}
+        keyExtractor={(item, index) => index.toString()}
+      />
+    );
+  };
 
   return (
     <DrawerLayoutAndroid
@@ -500,8 +511,8 @@ function Main({navigation}: {navigation: any}) {
                         Etablissement
                       </Text>
                       <TextInput
-                      onPressIn={handleOpenModalEtablissement}
-                      value={currentEtablissement.name}
+                        onPressIn={handleOpenModalEtablissement}
+                        value={currentEtablissement.name}
                         placeholderTextColor={'rgba(100,100,100,.7)'}
                         placeholder="choisir ..."
                         style={{
@@ -567,14 +578,14 @@ function Main({navigation}: {navigation: any}) {
                     backgroundColor: '#fff',
                     width: '90%',
                     borderRadius: 15,
-                    paddingHorizontal:10
+                    paddingHorizontal: 10,
                   }}>
                   <Text
                     style={{
                       padding: 15,
                       fontSize: 15,
-                      paddingTop:30,
-                      paddingBottom:20,
+                      paddingTop: 30,
+                      paddingBottom: 20,
                       fontWeight: 'bold',
                       color: 'rgba(0,0,0,.6)',
                     }}>
@@ -593,13 +604,13 @@ function Main({navigation}: {navigation: any}) {
                           flexDirection: 'row',
                           alignItems: 'center',
                           gap: 10,
-                          
-                          marginBottom:20
+
+                          marginBottom: 20,
                         },
                       ]}>
                       <SearchIcon color={'#841584'} />
                       <TextInput
-                       placeholderTextColor={'rgba(100,100,100,.7)'}
+                        placeholderTextColor={'rgba(100,100,100,.7)'}
                         placeholder="Recherchez..."
                         style={{
                           backgroundColor: 'transparent',
@@ -612,7 +623,13 @@ function Main({navigation}: {navigation: any}) {
 
                     <View style={{padding: 15}}>
                       <Pressable onPress={handleCloseModalCountries}>
-                        <Text style={{color:'rgba(100,100,100,.8)', marginVertical:10}}>Quitter</Text>
+                        <Text
+                          style={{
+                            color: 'rgba(100,100,100,.8)',
+                            marginVertical: 10,
+                          }}>
+                          Quitter
+                        </Text>
                       </Pressable>
                     </View>
                   </View>
@@ -636,7 +653,7 @@ function Main({navigation}: {navigation: any}) {
                     backgroundColor: '#fff',
                     width: '90%',
                     borderRadius: 15,
-                    padding:10
+                    padding: 10,
                   }}>
                   <Text
                     style={{
@@ -660,12 +677,12 @@ function Main({navigation}: {navigation: any}) {
                           flexDirection: 'row',
                           alignItems: 'center',
                           gap: 10,
-                          marginBottom:20
+                          marginBottom: 20,
                         },
                       ]}>
                       <SearchIcon color={'#841584'} />
                       <TextInput
-                       placeholderTextColor={'rgba(100,100,100,.7)'}
+                        placeholderTextColor={'rgba(100,100,100,.7)'}
                         placeholder="Recherchez..."
                         style={{
                           backgroundColor: 'transparent',
@@ -676,9 +693,20 @@ function Main({navigation}: {navigation: any}) {
 
                     <CategorieList />
 
-                    <View style={{padding: 15, paddingVertical:30}}>
-                      <Pressable onPress={handleCloseModalCategories}>
-                        <Text style={{color:'rgba(100,100,100,.8)'}}>Quitter</Text>
+                    <View style={{padding: 15, paddingVertical: 30}}>
+                      <Pressable
+                        onPress={handleCloseModalCategories}
+                        style={{
+                          display: 'flex',
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          gap: 10,
+                          justifyContent: 'flex-start',
+                        }}>
+                        <CloseIcon color={'#841584'} />
+                        <Text style={{color: 'rgba(100,100,100,.8)'}}>
+                          Quitter
+                        </Text>
                       </Pressable>
                     </View>
                   </View>
@@ -702,7 +730,7 @@ function Main({navigation}: {navigation: any}) {
                     backgroundColor: '#fff',
                     width: '90%',
                     borderRadius: 15,
-                    padding:10
+                    padding: 10,
                   }}>
                   <Text
                     style={{
@@ -726,12 +754,12 @@ function Main({navigation}: {navigation: any}) {
                           flexDirection: 'row',
                           alignItems: 'center',
                           gap: 10,
-                          marginBottom:20
+                          marginBottom: 20,
                         },
                       ]}>
                       <SearchIcon color={'#841584'} />
                       <TextInput
-                       placeholderTextColor={'rgba(100,100,100,.7)'}
+                        placeholderTextColor={'rgba(100,100,100,.7)'}
                         placeholder="Recherchez..."
                         style={{
                           backgroundColor: 'transparent',
@@ -742,9 +770,11 @@ function Main({navigation}: {navigation: any}) {
 
                     <EtablissementList />
 
-                    <View style={{padding: 15, paddingVertical:30}}>
+                    <View style={{padding: 15, paddingVertical: 30}}>
                       <Pressable onPress={handleCloseModalEtablissement}>
-                        <Text style={{color:'rgba(100,100,100,.8)'}}>Quitter</Text>
+                        <Text style={{color: 'rgba(100,100,100,.8)'}}>
+                          Quitter
+                        </Text>
                       </Pressable>
                     </View>
                   </View>

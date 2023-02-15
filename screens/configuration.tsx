@@ -16,21 +16,16 @@ import {
 import SearchIcon from '../components/search';
 import WorldIcon from '../components/world';
 import LanguageIcon from '../components/language';
+import CloseIcon from '../components/close';
+import countries from '../components/countries.json';
 
 // ConfigurationScreen
 export default function ConfigurationScreen({navigation}: {navigation: any}) {
- 
   // countries
   const [modalVisibleCountries, setModalVisibleCountries] = useState(false);
-  const [currentCountry, setCurrentCountry] = useState({name:''});
-
-
-  const countries = [
-    {name: 'Afghanistan', flag: 'https://www.countryflags.io/AF/flat/64.png'},
-    {name: 'Albania', flag: 'https://www.countryflags.io/AL/flat/64.png'},
-    {name: 'Algeria', flag: 'https://www.countryflags.io/DZ/flat/64.png'},
-    // add more countries here
-  ];
+  const [currentCountry, setCurrentCountry] = useState({name: ''});
+  const [filteredCountries, setFilteredCountries] = useState(countries);
+  const [searchText, setSearchText] = useState('');
 
   const handleOpenModalCountries = () => {
     setModalVisibleCountries(true);
@@ -40,11 +35,27 @@ export default function ConfigurationScreen({navigation}: {navigation: any}) {
     setModalVisibleCountries(false);
   };
 
-  const selectCountry = ( item: any) => {
-    setCurrentCountry(item)
-    handleCloseModalCountries()    
-    
-  }
+  const selectCountry = (item: any) => {
+    setCurrentCountry(item);
+    setSearchText(item.name);
+    handleCloseModalCountries();
+  };
+
+  const filterListCountries = (input: any) => {
+    setSearchText(input);
+
+    if (searchText != '') {
+      var filtered = countries.filter((country, key) => {
+        return country.name
+          .toString()
+          .toLowerCase()
+          .includes(searchText.toString().toLowerCase());
+      });
+      setFilteredCountries(filtered);
+    } else {
+      setFilteredCountries(countries);
+    }
+  };
 
   const CountryList = () => {
     const renderItem = ({item}: {item: any}) => (
@@ -59,7 +70,8 @@ export default function ConfigurationScreen({navigation}: {navigation: any}) {
               paddingHorizontal: 18,
               gap: 10,
             }}>
-            <WorldIcon />
+            {/* <WorldIcon /> */}
+            <Text> {item.emoji}</Text>
             <Text style={{color: 'rgba(100,100,100,1)'}}>{item.name}</Text>
           </View>
         </Pressable>
@@ -77,18 +89,16 @@ export default function ConfigurationScreen({navigation}: {navigation: any}) {
 
     return (
       <FlatList
-        data={countries}
+        data={filteredCountries}
         renderItem={renderItem}
         keyExtractor={(item, index) => index.toString()}
       />
     );
   };
 
-
-
   // Languages
   const [modalVisibleLanguages, setModalVisibleLanguages] = useState(false);
-  const [currentLanguage, setCurrentLanguage] = useState({name:''});
+  const [currentLanguage, setCurrentLanguage] = useState({name: ''});
 
   const langages = [
     {name: 'Francais', flag: 'https://www.countryflags.io/AF/flat/64.png'},
@@ -105,11 +115,10 @@ export default function ConfigurationScreen({navigation}: {navigation: any}) {
     setModalVisibleLanguages(false);
   };
 
-  const selectLanguage = ( item: any) => {
-    setCurrentLanguage(item)
-    handleCloseModalLanguages()    
-    
-  }
+  const selectLanguage = (item: any) => {
+    setCurrentLanguage(item);
+    handleCloseModalLanguages();
+  };
 
   const LanguageList = () => {
     const renderItem = ({item}: {item: any}) => (
@@ -117,11 +126,11 @@ export default function ConfigurationScreen({navigation}: {navigation: any}) {
         <Pressable onPress={() => selectLanguage(item)}>
           <View
             style={{
-              display:'flex',
+              display: 'flex',
               flexDirection: 'row',
               alignItems: 'center',
               marginVertical: 10,
-              gap:10
+              gap: 10,
             }}>
             <LanguageIcon />
             <Text style={{color: 'rgba(100,100,100,1)'}}>{item.name}</Text>
@@ -148,8 +157,6 @@ export default function ConfigurationScreen({navigation}: {navigation: any}) {
       />
     );
   };
-
-
 
   return (
     <>
@@ -248,10 +255,10 @@ export default function ConfigurationScreen({navigation}: {navigation: any}) {
                   Langue
                 </Text>
                 <TextInput
-                onPressIn={handleOpenModalLanguages}
-                value={currentLanguage.name}
-                placeholderTextColor={'rgba(100,100,100,.7)'}
-                placeholder="Choisir..."
+                  onPressIn={handleOpenModalLanguages}
+                  value={currentLanguage.name}
+                  placeholderTextColor={'rgba(100,100,100,.7)'}
+                  placeholder="Choisir..."
                   style={{
                     backgroundColor: 'transparent',
                     borderBottomWidth: 1,
@@ -286,146 +293,167 @@ export default function ConfigurationScreen({navigation}: {navigation: any}) {
                       fontWeight: '500',
                       color: '#fff',
                     }}>
-                    Contiunez
+                    continuez 
                   </Text>
                 </Pressable>
               </View>
 
-               {/* MODAL PAYS */}
+              {/* MODAL PAYS */}
 
-            <Modal visible={modalVisibleCountries} transparent={true}>
-              <View
-                style={{
-                  flex: 1,
-                  backgroundColor: 'rgba(0, 0, 0, 0.3)',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}>
+              <Modal visible={modalVisibleCountries} transparent={true}>
                 <View
                   style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    backgroundColor: '#fff',
-                    width: '90%',
-                    borderRadius: 15,
-                    paddingHorizontal:10
+                    flex: 1,
+                    backgroundColor: 'rgba(0, 0, 0, 0.3)',
+                    justifyContent: 'center',
+                    alignItems: 'center',
                   }}>
-                  <Text
+                  <View
                     style={{
-                      padding: 15,
-                      fontSize: 15,
-                      paddingTop:30,
-                      paddingBottom:20,
-                      fontWeight: 'bold',
-                      color: 'rgba(0,0,0,.6)',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      backgroundColor: '#fff',
+                      width: '90%',
+                      borderRadius: 15,
+                      paddingHorizontal: 10,
                     }}>
-                    Selectionnez un pays/ region
-                  </Text>
-                  <View style={{width: '100%', paddingHorizontal: 10}}>
-                    <View
-                      style={[
-                        {
-                          width: '100%',
-                          height: 45,
-                          paddingHorizontal: 20,
-                          backgroundColor: 'rgba(100,100,100,.2)',
-                          borderRadius: 50,
-                          display: 'flex',
-                          flexDirection: 'row',
-                          alignItems: 'center',
-                          gap: 10,
-                          
-                          marginBottom:20
-                        },
-                      ]}>
-                      <SearchIcon color={'#841584'} />
-                      <TextInput
-                       placeholderTextColor={'rgba(100,100,100,.7)'}
-                        placeholder="Recherchez..."
-                        style={{
-                          backgroundColor: 'transparent',
-                          borderRadius: 50,
-                          flex: 1,
-                        }}></TextInput>
-                    </View>
+                    <Text
+                      style={{
+                        padding: 15,
+                        fontSize: 15,
+                        paddingTop: 30,
+                        paddingBottom: 20,
+                        fontWeight: 'bold',
+                        color: 'rgba(0,0,0,.6)',
+                      }}>
+                      Selectionnez un pays/ region
+                    </Text>
+                    <View style={{width: '100%', paddingHorizontal: 10}}>
+                      <View
+                        style={[
+                          {
+                            width: '100%',
+                            height: 45,
+                            paddingHorizontal: 20,
+                            backgroundColor: 'rgba(100,100,100,.2)',
+                            borderRadius: 50,
+                            display: 'flex',
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            gap: 10,
+                            position: 'absolute',
+                            marginBottom: 20,
+                          },
+                        ]}>
+                        <SearchIcon color={'#841584'} />
+                        <TextInput
+                          value={searchText}
+                          onChangeText={text => filterListCountries(text)}
+                          placeholderTextColor={'rgba(100,100,100,.7)'}
+                          placeholder="Recherchez..."
+                          style={{
+                            backgroundColor: 'transparent',
+                            borderRadius: 50,
+                            flex: 1,
+                          }}></TextInput>
+                      </View>
 
-                    <CountryList />
+                      <View style={{height: 300, marginTop: 55}}>
+                        <CountryList />
+                      </View>
 
-                    <View style={{padding: 15}}>
-                      <Pressable onPress={handleCloseModalCountries}>
-                        <Text style={{color:'rgba(100,100,100,.8)', marginVertical:10}}>Quitter</Text>
-                      </Pressable>
+                      <View style={{padding: 15}}>
+                        <Pressable
+                          onPress={handleCloseModalCountries}
+                          style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            gap: 10,
+                            justifyContent: 'flex-start',
+                          }}>
+                          <CloseIcon color={'#841584'} />
+                          <Text
+                            style={{
+                              color: 'rgba(100,100,100,.8)',
+                              marginVertical: 10,
+                            }}>
+                            Quitter
+                          </Text>
+                        </Pressable>
+                      </View>
                     </View>
                   </View>
                 </View>
-              </View>
-            </Modal>
+              </Modal>
 
-            {/* MODAL LANGAGE */}
-            <Modal visible={modalVisibleLanguages} transparent={true}>
-              <View
-                style={{
-                  flex: 1,
-                  backgroundColor: 'rgba(0, 0, 0, 0.3)',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}>
+              {/* MODAL LANGAGE */}
+              <Modal visible={modalVisibleLanguages} transparent={true}>
                 <View
                   style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    backgroundColor: '#fff',
-                    width: '90%',
-                    borderRadius: 15,
-                    padding:10
+                    flex: 1,
+                    backgroundColor: 'rgba(0, 0, 0, 0.3)',
+                    justifyContent: 'center',
+                    alignItems: 'center',
                   }}>
-                  <Text
+                  <View
                     style={{
-                      padding: 15,
-                      fontSize: 15,
-                      fontWeight: 'bold',
-                      color: 'rgba(0,0,0,.6)',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      backgroundColor: '#fff',
+                      width: '90%',
+                      borderRadius: 15,
+                      padding: 10,
                     }}>
-                    Selectionnez une langue
-                  </Text>
-                  <View style={{width: '100%', paddingHorizontal: 10}}>
-                    <View
-                      style={[
-                        {
-                          width: '100%',
-                          height: 45,
-                          paddingHorizontal: 20,
-                          backgroundColor: 'rgba(100,100,100,.2)',
-                          borderRadius: 50,
-                          display: 'flex',
-                          flexDirection: 'row',
-                          alignItems: 'center',
-                          gap: 10,
-                          marginBottom:20
-                        },
-                      ]}>
-                      <SearchIcon color={'#841584'} />
-                      <TextInput
-                       placeholderTextColor={'rgba(100,100,100,.7)'}
-                        placeholder="Recherchez..."
-                        style={{
-                          backgroundColor: 'transparent',
-                          borderRadius: 50,
-                          flex: 1,
-                        }}></TextInput>
-                    </View>
+                    <Text
+                      style={{
+                        padding: 15,
+                        fontSize: 15,
+                        fontWeight: 'bold',
+                        color: 'rgba(0,0,0,.6)',
+                      }}>
+                      Selectionnez une langue
+                    </Text>
+                    <View style={{width: '100%', paddingHorizontal: 10}}>
+                      <View
+                        style={[
+                          {
+                            width: '100%',
+                            height: 45,
+                            paddingHorizontal: 20,
+                            backgroundColor: 'rgba(100,100,100,.2)',
+                            borderRadius: 50,
+                            display: 'flex',
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            gap: 10,
+                            marginBottom: 20,
+                          },
+                        ]}>
+                        <SearchIcon color={'#841584'} />
+                        <TextInput
+                          placeholderTextColor={'rgba(100,100,100,.7)'}
+                          placeholder="Recherchez..."
+                          style={{
+                            backgroundColor: 'transparent',
+                            borderRadius: 50,
+                            flex: 1,
+                          }}></TextInput>
+                      </View>
 
-                    <LanguageList />
+                      <LanguageList />
 
-                    <View style={{padding: 15, paddingVertical:30}}>
-                      <Pressable onPress={handleCloseModalLanguages}>
-                        <Text style={{color:'rgba(100,100,100,.8)'}}>Quitter</Text>
-                      </Pressable>
+                      <View style={{padding: 15, paddingVertical: 30}}>
+                        <Pressable onPress={handleCloseModalLanguages}>
+                          <Text style={{color: 'rgba(100,100,100,.8)'}}>
+                            Quitter
+                          </Text>
+                        </Pressable>
+                      </View>
                     </View>
                   </View>
                 </View>
-              </View>
-            </Modal>
+              </Modal>
             </View>
           </View>
         </ScrollView>
