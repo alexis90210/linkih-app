@@ -43,11 +43,11 @@ export default function Map({navigation}: {navigation: any}) {
           customMapStyle={[]}>
           <Marker
             draggable
-            pinColor='red'
+            pinColor="red"
             coordinate={{
               latitude: 37.78825,
               longitude: -122.4324,
-            }}            
+            }}
             onDragEnd={e =>
               console.log(JSON.stringify(e.nativeEvent.coordinate))
             }
@@ -82,7 +82,7 @@ export default function Map({navigation}: {navigation: any}) {
           left: 10,
         }}>
         <Pressable onPress={() => navigation.navigate('resultat_recherche')}>
-        <SearchIcon color={'#fff'}/>
+          <SearchIcon color={'#fff'} />
         </Pressable>
       </View>
 
@@ -133,15 +133,17 @@ export default function Map({navigation}: {navigation: any}) {
               style={{
                 paddingHorizontal: 10,
               }}
-              onPress={() => navigation.navigate('resultat_recherche', {
-                title:'Les etablissements'
-              })}>
+              onPress={() =>
+                navigation.navigate('resultat_recherche', {
+                  title: 'Les etablissements',
+                })
+              }>
               <View
                 style={{
                   alignItems: 'center',
                   backgroundColor: '#7B4C7A',
                   borderRadius: 30,
-                  marginBottom: 30,
+                  marginBottom: 10,
                   display: 'flex',
                   justifyContent: 'flex-start',
                   flexDirection: 'row',
@@ -170,7 +172,7 @@ export default function Map({navigation}: {navigation: any}) {
       <View
         style={{
           position: 'absolute',
-          bottom: 30,
+          bottom: 10,
           left: 0,
           display: 'flex',
           flexDirection: 'row',
@@ -189,309 +191,333 @@ export default function Map({navigation}: {navigation: any}) {
             height: 155,
             borderRadius: 15,
           }}>
-          <View
-            style={{
-              borderRadius: 15,
-              padding: 10,
-              display: 'flex',
-              flexDirection: 'row',
-              flexWrap: 'nowrap',
-              justifyContent: 'flex-start',
-              backgroundColor: '#fff',
-              width: 300,
-              marginRight: 10,
-            }}>
+          <Pressable onPress={() => navigation.navigate('espace_etab')}>
             <View
               style={{
-                backgroundColor: 'rgba(200,200,200,1)',
-                width: 100,
                 borderRadius: 15,
-                paddingLeft: 40,
-                paddingTop: 40,
-              }}>
-              <FlagPlaceIcon />
-            </View>
-
-            <View
-              style={{
-                flex: 1,
-                paddingHorizontal: 10,
+                padding: 10,
+                display: 'flex',
+                flexDirection: 'row',
+                flexWrap: 'nowrap',
+                justifyContent: 'flex-start',
+                backgroundColor: '#fff',
+                width: 300,
+                marginRight: 10,
               }}>
               <View
                 style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  flexWrap: 'nowrap',
-                  justifyContent: 'flex-start',
-                  gap: 6,
-                  paddingTop: 10,
+                  backgroundColor: 'rgba(200,200,200,1)',
+                  width: 100,
+                  borderRadius: 15,
+                  paddingLeft: 40,
+                  paddingTop: 40,
                 }}>
-                <Text
-                  style={{
-                    fontWeight: '700',
-                    fontSize: 15,
-                    letterSpacing: 0.7,
-                    color: '#000',
-                  }}>
-                  Maison de beaute
-                </Text>
+                <FlagPlaceIcon />
+              </View>
+
+              <View
+                style={{
+                  flex: 1,
+                  paddingHorizontal: 10,
+                }}>
                 <View
                   style={{
                     display: 'flex',
-                    flexDirection: 'row',
+                    flexDirection: 'column',
                     flexWrap: 'nowrap',
                     justifyContent: 'flex-start',
-                    gap: 10,
+                    gap: 6,
+                    paddingTop: 10,
                   }}>
                   <Text
-                    style={{fontWeight: '600', fontSize: 15, color: '#000'}}>
-                    5.0
+                    style={{
+                      fontWeight: '700',
+                      fontSize: 15,
+                      letterSpacing: 0.7,
+                      color: '#000',
+                    }}>
+                    Maison de beaute
                   </Text>
+                  <View
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      flexWrap: 'nowrap',
+                      justifyContent: 'flex-start',
+                      gap: 10,
+                    }}>
+                    <Text
+                      style={{fontWeight: '600', fontSize: 15, color: '#000'}}>
+                      5.0
+                    </Text>
+                    <Text
+                      style={{
+                        fontWeight: '600',
+                        fontSize: 15,
+                        color: '#841584',
+                      }}>
+                      ( 450 avis )
+                    </Text>
+                  </View>
                   <Text
-                    style={{fontWeight: '600', fontSize: 15, color: '#841584'}}>
-                    ( 450 avis )
+                    style={{
+                      fontWeight: '600',
+                      fontSize: 14,
+                      color: '#000',
+                      opacity: 0.8,
+                    }}>
+                    Brzzaville, Congo , Boulevard Denis
                   </Text>
                 </View>
-                <Text
-                  style={{
-                    fontWeight: '600',
-                    fontSize: 14,
-                    color: '#000',
-                    opacity: 0.8,
-                  }}>
-                  Brzzaville, Congo , Boulevard Denis
-                </Text>
               </View>
             </View>
-          </View>
+          </Pressable>
 
-          <View
-            style={{
-              borderRadius: 15,
-              padding: 10,
-              display: 'flex',
-              flexDirection: 'row',
-              flexWrap: 'nowrap',
-              justifyContent: 'flex-start',
-              backgroundColor: '#fff',
-              width: 300,
-              marginRight: 10,
-            }}>
+          <Pressable onPress={() => navigation.navigate('espace_etab')}>
             <View
               style={{
-                backgroundColor: 'rgba(200,200,200,1)',
-                width: 100,
                 borderRadius: 15,
-                paddingLeft: 40,
-                paddingTop: 40,
-              }}>
-              <FlagPlaceIcon />
-            </View>
-
-            <View
-              style={{
-                flex: 1,
-                paddingHorizontal: 10,
+                padding: 10,
+                display: 'flex',
+                flexDirection: 'row',
+                flexWrap: 'nowrap',
+                justifyContent: 'flex-start',
+                backgroundColor: '#fff',
+                width: 300,
+                marginRight: 10,
               }}>
               <View
                 style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  flexWrap: 'nowrap',
-                  justifyContent: 'flex-start',
-                  gap: 6,
-                  paddingTop: 10,
+                  backgroundColor: 'rgba(200,200,200,1)',
+                  width: 100,
+                  borderRadius: 15,
+                  paddingLeft: 40,
+                  paddingTop: 40,
                 }}>
-                <Text
-                  style={{
-                    fontWeight: '700',
-                    fontSize: 15,
-                    letterSpacing: 0.7,
-                    color: '#000',
-                  }}>
-                  Maison de beaute
-                </Text>
+                <FlagPlaceIcon />
+              </View>
+
+              <View
+                style={{
+                  flex: 1,
+                  paddingHorizontal: 10,
+                }}>
                 <View
                   style={{
                     display: 'flex',
-                    flexDirection: 'row',
+                    flexDirection: 'column',
                     flexWrap: 'nowrap',
                     justifyContent: 'flex-start',
-                    gap: 10,
+                    gap: 6,
+                    paddingTop: 10,
                   }}>
                   <Text
-                    style={{fontWeight: '600', fontSize: 15, color: '#000'}}>
-                    5.0
+                    style={{
+                      fontWeight: '700',
+                      fontSize: 15,
+                      letterSpacing: 0.7,
+                      color: '#000',
+                    }}>
+                    Maison de beaute
                   </Text>
+                  <View
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      flexWrap: 'nowrap',
+                      justifyContent: 'flex-start',
+                      gap: 10,
+                    }}>
+                    <Text
+                      style={{fontWeight: '600', fontSize: 15, color: '#000'}}>
+                      5.0
+                    </Text>
+                    <Text
+                      style={{
+                        fontWeight: '600',
+                        fontSize: 15,
+                        color: '#841584',
+                      }}>
+                      ( 450 avis )
+                    </Text>
+                  </View>
                   <Text
-                    style={{fontWeight: '600', fontSize: 15, color: '#841584'}}>
-                    ( 450 avis )
+                    style={{
+                      fontWeight: '600',
+                      fontSize: 14,
+                      color: '#000',
+                      opacity: 0.8,
+                    }}>
+                    Brzzaville, Congo , Boulevard Denis
                   </Text>
                 </View>
-                <Text
-                  style={{
-                    fontWeight: '600',
-                    fontSize: 14,
-                    color: '#000',
-                    opacity: 0.8,
-                  }}>
-                  Brzzaville, Congo , Boulevard Denis
-                </Text>
               </View>
             </View>
-          </View>
+          </Pressable>
 
-          <View
-            style={{
-              borderRadius: 15,
-              padding: 10,
-              display: 'flex',
-              flexDirection: 'row',
-              flexWrap: 'nowrap',
-              justifyContent: 'flex-start',
-              backgroundColor: '#fff',
-              width: 300,
-              marginRight: 10,
-            }}>
+          <Pressable onPress={() => navigation.navigate('espace_etab')}>
             <View
               style={{
-                backgroundColor: 'rgba(200,200,200,1)',
-                width: 100,
                 borderRadius: 15,
-                paddingLeft: 40,
-                paddingTop: 40,
-              }}>
-              <FlagPlaceIcon />
-            </View>
-
-            <View
-              style={{
-                flex: 1,
-                paddingHorizontal: 10,
+                padding: 10,
+                display: 'flex',
+                flexDirection: 'row',
+                flexWrap: 'nowrap',
+                justifyContent: 'flex-start',
+                backgroundColor: '#fff',
+                width: 300,
+                marginRight: 10,
               }}>
               <View
                 style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  flexWrap: 'nowrap',
-                  justifyContent: 'flex-start',
-                  gap: 6,
-                  paddingTop: 10,
+                  backgroundColor: 'rgba(200,200,200,1)',
+                  width: 100,
+                  borderRadius: 15,
+                  paddingLeft: 40,
+                  paddingTop: 40,
                 }}>
-                <Text
-                  style={{
-                    fontWeight: '700',
-                    fontSize: 15,
-                    letterSpacing: 0.7,
-                    color: '#000',
-                  }}>
-                  Maison de beaute
-                </Text>
+                <FlagPlaceIcon />
+              </View>
+
+              <View
+                style={{
+                  flex: 1,
+                  paddingHorizontal: 10,
+                }}>
                 <View
                   style={{
                     display: 'flex',
-                    flexDirection: 'row',
+                    flexDirection: 'column',
                     flexWrap: 'nowrap',
                     justifyContent: 'flex-start',
-                    gap: 10,
+                    gap: 6,
+                    paddingTop: 10,
                   }}>
                   <Text
-                    style={{fontWeight: '600', fontSize: 15, color: '#000'}}>
-                    5.0
+                    style={{
+                      fontWeight: '700',
+                      fontSize: 15,
+                      letterSpacing: 0.7,
+                      color: '#000',
+                    }}>
+                    Maison de beaute
                   </Text>
+                  <View
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      flexWrap: 'nowrap',
+                      justifyContent: 'flex-start',
+                      gap: 10,
+                    }}>
+                    <Text
+                      style={{fontWeight: '600', fontSize: 15, color: '#000'}}>
+                      5.0
+                    </Text>
+                    <Text
+                      style={{
+                        fontWeight: '600',
+                        fontSize: 15,
+                        color: '#841584',
+                      }}>
+                      ( 450 avis )
+                    </Text>
+                  </View>
                   <Text
-                    style={{fontWeight: '600', fontSize: 15, color: '#841584'}}>
-                    ( 450 avis )
+                    style={{
+                      fontWeight: '600',
+                      fontSize: 14,
+                      color: '#000',
+                      opacity: 0.8,
+                    }}>
+                    Brzzaville, Congo , Boulevard Denis
                   </Text>
                 </View>
-                <Text
-                  style={{
-                    fontWeight: '600',
-                    fontSize: 14,
-                    color: '#000',
-                    opacity: 0.8,
-                  }}>
-                  Brzzaville, Congo , Boulevard Denis
-                </Text>
               </View>
             </View>
-          </View>
+          </Pressable>
 
-          <View
-            style={{
-              borderRadius: 15,
-              padding: 10,
-              display: 'flex',
-              flexDirection: 'row',
-              flexWrap: 'nowrap',
-              justifyContent: 'flex-start',
-              backgroundColor: '#fff',
-              width: 300,
-              marginRight: 10,
-            }}>
+          <Pressable onPress={() => navigation.navigate('espace_etab')}>
             <View
               style={{
-                backgroundColor: 'rgba(200,200,200,1)',
-                width: 100,
                 borderRadius: 15,
-                paddingLeft: 40,
-                paddingTop: 40,
-              }}>
-              <FlagPlaceIcon />
-            </View>
-
-            <View
-              style={{
-                flex: 1,
-                paddingHorizontal: 10,
+                padding: 10,
+                display: 'flex',
+                flexDirection: 'row',
+                flexWrap: 'nowrap',
+                justifyContent: 'flex-start',
+                backgroundColor: '#fff',
+                width: 300,
+                marginRight: 10,
               }}>
               <View
                 style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  flexWrap: 'nowrap',
-                  justifyContent: 'flex-start',
-                  gap: 6,
-                  paddingTop: 10,
+                  backgroundColor: 'rgba(200,200,200,1)',
+                  width: 100,
+                  borderRadius: 15,
+                  paddingLeft: 40,
+                  paddingTop: 40,
                 }}>
-                <Text
-                  style={{
-                    fontWeight: '700',
-                    fontSize: 15,
-                    letterSpacing: 0.7,
-                    color: '#000',
-                  }}>
-                  Maison de beaute
-                </Text>
+                <FlagPlaceIcon />
+              </View>
+
+              <View
+                style={{
+                  flex: 1,
+                  paddingHorizontal: 10,
+                }}>
                 <View
                   style={{
                     display: 'flex',
-                    flexDirection: 'row',
+                    flexDirection: 'column',
                     flexWrap: 'nowrap',
                     justifyContent: 'flex-start',
-                    gap: 10,
+                    gap: 6,
+                    paddingTop: 10,
                   }}>
                   <Text
-                    style={{fontWeight: '600', fontSize: 15, color: '#000'}}>
-                    5.0
+                    style={{
+                      fontWeight: '700',
+                      fontSize: 15,
+                      letterSpacing: 0.7,
+                      color: '#000',
+                    }}>
+                    Maison de beaute
                   </Text>
+                  <View
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      flexWrap: 'nowrap',
+                      justifyContent: 'flex-start',
+                      gap: 10,
+                    }}>
+                    <Text
+                      style={{fontWeight: '600', fontSize: 15, color: '#000'}}>
+                      5.0
+                    </Text>
+                    <Text
+                      style={{
+                        fontWeight: '600',
+                        fontSize: 15,
+                        color: '#841584',
+                      }}>
+                      ( 450 avis )
+                    </Text>
+                  </View>
                   <Text
-                    style={{fontWeight: '600', fontSize: 15, color: '#841584'}}>
-                    ( 450 avis )
+                    style={{
+                      fontWeight: '600',
+                      fontSize: 14,
+                      color: '#000',
+                      opacity: 0.8,
+                    }}>
+                    Brzzaville, Congo , Boulevard Denis
                   </Text>
                 </View>
-                <Text
-                  style={{
-                    fontWeight: '600',
-                    fontSize: 14,
-                    color: '#000',
-                    opacity: 0.8,
-                  }}>
-                  Brzzaville, Congo , Boulevard Denis
-                </Text>
               </View>
             </View>
-          </View>
+          </Pressable>
         </ScrollView>
       </View>
     </SafeAreaView>

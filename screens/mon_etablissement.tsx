@@ -14,6 +14,9 @@ import EditIcon from '../components/Edit';
 import CloseIcon from '../components/close';
 
 export default function MonEtablissement({navigation}: {navigation: any}) {
+
+  console.log( navigation);
+  
   return (
     <View>
       <SafeAreaView
@@ -30,7 +33,7 @@ export default function MonEtablissement({navigation}: {navigation: any}) {
             paddingVertical: 15,
             paddingHorizontal: 10,
           }}>
-          <Pressable onPress={() => navigation.navigate('main')}>
+          <Pressable onPress={() => navigation.goBack()}>
             <ArrowLeftIcon />
           </Pressable>
           <Text style={{color: '#000', fontSize: 18, fontWeight: '700'}}>

@@ -15,9 +15,10 @@ import SearchIcon from '../components/search';
 import FlagPlaceIcon from '../components/flag';
 import {useNavigation} from '@react-navigation/native';
 
-var LoadResultatRecherche = () => {
+var LoadResultatRecherche = ({navigation}:{navigation:any}) => {
   return (
-    <View
+   <Pressable onPress={() => navigation.navigate('espace_etab')}>
+     <View
       style={{
         borderRadius: 15,
         padding: 10,
@@ -104,6 +105,7 @@ var LoadResultatRecherche = () => {
         </View>
       </View>
     </View>
+   </Pressable>
   );
 };
 // ResultatRechercheScreen
@@ -180,7 +182,7 @@ export default function ResultatRechercheScreen({
               marginBottom: 40,
             }}>
             {[1, 1, 1, 1, 1, 11, 1, 1, 1, 1, 11, 1].map((prop, key) => {
-              return <LoadResultatRecherche key={key} />;
+              return <LoadResultatRecherche key={key} navigation={navigation} />;
             })}
           </View>
         </ScrollView>
