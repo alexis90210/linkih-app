@@ -13,7 +13,7 @@ import {
 import ArrowLeftIcon from '../components/ArrowLeft';
 import SearchIcon from '../components/search';
 import FlagPlaceIcon from '../components/flag';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 
 var LoadResultatRecherche = () => {
   return (
@@ -108,15 +108,13 @@ var LoadResultatRecherche = () => {
 };
 // ResultatRechercheScreen
 export default function ResultatRechercheScreen({
-  navigation
+  navigation,
 }: {
   navigation: any;
 }) {
-
-  var title  = "Ma recherche";
+  var title = 'Ma recherche';
 
   return (
-    
     <>
       <SafeAreaView
         style={{
@@ -181,7 +179,7 @@ export default function ResultatRechercheScreen({
               marginTop: 15,
               marginBottom: 40,
             }}>
-            {[1,1,1,1,1,11,1,1,1,1,11,1].map((prop, key) => {
+            {[1, 1, 1, 1, 1, 11, 1, 1, 1, 1, 11, 1].map((prop, key) => {
               return <LoadResultatRecherche key={key} />;
             })}
           </View>
