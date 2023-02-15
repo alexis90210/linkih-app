@@ -43,7 +43,7 @@ export default function InscriptionClientScreen({
               Identifiant
             </Text>
             <View style={{backgroundColor: '#fff', paddingLeft: 20}}>
-              <TextInput placeholder="Identifiant ..."></TextInput>
+              <TextInput style={{color:'#000', fontWeight:'500'}}  placeholderTextColor={'rgba(100,100,100,.7)'} placeholder="Identifiant ..."></TextInput>
             </View>
           </View>
 
@@ -59,7 +59,7 @@ export default function InscriptionClientScreen({
               Mot de passe
             </Text>
             <View style={{backgroundColor: '#fff', paddingLeft: 20}}>
-              <TextInput placeholder="Mot de passe ..."></TextInput>
+              <TextInput  style={{color:'#000', fontWeight:'500'}}  placeholderTextColor={'rgba(100,100,100,.7)'} placeholder="Mot de passe ..."></TextInput>
             </View>
           </View>
 
@@ -75,7 +75,7 @@ export default function InscriptionClientScreen({
               Nom 
             </Text>
             <View style={{backgroundColor: '#fff', paddingLeft: 20}}>
-              <TextInput placeholder="Nom  ..."></TextInput>
+              <TextInput style={{color:'#000', fontWeight:'500'}}  placeholderTextColor={'rgba(100,100,100,.7)'} placeholder="Nom  ..."></TextInput>
             </View>
           </View>
 
@@ -91,7 +91,7 @@ export default function InscriptionClientScreen({
               Prenom 
             </Text>
             <View style={{backgroundColor: '#fff', paddingLeft: 20}}>
-              <TextInput placeholder="Nom  ..."></TextInput>
+              <TextInput style={{color:'#000', fontWeight:'500'}}  placeholderTextColor={'rgba(100,100,100,.7)'} placeholder="Prenom  ..."></TextInput>
             </View>
           </View>
 
@@ -107,7 +107,7 @@ export default function InscriptionClientScreen({
               Email 
             </Text>
             <View style={{backgroundColor: '#fff', paddingLeft: 20}}>
-              <TextInput placeholder="Email  ..."></TextInput>
+              <TextInput style={{color:'#000', fontWeight:'500'}}  placeholderTextColor={'rgba(100,100,100,.7)'} placeholder="Email  ..."></TextInput>
             </View>
           </View>
 
@@ -123,7 +123,7 @@ export default function InscriptionClientScreen({
               Mobile 
             </Text>
             <View style={{backgroundColor: '#fff', paddingLeft: 20}}>
-              <TextInput placeholder="Mobile  ..."></TextInput>
+              <TextInput style={{color:'#000', fontWeight:'500'}}  placeholderTextColor={'rgba(100,100,100,.7)'} placeholder="Mobile  ..."></TextInput>
             </View>
           </View>
 
@@ -141,12 +141,13 @@ export default function InscriptionClientScreen({
                 backgroundColor: '#7B4C7A',
                 borderRadius: 30,
                 marginVertical: 30,
+                height:45
               }}>
               <Pressable
                 android_ripple={{color: '7B4C7A'}}
                 style={{
                   paddingHorizontal: 10,
-                  width: '100%',
+                  width: '100%',                  
                 }}
                 onPress={() =>
                   navigation.navigate('inscription_proprietaire_3')

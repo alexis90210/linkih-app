@@ -16,6 +16,7 @@ import SearchIcon from '../components/search';
 import CloseIcon from '../components/close';
 import MenuBarIcon from '../components/menu_bar';
 import FlagPlaceIcon from '../components/flag';
+import GpsIcon from '../components/gps';
 
 const getUserLocation = () => {
   var location = null;
@@ -116,7 +117,7 @@ export default function Map({navigation}: {navigation: any}) {
                 padding: 10,
                 backgroundColor: '#7B4C7A',
               }}>
-              <CloseIcon color={'#fff'} />
+              <GpsIcon color={'#fff'} />
             </View>
           </View>
 

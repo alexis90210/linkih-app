@@ -10,6 +10,7 @@ import {
   PixelRatio,
   TextInput,
 } from 'react-native';
+import ShopIcon from '../components/shop';
 
 // SplashScreen
 export default function SplashScreen({navigation}: {navigation: any}) {
@@ -28,10 +29,15 @@ export default function SplashScreen({navigation}: {navigation: any}) {
               flexDirection: 'column',
               justifyContent: 'center',
               alignItems: 'center',
-              marginTop: '60%',
+              marginTop: '55%',
             }}>
+
+
+                  <ShopIcon color={'#7B4C7A'}/>
+
             <Text
               style={{
+                marginTop:30,
                 textAlign: 'center',
                 color: '#7B4C7A',
                 fontWeight: '600',
@@ -76,7 +82,7 @@ export default function SplashScreen({navigation}: {navigation: any}) {
                     padding: 10,
                     paddingHorizontal: 20,
                     fontSize: 14,
-                    width: PixelRatio.getPixelSizeForLayoutSize(70),
+                    width: 150,
                   }}>
                   EXPLOREZ
                 </Text>

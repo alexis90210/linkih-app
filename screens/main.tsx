@@ -21,6 +21,9 @@ import ShopIcon from '../components/shop';
 import LogoutIcon from '../components/logout';
 import AccountIcon from '../components/account';
 import SearchIcon from '../components/search';
+import FlagPlaceIcon from '../components/flag';
+import LanguageIcon from '../components/language';
+import WorldIcon from '../components/world';
 
 function Main({navigation}: {navigation: any}) {
   const drawer = useRef<DrawerLayoutAndroid>(null);
@@ -59,7 +62,7 @@ function Main({navigation}: {navigation: any}) {
           onPress={() => {
             drawer.current?.closeDrawer(), navigation.navigate('compte');
           }}>
-          <AccountIcon />
+          <AccountIcon color={"#E2C6BB"} />
           <Text style={{fontSize: 16, marginVertical: 10, color: '#E2C6BB'}}>
             Mon compte
           </Text>
@@ -77,7 +80,7 @@ function Main({navigation}: {navigation: any}) {
           onPress={() => {
             drawer.current?.closeDrawer(), navigation.navigate('espace_etab');
           }}>
-          <ShopIcon />
+          <ShopIcon color={'#E2C6BB'} />
           <Text style={{fontSize: 16, marginVertical: 10, color: '#E2C6BB'}}>
             Mon etablissement
           </Text>
@@ -104,8 +107,7 @@ function Main({navigation}: {navigation: any}) {
 
   // countries
   const [modalVisibleCountries, setModalVisibleCountries] = useState(false);
-  const [currentCountry, setCurrentCountry] = useState({name:''});
-
+  const [currentCountry, setCurrentCountry] = useState({name: ''});
 
   const countries = [
     {name: 'Afghanistan', flag: 'https://www.countryflags.io/AF/flat/64.png'},
@@ -122,29 +124,38 @@ function Main({navigation}: {navigation: any}) {
     setModalVisibleCountries(false);
   };
 
-  const selectCountry = ( item: any) => {
-    setCurrentCountry(item)
-    handleCloseModalCountries()    
-    
-  }
+  const selectCountry = (item: any) => {
+    setCurrentCountry(item);
+    handleCloseModalCountries();
+  };
 
   const CountryList = () => {
     const renderItem = ({item}: {item: any}) => (
-    <Pressable onPress={() => selectCountry(item)}>
-      <View
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          marginVertical: 10,
-        }}>
-        <Image
-          source={{uri: item.flag}}
-          style={{width: 30, height: 20, marginRight: 10}}
-        />
-        <Text>{item.name}</Text>
+      <View>
+        <Pressable onPress={() => selectCountry(item)}>
+          <View
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginVertical: 10,
+              paddingHorizontal: 18,
+              gap: 10,
+            }}>
+            <WorldIcon />
+            <Text style={{color: 'rgba(100,100,100,1)'}}>{item.name}</Text>
+          </View>
+        </Pressable>
+        <View style={{height: 1, overflow: 'hidden', paddingHorizontal: 10}}>
+          <View
+            style={{
+              height: 1,
+              borderWidth: 1,
+              borderColor: '#84158490',
+              borderStyle: 'dashed',
+            }}></View>
+        </View>
       </View>
-
-      </Pressable>
     );
 
     return (
@@ -156,65 +167,135 @@ function Main({navigation}: {navigation: any}) {
     );
   };
 
+  // Categories
+  const [modalVisibleCategories, setModalVisibleCategories] = useState(false);
+  const [currentCategorie, setCurrentCategorie] = useState({name: ''});
 
-  // Languages
-  const [modalVisibleLanguages, setModalVisibleLanguages] = useState(false);
-  const [currentLanguage, setCurrentLanguage] = useState({name:''});
-
-  const langages = [
-    {name: 'Francais', flag: 'https://www.countryflags.io/AF/flat/64.png'},
-    {name: 'Anglais', flag: 'https://www.countryflags.io/AL/flat/64.png'},
-    {name: 'Espagnol', flag: 'https://www.countryflags.io/DZ/flat/64.png'},
-    // add more langages here
+  const categories = [
+    {name: 'Categorie 1', flag: 'https://www.countryflags.io/AF/flat/64.png'},
+    {name: 'Categorie 2', flag: 'https://www.countryflags.io/AL/flat/64.png'},
+    {name: 'Categorie 3', flag: 'https://www.countryflags.io/DZ/flat/64.png'},
+    // add more categories here
   ];
 
-  const handleOpenModalLanguages = () => {
-    setModalVisibleLanguages(true);
+  const handleOpenModalCategories = () => {
+    setModalVisibleCategories(true);
   };
 
-  const handleCloseModalLanguages = () => {
-    setModalVisibleLanguages(false);
+  const handleCloseModalCategories = () => {
+    setModalVisibleCategories(false);
   };
 
-  const selectLanguage = ( item: any) => {
-    setCurrentLanguage(item)
-    handleCloseModalLanguages()    
-    
-  }
+  const selectCategorie = (item: any) => {
+    setCurrentCategorie(item);
+    handleCloseModalCategories();
+  };
 
-  const LanguageList = () => {
+  const CategorieList = () => {
     const renderItem = ({item}: {item: any}) => (
-    <Pressable onPress={() => selectLanguage(item)}>
-      <View
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          marginVertical: 10,
-        }}>
-        <Image
-          source={{uri: item.flag}}
-          style={{width: 30, height: 20, marginRight: 10}}
-        />
-        <Text>{item.name}</Text>
-      </View>
+      <View>
+        <Pressable onPress={() => selectCategorie(item)}>
+          <View
+            style={{
+              display:'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginVertical: 10,
+              gap:10
+            }}>
+            <ShopIcon color={'#841584'}  />
+            <Text style={{color: 'rgba(100,100,100,1)'}}>{item.name}</Text>
+          </View>
+        </Pressable>
 
-      </Pressable>
+        <View style={{height: 1, overflow: 'hidden', paddingHorizontal: 10}}>
+          <View
+            style={{
+              height: 1,
+              borderWidth: 1,
+              borderColor: '#84158490',
+              borderStyle: 'dashed',
+            }}></View>
+        </View>
+      </View>
     );
 
     return (
       <FlatList
-        data={langages}
+        data={categories}
         renderItem={renderItem}
         keyExtractor={(item, index) => index.toString()}
       />
     );
   };
 
+  // etablissement
+   const [modalVisibleEtablissement, setModalVisibleEtablissement] = useState(false);
+   const [currentEtablissement, setCurrentEtablissement] = useState({name: ''});
+ 
+   const etablissements = [
+     {name: 'Etablissement 1', flag: 'https://www.countryflags.io/AF/flat/64.png'},
+     {name: 'Etablissement 2', flag: 'https://www.countryflags.io/AL/flat/64.png'},
+     {name: 'Etablissement 3', flag: 'https://www.countryflags.io/DZ/flat/64.png'},
+     // add more categories here
+   ];
+ 
+   const handleOpenModalEtablissement = () => {
+     setModalVisibleEtablissement(true);
+   };
+ 
+   const handleCloseModalEtablissement = () => {
+     setModalVisibleEtablissement(false);
+   };
+ 
+   const selectEtablissement = (item: any) => {
+     setCurrentEtablissement(item);
+     handleCloseModalEtablissement();
+   };
+ 
+   const EtablissementList = () => {
+     const renderItem = ({item}: {item: any}) => (
+       <View>
+         <Pressable onPress={() => selectEtablissement(item)}>
+           <View
+             style={{
+               display:'flex',
+               flexDirection: 'row',
+               alignItems: 'center',
+               marginVertical: 10,
+               gap:10
+             }}>
+             <ShopIcon color={'#841584'} />
+             <Text style={{color: 'rgba(100,100,100,1)'}}>{item.name}</Text>
+           </View>
+         </Pressable>
+ 
+         <View style={{height: 1, overflow: 'hidden', paddingHorizontal: 10}}>
+           <View
+             style={{
+               height: 1,
+               borderWidth: 1,
+               borderColor: '#84158490',
+               borderStyle: 'dashed',
+             }}></View>
+         </View>
+       </View>
+     );
+ 
+     return (
+       <FlatList
+         data={etablissements}
+         renderItem={renderItem}
+         keyExtractor={(item, index) => index.toString()}
+       />
+     );
+   };
+
   return (
     <DrawerLayoutAndroid
       ref={drawer}
       drawerWidth={300}
-      drawerPosition={drawerPosition}      
+      drawerPosition={drawerPosition}
       renderNavigationView={navigationView}>
       <View>
         <SafeAreaView
@@ -231,10 +312,8 @@ function Main({navigation}: {navigation: any}) {
             <Image
               source={require('../assets/images/banner.jpeg')}
               style={{
-                height: 200,
+                height: 300,
                 width: '100%',
-                borderBottomLeftRadius: 40,
-                borderBottomRightRadius: 40,
               }}
             />
 
@@ -254,16 +333,15 @@ function Main({navigation}: {navigation: any}) {
             {/* Welcome text */}
             <Text
               style={{
-                fontSize: 15,
+                fontSize: 20,
                 textAlign: 'center',
-                color: 'rgba(0,0,0,.4)',
-                fontWeight: '600',
+                color: '#000',
+                fontWeight: '700',
                 paddingHorizontal: 50,
                 paddingVertical: 20,
               }}>
               Decouvrez et reservez le salon qui vous correpond !
             </Text>
-
             <View style={styles.container}>
               <View style={styles.tabsContainer}>
                 <TouchableOpacity
@@ -312,8 +390,10 @@ function Main({navigation}: {navigation: any}) {
                         Pays/Region
                       </Text>
                       <TextInput
-                       onPressIn={handleOpenModalCountries}
-                       value={currentCountry.name}
+                        onPressIn={handleOpenModalCountries}
+                        value={currentCountry.name}
+                        placeholderTextColor={'rgba(100,100,100,.7)'}
+                        placeholder="choisir ..."
                         style={{
                           backgroundColor: 'transparent',
                           borderBottomWidth: 1,
@@ -321,7 +401,7 @@ function Main({navigation}: {navigation: any}) {
                           color: '#7B4C7A',
                           width: '100%',
                           fontWeight: '600',
-                          padding: 0,
+                          padding: 10,
                           marginTop: 10,
                         }}></TextInput>
                     </View>
@@ -345,8 +425,10 @@ function Main({navigation}: {navigation: any}) {
                         Categorie
                       </Text>
                       <TextInput
-                      onPressIn={handleOpenModalLanguages}
-                      value={currentLanguage.name}
+                        onPressIn={handleOpenModalCategories}
+                        value={currentCategorie.name}
+                        placeholderTextColor={'rgba(100,100,100,.7)'}
+                        placeholder="choisir ..."
                         style={{
                           backgroundColor: 'transparent',
                           borderBottomWidth: 1,
@@ -354,7 +436,7 @@ function Main({navigation}: {navigation: any}) {
                           color: '#7B4C7A',
                           width: '100%',
                           fontWeight: '600',
-                          padding: 0,
+                          padding: 10,
                           marginTop: 10,
                         }}></TextInput>
                     </View>
@@ -418,6 +500,10 @@ function Main({navigation}: {navigation: any}) {
                         Etablissement
                       </Text>
                       <TextInput
+                      onPressIn={handleOpenModalEtablissement}
+                      value={currentEtablissement.name}
+                        placeholderTextColor={'rgba(100,100,100,.7)'}
+                        placeholder="choisir ..."
                         style={{
                           backgroundColor: 'transparent',
                           borderBottomWidth: 1,
@@ -425,7 +511,7 @@ function Main({navigation}: {navigation: any}) {
                           color: '#7B4C7A',
                           width: '100%',
                           fontWeight: '600',
-                          padding: 0,
+                          padding: 10,
                           marginTop: 10,
                         }}></TextInput>
                     </View>
@@ -464,137 +550,209 @@ function Main({navigation}: {navigation: any}) {
               </View>
             </View>
 
-             {/* MODAL PAYS */}
+            {/* MODAL PAYS */}
 
-             <Modal visible={modalVisibleCountries} transparent={true}>
+            <Modal visible={modalVisibleCountries} transparent={true}>
+              <View
+                style={{
+                  flex: 1,
+                  backgroundColor: 'rgba(0, 0, 0, 0.3)',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
                 <View
                   style={{
-                    flex: 1,
-                    backgroundColor: 'rgba(0, 0, 0, 0.3)',
-                    justifyContent: 'center',
-                    alignItems: 'center',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    backgroundColor: '#fff',
+                    width: '90%',
+                    borderRadius: 15,
+                    paddingHorizontal:10
                   }}>
-                  <View
+                  <Text
                     style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      backgroundColor: '#fff',
-                      width: '90%',
-                      borderRadius: 15,
+                      padding: 15,
+                      fontSize: 15,
+                      paddingTop:30,
+                      paddingBottom:20,
+                      fontWeight: 'bold',
+                      color: 'rgba(0,0,0,.6)',
                     }}>
-                    <Text
-                      style={{
-                        padding: 15,
-                        fontSize: 15,
-                        fontWeight: 'bold',
-                        color: 'rgba(0,0,0,.6)',
-                      }}>
-                      Selectionnez un pays/ region
-                    </Text>
-                    <View style={{width: '100%', paddingHorizontal: 10}}>
-                      <View
-                        style={[
-                          {
-                            width: '100%',
-                            height: 45,
-                            paddingHorizontal: 20,
-                            backgroundColor: 'rgba(255,255,255,.74)',
-                            borderRadius: 50,
-                            display: 'flex',
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            gap: 10,
-                          },
-                        ]}>
-                        <SearchIcon color={'#841584'} />
-                        <TextInput
-                          placeholder="Recherchez..."
-                          style={{
-                            backgroundColor: 'rgba(255,255,255,.74)',
-                            borderRadius: 50,
-                            flex: 1,
-                          }}></TextInput>
-                      </View>
+                    Selectionnez un pays/ region
+                  </Text>
+                  <View style={{width: '100%', paddingHorizontal: 10}}>
+                    <View
+                      style={[
+                        {
+                          width: '100%',
+                          height: 45,
+                          paddingHorizontal: 20,
+                          backgroundColor: 'rgba(100,100,100,.2)',
+                          borderRadius: 50,
+                          display: 'flex',
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          gap: 10,
+                          
+                          marginBottom:20
+                        },
+                      ]}>
+                      <SearchIcon color={'#841584'} />
+                      <TextInput
+                       placeholderTextColor={'rgba(100,100,100,.7)'}
+                        placeholder="Recherchez..."
+                        style={{
+                          backgroundColor: 'transparent',
+                          borderRadius: 50,
+                          flex: 1,
+                        }}></TextInput>
+                    </View>
 
-                      <CountryList/>
+                    <CountryList />
 
-                      <View style={{padding: 15}}>
-
-                        <Pressable onPress={handleCloseModalCountries}>
-                          <Text>Close</Text>
-                        </Pressable>
-                      </View>
+                    <View style={{padding: 15}}>
+                      <Pressable onPress={handleCloseModalCountries}>
+                        <Text style={{color:'rgba(100,100,100,.8)', marginVertical:10}}>Quitter</Text>
+                      </Pressable>
                     </View>
                   </View>
                 </View>
-              </Modal>
+              </View>
+            </Modal>
 
-              {/* MODAL LANGAGE */}
-              <Modal visible={modalVisibleLanguages} transparent={true}>
+            {/* MODAL LANGAGE */}
+            <Modal visible={modalVisibleCategories} transparent={true}>
+              <View
+                style={{
+                  flex: 1,
+                  backgroundColor: 'rgba(0, 0, 0, 0.3)',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
                 <View
                   style={{
-                    flex: 1,
-                    backgroundColor: 'rgba(0, 0, 0, 0.3)',
-                    justifyContent: 'center',
-                    alignItems: 'center',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    backgroundColor: '#fff',
+                    width: '90%',
+                    borderRadius: 15,
+                    padding:10
                   }}>
-                  <View
+                  <Text
                     style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      backgroundColor: '#fff',
-                      width: '90%',
-                      borderRadius: 15,
+                      padding: 15,
+                      fontSize: 15,
+                      fontWeight: 'bold',
+                      color: 'rgba(0,0,0,.6)',
                     }}>
-                    <Text
-                      style={{
-                        padding: 15,
-                        fontSize: 15,
-                        fontWeight: 'bold',
-                        color: 'rgba(0,0,0,.6)',
-                      }}>
-                      Selectionnez une langue
-                    </Text>
-                    <View style={{width: '100%', paddingHorizontal: 10}}>
-                      <View
-                        style={[
-                          {
-                            width: '100%',
-                            height: 45,
-                            paddingHorizontal: 20,
-                            backgroundColor: 'rgba(255,255,255,.74)',
-                            borderRadius: 50,
-                            display: 'flex',
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            gap: 10,
-                          },
-                        ]}>
-                        <SearchIcon color={'#841584'} />
-                        <TextInput
-                        
-                          placeholder="Recherchez..."
-                          style={{
-                            backgroundColor: 'rgba(255,255,255,.74)',
-                            borderRadius: 50,
-                            flex: 1,
-                          }}></TextInput>
-                      </View>
+                    Selectionnez une langue
+                  </Text>
+                  <View style={{width: '100%', paddingHorizontal: 10}}>
+                    <View
+                      style={[
+                        {
+                          width: '100%',
+                          height: 45,
+                          paddingHorizontal: 20,
+                          backgroundColor: 'rgba(100,100,100,.2)',
+                          borderRadius: 50,
+                          display: 'flex',
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          gap: 10,
+                          marginBottom:20
+                        },
+                      ]}>
+                      <SearchIcon color={'#841584'} />
+                      <TextInput
+                       placeholderTextColor={'rgba(100,100,100,.7)'}
+                        placeholder="Recherchez..."
+                        style={{
+                          backgroundColor: 'transparent',
+                          borderRadius: 50,
+                          flex: 1,
+                        }}></TextInput>
+                    </View>
 
-                      <LanguageList/>
+                    <CategorieList />
 
-                      <View style={{padding: 15}}>
-
-                        <Pressable onPress={handleCloseModalLanguages}>
-                          <Text>Close</Text>
-                        </Pressable>
-                      </View>
+                    <View style={{padding: 15, paddingVertical:30}}>
+                      <Pressable onPress={handleCloseModalCategories}>
+                        <Text style={{color:'rgba(100,100,100,.8)'}}>Quitter</Text>
+                      </Pressable>
                     </View>
                   </View>
                 </View>
-              </Modal>
+              </View>
+            </Modal>
+
+            {/* MODAL ETABLISSEMENT */}
+            <Modal visible={modalVisibleEtablissement} transparent={true}>
+              <View
+                style={{
+                  flex: 1,
+                  backgroundColor: 'rgba(0, 0, 0, 0.3)',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <View
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    backgroundColor: '#fff',
+                    width: '90%',
+                    borderRadius: 15,
+                    padding:10
+                  }}>
+                  <Text
+                    style={{
+                      padding: 15,
+                      fontSize: 15,
+                      fontWeight: 'bold',
+                      color: 'rgba(0,0,0,.6)',
+                    }}>
+                    Selectionnez un etablissement
+                  </Text>
+                  <View style={{width: '100%', paddingHorizontal: 10}}>
+                    <View
+                      style={[
+                        {
+                          width: '100%',
+                          height: 45,
+                          paddingHorizontal: 20,
+                          backgroundColor: 'rgba(100,100,100,.2)',
+                          borderRadius: 50,
+                          display: 'flex',
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          gap: 10,
+                          marginBottom:20
+                        },
+                      ]}>
+                      <SearchIcon color={'#841584'} />
+                      <TextInput
+                       placeholderTextColor={'rgba(100,100,100,.7)'}
+                        placeholder="Recherchez..."
+                        style={{
+                          backgroundColor: 'transparent',
+                          borderRadius: 50,
+                          flex: 1,
+                        }}></TextInput>
+                    </View>
+
+                    <EtablissementList />
+
+                    <View style={{padding: 15, paddingVertical:30}}>
+                      <Pressable onPress={handleCloseModalEtablissement}>
+                        <Text style={{color:'rgba(100,100,100,.8)'}}>Quitter</Text>
+                      </Pressable>
+                    </View>
+                  </View>
+                </View>
+              </View>
+            </Modal>
           </ScrollView>
-        </SafeAreaView>        
+        </SafeAreaView>
       </View>
     </DrawerLayoutAndroid>
   );

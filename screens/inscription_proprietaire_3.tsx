@@ -77,7 +77,7 @@ export default function InscriptionProprietaire3({navigation}: {navigation: any}
                     padding: 10,
                     paddingHorizontal: 20,
                     fontSize: 14,
-                    width: PixelRatio.getPixelSizeForLayoutSize(70),
+                    width: 150,
                   }}>
                   Commencez !
                 </Text>

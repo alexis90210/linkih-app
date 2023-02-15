@@ -29,7 +29,7 @@ const Stack = createNativeStackNavigator();
 
 export default function App(): JSX.Element {
 
-  const [initialRouteName, setInitialRouteName] = useState('main')
+  const [initialRouteName, setInitialRouteName] = useState('splash')
   
   return (
     <NavigationContainer>

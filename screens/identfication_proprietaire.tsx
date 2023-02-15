@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import {
   SafeAreaView,
@@ -11,6 +11,8 @@ import {
   TextInput,
 } from 'react-native';
 import ArrowLeftIcon from '../components/ArrowLeft';
+import EyeSlashIcon from '../components/eye_slash';
+import EyeIcon from '../components/eye';
 
 // IdentificationProprietaireScreen
 export default function IdentificationProprietaireScreen({
@@ -18,6 +20,13 @@ export default function IdentificationProprietaireScreen({
 }: {
   navigation: any;
 }) {
+
+  var [isVisible , setVisible] = useState(false)
+
+  const _setVisible = () => {
+   if ( isVisible )  setVisible(false);
+   if ( !isVisible )  setVisible(true);
+  }
   return (
     <>
       <SafeAreaView
@@ -66,6 +75,8 @@ export default function IdentificationProprietaireScreen({
                   Identifiant
                 </Text>
                 <TextInput
+                placeholderTextColor={'rgba(100,100,100,.7)'}
+                placeholder="Identifiant ..."
                   style={{
                     backgroundColor: 'transparent',
                     borderBottomWidth: 1,
@@ -73,7 +84,7 @@ export default function IdentificationProprietaireScreen({
                     color: '#7B4C7A',
                     width: '100%',
                     fontWeight: '600',
-                    padding:0
+                    padding:10
                   }}></TextInput>
               </View>
 
@@ -96,19 +107,27 @@ export default function IdentificationProprietaireScreen({
                   }}>
                   Password
                 </Text>
+                <View style={{display:'flex', flexDirection:'row', alignItems:'center', justifyContent:'flex-start', width:'100%' , flexWrap:'nowrap'}}>
                 <TextInput
                 textContentType='password'
                 keyboardType='default'
-                secureTextEntry={true} 
+                secureTextEntry={!isVisible} 
+                placeholderTextColor={'rgba(100,100,100,.7)'}
+                placeholder="Mot de Passe..."
                   style={{
                     backgroundColor: 'transparent',
                     borderBottomWidth: 1,
                     borderBottomColor: '#E2C6BB',
                     color: '#7B4C7A',
                     fontWeight: '600',
-                    width: '100%',
-                    padding:0
+                    width: '93%',
+                    padding:10
                   }}></TextInput>
+                  <Pressable style={{padding:15}} onPress={_setVisible}>
+                    { isVisible && <EyeSlashIcon/>}
+                    { !isVisible && <EyeIcon/>}
+                  </Pressable>
+                </View>
               </View>
 
 

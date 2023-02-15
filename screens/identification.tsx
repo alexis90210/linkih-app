@@ -10,6 +10,9 @@ import {
   PixelRatio,
   TextInput,
 } from 'react-native';
+import ShopIcon from '../components/shop';
+import AccountIcon from '../components/account';
+import EntrepreneurIcon from '../components/entrepreuneur';
 
 // IdentificationScreen
 export default function IdentificationScreen({navigation}: {navigation: any}) {
@@ -17,114 +20,150 @@ export default function IdentificationScreen({navigation}: {navigation: any}) {
     <>
       <SafeAreaView
         style={{
-          width: '100%',
-          height: '100%',
-          backgroundColor: '#f6f6f6f6',
+          flex:1,
+          justifyContent:'center',
+          alignContent:'center',
         }}>
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={{
-            backgroundColor: '#f6f6f6f6',
-          }}>
+
           <View
             style={{
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              alignItems: 'center',
-              marginTop: 40,
+              padding: 10,
+              width: '100%',
+              height: '100%',
+              display:'flex',
+              justifyContent:'center',
+              backgroundColor:'#f6f6f6f6'
             }}>
-            <Text
-              style={{
-                textAlign: 'left',
-                color: '#000',
-                fontWeight: 'bold',
-                fontSize: 25,
-                width: '90%',
-              }}>
-              S'identifier en tant que
-            </Text>
+      
+            <View>
+              <View style={{display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'center', marginVertical:40}}>
+                <Text style={{color:'#000', fontSize:16}}>Veuillez-vous identifier pour continuer</Text>
+              </View>
             <View
               style={{
-                borderRadius: 11,
-                padding: 10,
-                width: '100%',
-                marginTop: '10%',
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'center',
+                alignItems: 'center',
+                flexWrap: 'wrap',
+                gap: 40,
               }}>
-              <View
+
+              <Pressable
+                android_ripple={{color: '7B4C7A'}}
                 style={{
+                  borderRadius: 15,
+                  paddingHorizontal: 10,
+                  backgroundColor: '#fff',
+                  borderWidth: 1.6,
+                  borderColor: '#E2C6BB',
+                  padding: 18,
+                  width: 150,
+                  height: 100,
                   display: 'flex',
                   flexDirection: 'column',
-                  justifyContent: 'space-between',
-                  alignItems: 'flex-start',
-                  flexWrap: 'wrap',
-                  gap: 10,
-                }}>
-                <Pressable
-                  android_ripple={{color: '7B4C7A'}}
-                  style={{
-                    borderRadius: 15,
-                    paddingHorizontal: 10,
-                    backgroundColor: '#7B4C7A',
-                    borderWidth: 1,
-                    borderColor: '#7B4C7A',
-                    padding: 18,
-                    width: '100%',
-                    height: 60,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}
-                  onPress={() => navigation.navigate('identification_client')}>
-                  <View>
-                    <Text
-                      style={{
-                        textAlign: 'center',
-                        color: '#fff',
-                        fontWeight: 'normal',
-                        fontSize: 15,
-                        opacity: 0.85,
-                      }}>
-                      Client
-                    </Text>
-                  </View>
-                </Pressable>
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+                onPress={() => navigation.navigate('identification_client')}>
+                <View style={{display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',gap:10}}>
+                  <AccountIcon color={'#7B4C7A'}/>
+                  <Text
+                    style={{
+                      textAlign: 'center',
+                      color: '#7B4C7A',
+                      fontWeight: 'normal',
+                      fontSize: 15,
+                      opacity: 0.85,
+                    }}>
+                    Client
+                  </Text>
+                </View>
+              </Pressable>
 
-                <Pressable
-                  android_ripple={{color: '7B4C7A'}}
-                  style={{
-                    borderRadius: 15,
-                    paddingHorizontal: 10,
-                    backgroundColor: '#7B4C7A',
-                    borderWidth: 1,
-                    borderColor: '#7B4C7A',
-                    padding: 18,
-                    width: '100%',
-                    height: 60,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}
-                  onPress={() => navigation.navigate('identification_proprietaire')}>
-                  <View>
-                    <Text
-                      style={{
-                        textAlign: 'center',
-                        color: '#fff',
-                        fontWeight: 'normal',
-                        fontSize: 15,
-                        opacity: 0.85,
-                      }}>
-                      Societe / Auto-entrepreneur
-                    </Text>
-                  </View>
-                </Pressable>
-              </View>
+              <Pressable
+                android_ripple={{color: '7B4C7A'}}
+                style={{
+                  borderRadius: 15,
+                  paddingHorizontal: 10,
+                  backgroundColor: '#fff',
+                  borderWidth: 1.6,
+                  borderColor: '#E2C6BB',
+                  padding: 18,
+                  width: 150,
+                  height: 100,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+                onPress={() =>
+                  navigation.navigate('identification_proprietaire')
+                }>
+               <View style={{display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',gap:10}}>
+                  <ShopIcon color={'#7B4C7A'}/>
+                  <Text
+                    style={{
+                      textAlign: 'center',
+                      color: '#7B4C7A',
+                      fontWeight: 'normal',
+                      fontSize: 15,
+                      opacity: 0.85,
+                    }}>
+                    Societe
+                  </Text>
+                </View>
+              </Pressable>
+
+              <Pressable
+                android_ripple={{color: '7B4C7A'}}
+                style={{
+                  borderRadius: 15,
+                  paddingHorizontal: 10,
+                  backgroundColor: '#fff',
+                  borderWidth: 1.6,
+                  borderColor: '#E2C6BB',
+                  padding: 18,
+                  width: 150,
+                  height: 100,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+                onPress={() =>
+                  navigation.navigate('identification_proprietaire')
+                }>
+               <View style={{display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',gap:10}}>
+                  <EntrepreneurIcon color={'#7B4C7A'}/>
+                  <Text
+                    style={{
+                      textAlign: 'center',
+                      color: '#7B4C7A',
+                      fontWeight: 'normal',
+                      fontSize: 15,
+                      opacity: 0.85,
+                    }}>
+                    Auto-entrepreneur
+                  </Text>
+                </View>
+              </Pressable>
             </View>
+
+            </View>
+
           </View>
-        </ScrollView>
       </SafeAreaView>
     </>
   );

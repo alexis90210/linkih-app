@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 
 import {
   SafeAreaView,
@@ -10,6 +10,8 @@ import {
   PixelRatio,
   TextInput,
 } from 'react-native';
+import EyeSlashIcon from '../components/eye_slash';
+import EyeIcon from '../components/eye';
 
 // InscriptionProprietaireScreen1
 export default function InscriptionProprietaireScreen1({
@@ -17,6 +19,12 @@ export default function InscriptionProprietaireScreen1({
 }: {
   navigation: any;
 }) {
+  var [isVisible, setVisible] = useState(false);
+
+  const _setVisible = () => {
+    if (isVisible) setVisible(false);
+    if (!isVisible) setVisible(true);
+  };
   return (
     <>
       <SafeAreaView
@@ -42,7 +50,10 @@ export default function InscriptionProprietaireScreen1({
               Identifiant
             </Text>
             <View style={{backgroundColor: '#fff', paddingLeft: 20}}>
-              <TextInput placeholder="Identifiant ..."></TextInput>
+              <TextInput
+                style={{color:'#7B4C7A', fontWeight: '500'}}
+                placeholderTextColor={'rgba(100,100,100,.7)'}
+                placeholder="Identifiant ..."></TextInput>
             </View>
           </View>
 
@@ -57,8 +68,30 @@ export default function InscriptionProprietaireScreen1({
               }}>
               Mot de passe
             </Text>
-            <View style={{backgroundColor: '#fff', paddingLeft: 20}}>
-              <TextInput placeholder="Mot de passe ..."></TextInput>
+            <View
+              style={{
+                backgroundColor: '#fff',
+                paddingLeft: 20,
+                display: 'flex',
+                flexDirection: 'row',
+                width: '100%',
+              }}>
+              
+                <TextInput
+                  textContentType="password"
+                  keyboardType="default"
+                  secureTextEntry={!isVisible}
+                  style={{color: '#7B4C7A', width: '90%', fontWeight: '500'}}
+                  placeholderTextColor={'rgba(100,100,100,.7)'}
+                  placeholder="Mot de passe ...">
+                </TextInput>
+
+                <Pressable 
+                  style={{padding: 15}} 
+                  onPress={_setVisible}>
+                  {isVisible && <EyeSlashIcon />}
+                  {!isVisible && <EyeIcon />}
+                </Pressable>
             </View>
           </View>
 
@@ -74,7 +107,10 @@ export default function InscriptionProprietaireScreen1({
               Nom de l'entreprise
             </Text>
             <View style={{backgroundColor: '#fff', paddingLeft: 20}}>
-              <TextInput placeholder="Nom de l'entreprise ..."></TextInput>
+              <TextInput
+                style={{color:'#7B4C7A', fontWeight: '500'}}
+                placeholderTextColor={'rgba(100,100,100,.7)'}
+                placeholder="Nom de l'entreprise ..."></TextInput>
             </View>
           </View>
 
@@ -90,7 +126,10 @@ export default function InscriptionProprietaireScreen1({
               Email de l'entreprise
             </Text>
             <View style={{backgroundColor: '#fff', paddingLeft: 20}}>
-              <TextInput placeholder="Email de l'entreprise ..."></TextInput>
+              <TextInput
+                style={{color:'#7B4C7A', fontWeight: '500'}}
+                placeholderTextColor={'rgba(100,100,100,.7)'}
+                placeholder="Email de l'entreprise ..."></TextInput>
             </View>
           </View>
 
@@ -106,7 +145,10 @@ export default function InscriptionProprietaireScreen1({
               Mobile de l'entreprise
             </Text>
             <View style={{backgroundColor: '#fff', paddingLeft: 20}}>
-              <TextInput placeholder="Mobile de l'entreprise ..."></TextInput>
+              <TextInput
+                style={{color:'#7B4C7A', fontWeight: '500'}}
+                placeholderTextColor={'rgba(100,100,100,.7)'}
+                placeholder="Mobile de l'entreprise ..."></TextInput>
             </View>
           </View>
 
@@ -124,6 +166,7 @@ export default function InscriptionProprietaireScreen1({
                 backgroundColor: '#7B4C7A',
                 borderRadius: 30,
                 marginVertical: 30,
+                height: 45,
               }}>
               <Pressable
                 android_ripple={{color: '7B4C7A'}}

@@ -44,7 +44,7 @@ export default function InscriptionProprietaireScreen2({
               Adresse de l'etablissement
             </Text>
             <View style={{backgroundColor: '#fff', paddingLeft: 20}}>
-              <TextInput placeholder="Entrez votre adresse"></TextInput>
+              <TextInput  style={{color:'#7B4C7A', fontWeight:'500'}}  placeholderTextColor={'rgba(100,100,100,.7)'}  placeholder="Entrez votre adresse"></TextInput>
             </View>
           </View>
 
@@ -60,7 +60,7 @@ export default function InscriptionProprietaireScreen2({
               Categories selectionnees
             </Text>
             <View style={{backgroundColor: '#fff', paddingLeft: 20}}>
-              <TextInput placeholder="choisir ..."></TextInput>
+              <TextInput  style={{color:'#7B4C7A', fontWeight:'500'}}  placeholderTextColor={'rgba(100,100,100,.7)'}  placeholder="choisir ..."></TextInput>
             </View>
           </View>
 
@@ -101,7 +101,7 @@ export default function InscriptionProprietaireScreen2({
               Heure d'ouverture
             </Text>
             <View style={{backgroundColor: '#fff', paddingLeft: 20}}>
-              <TextInput placeholder="choisir ..."></TextInput>
+              <TextInput  style={{color:'#7B4C7A', fontWeight:'500'}}  placeholderTextColor={'rgba(100,100,100,.7)'}  placeholder="choisir ..."></TextInput>
             </View>
           </View>
 
@@ -158,7 +158,7 @@ export default function InscriptionProprietaireScreen2({
               Lien reseaux sociaux
             </Text>
             <View style={{backgroundColor: '#fff', paddingLeft: 20}}>
-              <TextInput placeholder="choisir ..."></TextInput>
+              <TextInput  style={{color:'#7B4C7A', fontWeight:'500'}}  placeholderTextColor={'rgba(100,100,100,.7)'}  placeholder="choisir ..."></TextInput>
             </View>
           </View>
 
@@ -219,6 +219,7 @@ export default function InscriptionProprietaireScreen2({
                 backgroundColor: '#7B4C7A',
                 borderRadius: 30,
                 marginBottom: 30,
+                height:45
               }}>
               <Pressable
                 android_ripple={{color: '7B4C7A'}}

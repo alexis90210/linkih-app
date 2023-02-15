@@ -14,6 +14,8 @@ import {
 } from 'react-native';
 
 import SearchIcon from '../components/search';
+import WorldIcon from '../components/world';
+import LanguageIcon from '../components/language';
 
 // ConfigurationScreen
 export default function ConfigurationScreen({navigation}: {navigation: any}) {
@@ -46,21 +48,31 @@ export default function ConfigurationScreen({navigation}: {navigation: any}) {
 
   const CountryList = () => {
     const renderItem = ({item}: {item: any}) => (
-    <Pressable onPress={() => selectCountry(item)}>
-      <View
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          marginVertical: 10,
-        }}>
-        <Image
-          source={{uri: item.flag}}
-          style={{width: 30, height: 20, marginRight: 10}}
-        />
-        <Text>{item.name}</Text>
+      <View>
+        <Pressable onPress={() => selectCountry(item)}>
+          <View
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginVertical: 10,
+              paddingHorizontal: 18,
+              gap: 10,
+            }}>
+            <WorldIcon />
+            <Text style={{color: 'rgba(100,100,100,1)'}}>{item.name}</Text>
+          </View>
+        </Pressable>
+        <View style={{height: 1, overflow: 'hidden', paddingHorizontal: 10}}>
+          <View
+            style={{
+              height: 1,
+              borderWidth: 1,
+              borderColor: '#84158490',
+              borderStyle: 'dashed',
+            }}></View>
+        </View>
       </View>
-
-      </Pressable>
     );
 
     return (
@@ -71,6 +83,7 @@ export default function ConfigurationScreen({navigation}: {navigation: any}) {
       />
     );
   };
+
 
 
   // Languages
@@ -100,21 +113,31 @@ export default function ConfigurationScreen({navigation}: {navigation: any}) {
 
   const LanguageList = () => {
     const renderItem = ({item}: {item: any}) => (
-    <Pressable onPress={() => selectLanguage(item)}>
-      <View
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          marginVertical: 10,
-        }}>
-        <Image
-          source={{uri: item.flag}}
-          style={{width: 30, height: 20, marginRight: 10}}
-        />
-        <Text>{item.name}</Text>
-      </View>
+      <View>
+        <Pressable onPress={() => selectLanguage(item)}>
+          <View
+            style={{
+              display:'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginVertical: 10,
+              gap:10
+            }}>
+            <LanguageIcon />
+            <Text style={{color: 'rgba(100,100,100,1)'}}>{item.name}</Text>
+          </View>
+        </Pressable>
 
-      </Pressable>
+        <View style={{height: 1, overflow: 'hidden', paddingHorizontal: 10}}>
+          <View
+            style={{
+              height: 1,
+              borderWidth: 1,
+              borderColor: '#84158490',
+              borderStyle: 'dashed',
+            }}></View>
+        </View>
+      </View>
     );
 
     return (
@@ -191,6 +214,8 @@ export default function ConfigurationScreen({navigation}: {navigation: any}) {
                 <TextInput
                   onPressIn={handleOpenModalCountries}
                   value={currentCountry.name}
+                  placeholderTextColor={'rgba(100,100,100,.7)'}
+                  placeholder="Choisir..."
                   style={{
                     backgroundColor: 'transparent',
                     borderBottomWidth: 1,
@@ -198,7 +223,7 @@ export default function ConfigurationScreen({navigation}: {navigation: any}) {
                     color: '#7B4C7A',
                     width: '100%',
                     fontWeight: '600',
-                    padding: 0,
+                    padding: 10,
                   }}></TextInput>
               </View>
 
@@ -225,6 +250,8 @@ export default function ConfigurationScreen({navigation}: {navigation: any}) {
                 <TextInput
                 onPressIn={handleOpenModalLanguages}
                 value={currentLanguage.name}
+                placeholderTextColor={'rgba(100,100,100,.7)'}
+                placeholder="Choisir..."
                   style={{
                     backgroundColor: 'transparent',
                     borderBottomWidth: 1,
@@ -232,7 +259,7 @@ export default function ConfigurationScreen({navigation}: {navigation: any}) {
                     color: '#7B4C7A',
                     fontWeight: '600',
                     width: '100%',
-                    padding: 0,
+                    padding: 10,
                   }}></TextInput>
               </View>
 
@@ -264,135 +291,141 @@ export default function ConfigurationScreen({navigation}: {navigation: any}) {
                 </Pressable>
               </View>
 
-              {/* MODAL PAYS */}
+               {/* MODAL PAYS */}
 
-              <Modal visible={modalVisibleCountries} transparent={true}>
+            <Modal visible={modalVisibleCountries} transparent={true}>
+              <View
+                style={{
+                  flex: 1,
+                  backgroundColor: 'rgba(0, 0, 0, 0.3)',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
                 <View
                   style={{
-                    flex: 1,
-                    backgroundColor: 'rgba(0, 0, 0, 0.3)',
-                    justifyContent: 'center',
-                    alignItems: 'center',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    backgroundColor: '#fff',
+                    width: '90%',
+                    borderRadius: 15,
+                    paddingHorizontal:10
                   }}>
-                  <View
+                  <Text
                     style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      backgroundColor: '#fff',
-                      width: '90%',
-                      borderRadius: 15,
+                      padding: 15,
+                      fontSize: 15,
+                      paddingTop:30,
+                      paddingBottom:20,
+                      fontWeight: 'bold',
+                      color: 'rgba(0,0,0,.6)',
                     }}>
-                    <Text
-                      style={{
-                        padding: 15,
-                        fontSize: 15,
-                        fontWeight: 'bold',
-                        color: 'rgba(0,0,0,.6)',
-                      }}>
-                      Selectionnez un pays/ region
-                    </Text>
-                    <View style={{width: '100%', paddingHorizontal: 10}}>
-                      <View
-                        style={[
-                          {
-                            width: '100%',
-                            height: 45,
-                            paddingHorizontal: 20,
-                            backgroundColor: 'rgba(255,255,255,.74)',
-                            borderRadius: 50,
-                            display: 'flex',
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            gap: 10,
-                          },
-                        ]}>
-                        <SearchIcon color={'#841584'} />
-                        <TextInput
-                          placeholder="Recherchez..."
-                          style={{
-                            backgroundColor: 'rgba(255,255,255,.74)',
-                            borderRadius: 50,
-                            flex: 1,
-                          }}></TextInput>
-                      </View>
+                    Selectionnez un pays/ region
+                  </Text>
+                  <View style={{width: '100%', paddingHorizontal: 10}}>
+                    <View
+                      style={[
+                        {
+                          width: '100%',
+                          height: 45,
+                          paddingHorizontal: 20,
+                          backgroundColor: 'rgba(100,100,100,.2)',
+                          borderRadius: 50,
+                          display: 'flex',
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          gap: 10,
+                          
+                          marginBottom:20
+                        },
+                      ]}>
+                      <SearchIcon color={'#841584'} />
+                      <TextInput
+                       placeholderTextColor={'rgba(100,100,100,.7)'}
+                        placeholder="Recherchez..."
+                        style={{
+                          backgroundColor: 'transparent',
+                          borderRadius: 50,
+                          flex: 1,
+                        }}></TextInput>
+                    </View>
 
-                      <CountryList/>
+                    <CountryList />
 
-                      <View style={{padding: 15}}>
-
-                        <Pressable onPress={handleCloseModalCountries}>
-                          <Text>Close</Text>
-                        </Pressable>
-                      </View>
+                    <View style={{padding: 15}}>
+                      <Pressable onPress={handleCloseModalCountries}>
+                        <Text style={{color:'rgba(100,100,100,.8)', marginVertical:10}}>Quitter</Text>
+                      </Pressable>
                     </View>
                   </View>
                 </View>
-              </Modal>
+              </View>
+            </Modal>
 
-              {/* MODAL LANGAGE */}
-              <Modal visible={modalVisibleLanguages} transparent={true}>
+            {/* MODAL LANGAGE */}
+            <Modal visible={modalVisibleLanguages} transparent={true}>
+              <View
+                style={{
+                  flex: 1,
+                  backgroundColor: 'rgba(0, 0, 0, 0.3)',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
                 <View
                   style={{
-                    flex: 1,
-                    backgroundColor: 'rgba(0, 0, 0, 0.3)',
-                    justifyContent: 'center',
-                    alignItems: 'center',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    backgroundColor: '#fff',
+                    width: '90%',
+                    borderRadius: 15,
+                    padding:10
                   }}>
-                  <View
+                  <Text
                     style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      backgroundColor: '#fff',
-                      width: '90%',
-                      borderRadius: 15,
+                      padding: 15,
+                      fontSize: 15,
+                      fontWeight: 'bold',
+                      color: 'rgba(0,0,0,.6)',
                     }}>
-                    <Text
-                      style={{
-                        padding: 15,
-                        fontSize: 15,
-                        fontWeight: 'bold',
-                        color: 'rgba(0,0,0,.6)',
-                      }}>
-                      Selectionnez une langue
-                    </Text>
-                    <View style={{width: '100%', paddingHorizontal: 10}}>
-                      <View
-                        style={[
-                          {
-                            width: '100%',
-                            height: 45,
-                            paddingHorizontal: 20,
-                            backgroundColor: 'rgba(255,255,255,.74)',
-                            borderRadius: 50,
-                            display: 'flex',
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            gap: 10,
-                          },
-                        ]}>
-                        <SearchIcon color={'#841584'} />
-                        <TextInput
-                        
-                          placeholder="Recherchez..."
-                          style={{
-                            backgroundColor: 'rgba(255,255,255,.74)',
-                            borderRadius: 50,
-                            flex: 1,
-                          }}></TextInput>
-                      </View>
+                    Selectionnez une langue
+                  </Text>
+                  <View style={{width: '100%', paddingHorizontal: 10}}>
+                    <View
+                      style={[
+                        {
+                          width: '100%',
+                          height: 45,
+                          paddingHorizontal: 20,
+                          backgroundColor: 'rgba(100,100,100,.2)',
+                          borderRadius: 50,
+                          display: 'flex',
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          gap: 10,
+                          marginBottom:20
+                        },
+                      ]}>
+                      <SearchIcon color={'#841584'} />
+                      <TextInput
+                       placeholderTextColor={'rgba(100,100,100,.7)'}
+                        placeholder="Recherchez..."
+                        style={{
+                          backgroundColor: 'transparent',
+                          borderRadius: 50,
+                          flex: 1,
+                        }}></TextInput>
+                    </View>
 
-                      <LanguageList/>
+                    <LanguageList />
 
-                      <View style={{padding: 15}}>
-
-                        <Pressable onPress={handleCloseModalLanguages}>
-                          <Text>Close</Text>
-                        </Pressable>
-                      </View>
+                    <View style={{padding: 15, paddingVertical:30}}>
+                      <Pressable onPress={handleCloseModalLanguages}>
+                        <Text style={{color:'rgba(100,100,100,.8)'}}>Quitter</Text>
+                      </Pressable>
                     </View>
                   </View>
                 </View>
-              </Modal>
+              </View>
+            </Modal>
             </View>
           </View>
         </ScrollView>
