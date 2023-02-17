@@ -80,7 +80,7 @@ export default function App(): JSX.Element {
           name="identification_client"
           component={IdentificationClientScreen}
           options={{
-            title: 'connexion client',
+            title: 'Connexion client',
             headerShadowVisible: false,
             headerTitleStyle: {fontSize: 18, fontWeight: '700', color:couleurs.primary},
             headerTintColor:couleurs.primary,
@@ -112,7 +112,7 @@ export default function App(): JSX.Element {
           name="identification_proprietaire"
           component={IdentificationProprietaireScreen}
           options={{
-            title: 'connexion proprietaire',
+            title: 'Connexion proprietaire',
             headerShadowVisible: false,
             headerTitleStyle: {fontSize: 18, fontWeight: '700', color:couleurs.primary},
             headerTintColor:couleurs.primary,
@@ -128,7 +128,7 @@ export default function App(): JSX.Element {
           name="inscription_proprietaire_1"
           component={InscriptionProprietaireScreen1}
           options={{
-            title: 'creation du compte proprietaire',
+            title: 'Creation du compte proprietaire',
             headerShadowVisible: false,
             headerTitleStyle: {fontSize: 18, fontWeight: '700', color:couleurs.primary},
             headerTintColor:couleurs.primary,
@@ -144,7 +144,7 @@ export default function App(): JSX.Element {
           name="inscription_proprietaire_2"
           component={InscriptionProprietaireScreen2}
           options={{
-            title: 'creation du compte proprietaire',
+            title: 'Creation du compte proprietaire',
             headerShadowVisible: false,
             headerTitleStyle: {fontSize: 18, fontWeight: '700', color:couleurs.primary},
             headerTintColor:couleurs.primary,
@@ -160,7 +160,7 @@ export default function App(): JSX.Element {
           name="inscription_proprietaire_3"
           component={InscriptionProprietaire3}
           options={{
-            title: 'creation du compte proprietaire',
+            title: 'Creation du compte proprietaire',
             headerShadowVisible: false,
             headerTitleStyle: {fontSize: 18, fontWeight: '700', color:couleurs.primary},
             headerTintColor:couleurs.primary,

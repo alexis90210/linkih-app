@@ -9,6 +9,7 @@ import {
   Pressable,
   PixelRatio,
   TextInput,
+  Linking,
 } from 'react-native';
 
 import EyeSlashIcon from '../components/eye_slash';

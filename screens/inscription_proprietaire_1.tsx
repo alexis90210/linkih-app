@@ -254,7 +254,7 @@ export default function InscriptionProprietaireScreen1({
                     fontWeight: '500',
                     color: '#841584',
                   }}>
-                  Besoin d'aide ?
+                  Avez-vous besoin d'aide ?
                 </Text>
               </Pressable>
             </View>
