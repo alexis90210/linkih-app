@@ -1,4 +1,7 @@
-export const primary = '#841584';
-export const secondary = '#E2C6BB';
-export const white = '#FFF';
-export const black = '#000';
+export  class couleurs {
+    static primary = '#841584';
+    static secondary = '#E2C6BB';
+    static white = '#FFF';
+    static black = '#000';
+    static main = "#7B4C7A";
+}

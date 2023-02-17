@@ -11,6 +11,7 @@ import {
   TextInput,
 } from 'react-native';
 import ShopIcon from '../components/shop';
+import { couleurs } from '../components/color';
 
 // SplashScreen
 export default function SplashScreen({navigation}: {navigation: any}) {
@@ -75,10 +76,9 @@ export default function SplashScreen({navigation}: {navigation: any}) {
                 onPress={() => navigation.navigate('configuration')}>
                 <Text
                   style={{
-                    textAlign: 'center',
-
+                    textAlign: 'center',                    
                     fontWeight: '500',
-                    color: '#fff',
+                    color:couleurs.secondary,
                     padding: 10,
                     paddingHorizontal: 20,
                     fontSize: 14,

@@ -10,9 +10,10 @@ import {
   PixelRatio,
   TextInput,
 } from 'react-native';
-import ArrowLeftIcon from '../components/ArrowLeft';
+
 import EyeSlashIcon from '../components/eye_slash';
 import EyeIcon from '../components/eye';
+import { couleurs } from '../components/color';
 
 // IdentificationProprietaireScreen
 export default function IdentificationProprietaireScreen({
@@ -76,7 +77,7 @@ export default function IdentificationProprietaireScreen({
                 </Text>
                 <TextInput
                 placeholderTextColor={'rgba(100,100,100,.7)'}
-                placeholder="Identifiant ..."
+                placeholder="Entrez votre identifiant ..."
                   style={{
                     backgroundColor: 'transparent',
                     borderBottomWidth: 1,
@@ -113,7 +114,7 @@ export default function IdentificationProprietaireScreen({
                 keyboardType='default'
                 secureTextEntry={!isVisible} 
                 placeholderTextColor={'rgba(100,100,100,.7)'}
-                placeholder="Mot de Passe..."
+                placeholder="Entrez votre Mot de Passe..."
                   style={{
                     backgroundColor: 'transparent',
                     borderBottomWidth: 1,
@@ -152,7 +153,7 @@ export default function IdentificationProprietaireScreen({
                       paddingHorizontal: 20,
                       fontSize: 14,
                       fontWeight: '500',
-                      color: '#fff',
+                      color: couleurs.secondary,
                     }}>
                     Se connecter
                   </Text>
@@ -186,8 +187,63 @@ export default function IdentificationProprietaireScreen({
                   </Text>
                 </Pressable>
               </View>
+              <View
+                style={{
+                  alignItems: 'center',
+                  backgroundColor: 'transparent',
+                  borderRadius: 30,
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'flex-end',
+                  marginVertical:2
+                }}>
+                <Pressable
+                  android_ripple={{color: '7B4C7A'}}
+                  style={{
+                    paddingHorizontal: 10,
+                  }}
+                  onPress={() => null}>
+                  <Text
+                    style={{
+                      textAlign: 'center',
+                      fontSize: 15,
+                      fontWeight: '500',
+                      color: '#000',
+                    }}>
+                    Mot de passe oublie ?
+                  </Text>
+                </Pressable>
+              </View>
             </View>
           </View>
+
+          <View
+              style={{
+                alignItems: 'center',
+                backgroundColor: 'transparent',
+                borderRadius: 30,
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'center',
+                marginVertical: 10,
+              }}>
+              <Pressable
+                android_ripple={{color: '7B4C7A'}}
+                style={{
+                  paddingHorizontal: 10,
+                }}
+                onPress={() => null}>
+                <Text
+                  style={{
+                    textAlign: 'center',
+                    fontSize: 15,
+                    fontWeight: '500',
+                    color: '#841584',
+                  }}>
+                  Avez-vous besoin d'aide ?
+                </Text>
+              </Pressable>
+            </View>
         </ScrollView>
       </SafeAreaView>
     </>

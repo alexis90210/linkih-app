@@ -10,6 +10,7 @@ import {
   PixelRatio,
   TextInput,
 } from 'react-native';
+import { couleurs } from '../components/color';
 
 // InscriptionProprietaire3
 export default function InscriptionProprietaire3({navigation}: {navigation: any}) {
@@ -73,7 +74,7 @@ export default function InscriptionProprietaire3({navigation}: {navigation: any}
                     textAlign: 'center',
 
                     fontWeight: '500',
-                    color: '#fff',
+                    color: couleurs.secondary,
                     padding: 10,
                     paddingHorizontal: 20,
                     fontSize: 14,

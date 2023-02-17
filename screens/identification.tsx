@@ -9,6 +9,7 @@ import {
   Pressable,
   PixelRatio,
   TextInput,
+  ImageBackground,
 } from 'react-native';
 import ShopIcon from '../components/shop';
 import AccountIcon from '../components/account';
@@ -24,9 +25,19 @@ export default function IdentificationScreen({navigation}: {navigation: any}) {
           justifyContent:'center',
           alignContent:'center',
         }}>
+         <ScrollView>
+         <ImageBackground
+          resizeMode="cover"
+          source={require('../assets/images/banner.jpeg')}
+          style={{
+            height: 200,
+            width: '100%',
+          }}
+        />
 
           <View
             style={{
+              flex:1,
               padding: 10,
               width: '100%',
               height: '100%',
@@ -38,7 +49,7 @@ export default function IdentificationScreen({navigation}: {navigation: any}) {
             <View>
               <View style={{display: 'flex',
                 flexDirection: 'row',
-                justifyContent: 'center', marginVertical:40}}>
+                justifyContent: 'center', marginVertical:30}}>
                 <Text style={{color:'#000', fontSize:16}}>Veuillez-vous identifier pour continuer</Text>
               </View>
             <View
@@ -48,7 +59,7 @@ export default function IdentificationScreen({navigation}: {navigation: any}) {
                 justifyContent: 'center',
                 alignItems: 'center',
                 flexWrap: 'wrap',
-                gap: 40,
+                gap: 20,
               }}>
 
               <Pressable
@@ -164,6 +175,7 @@ export default function IdentificationScreen({navigation}: {navigation: any}) {
             </View>
 
           </View>
+         </ScrollView>
       </SafeAreaView>
     </>
   );

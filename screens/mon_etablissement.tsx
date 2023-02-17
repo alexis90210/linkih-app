@@ -19,6 +19,7 @@ import {Rating, AirbnbRating} from 'react-native-ratings';
 import CloseIcon from '../components/close';
 import AddIcon from '../components/add';
 import MinusIcon from '../components/minus';
+import { couleurs } from '../components/color';
 
 export default function MonEtablissement({
   route,
@@ -650,7 +651,7 @@ export default function MonEtablissement({
             marginHorizontal: 50,
             display: 'flex',
             flexDirection: 'row',
-            justifyContent: 'flex-start',
+            justifyContent: 'center',
             gap: 30,
           }}>
           <Pressable
@@ -979,7 +980,7 @@ export default function MonEtablissement({
                   paddingHorizontal: 20,
                   fontSize: 14,
                   fontWeight: '500',
-                  color: '#fff',
+                  color: couleurs.secondary,
                 }}>
                 valider le RDV
               </Text>

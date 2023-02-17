@@ -14,6 +14,7 @@ import ArrowLeftIcon from '../components/ArrowLeft';
 import SearchIcon from '../components/search';
 import FlagPlaceIcon from '../components/flag';
 import {useNavigation} from '@react-navigation/native';
+import { couleurs } from '../components/color';
 
 var LoadResultatRecherche = ({navigation}:{navigation:any}) => {
   return (
@@ -166,6 +167,7 @@ export default function ResultatRechercheScreen({
                 style={{
                   backgroundColor: 'rgba(255,255,255,.74)',
                   borderRadius: 50,
+                  color:couleurs.primary,
                   flex: 1,
                 }}></TextInput>
             </View>

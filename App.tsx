@@ -25,6 +25,7 @@ import IdentificationProprietaireScreen from './screens/identfication_proprietai
 import CompteProprietaire from './screens/compte_proprietaire';
 import MonEtablissement from './screens/mon_etablissement';
 import MenuScreen from './screens/menu';
+import { couleurs } from './components/color';
 
 const Stack = createNativeStackNavigator();
 
@@ -70,7 +71,7 @@ export default function App(): JSX.Element {
             headerShown: false,
             presentation: 'modal',
             animationTypeForReplace: 'push',
-            animation: 'slide_from_right',
+            animation: 'slide_from_right'
           }}
         />
 
@@ -81,7 +82,8 @@ export default function App(): JSX.Element {
           options={{
             title: 'connexion client',
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 18, fontWeight: '700'},
+            headerTitleStyle: {fontSize: 18, fontWeight: '700', color:couleurs.primary},
+            headerTintColor:couleurs.primary,
             headerShown: true,
             presentation: 'modal',
             animationTypeForReplace: 'push',
@@ -96,7 +98,8 @@ export default function App(): JSX.Element {
           options={{
             title: 'Inscription client',
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 18, fontWeight: '700'},
+            headerTitleStyle: {fontSize: 18, fontWeight: '700', color:couleurs.primary},
+            headerTintColor:couleurs.primary,
             headerShown: true,
             presentation: 'modal',
             animationTypeForReplace: 'push',
@@ -111,7 +114,8 @@ export default function App(): JSX.Element {
           options={{
             title: 'connexion proprietaire',
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 18, fontWeight: '700'},
+            headerTitleStyle: {fontSize: 18, fontWeight: '700', color:couleurs.primary},
+            headerTintColor:couleurs.primary,
             headerShown: true,
             presentation: 'modal',
             animationTypeForReplace: 'push',
@@ -126,7 +130,8 @@ export default function App(): JSX.Element {
           options={{
             title: 'creation du compte proprietaire',
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 18, fontWeight: '700'},
+            headerTitleStyle: {fontSize: 18, fontWeight: '700', color:couleurs.primary},
+            headerTintColor:couleurs.primary,
             headerShown: true,
             presentation: 'modal',
             animationTypeForReplace: 'push',
@@ -141,7 +146,8 @@ export default function App(): JSX.Element {
           options={{
             title: 'creation du compte proprietaire',
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 18, fontWeight: '700'},
+            headerTitleStyle: {fontSize: 18, fontWeight: '700', color:couleurs.primary},
+            headerTintColor:couleurs.primary,
             headerShown: true,
             presentation: 'modal',
             animationTypeForReplace: 'push',
@@ -156,7 +162,8 @@ export default function App(): JSX.Element {
           options={{
             title: 'creation du compte proprietaire',
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 18, fontWeight: '700'},
+            headerTitleStyle: {fontSize: 18, fontWeight: '700', color:couleurs.primary},
+            headerTintColor:couleurs.primary,
             headerShown: false,
             presentation: 'modal',
             animationTypeForReplace: 'push',
@@ -170,7 +177,8 @@ export default function App(): JSX.Element {
           component={Main}
           options={{
             headerShadowVisible: true,
-            headerTitleStyle: {fontSize: 18, fontWeight: '700'},
+            headerTitleStyle: {fontSize: 18, fontWeight: '700', color:couleurs.primary},
+            headerTintColor:couleurs.primary,
             headerShown: false,
             presentation: 'modal',
             animationTypeForReplace: 'push',
@@ -185,7 +193,8 @@ export default function App(): JSX.Element {
           options={{
             title: 'Mon compte',
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 18, fontWeight: '700'},
+            headerTitleStyle: {fontSize: 18, fontWeight: '700', color:couleurs.primary},
+            headerTintColor:couleurs.primary,
             headerShown: false,
             presentation: 'modal',
             animationTypeForReplace: 'push',
@@ -200,7 +209,8 @@ export default function App(): JSX.Element {
           options={{
             title: 'Mon rdv',
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 18, fontWeight: '700'},
+            headerTitleStyle: {fontSize: 18, fontWeight: '700', color:couleurs.primary},
+            headerTintColor:couleurs.primary,
             headerShown: false,
             presentation: 'modal',
             animationTypeForReplace: 'push',
@@ -215,7 +225,8 @@ export default function App(): JSX.Element {
           options={{
             title: 'La carte',
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 18, fontWeight: '700'},
+            headerTitleStyle: {fontSize: 18, fontWeight: '700', color:couleurs.primary},
+            headerTintColor:couleurs.primary,
             headerShown: false,
             presentation: 'modal',
             animationTypeForReplace: 'push',
@@ -230,7 +241,8 @@ export default function App(): JSX.Element {
           options={{
             title: 'Resultat de la recherche',
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 18, fontWeight: '700'},
+            headerTitleStyle: {fontSize: 18, fontWeight: '700', color:couleurs.primary},
+            headerTintColor:couleurs.primary,
             headerShown: false,
             presentation: 'modal',
             animationTypeForReplace: 'push',
@@ -245,7 +257,8 @@ export default function App(): JSX.Element {
           options={{
             title: 'Resultat de la recherche',
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 18, fontWeight: '700'},
+            headerTitleStyle: {fontSize: 18, fontWeight: '700', color:couleurs.primary},
+            headerTintColor:couleurs.primary,
             headerShown: false,
             presentation: 'modal',
             animationTypeForReplace: 'push',
@@ -260,7 +273,8 @@ export default function App(): JSX.Element {
           options={{
             title: 'Espace etablissement',
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 18, fontWeight: '700'},
+            headerTitleStyle: {fontSize: 18, fontWeight: '700', color:couleurs.primary},
+            headerTintColor:couleurs.primary,
             headerShown: false,
             presentation: 'modal',
             animationTypeForReplace: 'push',
@@ -275,7 +289,8 @@ export default function App(): JSX.Element {
           options={{
             title: 'Menu screen',
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 18, fontWeight: '700'},
+            headerTitleStyle: {fontSize: 18, fontWeight: '700', color:couleurs.primary},
+            headerTintColor:couleurs.primary,
             headerShown: false,
             presentation: 'modal',
             animationTypeForReplace: 'push',

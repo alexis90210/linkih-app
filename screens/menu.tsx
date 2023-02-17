@@ -10,6 +10,7 @@ import BillIcon from '../components/bill';
 import LawIcon from '../components/Law';
 import Law2Icon from '../components/Law2';
 import Law3Icon from '../components/Law3';
+import CallIcon from '../components/call';
 
 function MenuScreen({navigation}: {navigation: any}) {
   return (
@@ -43,7 +44,7 @@ function MenuScreen({navigation}: {navigation: any}) {
               justifyContent: 'space-around',
             }}>
             {/* Informations personnelles */}
-            <Text style={{padding: 10, fontSize: 15, paddingHorizontal: 10}}>
+            <Text style={{padding: 10, fontSize: 15, paddingHorizontal: 10, color:'rgba(100,100,100,.8)'}}>
               Informations personnelles
             </Text>
             <Pressable
@@ -67,7 +68,7 @@ function MenuScreen({navigation}: {navigation: any}) {
             </Pressable>
 
             {/*  Mon etablissement */}
-            <Text style={{padding: 10, fontSize: 15, paddingHorizontal: 10}}>
+            <Text style={{padding: 10, fontSize: 15, paddingHorizontal: 10, color:'rgba(100,100,100,.8)'}}>
               Mon etablissement
             </Text>
 
@@ -112,9 +113,31 @@ function MenuScreen({navigation}: {navigation: any}) {
             </Pressable>
 
             {/*  A propos de Linkih */}
-            <Text style={{padding: 10, fontSize: 15, paddingHorizontal: 10}}>
+            <Text style={{padding: 10, fontSize: 15, paddingHorizontal: 10, color:'rgba(100,100,100,.8)'}}>
               A propos de Linkih
             </Text>
+
+            <Pressable
+              android_ripple={{color: '7B4C7A'}}
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'flex-start',
+                gap: 10,
+                alignItems: 'center',
+                backgroundColor: '#fff',
+                paddingHorizontal: 10,
+              }}
+              onPress={() => {
+                null;
+              }}>
+              <CallIcon color={'#841584'} />
+              <Text style={{fontSize: 16, marginVertical: 10, color: '#000'}}>
+                Contactez-nous
+              </Text>
+            </Pressable>
+
+
 
             <Pressable
               android_ripple={{color: '7B4C7A'}}
@@ -177,7 +200,7 @@ function MenuScreen({navigation}: {navigation: any}) {
             </Pressable>
 
             {/*  Session de connexion */}
-            <Text style={{padding: 10, fontSize: 15, paddingHorizontal: 10}}>
+            <Text style={{padding: 10, fontSize: 15, paddingHorizontal: 10, color:'rgba(100,100,100,.8)'}}>
               Session de connexion
             </Text>
 

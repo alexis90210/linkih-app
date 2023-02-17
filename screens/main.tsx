@@ -23,6 +23,10 @@ import CloseIcon from '../components/close';
 import AccountIcon from '../components/account';
 import RdvIcon from '../components/rdv';
 import FilterIcon from '../components/filter';
+import {couleurs} from '../components/color';
+import CallIcon from '../components/call';
+import MapIcon from '../components/map';
+import EntrepreneurIcon from '../components/entrepreuneur';
 
 function Main({navigation}: {navigation: any}) {
   const [activeTab, setActiveTab] = useState('Tab 1');
@@ -251,9 +255,10 @@ function Main({navigation}: {navigation: any}) {
             paddingHorizontal: 10,
           }}
           onPress={() => navigation.navigate('menu')}>
-          <AccountIcon color={'#ffff'} />
+          <AccountIcon color={couleurs.secondary} />
         </Pressable>
-        <Text style={{fontSize: 22, fontWeight: '800', color: '#fff'}}>
+        <Text
+          style={{fontSize: 22, fontWeight: '800', color: couleurs.secondary}}>
           Linkih
         </Text>
         <Pressable
@@ -263,7 +268,7 @@ function Main({navigation}: {navigation: any}) {
             paddingHorizontal: 10,
           }}
           onPress={() => navigation.navigate('rdv')}>
-          <RdvIcon color={'#fff'} />
+          <RdvIcon color={couleurs.secondary} />
         </Pressable>
       </View>
       <ScrollView
@@ -273,7 +278,7 @@ function Main({navigation}: {navigation: any}) {
         }}>
         {/* Banner Image */}
         <ImageBackground
-        resizeMode="cover"
+          resizeMode="cover"
           source={require('../assets/images/banner.jpeg')}
           style={{
             height: 200,
@@ -283,43 +288,49 @@ function Main({navigation}: {navigation: any}) {
 
         <View>
           {/* Welcome text */}
-          <Text
-            style={{
-              fontSize: 20,
-              textAlign: 'center',
-              color: '#000',
-              fontWeight: '700',
-              paddingHorizontal: 50,
-              paddingTop: 20,
-              paddingBottom:10
-            }}>
-            Decouvrez et reservez le salon qui vous correpond !
-          </Text>
+          
           <View
             style={{
               padding: 20,
               backgroundColor: '#fff',
               borderRadius: 15,
+              width: '95%',
+              alignSelf: 'center',
             }}>
             <View
               style={{
                 flexDirection: 'row',
-                backgroundColor: '#f2f2f2',
+                backgroundColor: 'transparent',
                 borderRadius: 15,
                 overflow: 'hidden',
               }}>
               <Pressable
                 style={[styles.tab, activeTab === 'Tab 1' && styles.activeTab]}
                 onPress={() => handleTabPress('Tab 1')}>
-                  <FilterIcon color={'#fff'}/>
-                <Text style={styles.tabText}>Filtrez</Text>
+                <FilterIcon
+                  color={activeTab === 'Tab 1' ? couleurs.main : '#000'}
+                />
+                <Text
+                  style={[
+                    styles.tabText,
+                    activeTab === 'Tab 1' && styles.colorActive,
+                  ]}>
+                  Filtrez
+                </Text>
               </Pressable>
               <Pressable
                 style={[styles.tab, activeTab === 'Tab 2' && styles.activeTab]}
                 onPress={() => handleTabPress('Tab 2')}>
-
-                  <ShopIcon color={'#fff'} />
-                <Text style={styles.tabText}>Etablissement</Text>
+                <ShopIcon
+                  color={activeTab === 'Tab 2' ? couleurs.main : '#000'}
+                />
+                <Text
+                  style={[
+                    styles.tabText,
+                    activeTab === 'Tab 2' && styles.colorActive,
+                  ]}>
+                  Etablissement
+                </Text>
               </Pressable>
             </View>
             <View style={styles.content}>
@@ -402,35 +413,7 @@ function Main({navigation}: {navigation: any}) {
                       }}></TextInput>
                   </View>
 
-                  <View
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      justifyContent: 'center',
-                      backgroundColor: '#7B4C7A',
-                      borderRadius: 30,
-                      marginVertical: 30,
-                      width: '100%',
-                    }}>
-                    <Pressable
-                      android_ripple={{color: '7B4C7A'}}
-                      style={{
-                        paddingHorizontal: 10,
-                      }}
-                      onPress={() => navigation.navigate('map')}>
-                      <Text
-                        style={{
-                          textAlign: 'center',
-                          padding: 10,
-                          paddingHorizontal: 20,
-                          fontSize: 14,
-                          fontWeight: '500',
-                          color: '#fff',
-                        }}>
-                        Recherchez
-                      </Text>
-                    </Pressable>
-                  </View>
+                  
                 </View>
               )}
               {activeTab === 'Tab 2' && (
@@ -477,41 +460,88 @@ function Main({navigation}: {navigation: any}) {
                       }}></TextInput>
                   </View>
 
-                  <View
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      justifyContent: 'center',
-                      backgroundColor: '#7B4C7A',
-                      borderRadius: 30,
-                      marginVertical: 30,
-                      width: '100%',
-                    }}>
-                    <Pressable
-                      android_ripple={{color: '7B4C7A'}}
-                      style={{
-                        paddingHorizontal: 10,
-                      }}
-                      onPress={() => navigation.navigate('map')}>
-                      <Text
-                        style={{
-                          textAlign: 'center',
-                          padding: 10,
-                          paddingHorizontal: 20,
-                          fontSize: 14,
-                          fontWeight: '500',
-                          color: '#fff',
-                        }}>
-                        Recherchez
-                      </Text>
-                    </Pressable>
-                  </View>
+                  
                 </View>
               )}
             </View>
+
+            <View
+        style={{
+          alignItems: 'center',
+          marginVertical: 30,
+          marginHorizontal: 50,
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'center',
+          gap: 30,
+        }}>
+        <Pressable
+          android_ripple={{color: '7B4C7A'}}
+          style={{
+            paddingHorizontal: 30,
+            backgroundColor: '#7B4C7A',
+            borderRadius: 30,
+          }}
+          onPress={() => navigation.navigate('map')}>
+          <View
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              flexDirection: 'row',
+              justifyContent: 'flex-start',
+              gap: 5,
+            }}>
+            <SearchIcon color={couleurs.secondary} />
+            <Text
+              style={{
+                textAlign: 'center',
+                padding: 10,
+                paddingHorizontal: 20,
+                fontSize: 14,
+                fontWeight: '500',
+                color: couleurs.secondary,
+              }}>
+              Recherchez
+            </Text>
+          </View>
+        </Pressable>
+        <Pressable
+          android_ripple={{color: '7B4C7A'}}
+          style={{
+            paddingHorizontal: 30,
+            // width: 260,
+            backgroundColor: '#7B4C7A',
+            borderRadius: 30,
+          }}
+          onPress={() => navigation.navigate('map')}>
+          <View
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              flexDirection: 'row',
+              justifyContent: 'flex-start',
+              gap: 5,
+              padding: 8,
+            }}>
+            <MapIcon color={couleurs.secondary} />
+            {/* <Text
+              style={{
+                textAlign: 'center',
+                padding: 10,
+                paddingHorizontal: 20,
+                fontSize: 14,
+                fontWeight: '500',
+                color: couleurs.secondary,
+              }}>
+              Explorer sur la carte
+            </Text> */}
+          </View>
+        </Pressable>
+      </View>
           </View>
         </View>
       </ScrollView>
+     
       {/* MODAL PAYS */}
 
       <Modal visible={modalVisibleCountries} transparent={true}>
@@ -566,6 +596,7 @@ function Main({navigation}: {navigation: any}) {
                   style={{
                     backgroundColor: 'transparent',
                     borderRadius: 50,
+                    color: couleurs.primary,
                     flex: 1,
                   }}></TextInput>
               </View>
@@ -647,6 +678,7 @@ function Main({navigation}: {navigation: any}) {
                   style={{
                     backgroundColor: 'transparent',
                     borderRadius: 50,
+                    color: couleurs.primary,
                     flex: 1,
                   }}></TextInput>
               </View>
@@ -722,6 +754,7 @@ function Main({navigation}: {navigation: any}) {
                   style={{
                     backgroundColor: 'transparent',
                     borderRadius: 50,
+                    color: couleurs.primary,
                     flex: 1,
                   }}></TextInput>
               </View>
@@ -755,13 +788,22 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingVertical: 10,
     alignItems: 'center',
-    backgroundColor: '#f6f6f6f6',
+    color: couleurs.secondary,
+    display: 'flex',
+    flexDirection: 'row',
+    gap: 10,
+    justifyContent: 'center',
   },
   activeTab: {
-    backgroundColor: '#6e3b6e',
+    backgroundColor: 'transparent',
+    borderBottomWidth: 2,
+    borderColor: couleurs.main,
+  },
+  colorActive: {
+    color: couleurs.main,
   },
   tabText: {
-    color: '#E2C6BB',
+    color: '#000',
     fontWeight: 'bold',
   },
   content: {

@@ -11,6 +11,7 @@ import {
   TextInput,
 } from 'react-native';
 import ArrowLeftIcon from '../components/ArrowLeft';
+import { couleurs } from '../components/color';
 
 // IdentificationClientScreen
 export default function IdentificationClientScreen({
@@ -133,7 +134,7 @@ export default function IdentificationClientScreen({
                       paddingHorizontal: 20,
                       fontSize: 14,
                       fontWeight: '500',
-                      color: '#fff',
+                      color: couleurs.secondary,
                     }}>
                     Se connecter
                   </Text>
@@ -166,11 +167,68 @@ export default function IdentificationClientScreen({
                     Je n'ai pas encore un compte
                   </Text>
                 </Pressable>
-              </View>          
+              </View>  
+
+              <View
+                style={{
+                  alignItems: 'center',
+                  backgroundColor: 'transparent',
+                  borderRadius: 30,
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'flex-end',
+                  marginVertical:10
+                }}>
+                <Pressable
+                  android_ripple={{color: '7B4C7A'}}
+                  style={{
+                    paddingHorizontal: 10,
+                  }}
+                  onPress={() => null}>
+                  <Text
+                    style={{
+                      textAlign: 'center',
+                      fontSize: 15,
+                      fontWeight: '500',
+                      color: '#000',
+                    }}>
+                    Mot de passe oublie ?
+                  </Text>
+                </Pressable>
+              </View>
+        
             </View>
 
             
           </View>
+          
+          <View
+              style={{
+                alignItems: 'center',
+                backgroundColor: 'transparent',
+                borderRadius: 30,
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'center',
+                marginVertical: 10,
+              }}>
+              <Pressable
+                android_ripple={{color: '7B4C7A'}}
+                style={{
+                  paddingHorizontal: 10,
+                }}
+                onPress={() => null}>
+                <Text
+                  style={{
+                    textAlign: 'center',
+                    fontSize: 15,
+                    fontWeight: '500',
+                    color: '#841584',
+                  }}>
+                  Avez-vous besoin d'aide ?
+                </Text>
+              </Pressable>
+            </View>
         </ScrollView>
       </SafeAreaView>
     </>

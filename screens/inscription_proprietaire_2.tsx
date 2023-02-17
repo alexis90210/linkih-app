@@ -11,6 +11,7 @@ import {
   TextInput,
 } from 'react-native';
 import CloseIcon from '../components/close';
+import { couleurs } from '../components/color';
 
 // InscriptionProprietaireScreen2
 export default function InscriptionProprietaireScreen2({
@@ -210,7 +211,7 @@ export default function InscriptionProprietaireScreen2({
               display: 'flex',
               flexDirection: 'row',
               width: '100%',
-              justifyContent: 'flex-end',
+              justifyContent: 'center',
               paddingHorizontal: 10,
             }}>
             <View
@@ -219,7 +220,8 @@ export default function InscriptionProprietaireScreen2({
                 backgroundColor: '#7B4C7A',
                 borderRadius: 30,
                 marginBottom: 30,
-                height:45
+                height:45,
+                width: '100%'
               }}>
               <Pressable
                 android_ripple={{color: '7B4C7A'}}
@@ -235,7 +237,7 @@ export default function InscriptionProprietaireScreen2({
                     paddingHorizontal: 20,
                     fontSize: 14,
                     fontWeight: '500',
-                    color: '#fff',
+                    color: couleurs.secondary,
                   }}>
                   Valider
                 </Text>

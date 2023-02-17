@@ -18,6 +18,8 @@ import WorldIcon from '../components/world';
 import LanguageIcon from '../components/language';
 import CloseIcon from '../components/close';
 import countries from '../components/countries.json';
+import { couleurs } from '../components/color';
+import ArrowRightIcon from '../components/ArrowRight';
 
 // ConfigurationScreen
 export default function ConfigurationScreen({navigation}: {navigation: any}) {
@@ -276,14 +278,22 @@ export default function ConfigurationScreen({navigation}: {navigation: any}) {
                   backgroundColor: '#7B4C7A',
                   borderRadius: 30,
                   marginBottom: 30,
+                  display:'flex',
+                  flexDirection:'row',
+                  justifyContent:'center',
+                  width:'100%'
                 }}>
                 <Pressable
                   android_ripple={{color: '7B4C7A'}}
                   style={{
                     paddingHorizontal: 10,
-                    width: '70%',
+                    display:'flex',
+                    flexDirection:'row',
+                    alignItems:'center',
+                    gap:10
                   }}
                   onPress={() => navigation.navigate('identification')}>
+                   
                   <Text
                     style={{
                       textAlign: 'center',
@@ -291,10 +301,12 @@ export default function ConfigurationScreen({navigation}: {navigation: any}) {
                       paddingHorizontal: 20,
                       fontSize: 14,
                       fontWeight: '500',
-                      color: '#fff',
+                      color: couleurs.secondary,
                     }}>
+
                     continuez 
                   </Text>
+                  {/* <ArrowRightIcon color={couleurs.secondary}/> */}
                 </Pressable>
               </View>
 
@@ -351,10 +363,12 @@ export default function ConfigurationScreen({navigation}: {navigation: any}) {
                           onChangeText={text => filterListCountries(text)}
                           placeholderTextColor={'rgba(100,100,100,.7)'}
                           placeholder="Recherchez..."
+                          
                           style={{
                             backgroundColor: 'transparent',
                             borderRadius: 50,
                             flex: 1,
+                            color:couleurs.primary
                           }}></TextInput>
                       </View>
 
@@ -438,6 +452,7 @@ export default function ConfigurationScreen({navigation}: {navigation: any}) {
                             backgroundColor: 'transparent',
                             borderRadius: 50,
                             flex: 1,
+                            color:couleurs.primary
                           }}></TextInput>
                       </View>
 

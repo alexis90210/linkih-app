@@ -8,6 +8,7 @@ import {
   SafeAreaView,
   ScrollView,
   Image,
+  Modal,
 } from 'react-native';
 
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
@@ -28,6 +29,12 @@ const getUserLocation = () => {
   console.log(location);
 };
 export default function Map({navigation}: {navigation: any}) {
+  const [modalVisible, SetModalVisible] = useState(false);
+
+  const openModal = () => {
+    SetModalVisible(!modalVisible);
+  };
+
   return (
     <SafeAreaView style={{flex: 1}}>
       <View style={styles.container}>
@@ -54,6 +61,7 @@ export default function Map({navigation}: {navigation: any}) {
             }
             title={'Marker 1'}
             description={'Marker 1'}
+            onPress={openModal}
           />
 
           <Marker
@@ -67,6 +75,7 @@ export default function Map({navigation}: {navigation: any}) {
             }
             title={'Marker 2'}
             description={'Marker 2'}
+            onPress={openModal}
           />
         </MapView>
       </View>
@@ -192,9 +201,12 @@ export default function Map({navigation}: {navigation: any}) {
             height: 155,
             borderRadius: 15,
           }}>
-          <Pressable onPress={() => navigation.navigate('espace_etab', {
-            nomEtab:'Maison de beaute'
-          })}>
+          <Pressable
+            onPress={() =>
+              navigation.navigate('espace_etab', {
+                nomEtab: 'Maison de beaute',
+              })
+            }>
             <View
               style={{
                 borderRadius: 15,
@@ -523,6 +535,143 @@ export default function Map({navigation}: {navigation: any}) {
           </Pressable>
         </ScrollView>
       </View>
+
+      <Modal visible={modalVisible} transparent={true}>
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: 'rgba(0, 0, 0, 0.3)',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <View
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              backgroundColor: '#fff',
+              width: '90%',
+              borderRadius: 15,
+              padding: 10,
+            }}>
+            <Text
+              style={{
+                padding: 15,
+                fontSize: 15,
+                fontWeight: 'bold',
+                color: 'rgba(0,0,0,.6)',
+              }}>
+              Visualisation
+            </Text>
+            <View style={{width: '100%', paddingHorizontal: 10}}>
+              <Pressable
+                onPress={() =>
+                  navigation.navigate('espace_etab', {
+                    nomEtab: 'Maison de beaute',
+                  })
+                }>
+                <View
+                  style={{
+                    borderRadius: 15,
+                    padding: 10,
+                    display: 'flex',
+                    flexDirection: 'row',
+                    flexWrap: 'nowrap',
+                    justifyContent: 'flex-start',
+                    backgroundColor: '#fff',
+                    width: '100%',
+                    marginRight: 10,
+                  }}>
+                  <View
+                    style={{
+                      backgroundColor: 'rgba(200,200,200,1)',
+                      width: 100,
+                      borderRadius: 15,
+                      paddingLeft: 40,
+                      paddingTop: 40,
+                    }}>
+                    <FlagPlaceIcon />
+                  </View>
+
+                  <View
+                    style={{
+                      flex: 1,
+                      paddingHorizontal: 10,
+                    }}>
+                    <View
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        flexWrap: 'nowrap',
+                        justifyContent: 'flex-start',
+                        gap: 6,
+                        paddingTop: 10,
+                      }}>
+                      <Text
+                        style={{
+                          fontWeight: '700',
+                          fontSize: 15,
+                          letterSpacing: 0.7,
+                          color: '#000',
+                        }}>
+                        Maison de beaute
+                      </Text>
+                      <View
+                        style={{
+                          display: 'flex',
+                          flexDirection: 'row',
+                          flexWrap: 'nowrap',
+                          justifyContent: 'flex-start',
+                          gap: 10,
+                        }}>
+                        <Text
+                          style={{
+                            fontWeight: '600',
+                            fontSize: 15,
+                            color: '#000',
+                          }}>
+                          5.0
+                        </Text>
+                        <Text
+                          style={{
+                            fontWeight: '600',
+                            fontSize: 15,
+                            color: '#841584',
+                          }}>
+                          ( 450 avis )
+                        </Text>
+                      </View>
+                      <Text
+                        style={{
+                          fontWeight: '600',
+                          fontSize: 14,
+                          color: '#000',
+                          opacity: 0.8,
+                        }}>
+                        Brzzaville, Congo , Boulevard Denis
+                      </Text>
+                    </View>
+                  </View>
+                </View>
+              </Pressable>
+
+              <View style={{padding: 15, paddingVertical: 30}}>
+                <Pressable
+                  onPress={openModal}
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    gap: 10,
+                    justifyContent: 'flex-start',
+                  }}>
+                  <CloseIcon color={'#841584'} />
+                  <Text style={{color: 'rgba(100,100,100,.8)'}}>Quitter</Text>
+                </Pressable>
+              </View>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 }
