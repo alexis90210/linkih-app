@@ -11,15 +11,15 @@ import {
   Modal,
   Image,
   FlatList,
+  Alert,
 } from 'react-native';
 
 import SearchIcon from '../components/search';
-import WorldIcon from '../components/world';
 import LanguageIcon from '../components/language';
 import CloseIcon from '../components/close';
 import countries from '../components/countries.json';
 import { couleurs } from '../components/color';
-import ArrowRightIcon from '../components/ArrowRight';
+import storage from '../components/api/localstorage';
 
 // ConfigurationScreen
 export default function ConfigurationScreen({navigation}: {navigation: any}) {
@@ -104,8 +104,7 @@ export default function ConfigurationScreen({navigation}: {navigation: any}) {
 
   const langages = [
     {name: 'Francais', flag: 'https://www.countryflags.io/AF/flat/64.png'},
-    {name: 'Anglais', flag: 'https://www.countryflags.io/AL/flat/64.png'},
-    {name: 'Espagnol', flag: 'https://www.countryflags.io/DZ/flat/64.png'},
+    {name: 'Anglais', flag: 'https://www.countryflags.io/AL/flat/64.png'}
     // add more langages here
   ];
 
@@ -159,6 +158,47 @@ export default function ConfigurationScreen({navigation}: {navigation: any}) {
       />
     );
   };
+
+
+
+  // get and save configuration
+
+  const saveConfiguration = () => {
+
+    if ( !currentCountry.name ){
+      //
+      Alert.alert('Erreur', 'Veuillez selectionner un pays', [        
+        {text: 'OK', onPress: () => console.log('OK Pressed')},
+      ]);
+
+      return
+    }
+    if ( !currentLanguage.name ) {
+      //
+      Alert.alert('Erreur', 'Veuillez selectionner une langue', [        
+        {text: 'OK', onPress: () => console.log('OK Pressed')},
+      ]);
+
+
+      return
+    }
+
+      storage.save({
+        key: 'configuration', // Note: Do not use underscore("_") in key!
+        id: 'configuration', // Note: Do not use underscore("_") in id!
+        data: {
+          pays: currentCountry,
+          langage: currentLanguage
+    
+        },
+        expires: 1000 * 60 * 60
+      });
+  
+      navigation.navigate('identification')
+
+         
+    
+  } 
 
   return (
     <>
@@ -292,7 +332,7 @@ export default function ConfigurationScreen({navigation}: {navigation: any}) {
                     alignItems:'center',
                     gap:10
                   }}
-                  onPress={() => navigation.navigate('identification')}>
+                  onPress={() => saveConfiguration()}>
                    
                   <Text
                     style={{

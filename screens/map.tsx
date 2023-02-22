@@ -9,6 +9,7 @@ import {
   ScrollView,
   Image,
   Modal,
+  Alert,
 } from 'react-native';
 
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
@@ -18,22 +19,50 @@ import CloseIcon from '../components/close';
 import MenuBarIcon from '../components/menu_bar';
 import FlagPlaceIcon from '../components/flag';
 import GpsIcon from '../components/gps';
+import axios from 'axios';
+import ApiService from '../components/api/service';
 
-const getUserLocation = () => {
-  var location = null;
-  Geolocation.getCurrentPosition(pos => {
-    var location = pos;
-    console.log(JSON.stringify(location));
-  });
-
-  console.log(location);
-};
-export default function Map({navigation}: {navigation: any}) {
+export default function Map({navigation, route}: {navigation: any, route:any}) {
   const [modalVisible, SetModalVisible] = useState(false);
 
   const openModal = () => {
     SetModalVisible(!modalVisible);
   };
+
+  const [etablissements, setEtablissements] = useState([]);
+
+  const loadEtablissements = () => {
+    axios({
+      method: 'POST',
+      url: ApiService.API_URL_GET_VENDEURS,
+      headers: {
+        Accept: 'application/json',
+       'Content-Type': 'application/json'
+     }
+    })
+      .then((response: {data: any}) => {
+        var api = response.data;        
+        if ( api.code == "success") {
+
+          setEtablissements(api.message)
+         }
+      
+        if ( api.code == "error") {
+          Alert.alert('Erreur', api.message, [        
+            {text: 'OK', onPress: () => null},
+          ]);
+        }         
+      })
+      .catch((error: any) => {
+       console.log(error);
+       Alert.alert('Erreur', error, [        
+        {text: 'OK', onPress: () => null},
+      ]);
+       
+      });
+  }
+
+  loadEtablissements()
 
   return (
     <SafeAreaView style={{flex: 1}}>
@@ -41,42 +70,31 @@ export default function Map({navigation}: {navigation: any}) {
         <MapView
           style={styles.mapStyle}
           initialRegion={{
-            latitude: 37.78825,
-            longitude: -122.4324,
+            latitude: Number( route.params.latitude ),
+            longitude:  Number ( route.params.longitude),
             latitudeDelta: 0.0922,
             longitudeDelta: 0.0421,
           }}
           provider={PROVIDER_GOOGLE}
           showsUserLocation={true}
           customMapStyle={[]}>
-          <Marker
-            draggable
-            pinColor="red"
-            coordinate={{
-              latitude: 37.78825,
-              longitude: -122.4324,
-            }}
-            onDragEnd={e =>
-              console.log(JSON.stringify(e.nativeEvent.coordinate))
-            }
-            title={'Marker 1'}
-            description={'Marker 1'}
-            onPress={openModal}
-          />
-
-          <Marker
-            draggable
-            coordinate={{
-              latitude: 36.78825,
-              longitude: -122.4324,
-            }}
-            onDragEnd={e =>
-              console.log(JSON.stringify(e.nativeEvent.coordinate))
-            }
-            title={'Marker 2'}
-            description={'Marker 2'}
-            onPress={openModal}
-          />
+            {etablissements.map( (marker:any , index)  => (
+               <Marker
+               key={index}
+               draggable
+               coordinate={{
+                 latitude: Number(marker.latitude),
+                 longitude:  Number(marker.longitude),
+               }}
+               onDragEnd={e =>
+                 console.log(JSON.stringify(e.nativeEvent.coordinate))
+               }
+               title={marker.nom}
+               description={'Salon'}
+               onPress={openModal}
+               image={{uri:'https://icons.iconarchive.com/icons/sonya/swarm/256/Mayor-Hair-icon.png'}}
+             />
+            ))}         
         </MapView>
       </View>
 
@@ -91,7 +109,8 @@ export default function Map({navigation}: {navigation: any}) {
           top: 10,
           left: 10,
         }}>
-        <Pressable onPress={() => navigation.navigate('resultat_recherche')}>
+        <Pressable onPress={() => navigation.navigate('resultat_recherche', { latitude: Number( route.params.latitude ),
+            longitude:  Number ( route.params.longitude),})}>
           <SearchIcon color={'#fff'} />
         </Pressable>
       </View>
@@ -112,7 +131,7 @@ export default function Map({navigation}: {navigation: any}) {
             padding: 10,
             width: '100%',
           }}>
-          <View
+          {/* <View
             style={{
               display: 'flex',
               flexDirection: 'row',
@@ -128,7 +147,7 @@ export default function Map({navigation}: {navigation: any}) {
               }}>
               <GpsIcon color={'#fff'} />
             </View>
-          </View>
+          </View> */}
 
           <View
             style={{
@@ -146,6 +165,8 @@ export default function Map({navigation}: {navigation: any}) {
               onPress={() =>
                 navigation.navigate('resultat_recherche', {
                   title: 'Les etablissements',
+                  latitude: Number( route.params.latitude ),
+                  longitude:  Number ( route.params.longitude),
                 })
               }>
               <View
@@ -201,338 +222,100 @@ export default function Map({navigation}: {navigation: any}) {
             height: 155,
             borderRadius: 15,
           }}>
-          <Pressable
-            onPress={() =>
-              navigation.navigate('espace_etab', {
-                nomEtab: 'Maison de beaute',
-              })
-            }>
-            <View
-              style={{
-                borderRadius: 15,
-                padding: 10,
-                display: 'flex',
-                flexDirection: 'row',
-                flexWrap: 'nowrap',
-                justifyContent: 'flex-start',
-                backgroundColor: '#fff',
-                width: 300,
-                marginRight: 10,
-              }}>
+          
+          {etablissements.map( (marker:any , index)  => (
+            <Pressable
+              key={index}
+              onPress={() =>
+                navigation.navigate('espace_etab', {
+                  nomEtab: marker.nom,
+                  latitude: Number( route.params.latitude ),
+                  longitude:  Number ( route.params.longitude),
+                })
+              }>
               <View
                 style={{
-                  backgroundColor: 'rgba(200,200,200,1)',
-                  width: 100,
                   borderRadius: 15,
-                  paddingLeft: 40,
-                  paddingTop: 40,
-                }}>
-                <FlagPlaceIcon />
-              </View>
-
-              <View
-                style={{
-                  flex: 1,
-                  paddingHorizontal: 10,
+                  padding: 10,
+                  display: 'flex',
+                  flexDirection: 'row',
+                  flexWrap: 'nowrap',
+                  justifyContent: 'flex-start',
+                  backgroundColor: '#fff',
+                  width: 300,
+                  marginRight: 10,
                 }}>
                 <View
                   style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    flexWrap: 'nowrap',
-                    justifyContent: 'flex-start',
-                    gap: 6,
-                    paddingTop: 10,
+                    backgroundColor: 'rgba(200,200,200,1)',
+                    width: 100,
+                    borderRadius: 15,
+                    paddingLeft: 40,
+                    paddingTop: 40,
                   }}>
-                  <Text
-                    style={{
-                      fontWeight: '700',
-                      fontSize: 15,
-                      letterSpacing: 0.7,
-                      color: '#000',
-                    }}>
-                    Maison de beaute
-                  </Text>
-                  <View
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      flexWrap: 'nowrap',
-                      justifyContent: 'flex-start',
-                      gap: 10,
-                    }}>
-                    <Text
-                      style={{fontWeight: '600', fontSize: 15, color: '#000'}}>
-                      5.0
-                    </Text>
-                    <Text
-                      style={{
-                        fontWeight: '600',
-                        fontSize: 15,
-                        color: '#841584',
-                      }}>
-                      ( 450 avis )
-                    </Text>
-                  </View>
-                  <Text
-                    style={{
-                      fontWeight: '600',
-                      fontSize: 14,
-                      color: '#000',
-                      opacity: 0.8,
-                    }}>
-                    Brzzaville, Congo , Boulevard Denis
-                  </Text>
+                  <FlagPlaceIcon />
                 </View>
-              </View>
-            </View>
-          </Pressable>
 
-          <Pressable onPress={() => navigation.navigate('espace_etab')}>
-            <View
-              style={{
-                borderRadius: 15,
-                padding: 10,
-                display: 'flex',
-                flexDirection: 'row',
-                flexWrap: 'nowrap',
-                justifyContent: 'flex-start',
-                backgroundColor: '#fff',
-                width: 300,
-                marginRight: 10,
-              }}>
-              <View
-                style={{
-                  backgroundColor: 'rgba(200,200,200,1)',
-                  width: 100,
-                  borderRadius: 15,
-                  paddingLeft: 40,
-                  paddingTop: 40,
-                }}>
-                <FlagPlaceIcon />
-              </View>
-
-              <View
-                style={{
-                  flex: 1,
-                  paddingHorizontal: 10,
-                }}>
                 <View
                   style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    flexWrap: 'nowrap',
-                    justifyContent: 'flex-start',
-                    gap: 6,
-                    paddingTop: 10,
+                    flex: 1,
+                    paddingHorizontal: 10,
                   }}>
-                  <Text
-                    style={{
-                      fontWeight: '700',
-                      fontSize: 15,
-                      letterSpacing: 0.7,
-                      color: '#000',
-                    }}>
-                    Maison de beaute
-                  </Text>
                   <View
                     style={{
                       display: 'flex',
-                      flexDirection: 'row',
+                      flexDirection: 'column',
                       flexWrap: 'nowrap',
                       justifyContent: 'flex-start',
-                      gap: 10,
+                      gap: 6,
+                      paddingTop: 10,
                     }}>
                     <Text
-                      style={{fontWeight: '600', fontSize: 15, color: '#000'}}>
-                      5.0
+                      style={{
+                        fontWeight: '700',
+                        fontSize: 15,
+                        letterSpacing: 0.7,
+                        color: '#000',
+                      }}>
+                      {marker.nom}
                     </Text>
+                    <View
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        flexWrap: 'nowrap',
+                        justifyContent: 'flex-start',
+                        gap: 10,
+                      }}>
+                      <Text
+                        style={{fontWeight: '600', fontSize: 15, color: '#000'}}>
+                        5.0
+                      </Text>
+                      <Text
+                        style={{
+                          fontWeight: '600',
+                          fontSize: 15,
+                          color: '#841584',
+                        }}>
+                        ( 450 avis )
+                      </Text>
+                    </View>
                     <Text
                       style={{
                         fontWeight: '600',
-                        fontSize: 15,
-                        color: '#841584',
+                        fontSize: 14,
+                        color: '#000',
+                        opacity: 0.8,
                       }}>
-                      ( 450 avis )
+                      Brzzaville, Congo , Boulevard Denis
                     </Text>
                   </View>
-                  <Text
-                    style={{
-                      fontWeight: '600',
-                      fontSize: 14,
-                      color: '#000',
-                      opacity: 0.8,
-                    }}>
-                    Brzzaville, Congo , Boulevard Denis
-                  </Text>
                 </View>
               </View>
-            </View>
-          </Pressable>
+            </Pressable>
+          ))}
 
-          <Pressable onPress={() => navigation.navigate('espace_etab')}>
-            <View
-              style={{
-                borderRadius: 15,
-                padding: 10,
-                display: 'flex',
-                flexDirection: 'row',
-                flexWrap: 'nowrap',
-                justifyContent: 'flex-start',
-                backgroundColor: '#fff',
-                width: 300,
-                marginRight: 10,
-              }}>
-              <View
-                style={{
-                  backgroundColor: 'rgba(200,200,200,1)',
-                  width: 100,
-                  borderRadius: 15,
-                  paddingLeft: 40,
-                  paddingTop: 40,
-                }}>
-                <FlagPlaceIcon />
-              </View>
 
-              <View
-                style={{
-                  flex: 1,
-                  paddingHorizontal: 10,
-                }}>
-                <View
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    flexWrap: 'nowrap',
-                    justifyContent: 'flex-start',
-                    gap: 6,
-                    paddingTop: 10,
-                  }}>
-                  <Text
-                    style={{
-                      fontWeight: '700',
-                      fontSize: 15,
-                      letterSpacing: 0.7,
-                      color: '#000',
-                    }}>
-                    Maison de beaute
-                  </Text>
-                  <View
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      flexWrap: 'nowrap',
-                      justifyContent: 'flex-start',
-                      gap: 10,
-                    }}>
-                    <Text
-                      style={{fontWeight: '600', fontSize: 15, color: '#000'}}>
-                      5.0
-                    </Text>
-                    <Text
-                      style={{
-                        fontWeight: '600',
-                        fontSize: 15,
-                        color: '#841584',
-                      }}>
-                      ( 450 avis )
-                    </Text>
-                  </View>
-                  <Text
-                    style={{
-                      fontWeight: '600',
-                      fontSize: 14,
-                      color: '#000',
-                      opacity: 0.8,
-                    }}>
-                    Brzzaville, Congo , Boulevard Denis
-                  </Text>
-                </View>
-              </View>
-            </View>
-          </Pressable>
-
-          <Pressable onPress={() => navigation.navigate('espace_etab')}>
-            <View
-              style={{
-                borderRadius: 15,
-                padding: 10,
-                display: 'flex',
-                flexDirection: 'row',
-                flexWrap: 'nowrap',
-                justifyContent: 'flex-start',
-                backgroundColor: '#fff',
-                width: 300,
-                marginRight: 10,
-              }}>
-              <View
-                style={{
-                  backgroundColor: 'rgba(200,200,200,1)',
-                  width: 100,
-                  borderRadius: 15,
-                  paddingLeft: 40,
-                  paddingTop: 40,
-                }}>
-                <FlagPlaceIcon />
-              </View>
-
-              <View
-                style={{
-                  flex: 1,
-                  paddingHorizontal: 10,
-                }}>
-                <View
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    flexWrap: 'nowrap',
-                    justifyContent: 'flex-start',
-                    gap: 6,
-                    paddingTop: 10,
-                  }}>
-                  <Text
-                    style={{
-                      fontWeight: '700',
-                      fontSize: 15,
-                      letterSpacing: 0.7,
-                      color: '#000',
-                    }}>
-                    Maison de beaute
-                  </Text>
-                  <View
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      flexWrap: 'nowrap',
-                      justifyContent: 'flex-start',
-                      gap: 10,
-                    }}>
-                    <Text
-                      style={{fontWeight: '600', fontSize: 15, color: '#000'}}>
-                      5.0
-                    </Text>
-                    <Text
-                      style={{
-                        fontWeight: '600',
-                        fontSize: 15,
-                        color: '#841584',
-                      }}>
-                      ( 450 avis )
-                    </Text>
-                  </View>
-                  <Text
-                    style={{
-                      fontWeight: '600',
-                      fontSize: 14,
-                      color: '#000',
-                      opacity: 0.8,
-                    }}>
-                    Brzzaville, Congo , Boulevard Denis
-                  </Text>
-                </View>
-              </View>
-            </View>
-          </Pressable>
         </ScrollView>
       </View>
 

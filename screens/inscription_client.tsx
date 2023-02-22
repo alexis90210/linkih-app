@@ -10,7 +10,6 @@ import {
   PixelRatio,
   TextInput,
 } from 'react-native';
-import ArrowLeftIcon from '../components/ArrowLeft';
 import { couleurs } from '../components/color';
 
 // InscriptionClientScreen
@@ -19,6 +18,7 @@ export default function InscriptionClientScreen({
 }: {
   navigation: any;
 }) {
+  
   return (
     <>
      <SafeAreaView

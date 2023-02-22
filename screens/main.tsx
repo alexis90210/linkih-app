@@ -13,9 +13,11 @@ import {
   FlatList,
   Modal,
   ImageBackground,
+  Alert,
 } from 'react-native';
 
-import MenuIcon from '../components/menu';
+import GetLocation from 'react-native-get-location';
+
 import ShopIcon from '../components/shop';
 import SearchIcon from '../components/search';
 import WorldIcon from '../components/world';
@@ -24,45 +26,86 @@ import AccountIcon from '../components/account';
 import RdvIcon from '../components/rdv';
 import FilterIcon from '../components/filter';
 import {couleurs} from '../components/color';
-import CallIcon from '../components/call';
 import MapIcon from '../components/map';
-import EntrepreneurIcon from '../components/entrepreuneur';
+import axios from 'axios';
+import ApiService from '../components/api/service';
 
 function Main({navigation}: {navigation: any}) {
+  const [myPosition, SetMyPosition] = useState({
+    latitude: 0,
+    longitude: 0
+  });
+  const getUserPosition = () => {
+    GetLocation.getCurrentPosition({
+      enableHighAccuracy: true,
+      timeout: 15000,
+    })
+      .then(location => {
+        console.log(location);
+
+        SetMyPosition({
+          latitude: Number(location.latitude),
+          longitude: Number(location.longitude)
+        })
+
+        // let url = 'http://maps.googleapis.com/maps/api/geocode/json?latlng='+location.latitude+','+location.longitude+'&sensor=true&key=' + ApiService.GEOCODE_KEY
+        // axios.get(url)
+        // .then( cities => {
+        //   console.log(cities);          
+        // })
+      })
+      .catch(error => {
+        const {code, message} = error;
+        console.warn(code, message);
+      });
+  };
+
+
+  const goTo = (screen:any, params:any) => {
+    getUserPosition()
+    setTimeout(() => {
+      
+      navigation.navigate(screen, {...myPosition})
+    }, 1000);
+  }
+
+  
+
+
   const [activeTab, setActiveTab] = useState('Tab 1');
 
   const handleTabPress = (tabName: React.SetStateAction<string>) => {
     setActiveTab(tabName);
   };
 
-  // countries
-  const [modalVisibleCountries, setModalVisibleCountries] = useState(false);
-  const [currentCountry, setCurrentCountry] = useState({name: ''});
+  // Ville
+  const [modalVisibleVille, setModalVisibleVille] = useState(false);
+  const [currentVille, setCurrentVille] = useState({name: ''});
 
-  const countries = [
-    {name: 'Afghanistan', flag: 'https://www.countryflags.io/AF/flat/64.png'},
-    {name: 'Albania', flag: 'https://www.countryflags.io/AL/flat/64.png'},
-    {name: 'Algeria', flag: 'https://www.countryflags.io/DZ/flat/64.png'},
-    // add more countries here
+  const Ville = [
+    {name: 'Brazzaville', flag: 'https://www.countryflags.io/AF/flat/64.png'},
+    {name: 'Pointe-noire', flag: 'https://www.countryflags.io/AL/flat/64.png'},
+    {name: 'Nkayi', flag: 'https://www.countryflags.io/DZ/flat/64.png'},
+    // add more Ville here
   ];
 
-  const handleOpenModalCountries = () => {
-    setModalVisibleCountries(true);
+  const handleOpenModalVille = () => {
+    setModalVisibleVille(true);
   };
 
-  const handleCloseModalCountries = () => {
-    setModalVisibleCountries(false);
+  const handleCloseModalVille = () => {
+    setModalVisibleVille(false);
   };
 
-  const selectCountry = (item: any) => {
-    setCurrentCountry(item);
-    handleCloseModalCountries();
+  const selectVille = (item: any) => {
+    setCurrentVille(item);
+    handleCloseModalVille();
   };
 
-  const CountryList = () => {
+  const VilleList = () => {
     const renderItem = ({item}: {item: any}) => (
       <View>
-        <Pressable onPress={() => selectCountry(item)}>
+        <Pressable onPress={() => selectVille(item)}>
           <View
             style={{
               display: 'flex',
@@ -90,7 +133,7 @@ function Main({navigation}: {navigation: any}) {
 
     return (
       <FlatList
-        data={countries}
+        data={Ville}
         renderItem={renderItem}
         keyExtractor={(item, index) => index.toString()}
       />
@@ -102,9 +145,41 @@ function Main({navigation}: {navigation: any}) {
   const [currentCategorie, setCurrentCategorie] = useState({name: ''});
 
   const categories = [
-    {name: 'Categorie 1', flag: 'https://www.countryflags.io/AF/flat/64.png'},
-    {name: 'Categorie 2', flag: 'https://www.countryflags.io/AL/flat/64.png'},
-    {name: 'Categorie 3', flag: 'https://www.countryflags.io/DZ/flat/64.png'},
+
+    {
+      name: "Esthétique",
+      sous_categorie: [
+          "Techniciennes de Blanchiment dentaire",
+          "Traitement du visage et corps",
+          "Techniciennes de cils",
+          "prothésiste ongulaire",
+          "tatouage / détatouage ",
+          "maquilleuse",
+          "massage",
+          "ventes produits pour le corps ",
+          "ventes produits pour le visage"
+      ]
+    },
+  {
+      name: "Capillaire",
+      sous_categorie: [
+          "coiffeur/euse Afro",
+          "coiffeur/euse lissage",
+          "coiffeur/euse lace wig",
+          "ventes produits pour les cheveux"
+      ]
+    },
+  {
+      name: "Texttiles",
+      sous_categorie: [
+          "Boutique en ligne féminine",
+          "Boutique en ligne masculine",
+          "Boutique enfants",
+          "Boutique mixte"
+      ]
+    }
+
+
     // add more categories here
   ];
 
@@ -163,24 +238,38 @@ function Main({navigation}: {navigation: any}) {
   const [modalVisibleEtablissement, setModalVisibleEtablissement] =
     useState(false);
   const [currentEtablissement, setCurrentEtablissement] = useState({name: ''});
+  const [etablissements, setEtablissements] = useState([]);
 
-  const etablissements = [
-    {
-      name: 'Etablissement 1',
-      flag: 'https://www.countryflags.io/AF/flat/64.png',
-    },
-    {
-      name: 'Etablissement 2',
-      flag: 'https://www.countryflags.io/AL/flat/64.png',
-    },
-    {
-      name: 'Etablissement 3',
-      flag: 'https://www.countryflags.io/DZ/flat/64.png',
-    },
-    // add more categories here
-  ];
+  const loadEtablissements = () => {
+    axios({
+      method: 'POST',
+      url: ApiService.API_URL_GET_VENDEURS,
+      headers: {
+        Accept: 'application/json',
+       'Content-Type': 'application/json'
+     }
+    })
+      .then((response: {data: any}) => {
+        var api = response.data;        
+        if ( api.code == "success") { 
+          setEtablissements(api.message)}
+        if ( api.code == "error") {
+          Alert.alert('Erreur', api.message, [        
+            {text: 'OK', onPress: () => null},
+          ]);
+        }         
+      })
+      .catch((error: any) => {
+       console.log(error);
+       Alert.alert('Erreur', error, [        
+        {text: 'OK', onPress: () => null},
+      ]);
+       
+      });
+  }
 
   const handleOpenModalEtablissement = () => {
+    loadEtablissements()
     setModalVisibleEtablissement(true);
   };
 
@@ -206,7 +295,7 @@ function Main({navigation}: {navigation: any}) {
               gap: 10,
             }}>
             <ShopIcon color={'#841584'} />
-            <Text style={{color: 'rgba(100,100,100,1)'}}>{item.name}</Text>
+            <Text style={{color: 'rgba(100,100,100,1)'}}>{item.nom}</Text>
           </View>
         </Pressable>
 
@@ -230,6 +319,8 @@ function Main({navigation}: {navigation: any}) {
       />
     );
   };
+
+
 
   return (
     <SafeAreaView
@@ -288,7 +379,7 @@ function Main({navigation}: {navigation: any}) {
 
         <View>
           {/* Welcome text */}
-          
+
           <View
             style={{
               padding: 20,
@@ -362,8 +453,8 @@ function Main({navigation}: {navigation: any}) {
                       Pays/Region
                     </Text>
                     <TextInput
-                      onPressIn={handleOpenModalCountries}
-                      value={currentCountry.name}
+                      onPressIn={handleOpenModalVille}
+                      value={currentVille.name}
                       placeholderTextColor={'rgba(100,100,100,.7)'}
                       placeholder="choisir ..."
                       style={{
@@ -412,8 +503,6 @@ function Main({navigation}: {navigation: any}) {
                         marginTop: 10,
                       }}></TextInput>
                   </View>
-
-                  
                 </View>
               )}
               {activeTab === 'Tab 2' && (
@@ -459,72 +548,74 @@ function Main({navigation}: {navigation: any}) {
                         marginTop: 10,
                       }}></TextInput>
                   </View>
-
-                  
                 </View>
               )}
             </View>
 
             <View
-        style={{
-          alignItems: 'center',
-          marginVertical: 30,
-          marginHorizontal: 50,
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'center',
-          gap: 30,
-        }}>
-        <Pressable
-          android_ripple={{color: '7B4C7A'}}
-          style={{
-            paddingHorizontal: 30,
-            backgroundColor: '#7B4C7A',
-            borderRadius: 30,
-          }}
-          onPress={() => navigation.navigate('map')}>
-          <View
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              flexDirection: 'row',
-              justifyContent: 'flex-start',
-              gap: 5,
-            }}>
-            <SearchIcon color={couleurs.secondary} />
-            <Text
               style={{
-                textAlign: 'center',
-                padding: 10,
-                paddingHorizontal: 20,
-                fontSize: 14,
-                fontWeight: '500',
-                color: couleurs.secondary,
+                alignItems: 'center',
+                marginVertical: 30,
+                marginHorizontal: 50,
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'center',
+                gap: 30,
               }}>
-              Recherchez
-            </Text>
-          </View>
-        </Pressable>
-        <Pressable
-          android_ripple={{color: '7B4C7A'}}
-          style={{
-            paddingHorizontal: 30,
-            // width: 260,
-            backgroundColor: '#7B4C7A',
-            borderRadius: 30,
-          }}
-          onPress={() => navigation.navigate('map')}>
-          <View
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              flexDirection: 'row',
-              justifyContent: 'flex-start',
-              gap: 5,
-              padding: 8,
-            }}>
-            <MapIcon color={couleurs.secondary} />
-            {/* <Text
+              <Pressable
+                android_ripple={{color: '7B4C7A'}}
+                style={{
+                  paddingHorizontal: 30,
+                  backgroundColor: '#7B4C7A',
+                  borderRadius: 30,
+                }}
+                onPress={() =>  goTo('map', {
+                  ...myPosition
+                })}>
+                <View
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    flexDirection: 'row',
+                    justifyContent: 'flex-start',
+                    gap: 5,
+                  }}>
+                  <SearchIcon color={couleurs.secondary} />
+                  <Text
+                    style={{
+                      textAlign: 'center',
+                      padding: 10,
+                      paddingHorizontal: 20,
+                      fontSize: 14,
+                      fontWeight: '500',
+                      color: couleurs.secondary,
+                    }}>
+                    Recherchez
+                  </Text>
+                </View>
+              </Pressable>
+              <Pressable
+                android_ripple={{color: '7B4C7A'}}
+                style={{
+                  paddingHorizontal: 30,
+                  // width: 260,
+                  backgroundColor: '#7B4C7A',
+                  borderRadius: 30,
+                }}
+                onPress={() => goTo('map', {
+                  ...myPosition
+                })}>
+                <View
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    flexDirection: 'row',
+                    justifyContent: 'flex-start',
+                    gap: 5,
+                    padding: 8,
+                  }}>
+                  <MapIcon color={couleurs.secondary} />
+                  {/* <Text
               style={{
                 textAlign: 'center',
                 padding: 10,
@@ -535,16 +626,16 @@ function Main({navigation}: {navigation: any}) {
               }}>
               Explorer sur la carte
             </Text> */}
-          </View>
-        </Pressable>
-      </View>
+                </View>
+              </Pressable>
+            </View>
           </View>
         </View>
       </ScrollView>
-     
-      {/* MODAL PAYS */}
 
-      <Modal visible={modalVisibleCountries} transparent={true}>
+      {/* MODAL VILLE */}
+
+      <Modal visible={modalVisibleVille} transparent={true}>
         <View
           style={{
             flex: 1,
@@ -570,7 +661,7 @@ function Main({navigation}: {navigation: any}) {
                 fontWeight: 'bold',
                 color: 'rgba(0,0,0,.6)',
               }}>
-              Selectionnez un pays/ region
+              Selectionnez une ville
             </Text>
             <View style={{width: '100%', paddingHorizontal: 10}}>
               <View
@@ -601,11 +692,11 @@ function Main({navigation}: {navigation: any}) {
                   }}></TextInput>
               </View>
 
-              <CountryList />
+              <VilleList />
 
               <View style={{padding: 15}}>
                 <Pressable
-                  onPress={handleCloseModalCountries}
+                  onPress={handleCloseModalVille}
                   style={{
                     display: 'flex',
                     flexDirection: 'row',
@@ -653,7 +744,7 @@ function Main({navigation}: {navigation: any}) {
                 fontWeight: 'bold',
                 color: 'rgba(0,0,0,.6)',
               }}>
-              Selectionnez une langue
+              Selectionnez une categorie
             </Text>
             <View style={{width: '100%', paddingHorizontal: 10}}>
               <View

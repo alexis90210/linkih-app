@@ -9,9 +9,12 @@ import {
   Pressable,
   PixelRatio,
   TextInput,
+  Alert,
 } from 'react-native';
-import ArrowLeftIcon from '../components/ArrowLeft';
-import { couleurs } from '../components/color';
+import {couleurs} from '../components/color';
+import ApiService from '../components/api/service';
+import axios from 'axios';
+import storage from '../components/api/localstorage';
 
 // IdentificationClientScreen
 export default function IdentificationClientScreen({
@@ -19,6 +22,77 @@ export default function IdentificationClientScreen({
 }: {
   navigation: any;
 }) {
+  var data = {
+    identifiant: '',
+    password: '',
+  };
+
+  const logUser = async () => {
+    console.log(data);
+
+    if (!data.identifiant) {
+      Alert.alert('Erreur', 'Veuillez entrer un identifiant', [        
+        {text: 'OK', onPress: () => null},
+      ]);
+      return;
+    }
+
+    if (!data.password) {
+      Alert.alert('Erreur', 'Veuillez entrer un mot de passe valide', [        
+        {text: 'OK', onPress: () => null},
+      ]);
+      return;
+    }
+
+    axios({
+      method: 'POST',
+      url: ApiService.API_URL_LOGIN,
+      data: JSON.stringify({
+        login: data.identifiant,
+        password: data.password
+      }),
+      headers: {
+        Accept: 'application/json',
+       'Content-Type': 'application/json'
+     }
+    })
+      .then((response: {data: any}) => {
+        
+         var api = response.data;
+
+         if ( api.code == "success") {
+          storage.save({
+            key: 'credentials', // Note: Do not use underscore("_") in key!
+            id: 'credentials', // Note: Do not use underscore("_") in id!
+            data: {
+              pays: api.message
+            },
+            expires: 1000 * 60 * 60 
+          });
+
+          navigation.navigate('main')
+          
+         }
+
+         if ( api.code == "error") {
+          Alert.alert('Erreur', api.message, [        
+            {text: 'OK', onPress: () => null},
+          ]);
+         }
+
+
+         
+      })
+      .catch((error: any) => {
+       console.log(error);
+       Alert.alert('Erreur', error, [        
+        {text: 'OK', onPress: () => null},
+      ]);
+       
+      });
+
+  };
+
   return (
     <>
       <SafeAreaView
@@ -27,7 +101,6 @@ export default function IdentificationClientScreen({
           height: '100%',
           backgroundColor: '#f6f6f6f6',
         }}>
-         
         <ScrollView
           contentInsetAdjustmentBehavior="automatic"
           style={{
@@ -68,6 +141,7 @@ export default function IdentificationClientScreen({
                   Identifiant
                 </Text>
                 <TextInput
+                  onChangeText={input => (data.identifiant = input)}
                   style={{
                     backgroundColor: 'transparent',
                     borderBottomWidth: 1,
@@ -75,7 +149,7 @@ export default function IdentificationClientScreen({
                     color: '#7B4C7A',
                     width: '100%',
                     fontWeight: '600',
-                    padding:0
+                    padding: 0,
                   }}></TextInput>
               </View>
 
@@ -99,9 +173,10 @@ export default function IdentificationClientScreen({
                   Password
                 </Text>
                 <TextInput
-                textContentType='password'
-                keyboardType='default'
-                secureTextEntry={true} 
+                  textContentType="password"
+                  keyboardType="default"
+                  secureTextEntry={true}
+                  onChangeText={input => (data.password = input)}
                   style={{
                     backgroundColor: 'transparent',
                     borderBottomWidth: 1,
@@ -109,7 +184,7 @@ export default function IdentificationClientScreen({
                     color: '#7B4C7A',
                     fontWeight: '600',
                     width: '100%',
-                    padding:0
+                    padding: 0,
                   }}></TextInput>
               </View>
 
@@ -126,7 +201,7 @@ export default function IdentificationClientScreen({
                     paddingHorizontal: 10,
                     width: '70%',
                   }}
-                  onPress={() => navigation.navigate('main')}>
+                  onPress={() => logUser()}>
                   <Text
                     style={{
                       textAlign: 'center',
@@ -139,16 +214,16 @@ export default function IdentificationClientScreen({
                     Se connecter
                   </Text>
                 </Pressable>
-              </View>   
+              </View>
 
               <View
                 style={{
                   alignItems: 'center',
                   backgroundColor: 'transparent',
                   borderRadius: 30,
-                  display:'flex',
-                  flexDirection:'row',
-                  justifyContent:'flex-end'
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'flex-end',
                 }}>
                 <Pressable
                   android_ripple={{color: '7B4C7A'}}
@@ -162,12 +237,11 @@ export default function IdentificationClientScreen({
                       fontSize: 13,
                       fontWeight: '500',
                       color: '#841584',
-                      
                     }}>
                     Je n'ai pas encore un compte
                   </Text>
                 </Pressable>
-              </View>  
+              </View>
 
               <View
                 style={{
@@ -177,7 +251,7 @@ export default function IdentificationClientScreen({
                   display: 'flex',
                   flexDirection: 'row',
                   justifyContent: 'flex-end',
-                  marginVertical:10
+                  marginVertical: 10,
                 }}>
                 <Pressable
                   android_ripple={{color: '7B4C7A'}}
@@ -196,39 +270,36 @@ export default function IdentificationClientScreen({
                   </Text>
                 </Pressable>
               </View>
-        
             </View>
-
-            
           </View>
-          
+
           <View
+            style={{
+              alignItems: 'center',
+              backgroundColor: 'transparent',
+              borderRadius: 30,
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'center',
+              marginVertical: 10,
+            }}>
+            <Pressable
+              android_ripple={{color: '7B4C7A'}}
               style={{
-                alignItems: 'center',
-                backgroundColor: 'transparent',
-                borderRadius: 30,
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'center',
-                marginVertical: 10,
-              }}>
-              <Pressable
-                android_ripple={{color: '7B4C7A'}}
+                paddingHorizontal: 10,
+              }}
+              onPress={() => null}>
+              <Text
                 style={{
-                  paddingHorizontal: 10,
-                }}
-                onPress={() => null}>
-                <Text
-                  style={{
-                    textAlign: 'center',
-                    fontSize: 15,
-                    fontWeight: '500',
-                    color: '#841584',
-                  }}>
-                  Avez-vous besoin d'aide ?
-                </Text>
-              </Pressable>
-            </View>
+                  textAlign: 'center',
+                  fontSize: 15,
+                  fontWeight: '500',
+                  color: '#841584',
+                }}>
+                Avez-vous besoin d'aide ?
+              </Text>
+            </Pressable>
+          </View>
         </ScrollView>
       </SafeAreaView>
     </>
