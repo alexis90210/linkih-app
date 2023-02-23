@@ -9,13 +9,11 @@ import {
   Pressable,
   PixelRatio,
   TextInput,
-  ImageBackground,
-  Image,
 } from 'react-native';
 import { couleurs } from '../components/color';
 
 // InscriptionProprietaire3
-export default function InscriptionProprietaire3({navigation}: {navigation: any}) {
+export default function InscriptionProprietaire4({navigation}: {navigation: any}) {
   return (
     <>
       <SafeAreaView
@@ -31,15 +29,20 @@ export default function InscriptionProprietaire3({navigation}: {navigation: any}
               flexDirection: 'column',
               justifyContent: 'center',
               alignItems: 'center',
-              padding:10
+              marginTop: '70%',
             }}>
-            <Image
-          source={require('../assets/images/banner.jpeg')}
-          style={{
-            height: 200,
-            width: '100%',
-            borderRadius:10
-          }}/>
+            <Text
+              style={{
+                textAlign: 'center',
+                color: '#7B4C7A',
+                fontWeight: '600',
+                textTransform: 'uppercase',
+                fontSize: 17,
+                width:'80%'
+              }}>
+              Felicitations,
+              votre compte a ete cree avec succes
+            </Text>
             <Text
               style={{
                 textAlign: 'center',
@@ -50,7 +53,8 @@ export default function InscriptionProprietaire3({navigation}: {navigation: any}
                 marginVertical: 13,
                 width:'80%'
               }}>
-              Veuillez completer votre photo de couverture            </Text>
+              Veuillez completer vos Informations dans votre profile
+            </Text>
             <View
               style={{
                 marginVertical: 70,
@@ -64,7 +68,7 @@ export default function InscriptionProprietaire3({navigation}: {navigation: any}
                 style={{
                   paddingHorizontal: 10,
                 }}
-                onPress={() => navigation.navigate('inscription_proprietaire_4')}>
+                onPress={() => navigation.navigate('main')}>
                 <Text
                   style={{
                     textAlign: 'center',
@@ -76,7 +80,7 @@ export default function InscriptionProprietaire3({navigation}: {navigation: any}
                     fontSize: 14,
                     width: 150,
                   }}>
-                  Choisir
+                  Commencez !
                 </Text>
               </Pressable>
             </View>

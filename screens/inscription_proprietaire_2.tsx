@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import CloseIcon from '../components/close';
 import { couleurs } from '../components/color';
+import { FacebookIcon } from '../components/network';
 
 // InscriptionProprietaireScreen2
 export default function InscriptionProprietaireScreen2({
@@ -60,9 +61,9 @@ export default function InscriptionProprietaireScreen2({
               }}>
               Categories selectionnees
             </Text>
-            <View style={{backgroundColor: '#fff', paddingLeft: 20}}>
+            {/* <View style={{backgroundColor: '#fff', paddingLeft: 20}}>
               <TextInput  style={{color:'#7B4C7A', fontWeight:'500'}}  placeholderTextColor={'rgba(100,100,100,.7)'}  placeholder="choisir ..."></TextInput>
-            </View>
+            </View> */}
           </View>
 
           <View
@@ -73,7 +74,7 @@ export default function InscriptionProprietaireScreen2({
               gap: 4,
               paddingHorizontal: 10,
             }}>
-            {[1, 1, 1, 1, 1, 1, 1, 1].map((row, key) => (
+            {["Capillaire", "Esthétique", "Texttiles"].map((row, key) => (
               <View
                 key={key}
                 style={{
@@ -84,7 +85,7 @@ export default function InscriptionProprietaireScreen2({
                   padding: 10,
                   borderRadius: 50,
                 }}>
-                <Text style={{color: '#000'}}>Categorie 1</Text>
+                <Text style={{color: '#000'}}>{row}</Text>
                 <CloseIcon color={'#841584'} />
               </View>
             ))}
@@ -97,13 +98,13 @@ export default function InscriptionProprietaireScreen2({
                 fontSize: 15,
                 paddingBottom: 12,
                 color: '#000',
-                paddingLeft: 20,
+                padding: 20,
               }}>
               Heure d'ouverture
             </Text>
-            <View style={{backgroundColor: '#fff', paddingLeft: 20}}>
+            {/* <View style={{backgroundColor: '#fff', paddingLeft: 20}}>
               <TextInput  style={{color:'#7B4C7A', fontWeight:'500'}}  placeholderTextColor={'rgba(100,100,100,.7)'}  placeholder="choisir ..."></TextInput>
-            </View>
+            </View> */}
           </View>
 
           <View
@@ -115,7 +116,7 @@ export default function InscriptionProprietaireScreen2({
               paddingHorizontal: 5,
               marginBottom: 40,
             }}>
-            {[1, 1, 1, 1, 1, 1, 1].map((row, key) => (
+            {["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"].map((row, key) => (
               <View
                 key={key}
                 style={{
@@ -139,8 +140,8 @@ export default function InscriptionProprietaireScreen2({
                     padding: 6,
                     borderRadius: 50,
                   }}>
-                  <Text style={{color: '#000'}}>Mercredi</Text>
-                  <Text style={{color: '#841584', fontSize: 11}}>08h-12h</Text>
+                  <Text style={{color: '#000'}}>{row}</Text>
+                  {/* <Text style={{color: '#841584', fontSize: 11}}>08h-12h</Text> */}
                 </View>
                 <CloseIcon color={'#841584'} />
               </View>
@@ -158,9 +159,9 @@ export default function InscriptionProprietaireScreen2({
               }}>
               Lien reseaux sociaux
             </Text>
-            <View style={{backgroundColor: '#fff', paddingLeft: 20}}>
+            {/* <View style={{backgroundColor: '#fff', paddingLeft: 20}}>
               <TextInput  style={{color:'#7B4C7A', fontWeight:'500'}}  placeholderTextColor={'rgba(100,100,100,.7)'}  placeholder="choisir ..."></TextInput>
-            </View>
+            </View> */}
           </View>
 
           <View
@@ -172,7 +173,7 @@ export default function InscriptionProprietaireScreen2({
               paddingHorizontal: 5,
               marginBottom: 40,
             }}>
-            {[1, 1, 1, 1].map((row, key) => (
+            {["Facebook", "Twitter", "LinkedIn", "Instagram"].map((row, key) => (
               <View
                 key={key}
                 style={{
@@ -184,22 +185,19 @@ export default function InscriptionProprietaireScreen2({
                   paddingHorizontal: 15,
                   borderRadius: 50,
                   alignItems: 'center',
-                  width: '100%',
+                  width: 125,
                   justifyContent: 'space-between',
                 }}>
                 <View
                   style={{
                     display: 'flex',
-                    flexDirection: 'column',
+                    flexDirection: 'row',
                     gap: 3,
                     backgroundColor: '#fff',
                     padding: 10,
                     borderRadius: 50,
                   }}>
-                  <Text style={{color: '#000'}}>Facebook</Text>
-                  <Text style={{color: '#841584', fontSize: 12}}>
-                    https://facebook.com
-                  </Text>
+                  <Text style={{color: '#000'}}>{row}</Text>
                 </View>
                 <CloseIcon color={'#841584'} />
               </View>

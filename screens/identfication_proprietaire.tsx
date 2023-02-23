@@ -10,11 +10,15 @@ import {
   PixelRatio,
   TextInput,
   Linking,
+  Alert,
 } from 'react-native';
 
 import EyeSlashIcon from '../components/eye_slash';
 import EyeIcon from '../components/eye';
 import { couleurs } from '../components/color';
+import axios from 'axios';
+import ApiService from '../components/api/service';
+import storage from '../components/api/localstorage';
 
 // IdentificationProprietaireScreen
 export default function IdentificationProprietaireScreen({
@@ -29,6 +33,77 @@ export default function IdentificationProprietaireScreen({
    if ( isVisible )  setVisible(false);
    if ( !isVisible )  setVisible(true);
   }
+
+  var data = {
+    identifiant: '',
+    password: '',
+  };
+
+  const logUser = async () => {
+    console.log(data);
+
+    if (!data.identifiant ) {
+      Alert.alert('Erreur', 'Veuillez entrer un identifiant', [        
+        {text: 'OK', onPress: () => null},
+      ]);
+      return;
+    }
+
+    if (!data.password) {
+      Alert.alert('Erreur', 'Veuillez entrer un mot de passe valide', [        
+        {text: 'OK', onPress: () => null},
+      ]);
+      return;
+    }
+
+    axios({
+      method: 'POST',
+      url: ApiService.API_URL_LOGIN,
+      data: JSON.stringify({
+        login: data.identifiant,
+        password: data.password
+      }),
+      headers: {
+        Accept: 'application/json',
+       'Content-Type': 'application/json'
+     }
+    })
+      .then((response: {data: any}) => {
+        
+         var api = response.data;
+
+         if ( api.code == "success") {
+          storage.save({
+            key: 'credentials', // Note: Do not use underscore("_") in key!
+            id: 'credentials', // Note: Do not use underscore("_") in id!
+            data: {
+              pays: api.message
+            },
+            expires: 1000 * 60 * 60 
+          });
+
+          navigation.navigate('espace_etab')
+          
+         }
+
+         if ( api.code == "error") {
+          Alert.alert('Erreur', api.message, [        
+            {text: 'OK', onPress: () => null},
+          ]);
+         }
+
+
+         
+      })
+      .catch((error: any) => {
+       console.log(error);
+       Alert.alert('Erreur', error, [        
+        {text: 'OK', onPress: () => null},
+      ]);
+       
+      });
+
+  };
   return (
     <>
       <SafeAreaView
@@ -77,6 +152,7 @@ export default function IdentificationProprietaireScreen({
                   Identifiant
                 </Text>
                 <TextInput
+                onChangeText={input => (data.identifiant = input)}
                 placeholderTextColor={'rgba(100,100,100,.7)'}
                 placeholder="Entrez votre identifiant ..."
                   style={{
@@ -114,6 +190,7 @@ export default function IdentificationProprietaireScreen({
                 textContentType='password'
                 keyboardType='default'
                 secureTextEntry={!isVisible} 
+                onChangeText={input => (data.password = input)}
                 placeholderTextColor={'rgba(100,100,100,.7)'}
                 placeholder="Entrez votre Mot de Passe..."
                   style={{
@@ -141,12 +218,12 @@ export default function IdentificationProprietaireScreen({
                   marginBottom: 20,
                 }}>
                 <Pressable
+                  onPress={() => logUser()}
                   android_ripple={{color: '7B4C7A'}}
                   style={{
                     paddingHorizontal: 10,
                     width: '70%',
-                  }}
-                  onPress={() => navigation.navigate('main')}>
+                  }}>
                   <Text
                     style={{
                       textAlign: 'center',

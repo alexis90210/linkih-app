@@ -80,7 +80,7 @@ export default function Map({navigation, route}: {navigation: any, route:any}) {
           customMapStyle={[]}>
             {etablissements.map( (marker:any , index)  => (
                <Marker
-               key={index}
+               key={Math.random()}
                draggable
                coordinate={{
                  latitude: Number(marker.latitude),
@@ -225,7 +225,7 @@ export default function Map({navigation, route}: {navigation: any, route:any}) {
           
           {etablissements.map( (marker:any , index)  => (
             <Pressable
-              key={index}
+              key={Math.random()}
               onPress={() =>
                 navigation.navigate('espace_etab', {
                   nomEtab: marker.nom,

@@ -26,6 +26,7 @@ import CompteProprietaire from './screens/compte_proprietaire';
 import MonEtablissement from './screens/mon_etablissement';
 import MenuScreen from './screens/menu';
 import { couleurs } from './components/color';
+import InscriptionProprietaire4 from './screens/inscription_proprietaire_4';
 
 const Stack = createNativeStackNavigator();
 
@@ -160,7 +161,23 @@ export default function App(): JSX.Element {
           name="inscription_proprietaire_3"
           component={InscriptionProprietaire3}
           options={{
-            title: 'Creation du compte proprietaire',
+            title: 'Image de couverture',
+            headerShadowVisible: false,
+            headerTitleStyle: {fontSize: 18, fontWeight: '700', color:couleurs.primary},
+            headerTintColor:couleurs.primary,
+            headerShown: true,
+            presentation: 'modal',
+            animationTypeForReplace: 'push',
+            animation: 'slide_from_right',
+          }}
+        />
+
+        {/* inscription_proprietaire_4 */}
+        <Stack.Screen
+          name="inscription_proprietaire_4"
+          component={InscriptionProprietaire4}
+          options={{
+            title: 'Image de couverture',
             headerShadowVisible: false,
             headerTitleStyle: {fontSize: 18, fontWeight: '700', color:couleurs.primary},
             headerTintColor:couleurs.primary,

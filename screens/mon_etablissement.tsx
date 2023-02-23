@@ -20,6 +20,7 @@ import CloseIcon from '../components/close';
 import AddIcon from '../components/add';
 import MinusIcon from '../components/minus';
 import { couleurs } from '../components/color';
+import ShopIcon from '../components/shop';
 
 export default function MonEtablissement({
   route,
@@ -57,8 +58,8 @@ export default function MonEtablissement({
             paddingVertical: 15,
             paddingHorizontal: 10,
           }}>
-          <Pressable onPress={() => navigation.goBack()}>
-            <ArrowLeftIcon />
+          <Pressable onPress={() => navigation.navigate('main')}>
+            <ShopIcon color={couleurs.primary} />
           </Pressable>
           <Text style={{color: '#000', fontSize: 18, fontWeight: '700'}}>
             {title}

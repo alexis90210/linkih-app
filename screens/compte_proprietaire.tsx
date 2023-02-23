@@ -108,14 +108,19 @@ export default function CompteProprietaire({navigation}: {navigation: any}) {
                   flexDirection: 'row',
                   justifyContent: 'flex-end',
                 }}>
-                <View
-                  style={{
-                    backgroundColor: '#841584',
-                    padding: 10,
-                    borderRadius: 15,
-                  }}>
-                  <EditIcon />
-                </View>
+               <Pressable onPress={() => navigation.navigate('inscription_proprietaire_1', {
+                updateEtab:true,
+                vendeur_id:1
+               })}>
+                  <View
+                    style={{
+                      backgroundColor: '#841584',
+                      padding: 10,
+                      borderRadius: 15,
+                    }}>
+                    <EditIcon />
+                  </View>
+               </Pressable>
               </View>
             </View>
           </View>
