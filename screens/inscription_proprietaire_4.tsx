@@ -11,9 +11,33 @@ import {
   TextInput,
 } from 'react-native';
 import { couleurs } from '../components/color';
+import axios from 'axios';
+import ApiService from '../components/api/service';
 
 // InscriptionProprietaire3
-export default function InscriptionProprietaire4({navigation}: {navigation: any}) {
+export default function InscriptionProprietaire4({navigation, route}: {navigation: any, route:any}) {
+  
+  console.log( JSON.stringify(route.params.payload) );
+
+  const submitSaveProprietaire = () => {
+    axios({
+      method: 'POST',
+      url: ApiService.API_URL_CREATE_UTILISATEUR,
+      data: JSON.stringify(route.params.payload),
+      headers: {
+        Accept: 'application/json',
+       'Content-Type': 'application/json'
+     }
+    }).then((response: {data: any}) => {
+      console.log(response.data);
+      
+      if ( response.data.code == "success") {
+        // navigation.navigate('main')
+      }
+    }).catch( error => console.log(error) )
+  }
+  
+
   return (
     <>
       <SafeAreaView
@@ -29,7 +53,7 @@ export default function InscriptionProprietaire4({navigation}: {navigation: any}
               flexDirection: 'column',
               justifyContent: 'center',
               alignItems: 'center',
-              marginTop: '70%',
+              marginTop: '45%',
             }}>
             <Text
               style={{
@@ -68,7 +92,7 @@ export default function InscriptionProprietaire4({navigation}: {navigation: any}
                 style={{
                   paddingHorizontal: 10,
                 }}
-                onPress={() => navigation.navigate('main')}>
+                onPress={() => submitSaveProprietaire()}>
                 <Text
                   style={{
                     textAlign: 'center',

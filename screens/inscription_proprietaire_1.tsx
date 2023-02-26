@@ -3,16 +3,17 @@ import React, {useState} from 'react';
 import {
   SafeAreaView,
   ScrollView,
-  StyleSheet,
   Text,
   View,
-  Pressable,
-  PixelRatio,
+  TouchableOpacity,
   TextInput,
+  Alert
 } from 'react-native';
 import EyeSlashIcon from '../components/eye_slash';
 import EyeIcon from '../components/eye';
-import {couleurs} from '../components/color';
+import {CustomFont, couleurs} from '../components/color';
+import UserPosition from '../components/api/user_position';
+import Geolocation from '@react-native-community/geolocation';
 
 // InscriptionProprietaireScreen1
 export default function InscriptionProprietaireScreen1({
@@ -26,6 +27,81 @@ export default function InscriptionProprietaireScreen1({
     if (isVisible) setVisible(false);
     if (!isVisible) setVisible(true);
   };
+
+  var etablissement:any = {
+    nom:"",
+    email:"",
+    mobile:"",
+    password:"",
+    role: "ROLE_VENDEUR",
+    longitude: "",
+    latitude: "",
+    adresse:"",
+    corps_metier:""
+  }
+
+  Geolocation.getCurrentPosition(
+    info => {
+      etablissement.longitude = info.coords.longitude
+      etablissement.latitude = info.coords.latitude      
+    }
+  );
+
+
+  const getEtablissementData = () => {
+
+
+    console.log( etablissement ); 
+    
+    var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    if(!etablissement.email.match(mailformat))
+    {
+      Alert.alert('', "Email invalide", [        
+        {text: 'OK', onPress: () => null},
+      ]);
+      return;
+    }
+
+    if(etablissement.password.length < 4)
+    {
+      Alert.alert('', "Mot de passe trop court", [        
+        {text: 'OK', onPress: () => null},
+      ]);
+      return;
+    }
+
+    if(etablissement.nom.length < 2)
+    {
+      Alert.alert('', "Le nom de l'entreprise est trop court", [        
+        {text: 'OK', onPress: () => null},
+      ]);
+      return;
+    }
+
+    if(etablissement.mobile.length < 2)
+    {
+      Alert.alert('', "Le mobile de l'entreprise est trop court", [        
+        {text: 'OK', onPress: () => null},
+      ]);
+      return;
+    }
+
+    if(etablissement.mobile.length < 6)
+    {
+      Alert.alert('', "Le mobile de l'entreprise est trop court", [        
+        {text: 'OK', onPress: () => null},
+      ]);
+      return;
+    }
+
+
+
+    navigation.navigate('inscription_proprietaire_2', {
+      etablissement:etablissement
+    });
+
+  }
+
   return (
     <>
       <SafeAreaView
@@ -70,19 +146,22 @@ export default function InscriptionProprietaireScreen1({
                     fontSize: 15,
                     height: 30,
                     opacity: 0.85,
+                    fontFamily:CustomFont.Poppins
                   }}>
                   Nom entreprise
                 </Text>
                 <TextInput
                   placeholderTextColor={'rgba(100,100,100,.7)'}
                   placeholder="Entrez le nom entreprise"
+                  defaultValue={etablissement.nom}
+                  onChangeText={input => (etablissement.nom = input)}
                   style={{
                     backgroundColor: 'transparent',
                     borderBottomWidth: 1,
-                    borderBottomColor: '#E2C6BB',
-                    color: '#7B4C7A',
+                    borderBottomColor: couleurs.secondary,
+                    color: couleurs.primary,
                     width: '100%',
-                    fontWeight: '600',
+                    fontFamily:CustomFont.Poppins,
                     padding: 10,
                   }}></TextInput>
               </View>
@@ -102,19 +181,22 @@ export default function InscriptionProprietaireScreen1({
                     fontSize: 15,
                     height: 30,
                     opacity: 0.85,
+                    fontFamily:CustomFont.Poppins,
                   }}>
                  Email
                 </Text>
                 <TextInput
                   placeholderTextColor={'rgba(100,100,100,.7)'}
                   placeholder="Entrez l'email entreprise"
+                  defaultValue={etablissement.email}
+                  onChangeText={input => (etablissement.email = input)}
                   style={{
                     backgroundColor: 'transparent',
                     borderBottomWidth: 1,
-                    borderBottomColor: '#E2C6BB',
-                    color: '#7B4C7A',
+                    borderBottomColor: couleurs.secondary,
+                    color: couleurs.primary,
                     width: '100%',
-                    fontWeight: '600',
+                    fontFamily:CustomFont.Poppins,
                     padding: 10,
                   }}></TextInput>
               </View>
@@ -134,19 +216,22 @@ export default function InscriptionProprietaireScreen1({
                     fontSize: 15,
                     height: 30,
                     opacity: 0.85,
+                    fontFamily:CustomFont.Poppins,
                   }}>
                  Mobile
                 </Text>
                 <TextInput
                   placeholderTextColor={'rgba(100,100,100,.7)'}
                   placeholder="Entrez le mobile entreprise"
+                  defaultValue={etablissement.mobile}
+                  onChangeText={input => (etablissement.mobile = input)}
                   style={{
                     backgroundColor: 'transparent',
                     borderBottomWidth: 1,
-                    borderBottomColor: '#E2C6BB',
-                    color: '#7B4C7A',
+                    borderBottomColor: couleurs.secondary,
+                    color: couleurs.primary,
                     width: '100%',
-                    fontWeight: '600',
+                    fontFamily:CustomFont.Poppins,
                     padding: 10,
                   }}></TextInput>
               </View>
@@ -167,6 +252,7 @@ export default function InscriptionProprietaireScreen1({
                     fontSize: 15,
                     height: 30,
                     opacity: 0.85,
+                    fontFamily:CustomFont.Poppins,
                   }}>
                   Mot de passe
                 </Text>
@@ -183,52 +269,51 @@ export default function InscriptionProprietaireScreen1({
                     textContentType="password"
                     keyboardType="default"
                     secureTextEntry={!isVisible}
+                    defaultValue={etablissement.password}
+                    onChangeText={input => (etablissement.password = input)}
                     placeholderTextColor={'rgba(100,100,100,.7)'}
                     placeholder="Entrer votre mot de Passe..."
                     style={{
                       backgroundColor: 'transparent',
                       borderBottomWidth: 1,
-                      borderBottomColor: '#E2C6BB',
-                      color: '#7B4C7A',
-                      fontWeight: '600',
+                      borderBottomColor: couleurs.secondary,
+                      color: couleurs.primary,
+                      fontFamily:CustomFont.Poppins,
                       width: '93%',
-                      padding: 10,
+                      padding: 10,                      
                     }}></TextInput>
-                  <Pressable style={{padding: 15}} onPress={_setVisible}>
+                  <TouchableOpacity style={{padding: 15}} onPress={_setVisible}>
                     {isVisible && <EyeSlashIcon />}
                     {!isVisible && <EyeIcon />}
-                  </Pressable>
+                  </TouchableOpacity>
                 </View>
               </View>
 
               <View
                 style={{
                   alignItems: 'center',
-                  backgroundColor: '#7B4C7A',
+                  backgroundColor: couleurs.primary,
                   borderRadius: 30,
                   marginBottom: 20,
                 }}>
-                <Pressable
-                  android_ripple={{color: '7B4C7A'}}
+                <TouchableOpacity
                   style={{
                     paddingHorizontal: 10,
                     width: '70%',
                   }}
-                  onPress={() =>
-                    navigation.navigate('inscription_proprietaire_2')
-                  }>
+                  onPress={() => getEtablissementData() }>
                   <Text
                     style={{
                       textAlign: 'center',
                       padding: 10,
                       paddingHorizontal: 20,
-                      fontSize: 14,
-                      fontWeight: '500',
+                      fontSize: 15,
+                      fontFamily:CustomFont.Poppins,
                       color: couleurs.secondary,
                     }}>
                     Suivant
                   </Text>
-                </Pressable>
+                </TouchableOpacity>
               </View>
             </View>
             <View
@@ -241,8 +326,7 @@ export default function InscriptionProprietaireScreen1({
                 justifyContent: 'flex-end',
                 marginVertical: 10,
               }}>
-              <Pressable
-                android_ripple={{color: '7B4C7A'}}
+              <TouchableOpacity
                 style={{
                   paddingHorizontal: 10,
                 }}
@@ -251,12 +335,12 @@ export default function InscriptionProprietaireScreen1({
                   style={{
                     textAlign: 'center',
                     fontSize: 15,
-                    fontWeight: '500',
-                    color: '#841584',
+                    fontFamily:CustomFont.Poppins,
+                    color: couleurs.primary,
                   }}>
                   Avez-vous besoin d'aide ?
                 </Text>
-              </Pressable>
+              </TouchableOpacity>
             </View>
           </View>
         </ScrollView>

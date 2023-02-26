@@ -6,12 +6,12 @@ import {
   StyleSheet,
   Text,
   View,
-  Pressable,
+  TouchableOpacity,
   PixelRatio,
   TextInput,
 } from 'react-native';
 import ShopIcon from '../components/shop';
-import { couleurs } from '../components/color';
+import { CustomFont, couleurs } from '../components/color';
 
 // SplashScreen
 export default function SplashScreen({navigation}: {navigation: any}) {
@@ -21,7 +21,7 @@ export default function SplashScreen({navigation}: {navigation: any}) {
         style={{
           width: '100%',
           height: '100%',
-          backgroundColor: '#f6f6f6f6',
+          backgroundColor: couleurs.primary,
         }}>
         <ScrollView contentInsetAdjustmentBehavior="automatic">
           <View
@@ -30,32 +30,34 @@ export default function SplashScreen({navigation}: {navigation: any}) {
               flexDirection: 'column',
               justifyContent: 'center',
               alignItems: 'center',
-              marginTop: '55%',
+              marginTop: '40%',
             }}>
 
 
-                  <ShopIcon color={'#7B4C7A'}/>
+                  <ShopIcon color={couleurs.secondary}/>
 
             <Text
               style={{
                 marginTop:30,
                 textAlign: 'center',
-                color: '#7B4C7A',
-                fontWeight: '600',
+                color: couleurs.white,
+                fontWeight: '800',
                 textTransform: 'uppercase',
                 fontSize: 24,
+                fontFamily:CustomFont.Poppins
               }}>
               Welcome on Linkih
             </Text>
             <Text
               style={{
                 textAlign: 'center',
-                color: '#00000090',
+                color: couleurs.secondary,
                 opacity: 0.85,
                 fontWeight: '600',
                 fontSize: 14,
                 marginVertical: 13,
-                width:'80%'
+                width:'80%',
+                fontFamily:CustomFont.Poppins
               }}>
               Gérer votre fiche d'établissement directement sur l'application
               mobile
@@ -66,10 +68,9 @@ export default function SplashScreen({navigation}: {navigation: any}) {
                 display: 'flex',
                 flexDirection: 'row',
                 justifyContent: 'center',
-                backgroundColor: '#7B4C7A' ,borderRadius: 30,
+                backgroundColor: couleurs.white ,borderRadius: 30,
               }}>
-              <Pressable
-              android_ripple={{color: '7B4C7A'}}
+              <TouchableOpacity              
                 style={{
                   paddingHorizontal: 10,
                 }}
@@ -78,15 +79,16 @@ export default function SplashScreen({navigation}: {navigation: any}) {
                   style={{
                     textAlign: 'center',                    
                     fontWeight: '500',
-                    color:couleurs.secondary,
+                    color:couleurs.primary,
                     padding: 10,
                     paddingHorizontal: 20,
                     fontSize: 14,
                     width: 150,
+                    fontFamily:CustomFont.Poppins
                   }}>
                   EXPLOREZ
                 </Text>
-              </Pressable>
+              </TouchableOpacity>
             </View>
           </View>
         </ScrollView>

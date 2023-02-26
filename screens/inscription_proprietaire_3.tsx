@@ -1,21 +1,48 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import {
   SafeAreaView,
   ScrollView,
-  StyleSheet,
   Text,
   View,
-  Pressable,
-  PixelRatio,
-  TextInput,
-  ImageBackground,
+  TouchableOpacity,
   Image,
 } from 'react-native';
 import { couleurs } from '../components/color';
+import ImagePicker from 'react-native-image-crop-picker';
+
 
 // InscriptionProprietaire3
-export default function InscriptionProprietaire3({navigation}: {navigation: any}) {
+export default function InscriptionProprietaire3({navigation, route}: {navigation: any, route: any}) {
+  
+  var proprietaire = route.params;
+
+  const [photoCover, setPhotoCover] = useState("");
+  const [photoCoverImage, setPhotoCoverImage] = useState("");
+
+  const openImagePickerWithCrop = () => {
+    ImagePicker.openPicker({
+      width: 900,
+      height: 400,
+      cropping: true
+    }).then(image => {
+      console.log(image);
+      setPhotoCover(image.path)
+      setPhotoCoverImage(image as never)
+    });
+  }
+
+
+  const nextPage = () => {
+    navigation.navigate('inscription_proprietaire_4', 
+    {
+      payload: proprietaire,
+      image: photoCoverImage
+    }
+    )
+  }
+
+  
   return (
     <>
       <SafeAreaView
@@ -33,24 +60,28 @@ export default function InscriptionProprietaire3({navigation}: {navigation: any}
               alignItems: 'center',
               padding:10
             }}>
-            <Image
-          source={require('../assets/images/banner.jpeg')}
+            
+          
+
+          <TouchableOpacity onPress={() => openImagePickerWithCrop()} style={{width:'100%'}}>
+          <View style={{borderWidth:1, borderStyle:'dashed', 
+          padding:10,
+          display:'flex',
+          flexDirection:'column',
+          justifyContent:'center',
+          marginTop:10,
+          backgroundColor: 'rgba(200,200, 200, .3)',
+          borderColor:couleurs.primary, height:180, width:'100%'}}>
+          {photoCover && <Image
+          source={{uri:photoCover}}
           style={{
-            height: 200,
+            height: 160,
             width: '100%',
-            borderRadius:10
-          }}/>
-            <Text
-              style={{
-                textAlign: 'center',
-                color: '#00000090',
-                opacity: 0.85,
-                fontWeight: '600',
-                fontSize: 14,
-                marginVertical: 13,
-                width:'80%'
-              }}>
-              Veuillez completer votre photo de couverture            </Text>
+          }}/>}
+          {!photoCover && <Text style={{color:couleurs.dark, textAlign:'center', width:300, flexWrap:'wrap', alignSelf:'center'}}> Tapez pour selectionner une image depuis votre gallerie</Text>}
+          </View>
+          </TouchableOpacity>
+            
             <View
               style={{
                 marginVertical: 70,
@@ -59,12 +90,11 @@ export default function InscriptionProprietaire3({navigation}: {navigation: any}
                 justifyContent: 'center',
                 backgroundColor: '#7B4C7A' ,borderRadius: 30,
               }}>
-              <Pressable
-              android_ripple={{color: '7B4C7A'}}
+              <TouchableOpacity
                 style={{
                   paddingHorizontal: 10,
                 }}
-                onPress={() => navigation.navigate('inscription_proprietaire_4')}>
+                onPress={() => nextPage()}>
                 <Text
                   style={{
                     textAlign: 'center',
@@ -76,9 +106,9 @@ export default function InscriptionProprietaire3({navigation}: {navigation: any}
                     fontSize: 14,
                     width: 150,
                   }}>
-                  Choisir
+                  Valider
                 </Text>
-              </Pressable>
+              </TouchableOpacity>
             </View>
           </View>
         </ScrollView>

@@ -135,7 +135,7 @@ export default function MonEtablissement({
                 {isConsulting && (
                   <AirbnbRating
                     reviewSize={4}
-                    reviewColor="#841584"
+                    reviewColor={couleurs.primary}
                     showRating={false}
                     count={4}
                     reviews={['Terrible', 'Bad', 'Good', 'Very Good']}
@@ -154,7 +154,7 @@ export default function MonEtablissement({
                 }}>
                 <View
                   style={{
-                    backgroundColor: '#841584',
+                    backgroundColor: couleurs.primary,
                     padding: 10,
                     borderRadius: 15,
                   }}>
@@ -190,7 +190,7 @@ export default function MonEtablissement({
               </Text>
               <Text
                 style={{
-                  color: '#841584',
+                  color: couleurs.primary,
                   paddingVertical: 3,
                   fontSize: 15,
                   fontWeight: '600',
@@ -277,7 +277,7 @@ export default function MonEtablissement({
                   </Text>
                   <Text
                     style={{
-                      color: '#841584',
+                      color: couleurs.primary,
                       paddingVertical: 3,
                       fontSize: 15,
                       fontWeight: '600',
@@ -324,7 +324,7 @@ export default function MonEtablissement({
                   </Text>
                   <Text
                     style={{
-                      color: '#841584',
+                      color: couleurs.primary,
                       paddingVertical: 3,
                       fontSize: 14,
                       fontWeight: '600',
@@ -365,7 +365,7 @@ export default function MonEtablissement({
                   <Pressable onPress={() => navigation.navigate('rdv')}>
                     <Text
                       style={{
-                        color: '#841584',
+                        color: couleurs.primary,
                         paddingVertical: 3,
                         fontSize: 15,
                         fontWeight: '600',
@@ -414,7 +414,7 @@ export default function MonEtablissement({
                     </Text>
                     <Text
                       style={{
-                        color: '#841584',
+                        color: couleurs.primary,
                         paddingVertical: 3,
                         fontSize: 14,
                         fontWeight: '600',
@@ -442,7 +442,7 @@ export default function MonEtablissement({
                     <Pressable onPress={() => null}>
                       <Text
                         style={{
-                          color: '#841584',
+                          color: couleurs.primary,
                           paddingVertical: 3,
                           fontSize: 15,
                           fontWeight: '600',
@@ -491,7 +491,7 @@ export default function MonEtablissement({
                     </Text>
                     <Text
                       style={{
-                        color: '#841584',
+                        color: couleurs.primary,
                         paddingVertical: 3,
                         fontSize: 14,
                         fontWeight: '600',
@@ -519,7 +519,7 @@ export default function MonEtablissement({
                     <Pressable onPress={() => null}>
                       <Text
                         style={{
-                          color: '#841584',
+                          color: couleurs.primary,
                           paddingVertical: 3,
                           fontSize: 15,
                           fontWeight: '600',
@@ -577,11 +577,11 @@ export default function MonEtablissement({
                       borderRadius: 50,
                     }}>
                     <Text style={{color: '#000'}}>Mercredi</Text>
-                    <Text style={{color: '#841584', fontSize: 11}}>
+                    <Text style={{color: couleurs.primary, fontSize: 11}}>
                       08h-12h
                     </Text>
                   </View>
-                  {/* <CloseIcon color={'#841584'} /> */}
+                  {/* <CloseIcon color={couleurs.primary} /> */}
                 </View>
               ))}
             </View>
@@ -633,11 +633,11 @@ export default function MonEtablissement({
                       borderRadius: 50,
                     }}>
                     <Text style={{color: '#000'}}>Facebook</Text>
-                    <Text style={{color: '#841584', fontSize: 12}}>
+                    <Text style={{color: couleurs.primary, fontSize: 12}}>
                       https://facebook.com
                     </Text>
                   </View>
-                  {/* <CloseIcon color={'#841584'} /> */}
+                  {/* <CloseIcon color={couleurs.primary} /> */}
                 </View>
               ))}
             </View>
@@ -778,7 +778,7 @@ export default function MonEtablissement({
                         </Text>
                       </View>
 
-                      <AddIcon color={'#841584'} />
+                      <AddIcon color={couleurs.primary} />
                     </View>
 
                     <View
@@ -829,7 +829,7 @@ export default function MonEtablissement({
                               style={{
                                 height: 1,
                                 borderWidth: 1,
-                                borderColor: '#84158490',
+                                borderColor: couleurs.primary,
                                 borderStyle: 'dashed',
                               }}></View>
                           </View>
@@ -879,7 +879,7 @@ export default function MonEtablissement({
                         </Text>
                       </View>
 
-                      <AddIcon color={'#841584'} />
+                      <AddIcon color={couleurs.primary} />
                     </View>
 
                     <View
@@ -916,7 +916,7 @@ export default function MonEtablissement({
                                 borderRadius: 50,
                               }}>
                               <Text style={{color: '#000'}}>Lundi</Text>
-                              <Text style={{color: '#841584'}}>14h</Text>
+                              <Text style={{color: couleurs.primary}}>14h</Text>
                             </View>
                             <MinusIcon color={'red'} />
                           </View>
@@ -931,7 +931,7 @@ export default function MonEtablissement({
                               style={{
                                 height: 1,
                                 borderWidth: 1,
-                                borderColor: '#84158490',
+                                borderColor: couleurs.primary,
                                 borderStyle: 'dashed',
                               }}></View>
                           </View>
@@ -954,7 +954,7 @@ export default function MonEtablissement({
                       gap: 10,
                       justifyContent: 'flex-start',
                     }}>
-                    <CloseIcon color={'#841584'} />
+                    <CloseIcon color={couleurs.primary} />
                     <Text style={{color: 'rgba(100,100,100,.8)'}}>Quitter</Text>
                   </Pressable>
 

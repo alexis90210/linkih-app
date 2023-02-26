@@ -11,6 +11,7 @@ import LawIcon from '../components/Law';
 import Law2Icon from '../components/Law2';
 import Law3Icon from '../components/Law3';
 import CallIcon from '../components/call';
+import { CustomFont, couleurs } from '../components/color';
 
 function MenuScreen({navigation}: {navigation: any}) {
   return (
@@ -28,11 +29,11 @@ function MenuScreen({navigation}: {navigation: any}) {
           paddingVertical: 15,
           paddingHorizontal: 10,
         }}>
-        <Text style={{color: '#000', fontSize: 18, fontWeight: '700'}}>
+        <Text style={{color: couleurs.primary, fontSize: 18, fontFamily: CustomFont.Poppins}}>
           Parametres du compte
         </Text>
         <Pressable onPress={() => navigation.goBack()}>
-          <ArrowRightIcon color={'#7B4C7A'} />
+          <ArrowRightIcon color={couleurs.primary} />
         </Pressable>
       </View>
       <ScrollView>
@@ -44,7 +45,7 @@ function MenuScreen({navigation}: {navigation: any}) {
               justifyContent: 'space-around',
             }}>
             {/* Informations personnelles */}
-            <Text style={{padding: 10, fontSize: 15, paddingHorizontal: 10, color:'rgba(100,100,100,.8)'}}>
+            <Text style={{padding: 10, fontSize: 15, paddingHorizontal: 10, color:'rgba(100,100,100,.8)',fontFamily: CustomFont.Poppins}}>
               Informations personnelles
             </Text>
             <Pressable
@@ -61,14 +62,14 @@ function MenuScreen({navigation}: {navigation: any}) {
               onPress={() => {
                 navigation.navigate('compte');
               }}>
-              <AccountIcon color={'#841584'} />
-              <Text style={{fontSize: 16, marginVertical: 10, color: '#000'}}>
+              <AccountIcon color={couleurs.primary} />
+              <Text style={{fontSize: 16, marginVertical: 10, color: '#000',fontFamily: CustomFont.Poppins}}>
                 Mon compte
               </Text>
             </Pressable>
 
             {/*  Mon etablissement */}
-            <Text style={{padding: 10, fontSize: 15, paddingHorizontal: 10, color:'rgba(100,100,100,.8)'}}>
+            <Text style={{padding: 10, fontSize: 15, paddingHorizontal: 10, color:'rgba(100,100,100,.8)',fontFamily: CustomFont.Poppins}}>
               Mon etablissement
             </Text>
 
@@ -86,8 +87,8 @@ function MenuScreen({navigation}: {navigation: any}) {
               onPress={() => {
                 null;
               }}>
-              <BillIcon color={'#841584'} />
-              <Text style={{fontSize: 16, marginVertical: 10, color: '#000'}}>
+              <BillIcon color={couleurs.primary} />
+              <Text style={{fontSize: 16, marginVertical: 10, color: '#000',fontFamily: CustomFont.Poppins}}>
                 Reabonnement
               </Text>
             </Pressable>
@@ -106,14 +107,14 @@ function MenuScreen({navigation}: {navigation: any}) {
               onPress={() => {
                 navigation.navigate('espace_etab');
               }}>
-              <ShopIcon color={'#841584'} />
-              <Text style={{fontSize: 16, marginVertical: 10, color: '#000'}}>
+              <ShopIcon color={couleurs.primary} />
+              <Text style={{fontSize: 16, marginVertical: 10, color: '#000',fontFamily: CustomFont.Poppins}}>
                 Mon etablissement
               </Text>
             </Pressable>
 
             {/*  A propos de Linkih */}
-            <Text style={{padding: 10, fontSize: 15, paddingHorizontal: 10, color:'rgba(100,100,100,.8)'}}>
+            <Text style={{padding: 10, fontSize: 15, paddingHorizontal: 10, color:'rgba(100,100,100,.8)',fontFamily: CustomFont.Poppins}}>
               A propos de Linkih
             </Text>
 
@@ -131,8 +132,8 @@ function MenuScreen({navigation}: {navigation: any}) {
               onPress={() => {
                 null;
               }}>
-              <CallIcon color={'#841584'} />
-              <Text style={{fontSize: 16, marginVertical: 10, color: '#000'}}>
+              <CallIcon color={couleurs.primary} />
+              <Text style={{fontSize: 16, marginVertical: 10, color: '#000',fontFamily: CustomFont.Poppins}}>
                 Contactez-nous
               </Text>
             </Pressable>
@@ -153,8 +154,8 @@ function MenuScreen({navigation}: {navigation: any}) {
               onPress={() => {
                 null;
               }}>
-              <Law3Icon color={'#841584'} />
-              <Text style={{fontSize: 16, marginVertical: 10, color: '#000'}}>
+              <Law3Icon color={couleurs.primary} />
+              <Text style={{fontSize: 16, marginVertical: 10, color: '#000',fontFamily: CustomFont.Poppins}}>
                 Condition generale d'utilisation
               </Text>
             </Pressable>
@@ -173,8 +174,8 @@ function MenuScreen({navigation}: {navigation: any}) {
               onPress={() => {
                 null;
               }}>
-              <LawIcon color={'#841584'} />
-              <Text style={{fontSize: 16, marginVertical: 10, color: '#000'}}>
+              <LawIcon color={couleurs.primary} />
+              <Text style={{fontSize: 16, marginVertical: 10, color: '#000',fontFamily: CustomFont.Poppins}}>
                 Politique de confidentialite
               </Text>
             </Pressable>
@@ -193,14 +194,14 @@ function MenuScreen({navigation}: {navigation: any}) {
               onPress={() => {
                 null;
               }}>
-              <Law2Icon color={'#841584'} />
-              <Text style={{fontSize: 16, marginVertical: 10, color: '#000'}}>
+              <Law2Icon color={couleurs.primary} />
+              <Text style={{fontSize: 16, marginVertical: 10, color: '#000',fontFamily: CustomFont.Poppins}}>
                 Mentions legales
               </Text>
             </Pressable>
 
             {/*  Session de connexion */}
-            <Text style={{padding: 10, fontSize: 15, paddingHorizontal: 10, color:'rgba(100,100,100,.8)'}}>
+            <Text style={{padding: 10, fontSize: 15, paddingHorizontal: 10, color:'rgba(100,100,100,.8)',fontFamily: CustomFont.Poppins}}>
               Session de connexion
             </Text>
 
@@ -216,8 +217,8 @@ function MenuScreen({navigation}: {navigation: any}) {
                 paddingHorizontal: 10,
               }}
               onPress={() => null}>
-              <LogoutIcon color={'#841584'} />
-              <Text style={{fontSize: 16, marginVertical: 10, color: '#000'}}>
+              <LogoutIcon color={couleurs.primary} />
+              <Text style={{fontSize: 16, marginVertical: 10, color: '#000',fontFamily: CustomFont.Poppins}}>
                 Deconnexion
               </Text>
             </Pressable>

@@ -6,26 +6,31 @@ import {
   StyleSheet,
   Text,
   View,
-  Pressable,
+  TouchableOpacity,
   PixelRatio,
   TextInput,
   Alert,
 } from 'react-native';
-import {couleurs} from '../components/color';
+import {CustomFont, couleurs} from '../components/color';
 import ApiService from '../components/api/service';
 import axios from 'axios';
 import storage from '../components/api/localstorage';
 
 // IdentificationClientScreen
 export default function IdentificationClientScreen({
-  navigation,
+  navigation, route
 }: {
-  navigation: any;
+  navigation: any,
+  route: any
 }) {
   var data = {
     identifiant: '',
     password: '',
   };
+
+  if( route.params?.login.length > 0 ) {
+    data.identifiant = route.params?.login
+  }
 
   const logUser = async () => {
     console.log(data);
@@ -74,11 +79,8 @@ export default function IdentificationClientScreen({
           
          }
 
-         if ( api.code == "error") {
-          Alert.alert('Erreur', api.message, [        
-            {text: 'OK', onPress: () => null},
-          ]);
-         }
+         if ( api.code == "error") Alert.alert('Erreur', api.message, [  {text: 'OK', onPress: () => null}, ]);
+         
 
 
          
@@ -137,11 +139,15 @@ export default function IdentificationClientScreen({
                     fontSize: 15,
                     height: 30,
                     opacity: 0.85,
+                    marginTop:14,
+                    fontFamily: CustomFont.Poppins,
                   }}>
                   Identifiant
                 </Text>
                 <TextInput
+                  defaultValue={data.identifiant}
                   onChangeText={input => (data.identifiant = input)}
+                  placeholder='Entrez votre identifiant'
                   style={{
                     backgroundColor: 'transparent',
                     borderBottomWidth: 1,
@@ -150,6 +156,7 @@ export default function IdentificationClientScreen({
                     width: '100%',
                     fontWeight: '600',
                     padding: 0,
+                    fontFamily: CustomFont.Poppins,
                   }}></TextInput>
               </View>
 
@@ -169,14 +176,17 @@ export default function IdentificationClientScreen({
                     fontSize: 15,
                     height: 30,
                     opacity: 0.85,
+                    fontFamily: CustomFont.Poppins,
                   }}>
-                  Password
+                  Mot de passe
                 </Text>
                 <TextInput
                   textContentType="password"
                   keyboardType="default"
                   secureTextEntry={true}
+                  defaultValue={data.password}
                   onChangeText={input => (data.password = input)}
+                  placeholder='Entrez votre mot de passe'
                   style={{
                     backgroundColor: 'transparent',
                     borderBottomWidth: 1,
@@ -185,6 +195,7 @@ export default function IdentificationClientScreen({
                     fontWeight: '600',
                     width: '100%',
                     padding: 0,
+                    fontFamily: CustomFont.Poppins,
                   }}></TextInput>
               </View>
 
@@ -195,8 +206,8 @@ export default function IdentificationClientScreen({
                   borderRadius: 30,
                   marginBottom: 20,
                 }}>
-                <Pressable
-                  android_ripple={{color: '7B4C7A'}}
+                <TouchableOpacity
+                  
                   style={{
                     paddingHorizontal: 10,
                     width: '70%',
@@ -207,40 +218,14 @@ export default function IdentificationClientScreen({
                       textAlign: 'center',
                       padding: 10,
                       paddingHorizontal: 20,
-                      fontSize: 14,
+                      fontSize: 15,
                       fontWeight: '500',
                       color: couleurs.secondary,
+                      fontFamily: CustomFont.Poppins,
                     }}>
                     Se connecter
                   </Text>
-                </Pressable>
-              </View>
-
-              <View
-                style={{
-                  alignItems: 'center',
-                  backgroundColor: 'transparent',
-                  borderRadius: 30,
-                  display: 'flex',
-                  flexDirection: 'row',
-                  justifyContent: 'flex-end',
-                }}>
-                <Pressable
-                  android_ripple={{color: '7B4C7A'}}
-                  style={{
-                    paddingHorizontal: 10,
-                  }}
-                  onPress={() => navigation.navigate('creation_compte_client')}>
-                  <Text
-                    style={{
-                      textAlign: 'center',
-                      fontSize: 13,
-                      fontWeight: '500',
-                      color: '#841584',
-                    }}>
-                    Je n'ai pas encore un compte
-                  </Text>
-                </Pressable>
+                </TouchableOpacity>
               </View>
 
               <View
@@ -253,10 +238,10 @@ export default function IdentificationClientScreen({
                   justifyContent: 'flex-end',
                   marginVertical: 10,
                 }}>
-                <Pressable
-                  android_ripple={{color: '7B4C7A'}}
+                <TouchableOpacity
+                  
                   style={{
-                    paddingHorizontal: 10,
+                    
                   }}
                   onPress={() => null}>
                   <Text
@@ -265,11 +250,46 @@ export default function IdentificationClientScreen({
                       fontSize: 15,
                       fontWeight: '500',
                       color: '#000',
+                      fontFamily: CustomFont.Poppins,
                     }}>
                     Mot de passe oublie ?
                   </Text>
-                </Pressable>
+                </TouchableOpacity>
               </View>
+
+              <View
+                style={{
+                  alignItems: 'center',
+                  backgroundColor: 'transparent',
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  borderTopWidth:1,
+                  borderStyle:'dotted',
+                  borderColor:couleurs.primary,
+                  paddingTop:15,
+                  marginTop:10
+                }}>
+                <TouchableOpacity
+                  
+                  style={{
+                    marginVertical: 10,
+                  }}
+                  onPress={() => navigation.navigate('creation_compte_client')}>
+                  <Text
+                    style={{
+                      textAlign: 'center',
+                      fontSize: 15,
+                      fontWeight: '500',
+                      color: '#000',                      
+                    fontFamily: CustomFont.Poppins,
+                    }}>
+                    Je cree mon compte
+                  </Text>
+                </TouchableOpacity>
+              </View>
+
+              
             </View>
           </View>
 
@@ -282,9 +302,10 @@ export default function IdentificationClientScreen({
               flexDirection: 'row',
               justifyContent: 'center',
               marginVertical: 10,
+              marginTop:60
             }}>
-            <Pressable
-              android_ripple={{color: '7B4C7A'}}
+            <TouchableOpacity
+              
               style={{
                 paddingHorizontal: 10,
               }}
@@ -294,11 +315,12 @@ export default function IdentificationClientScreen({
                   textAlign: 'center',
                   fontSize: 15,
                   fontWeight: '500',
-                  color: '#841584',
+                  color: couleurs.primary,
+                  fontFamily: CustomFont.Poppins,
                 }}>
                 Avez-vous besoin d'aide ?
               </Text>
-            </Pressable>
+            </TouchableOpacity>
           </View>
         </ScrollView>
       </SafeAreaView>

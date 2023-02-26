@@ -1,18 +1,15 @@
 import React, {useRef, useState} from 'react';
 import {
-  Button,
-  DrawerLayoutAndroid,
   Text,
   StyleSheet,
   View,
-  Pressable,
+  TouchableOpacity,
   SafeAreaView,
   ScrollView,
   TextInput,
   Image,
   FlatList,
   Modal,
-  ImageBackground,
   Alert,
 } from 'react-native';
 
@@ -25,15 +22,16 @@ import CloseIcon from '../components/close';
 import AccountIcon from '../components/account';
 import RdvIcon from '../components/rdv';
 import FilterIcon from '../components/filter';
-import {couleurs} from '../components/color';
+import {CustomFont, couleurs} from '../components/color';
 import MapIcon from '../components/map';
 import axios from 'axios';
 import ApiService from '../components/api/service';
+import categories from '../components/api/categories';
 
 function Main({navigation}: {navigation: any}) {
   const [myPosition, SetMyPosition] = useState({
     latitude: 0,
-    longitude: 0
+    longitude: 0,
   });
   const getUserPosition = () => {
     GetLocation.getCurrentPosition({
@@ -45,13 +43,13 @@ function Main({navigation}: {navigation: any}) {
 
         SetMyPosition({
           latitude: Number(location.latitude),
-          longitude: Number(location.longitude)
-        })
+          longitude: Number(location.longitude),
+        });
 
         // let url = 'http://maps.googleapis.com/maps/api/geocode/json?latlng='+location.latitude+','+location.longitude+'&sensor=true&key=' + ApiService.GEOCODE_KEY
         // axios.get(url)
         // .then( cities => {
-        //   console.log(cities);          
+        //   console.log(cities);
         // })
       })
       .catch(error => {
@@ -60,17 +58,12 @@ function Main({navigation}: {navigation: any}) {
       });
   };
 
-
-  const goTo = (screen:any, params:any) => {
-    getUserPosition()
+  const goTo = (screen: any, params: any) => {
+    getUserPosition();
     setTimeout(() => {
-      
-      navigation.navigate(screen, {...myPosition})
+      navigation.navigate(screen, {...myPosition});
     }, 1000);
-  }
-
-  
-
+  };
 
   const [activeTab, setActiveTab] = useState('Tab 1');
 
@@ -105,7 +98,7 @@ function Main({navigation}: {navigation: any}) {
   const VilleList = () => {
     const renderItem = ({item}: {item: any}) => (
       <View>
-        <Pressable onPress={() => selectVille(item)}>
+        <TouchableOpacity onPress={() => selectVille(item)}>
           <View
             style={{
               display: 'flex',
@@ -116,15 +109,21 @@ function Main({navigation}: {navigation: any}) {
               gap: 10,
             }}>
             <WorldIcon />
-            <Text style={{color: 'rgba(100,100,100,1)'}}>{item.name}</Text>
+            <Text
+              style={{
+                color: 'rgba(100,100,100,1)',
+                fontFamily: CustomFont.Poppins,
+              }}>
+              {item.name}
+            </Text>
           </View>
-        </Pressable>
+        </TouchableOpacity>
         <View style={{height: 1, overflow: 'hidden', paddingHorizontal: 10}}>
           <View
             style={{
               height: 1,
               borderWidth: 1,
-              borderColor: '#84158490',
+              borderColor: couleurs.primary,
               borderStyle: 'dashed',
             }}></View>
         </View>
@@ -144,45 +143,6 @@ function Main({navigation}: {navigation: any}) {
   const [modalVisibleCategories, setModalVisibleCategories] = useState(false);
   const [currentCategorie, setCurrentCategorie] = useState({name: ''});
 
-  const categories = [
-
-    {
-      name: "Esthétique",
-      sous_categorie: [
-          "Techniciennes de Blanchiment dentaire",
-          "Traitement du visage et corps",
-          "Techniciennes de cils",
-          "prothésiste ongulaire",
-          "tatouage / détatouage ",
-          "maquilleuse",
-          "massage",
-          "ventes produits pour le corps ",
-          "ventes produits pour le visage"
-      ]
-    },
-  {
-      name: "Capillaire",
-      sous_categorie: [
-          "coiffeur/euse Afro",
-          "coiffeur/euse lissage",
-          "coiffeur/euse lace wig",
-          "ventes produits pour les cheveux"
-      ]
-    },
-  {
-      name: "Texttiles",
-      sous_categorie: [
-          "Boutique en ligne féminine",
-          "Boutique en ligne masculine",
-          "Boutique enfants",
-          "Boutique mixte"
-      ]
-    }
-
-
-    // add more categories here
-  ];
-
   const handleOpenModalCategories = () => {
     setModalVisibleCategories(true);
   };
@@ -199,7 +159,7 @@ function Main({navigation}: {navigation: any}) {
   const CategorieList = () => {
     const renderItem = ({item}: {item: any}) => (
       <View>
-        <Pressable onPress={() => selectCategorie(item)}>
+        <TouchableOpacity onPress={() => selectCategorie(item)}>
           <View
             style={{
               display: 'flex',
@@ -208,17 +168,23 @@ function Main({navigation}: {navigation: any}) {
               marginVertical: 10,
               gap: 10,
             }}>
-            <ShopIcon color={'#841584'} />
-            <Text style={{color: 'rgba(100,100,100,1)'}}>{item.name}</Text>
+            <ShopIcon color={couleurs.secondary} />
+            <Text
+              style={{
+                color: 'rgba(100,100,100,1)',
+                fontFamily: CustomFont.Poppins,
+              }}>
+              {item.name}
+            </Text>
           </View>
-        </Pressable>
+        </TouchableOpacity>
 
         <View style={{height: 1, overflow: 'hidden', paddingHorizontal: 10}}>
           <View
             style={{
               height: 1,
               borderWidth: 1,
-              borderColor: '#84158490',
+              borderColor: couleurs.primary,
               borderStyle: 'dashed',
             }}></View>
         </View>
@@ -246,30 +212,28 @@ function Main({navigation}: {navigation: any}) {
       url: ApiService.API_URL_GET_VENDEURS,
       headers: {
         Accept: 'application/json',
-       'Content-Type': 'application/json'
-     }
+        'Content-Type': 'application/json',
+      },
     })
       .then((response: {data: any}) => {
-        var api = response.data;        
-        if ( api.code == "success") { 
-          setEtablissements(api.message)}
-        if ( api.code == "error") {
-          Alert.alert('Erreur', api.message, [        
+        var api = response.data;
+        if (api.code == 'success') {
+          setEtablissements(api.message);
+        }
+        if (api.code == 'error') {
+          Alert.alert('Erreur', api.message, [
             {text: 'OK', onPress: () => null},
           ]);
-        }         
+        }
       })
       .catch((error: any) => {
-       console.log(error);
-       Alert.alert('Erreur', error, [        
-        {text: 'OK', onPress: () => null},
-      ]);
-       
+        console.log(error);
+        Alert.alert('Erreur', error, [{text: 'OK', onPress: () => null}]);
       });
-  }
+  };
 
   const handleOpenModalEtablissement = () => {
-    loadEtablissements()
+    loadEtablissements();
     setModalVisibleEtablissement(true);
   };
 
@@ -285,7 +249,7 @@ function Main({navigation}: {navigation: any}) {
   const EtablissementList = () => {
     const renderItem = ({item}: {item: any}) => (
       <View>
-        <Pressable onPress={() => selectEtablissement(item)}>
+        <TouchableOpacity onPress={() => selectEtablissement(item)}>
           <View
             style={{
               display: 'flex',
@@ -294,17 +258,17 @@ function Main({navigation}: {navigation: any}) {
               marginVertical: 10,
               gap: 10,
             }}>
-            <ShopIcon color={'#841584'} />
-            <Text style={{color: 'rgba(100,100,100,1)'}}>{item.nom}</Text>
+            <ShopIcon color={couleurs.secondary} />
+            <Text style={{color: 'rgba(100,100,100,1)',fontFamily: CustomFont.Poppins}}>{item.nom}</Text>
           </View>
-        </Pressable>
+        </TouchableOpacity>
 
         <View style={{height: 1, overflow: 'hidden', paddingHorizontal: 10}}>
           <View
             style={{
               height: 1,
               borderWidth: 1,
-              borderColor: '#84158490',
+              borderColor: couleurs.primary,
               borderStyle: 'dashed',
             }}></View>
         </View>
@@ -319,8 +283,6 @@ function Main({navigation}: {navigation: any}) {
       />
     );
   };
-
-
 
   return (
     <SafeAreaView
@@ -339,28 +301,32 @@ function Main({navigation}: {navigation: any}) {
           width: '100%',
           paddingVertical: 8,
         }}>
-        <Pressable
-          android_ripple={{color: '7B4C7A'}}
+        <TouchableOpacity
+          
           style={{
             paddingVertical: 10,
             paddingHorizontal: 10,
           }}
           onPress={() => navigation.navigate('menu')}>
           <AccountIcon color={couleurs.secondary} />
-        </Pressable>
+        </TouchableOpacity>
         <Text
-          style={{fontSize: 22, fontWeight: '800', color: couleurs.secondary}}>
+          style={{
+            fontSize: 22,
+            fontFamily: CustomFont.Poppins,
+            color: couleurs.secondary,
+          }}>
           Linkih
         </Text>
-        <Pressable
-          android_ripple={{color: '7B4C7A'}}
+        <TouchableOpacity
+          
           style={{
             paddingVertical: 10,
             paddingHorizontal: 10,
           }}
           onPress={() => navigation.navigate('rdv')}>
           <RdvIcon color={couleurs.secondary} />
-        </Pressable>
+        </TouchableOpacity>
       </View>
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
@@ -368,8 +334,7 @@ function Main({navigation}: {navigation: any}) {
           backgroundColor: '#fff',
         }}>
         {/* Banner Image */}
-        <ImageBackground
-          resizeMode="cover"
+        <Image
           source={require('../assets/images/banner.jpeg')}
           style={{
             height: 200,
@@ -377,16 +342,21 @@ function Main({navigation}: {navigation: any}) {
           }}
         />
 
-        <View>
+        <View
+          style={{
+            position: 'relative',
+            top: -40,
+            width: '100%',
+            backgroundColor: '#fff',
+            borderRadius: 20,
+          }}>
           {/* Welcome text */}
 
           <View
             style={{
-              padding: 20,
-              backgroundColor: '#fff',
-              borderRadius: 15,
               width: '95%',
               alignSelf: 'center',
+              padding: 15,
             }}>
             <View
               style={{
@@ -395,7 +365,7 @@ function Main({navigation}: {navigation: any}) {
                 borderRadius: 15,
                 overflow: 'hidden',
               }}>
-              <Pressable
+              <TouchableOpacity
                 style={[styles.tab, activeTab === 'Tab 1' && styles.activeTab]}
                 onPress={() => handleTabPress('Tab 1')}>
                 <FilterIcon
@@ -404,12 +374,13 @@ function Main({navigation}: {navigation: any}) {
                 <Text
                   style={[
                     styles.tabText,
+                    {fontFamily: CustomFont.Poppins},
                     activeTab === 'Tab 1' && styles.colorActive,
                   ]}>
                   Filtrez
                 </Text>
-              </Pressable>
-              <Pressable
+              </TouchableOpacity>
+              <TouchableOpacity
                 style={[styles.tab, activeTab === 'Tab 2' && styles.activeTab]}
                 onPress={() => handleTabPress('Tab 2')}>
                 <ShopIcon
@@ -417,12 +388,12 @@ function Main({navigation}: {navigation: any}) {
                 />
                 <Text
                   style={[
-                    styles.tabText,
+                    styles.tabText,{fontFamily: CustomFont.Poppins},
                     activeTab === 'Tab 2' && styles.colorActive,
                   ]}>
                   Etablissement
                 </Text>
-              </Pressable>
+              </TouchableOpacity>
             </View>
             <View style={styles.content}>
               {activeTab === 'Tab 1' && (
@@ -449,14 +420,15 @@ function Main({navigation}: {navigation: any}) {
                         color: '#000',
                         fontSize: 15,
                         opacity: 0.85,
+                        fontFamily: CustomFont.Poppins
                       }}>
-                      Pays/Region
+                      Ville / Region
                     </Text>
                     <TextInput
                       onPressIn={handleOpenModalVille}
                       value={currentVille.name}
                       placeholderTextColor={'rgba(100,100,100,.7)'}
-                      placeholder="choisir ..."
+                      placeholder="Selectionnez votre region"
                       style={{
                         backgroundColor: 'transparent',
                         borderBottomWidth: 1,
@@ -465,7 +437,8 @@ function Main({navigation}: {navigation: any}) {
                         width: '100%',
                         fontWeight: '600',
                         padding: 10,
-                        marginTop: 10,
+                        fontSize:15,
+                        fontFamily: CustomFont.Poppins
                       }}></TextInput>
                   </View>
 
@@ -484,6 +457,7 @@ function Main({navigation}: {navigation: any}) {
                         color: '#000',
                         fontSize: 15,
                         opacity: 0.85,
+                        fontFamily: CustomFont.Poppins
                       }}>
                       Categorie
                     </Text>
@@ -491,7 +465,7 @@ function Main({navigation}: {navigation: any}) {
                       onPressIn={handleOpenModalCategories}
                       value={currentCategorie.name}
                       placeholderTextColor={'rgba(100,100,100,.7)'}
-                      placeholder="choisir ..."
+                      placeholder="Selectionnez une categorie"
                       style={{
                         backgroundColor: 'transparent',
                         borderBottomWidth: 1,
@@ -499,8 +473,9 @@ function Main({navigation}: {navigation: any}) {
                         color: '#7B4C7A',
                         width: '100%',
                         fontWeight: '600',
+                        fontSize:15,
                         padding: 10,
-                        marginTop: 10,
+                        fontFamily: CustomFont.Poppins
                       }}></TextInput>
                   </View>
                 </View>
@@ -528,7 +503,7 @@ function Main({navigation}: {navigation: any}) {
                         textAlign: 'center',
                         color: '#000',
                         fontSize: 15,
-                        opacity: 0.85,
+                        fontFamily: CustomFont.Poppins
                       }}>
                       Etablissement
                     </Text>
@@ -536,7 +511,7 @@ function Main({navigation}: {navigation: any}) {
                       onPressIn={handleOpenModalEtablissement}
                       value={currentEtablissement.name}
                       placeholderTextColor={'rgba(100,100,100,.7)'}
-                      placeholder="choisir ..."
+                      placeholder="Selectionnez un etablissement"
                       style={{
                         backgroundColor: 'transparent',
                         borderBottomWidth: 1,
@@ -545,7 +520,8 @@ function Main({navigation}: {navigation: any}) {
                         width: '100%',
                         fontWeight: '600',
                         padding: 10,
-                        marginTop: 10,
+                        fontFamily: CustomFont.Poppins,
+                        fontSize:15
                       }}></TextInput>
                   </View>
                 </View>
@@ -555,23 +531,30 @@ function Main({navigation}: {navigation: any}) {
             <View
               style={{
                 alignItems: 'center',
-                marginVertical: 30,
-                marginHorizontal: 50,
+                marginVertical: 50,
                 display: 'flex',
-                flexDirection: 'row',
+                flexDirection: 'column',
                 justifyContent: 'center',
-                gap: 30,
+                gap: 10,
               }}>
-              <Pressable
-                android_ripple={{color: '7B4C7A'}}
+              <TouchableOpacity
+                
                 style={{
-                  paddingHorizontal: 30,
-                  backgroundColor: '#7B4C7A',
+                  paddingHorizontal: 15,
                   borderRadius: 30,
+                  width:'100%',
+
+                  borderWidth:1,
+                  borderColor: couleurs.primary,
+                  display: 'flex',
+                  justifyContent: 'center',
+                  flexDirection: 'row',
                 }}
-                onPress={() =>  goTo('map', {
-                  ...myPosition
-                })}>
+                onPress={() =>
+                  goTo('map', {
+                    ...myPosition,
+                  })
+                }>
                 <View
                   style={{
                     display: 'flex',
@@ -579,55 +562,62 @@ function Main({navigation}: {navigation: any}) {
                     flexDirection: 'row',
                     justifyContent: 'flex-start',
                     gap: 5,
+                    width:200,
                   }}>
-                  <SearchIcon color={couleurs.secondary} />
+                  <SearchIcon color={couleurs.primary} />
                   <Text
                     style={{
                       textAlign: 'center',
                       padding: 10,
                       paddingHorizontal: 20,
-                      fontSize: 14,
-                      fontWeight: '500',
-                      color: couleurs.secondary,
+                      fontSize: 15,
+                      color:couleurs.primary,
+                      fontFamily: CustomFont.Poppins
                     }}>
-                    Recherchez
+                    Valider la recherche
                   </Text>
                 </View>
-              </Pressable>
-              <Pressable
-                android_ripple={{color: '7B4C7A'}}
+              </TouchableOpacity>
+              <TouchableOpacity
+                
                 style={{
-                  paddingHorizontal: 30,
-                  // width: 260,
-                  backgroundColor: '#7B4C7A',
+                  paddingHorizontal: 15,
+                  display: 'flex',
+                    justifyContent: 'center',
+                    flexDirection: 'row',
+                  backgroundColor: couleurs.dark,
                   borderRadius: 30,
+                  width:'100%'
                 }}
-                onPress={() => goTo('map', {
-                  ...myPosition
-                })}>
+                onPress={() =>
+                  goTo('map', {
+                    ...myPosition,
+                  })
+                }>
                 <View
                   style={{
                     display: 'flex',
                     alignItems: 'center',
                     flexDirection: 'row',
                     justifyContent: 'flex-start',
+                    width:200,
                     gap: 5,
-                    padding: 8,
                   }}>
                   <MapIcon color={couleurs.secondary} />
-                  {/* <Text
-              style={{
-                textAlign: 'center',
-                padding: 10,
-                paddingHorizontal: 20,
-                fontSize: 14,
-                fontWeight: '500',
-                color: couleurs.secondary,
-              }}>
-              Explorer sur la carte
-            </Text> */}
+                  <Text
+                    style={{
+                      textAlign: 'center',
+                      padding: 10,
+                      paddingHorizontal: 20,
+                      fontSize: 15,
+                      fontWeight: '500',
+                      color: couleurs.secondary,
+                      fontFamily: CustomFont.Poppins
+                    }}>
+                    Explorer sur la map
+                  </Text>
                 </View>
-              </Pressable>
+              </TouchableOpacity>
             </View>
           </View>
         </View>
@@ -680,7 +670,7 @@ function Main({navigation}: {navigation: any}) {
                     marginBottom: 20,
                   },
                 ]}>
-                <SearchIcon color={'#841584'} />
+                <SearchIcon color={couleurs.secondary} />
                 <TextInput
                   placeholderTextColor={'rgba(100,100,100,.7)'}
                   placeholder="Recherchez..."
@@ -688,6 +678,7 @@ function Main({navigation}: {navigation: any}) {
                     backgroundColor: 'transparent',
                     borderRadius: 50,
                     color: couleurs.primary,
+                    fontFamily: CustomFont.Poppins,
                     flex: 1,
                   }}></TextInput>
               </View>
@@ -695,7 +686,7 @@ function Main({navigation}: {navigation: any}) {
               <VilleList />
 
               <View style={{padding: 15}}>
-                <Pressable
+                <TouchableOpacity
                   onPress={handleCloseModalVille}
                   style={{
                     display: 'flex',
@@ -704,15 +695,16 @@ function Main({navigation}: {navigation: any}) {
                     gap: 10,
                     justifyContent: 'flex-start',
                   }}>
-                  <CloseIcon color={'#841584'} />
+                  <CloseIcon color={couleurs.secondary} />
                   <Text
                     style={{
                       color: 'rgba(100,100,100,.8)',
                       marginVertical: 10,
+                      fontFamily: CustomFont.Poppins
                     }}>
                     Quitter
                   </Text>
-                </Pressable>
+                </TouchableOpacity>
               </View>
             </View>
           </View>
@@ -743,6 +735,7 @@ function Main({navigation}: {navigation: any}) {
                 fontSize: 15,
                 fontWeight: 'bold',
                 color: 'rgba(0,0,0,.6)',
+                fontFamily: CustomFont.Poppins
               }}>
               Selectionnez une categorie
             </Text>
@@ -762,12 +755,13 @@ function Main({navigation}: {navigation: any}) {
                     marginBottom: 20,
                   },
                 ]}>
-                <SearchIcon color={'#841584'} />
+                <SearchIcon color={couleurs.secondary} />
                 <TextInput
                   placeholderTextColor={'rgba(100,100,100,.7)'}
-                  placeholder="Recherchez..."
+                  placeholder="Recherchez une categorie"
                   style={{
                     backgroundColor: 'transparent',
+                    fontFamily: CustomFont.Poppins,
                     borderRadius: 50,
                     color: couleurs.primary,
                     flex: 1,
@@ -777,7 +771,7 @@ function Main({navigation}: {navigation: any}) {
               <CategorieList />
 
               <View style={{padding: 15, paddingVertical: 30}}>
-                <Pressable
+                <TouchableOpacity
                   onPress={handleCloseModalCategories}
                   style={{
                     display: 'flex',
@@ -786,9 +780,9 @@ function Main({navigation}: {navigation: any}) {
                     gap: 10,
                     justifyContent: 'flex-start',
                   }}>
-                  <CloseIcon color={'#841584'} />
-                  <Text style={{color: 'rgba(100,100,100,.8)'}}>Quitter</Text>
-                </Pressable>
+                  <CloseIcon color={couleurs.secondary} />
+                  <Text style={{color: 'rgba(100,100,100,.8)',fontFamily: CustomFont.Poppins}}>Quitter</Text>
+                </TouchableOpacity>
               </View>
             </View>
           </View>
@@ -817,8 +811,8 @@ function Main({navigation}: {navigation: any}) {
               style={{
                 padding: 15,
                 fontSize: 15,
-                fontWeight: 'bold',
                 color: 'rgba(0,0,0,.6)',
+                fontFamily: CustomFont.Poppins
               }}>
               Selectionnez un etablissement
             </Text>
@@ -838,13 +832,15 @@ function Main({navigation}: {navigation: any}) {
                     marginBottom: 20,
                   },
                 ]}>
-                <SearchIcon color={'#841584'} />
+                <SearchIcon color={couleurs.secondary} />
                 <TextInput
                   placeholderTextColor={'rgba(100,100,100,.7)'}
-                  placeholder="Recherchez..."
+                  placeholder="Recherchez un salon"
                   style={{
                     backgroundColor: 'transparent',
                     borderRadius: 50,
+                    fontSize:15,
+                    fontFamily: CustomFont.Poppins,
                     color: couleurs.primary,
                     flex: 1,
                   }}></TextInput>
@@ -853,7 +849,7 @@ function Main({navigation}: {navigation: any}) {
               <EtablissementList />
 
               <View style={{padding: 15, paddingVertical: 30}}>
-                <Pressable
+                <TouchableOpacity
                   onPress={handleCloseModalEtablissement}
                   style={{
                     display: 'flex',
@@ -862,9 +858,9 @@ function Main({navigation}: {navigation: any}) {
                     gap: 10,
                     justifyContent: 'flex-start',
                   }}>
-                  <CloseIcon color={'#841584'} />
-                  <Text style={{color: 'rgba(100,100,100,.8)'}}>Quitter</Text>
-                </Pressable>
+                  <CloseIcon color={couleurs.secondary} />
+                  <Text style={{color: 'rgba(100,100,100,.8)',fontFamily: CustomFont.Poppins}}>Quitter</Text>
+                </TouchableOpacity>
               </View>
             </View>
           </View>
@@ -884,23 +880,28 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 10,
     justifyContent: 'center',
+    fontFamily: CustomFont.Poppins
   },
   activeTab: {
     backgroundColor: 'transparent',
     borderBottomWidth: 2,
     borderColor: couleurs.main,
+    fontFamily: CustomFont.Poppins
   },
   colorActive: {
     color: couleurs.main,
+    fontFamily: CustomFont.Poppins
   },
   tabText: {
     color: '#000',
-    fontWeight: 'bold',
+    fontFamily: CustomFont.Poppins,
+    fontSize:15,
   },
   content: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    fontFamily: CustomFont.Poppins
   },
 });
 

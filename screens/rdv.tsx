@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 
 import ArrowLeftIcon from '../components/ArrowLeft';
+import { CustomFont, couleurs } from '../components/color';
 
 export default function Rdv({navigation}: {navigation: any}) {
   return (
@@ -29,9 +30,9 @@ export default function Rdv({navigation}: {navigation: any}) {
             paddingHorizontal: 10,
           }}>
           <Pressable onPress={() => navigation.goBack()}>
-            <ArrowLeftIcon />
+            <ArrowLeftIcon color={couleurs.primary} />
           </Pressable>
-          <Text style={{color: '#000', fontSize: 18, fontWeight: '700'}}>
+          <Text style={{color: couleurs.primary, fontSize: 18, fontFamily: CustomFont.Poppins}}>
             Mes rendez-vous
           </Text>
         </View>
@@ -54,7 +55,7 @@ export default function Rdv({navigation}: {navigation: any}) {
                   color: '#000',
                   paddingVertical: 3,
                   fontSize: 16,
-                  fontWeight: '600',
+                  fontFamily: CustomFont.Poppins,
                   opacity: 0.8,
                 }}>
                 Le grand Salon sud
@@ -72,16 +73,16 @@ export default function Rdv({navigation}: {navigation: any}) {
                     color: '#000',
                     paddingVertical: 3,
                     fontSize: 15,
-                    fontWeight: '800',
+                    fontFamily: CustomFont.Poppins
                   }}>
                   Lundi .
                 </Text>
                 <Text
                   style={{
-                    color: '#841584',
+                    color: couleurs.primary,
                     paddingVertical: 3,
                     fontSize: 14,
-                    fontWeight: '600',
+                    fontFamily: CustomFont.Poppins,
                   }}>
                   15:30:50
                 </Text>
@@ -98,7 +99,7 @@ export default function Rdv({navigation}: {navigation: any}) {
                     color: '#000',
                     paddingVertical: 3,
                     fontSize: 15,
-                    fontWeight: '600',
+                    fontFamily: CustomFont.Poppins,
                   }}>
                   Maquillage
                 </Text>
@@ -106,10 +107,10 @@ export default function Rdv({navigation}: {navigation: any}) {
                 <Pressable onPress={() => null}>
                   <Text
                     style={{
-                      color: '#841584',
+                      color: couleurs.primary,
                       paddingVertical: 3,
                       fontSize: 15,
-                      fontWeight: '600',
+                      fontFamily: CustomFont.Poppins,
                     }}>
                     Annuler
                   </Text>
@@ -118,7 +119,7 @@ export default function Rdv({navigation}: {navigation: any}) {
             </View>
 
             <View style={{height:1, overflow:'hidden', paddingHorizontal:10}}>
-              <View style={{height:1,  borderWidth:1, borderColor:'#84158490', borderStyle:'dashed'}}></View>
+              <View style={{height:1,  borderWidth:1, borderColor:couleurs.primary, borderStyle:'dashed'}}></View>
             </View>
 
             <View
@@ -133,7 +134,7 @@ export default function Rdv({navigation}: {navigation: any}) {
                   color: '#000',
                   paddingVertical: 3,
                   fontSize: 16,
-                  fontWeight: '600',
+                  fontFamily: CustomFont.Poppins,
                   opacity: 0.8,
                 }}>
                 Le grand Salon Nord
@@ -151,16 +152,16 @@ export default function Rdv({navigation}: {navigation: any}) {
                     color: '#000',
                     paddingVertical: 3,
                     fontSize: 15,
-                    fontWeight: '800',
+                    fontFamily: CustomFont.Poppins
                   }}>
                   Jeudi .
                 </Text>
                 <Text
                   style={{
-                    color: '#841584',
+                    color: couleurs.primary,
                     paddingVertical: 3,
                     fontSize: 14,
-                    fontWeight: '600',
+                    fontFamily: CustomFont.Poppins,
                   }}>
                   15:30:50
                 </Text>
@@ -177,7 +178,7 @@ export default function Rdv({navigation}: {navigation: any}) {
                     color: '#000',
                     paddingVertical: 3,
                     fontSize: 15,
-                    fontWeight: '600',
+                    fontFamily: CustomFont.Poppins,
                   }}>
                   Soin ongle
                 </Text>
@@ -185,10 +186,10 @@ export default function Rdv({navigation}: {navigation: any}) {
                 <Pressable onPress={() => null}>
                   <Text
                     style={{
-                      color: '#841584',
+                      color: couleurs.primary,
                       paddingVertical: 3,
                       fontSize: 15,
-                      fontWeight: '600',
+                      fontFamily: CustomFont.Poppins,
                     }}>
                     Annuler
                   </Text>
@@ -197,7 +198,7 @@ export default function Rdv({navigation}: {navigation: any}) {
             </View>
 
             <View style={{height:1, overflow:'hidden', paddingHorizontal:10}}>
-              <View style={{height:1,  borderWidth:1, borderColor:'#84158490', borderStyle:'dashed'}}></View>
+              <View style={{height:1,  borderWidth:1, borderColor:couleurs.primary, borderStyle:'dashed'}}></View>
             </View>
 
             <View
@@ -212,7 +213,7 @@ export default function Rdv({navigation}: {navigation: any}) {
                   color: '#000',
                   paddingVertical: 3,
                   fontSize: 16,
-                  fontWeight: '600',
+                  fontFamily: CustomFont.Poppins,
                   opacity: 0.8,
                 }}>
                 Le grand Salon Nord
@@ -230,16 +231,16 @@ export default function Rdv({navigation}: {navigation: any}) {
                     color: '#000',
                     paddingVertical: 3,
                     fontSize: 15,
-                    fontWeight: '800',
+                    fontFamily: CustomFont.Poppins
                   }}>
                   Jeudi .
                 </Text>
                 <Text
                   style={{
-                    color: '#841584',
+                    color: couleurs.primary,
                     paddingVertical: 3,
                     fontSize: 14,
-                    fontWeight: '600',
+                    fontFamily: CustomFont.Poppins,
                   }}>
                   15:30:50
                 </Text>
@@ -256,7 +257,7 @@ export default function Rdv({navigation}: {navigation: any}) {
                     color: '#000',
                     paddingVertical: 3,
                     fontSize: 15,
-                    fontWeight: '600',
+                    fontFamily: CustomFont.Poppins,
                   }}>
                   Soin ongle
                 </Text>
@@ -264,10 +265,10 @@ export default function Rdv({navigation}: {navigation: any}) {
                 <Pressable onPress={() => null}>
                   <Text
                     style={{
-                      color: '#841584',
+                      color: couleurs.primary,
                       paddingVertical: 3,
                       fontSize: 15,
-                      fontWeight: '600',
+                      fontFamily: CustomFont.Poppins,
                     }}>
                     Annuler
                   </Text>
@@ -276,7 +277,7 @@ export default function Rdv({navigation}: {navigation: any}) {
             </View>
 
             <View style={{height:1, overflow:'hidden', paddingHorizontal:10}}>
-              <View style={{height:1,  borderWidth:1, borderColor:'#84158490', borderStyle:'dashed'}}></View>
+              <View style={{height:1,  borderWidth:1, borderColor:couleurs.primary, borderStyle:'dashed'}}></View>
             </View>
 
             <View
@@ -291,7 +292,7 @@ export default function Rdv({navigation}: {navigation: any}) {
                   color: '#000',
                   paddingVertical: 3,
                   fontSize: 16,
-                  fontWeight: '600',
+                  fontFamily: CustomFont.Poppins,
                   opacity: 0.8,
                 }}>
                 Le grand Salon Nord
@@ -309,16 +310,16 @@ export default function Rdv({navigation}: {navigation: any}) {
                     color: '#000',
                     paddingVertical: 3,
                     fontSize: 15,
-                    fontWeight: '800',
+                    fontFamily: CustomFont.Poppins
                   }}>
                   Jeudi .
                 </Text>
                 <Text
                   style={{
-                    color: '#841584',
+                    color: couleurs.primary,
                     paddingVertical: 3,
                     fontSize: 14,
-                    fontWeight: '600',
+                    fontFamily: CustomFont.Poppins,
                   }}>
                   15:30:50
                 </Text>
@@ -335,7 +336,7 @@ export default function Rdv({navigation}: {navigation: any}) {
                     color: '#000',
                     paddingVertical: 3,
                     fontSize: 15,
-                    fontWeight: '600',
+                    fontFamily: CustomFont.Poppins,
                   }}>
                   Soin ongle
                 </Text>
@@ -343,10 +344,10 @@ export default function Rdv({navigation}: {navigation: any}) {
                 <Pressable onPress={() => null}>
                   <Text
                     style={{
-                      color: '#841584',
+                      color: couleurs.primary,
                       paddingVertical: 3,
                       fontSize: 15,
-                      fontWeight: '600',
+                      fontFamily: CustomFont.Poppins,
                     }}>
                     Annuler
                   </Text>
@@ -355,7 +356,7 @@ export default function Rdv({navigation}: {navigation: any}) {
             </View>
 
             <View style={{height:1, overflow:'hidden', paddingHorizontal:10}}>
-              <View style={{height:1,  borderWidth:1, borderColor:'#84158490', borderStyle:'dashed'}}></View>
+              <View style={{height:1,  borderWidth:1, borderColor:couleurs.primary, borderStyle:'dashed'}}></View>
             </View>
 
             <View
@@ -370,7 +371,7 @@ export default function Rdv({navigation}: {navigation: any}) {
                   color: '#000',
                   paddingVertical: 3,
                   fontSize: 16,
-                  fontWeight: '600',
+                  fontFamily: CustomFont.Poppins,
                   opacity: 0.8,
                 }}>
                 Le grand Salon Nord
@@ -388,16 +389,16 @@ export default function Rdv({navigation}: {navigation: any}) {
                     color: '#000',
                     paddingVertical: 3,
                     fontSize: 15,
-                    fontWeight: '800',
+                    fontFamily: CustomFont.Poppins
                   }}>
                   Jeudi .
                 </Text>
                 <Text
                   style={{
-                    color: '#841584',
+                    color: couleurs.primary,
                     paddingVertical: 3,
                     fontSize: 14,
-                    fontWeight: '600',
+                    fontFamily: CustomFont.Poppins,
                   }}>
                   15:30:50
                 </Text>
@@ -414,7 +415,7 @@ export default function Rdv({navigation}: {navigation: any}) {
                     color: '#000',
                     paddingVertical: 3,
                     fontSize: 15,
-                    fontWeight: '600',
+                    fontFamily: CustomFont.Poppins,
                   }}>
                   Soin ongle
                 </Text>
@@ -422,10 +423,10 @@ export default function Rdv({navigation}: {navigation: any}) {
                 <Pressable onPress={() => null}>
                   <Text
                     style={{
-                      color: '#841584',
+                      color: couleurs.primary,
                       paddingVertical: 3,
                       fontSize: 15,
-                      fontWeight: '600',
+                      fontFamily: CustomFont.Poppins,
                     }}>
                     Annuler
                   </Text>
@@ -433,7 +434,7 @@ export default function Rdv({navigation}: {navigation: any}) {
               </View>
             </View>
             <View style={{height:1, overflow:'hidden', paddingHorizontal:10}}>
-              <View style={{height:1,  borderWidth:1, borderColor:'#84158490', borderStyle:'dashed'}}></View>
+              <View style={{height:1,  borderWidth:1, borderColor:couleurs.primary, borderStyle:'dashed'}}></View>
             </View>
 
             <View
@@ -448,7 +449,7 @@ export default function Rdv({navigation}: {navigation: any}) {
                   color: '#000',
                   paddingVertical: 3,
                   fontSize: 16,
-                  fontWeight: '600',
+                  fontFamily: CustomFont.Poppins,
                   opacity: 0.8,
                 }}>
                 Le grand Salon Nord
@@ -466,16 +467,16 @@ export default function Rdv({navigation}: {navigation: any}) {
                     color: '#000',
                     paddingVertical: 3,
                     fontSize: 15,
-                    fontWeight: '800',
+                    fontFamily: CustomFont.Poppins
                   }}>
                   Jeudi .
                 </Text>
                 <Text
                   style={{
-                    color: '#841584',
+                    color: couleurs.primary,
                     paddingVertical: 3,
                     fontSize: 14,
-                    fontWeight: '600',
+                    fontFamily: CustomFont.Poppins,
                   }}>
                   15:30:50
                 </Text>
@@ -492,7 +493,7 @@ export default function Rdv({navigation}: {navigation: any}) {
                     color: '#000',
                     paddingVertical: 3,
                     fontSize: 15,
-                    fontWeight: '600',
+                    fontFamily: CustomFont.Poppins,
                   }}>
                   Soin ongle
                 </Text>
@@ -500,10 +501,10 @@ export default function Rdv({navigation}: {navigation: any}) {
                 <Pressable onPress={() => null}>
                   <Text
                     style={{
-                      color: '#841584',
+                      color: couleurs.primary,
                       paddingVertical: 3,
                       fontSize: 15,
-                      fontWeight: '600',
+                      fontFamily: CustomFont.Poppins,
                     }}>
                     Annuler
                   </Text>

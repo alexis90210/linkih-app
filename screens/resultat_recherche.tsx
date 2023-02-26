@@ -91,7 +91,7 @@ export default function ResultatRechercheScreen({
       Number(route.params?.longitude),
     ).toFixed(2);
     return (
-      <Text style={{fontWeight: '600', fontSize: 15, color: '#841584'}}>
+      <Text style={{fontWeight: '600', fontSize: 15, color: couleurs.primary}}>
         {d} km
       </Text>
     );
@@ -166,7 +166,7 @@ export default function ResultatRechercheScreen({
               <Text style={{fontWeight: '600', fontSize: 15, color: '#000'}}>
                 5.0
               </Text>
-              <Text style={{fontWeight: '600', fontSize: 15, color: '#841584'}}>
+              <Text style={{fontWeight: '600', fontSize: 15, color: couleurs.primary}}>
                 ( 450 avis )
               </Text>
             </View>
@@ -213,7 +213,7 @@ export default function ResultatRechercheScreen({
             paddingHorizontal: 10,
           }}>
           <Pressable onPress={() => navigation.goBack()}>
-            <ArrowLeftIcon />
+            <ArrowLeftIcon color={couleurs.primary} />
           </Pressable>
           <Text style={{color: '#000', fontSize: 18, fontWeight: '700'}}>
             {title}
@@ -239,7 +239,7 @@ export default function ResultatRechercheScreen({
                   gap: 10,
                 },
               ]}>
-              <SearchIcon color={'#841584'} />
+              <SearchIcon color={couleurs.primary} />
               <TextInput
                 placeholder="Recherchez..."
                 style={{

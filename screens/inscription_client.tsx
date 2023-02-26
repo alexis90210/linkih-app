@@ -6,11 +6,16 @@ import {
   StyleSheet,
   Text,
   View,
-  Pressable,
+  TouchableOpacity,
   PixelRatio,
   TextInput,
+  Alert,
 } from 'react-native';
-import { couleurs } from '../components/color';
+import { CustomFont, couleurs } from '../components/color';
+import storage from '../components/api/localstorage';
+import ApiService from '../components/api/service';
+import axios from 'axios';
+import UserPosition from '../components/api/user_position';
 
 // InscriptionClientScreen
 export default function InscriptionClientScreen({
@@ -18,6 +23,70 @@ export default function InscriptionClientScreen({
 }: {
   navigation: any;
 }) {
+
+  var client:any = {
+    nom:'',
+    email:'',
+    password:'',
+    role:'ROLE_CLIENT',
+    longitude:UserPosition.longitude,
+    latitude:UserPosition.latitude,
+    adresse:'',
+    mobile:''
+  }
+
+  const onSubmit = () => {
+    console.log(client);
+
+
+    var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    if(!client.email.match(mailformat))
+    {
+      Alert.alert('', "Email invalide", [        
+        {text: 'OK', onPress: () => null},
+      ]);
+      return;
+    }
+
+    if(client.password.length < 4)
+    {
+      Alert.alert('', "Mot de passe trop court", [        
+        {text: 'OK', onPress: () => null},
+      ]);
+      return;
+    }
+
+    axios({
+      method: 'POST',
+      url: ApiService.API_URL_CREATE_UTILISATEUR,
+      data: JSON.stringify(client),
+      headers: {
+        Accept: 'application/json',
+       'Content-Type': 'application/json'
+     }
+    })
+      .then((response: {data: any}) => {        
+         var api = response.data;
+         console.log( api );
+         
+         if ( api.code == "success") {
+          Alert.alert('SUCCES', `Votre compte a bien ete cree, veuillez vous connecter . \nVotre login est : ${api.login}`, [   
+            {text: 'Se connecter', onPress: () => navigation.navigate('identification_client', {login : api.login})},
+          ]);        
+         }
+         if ( api.code == "error") {
+          Alert.alert('Erreur', api.message, [        
+            {text: 'OK', onPress: () => null},
+          ]);
+         }         
+      })
+      .catch((error: any) => {
+        console.log(error);
+        Alert.alert('Erreur', error, [        
+          {text: 'OK', onPress: () => null},
+        ]);       
+      });
+  }
   
   return (
     <>
@@ -31,8 +100,7 @@ export default function InscriptionClientScreen({
           contentInsetAdjustmentBehavior="automatic"
           style={{
             backgroundColor: '#f6f6f6f6',
-          }}>
-       
+          }}>      
 
        <View
             style={{
@@ -65,18 +133,21 @@ export default function InscriptionClientScreen({
                     fontSize: 15,
                     height: 30,
                     opacity: 0.85,
+                    fontFamily:CustomFont.Poppins
                   }}>
                   Noms & Prenoms
                 </Text>
                 <TextInput
+                onChangeText={ (input) => client.nom = input}
+                placeholder='Entrez votre nom et prenom complet '
                   style={{
                     backgroundColor: 'transparent',
                     borderBottomWidth: 1,
-                    borderBottomColor: '#E2C6BB',
-                    color: '#7B4C7A',
+                    borderBottomColor: couleurs.secondary,
+                    color: couleurs.primary,
                     width: '100%',
-                    fontWeight: '600',
-                    padding:0
+                    fontFamily:CustomFont.Poppins,
+                    fontSize:15
                   }}></TextInput>
               </View>
 
@@ -95,18 +166,21 @@ export default function InscriptionClientScreen({
                     fontSize: 15,
                     height: 30,
                     opacity: 0.85,
+                    fontFamily:CustomFont.Poppins
                   }}>
                   Email
                 </Text>
                 <TextInput
+                onChangeText={ (input) => client.email = input}
+                placeholder='Entrez votre email'
                   style={{
                     backgroundColor: 'transparent',
                     borderBottomWidth: 1,
-                    borderBottomColor: '#E2C6BB',
-                    color: '#7B4C7A',
+                    borderBottomColor: couleurs.secondary,
+                    color: couleurs.primary,
                     width: '100%',
-                    fontWeight: '600',
-                    padding:0
+                    fontFamily:CustomFont.Poppins,
+                    fontSize:15
                   }}></TextInput>
               </View>
 
@@ -126,50 +200,53 @@ export default function InscriptionClientScreen({
                     fontSize: 15,
                     height: 30,
                     opacity: 0.85,
+                    fontFamily:CustomFont.Poppins
                   }}>
                   Mot de passe
                 </Text>
                 <TextInput
+                onChangeText={ (input) => client.password = input}
                 textContentType='password'
                 keyboardType='default'
+                placeholder='Entrez votre mot de passe'
                 secureTextEntry={true} 
                   style={{
                     backgroundColor: 'transparent',
                     borderBottomWidth: 1,
-                    borderBottomColor: '#E2C6BB',
-                    color: '#7B4C7A',
-                    fontWeight: '600',
+                    borderBottomColor: couleurs.secondary,
+                    color: couleurs.primary,
+                    fontSize:15,
                     width: '100%',
-                    padding:0
+                    fontFamily:CustomFont.Poppins
                   }}></TextInput>
               </View>
 
               <View
                 style={{
                   alignItems: 'center',
-                  backgroundColor: '#7B4C7A',
+                  backgroundColor: couleurs.primary,
                   borderRadius: 30,
                   marginBottom: 20,
                 }}>
-                <Pressable
-                  android_ripple={{color: '7B4C7A'}}
+                <TouchableOpacity
+                  
                   style={{
                     paddingHorizontal: 10,
                     width: '70%',
                   }}
-                  onPress={() => navigation.navigate('main')}>
+                  onPress={() => onSubmit()}>
                   <Text
                     style={{
                       textAlign: 'center',
                       padding: 10,
                       paddingHorizontal: 20,
-                      fontSize: 14,
-                      fontWeight: '500',
+                      fontSize: 15,
+                      fontFamily:CustomFont.Poppins,
                       color: couleurs.secondary,
                     }}>
                     valider
                   </Text>
-                </Pressable>
+                </TouchableOpacity>
               </View>   
        
             </View>
@@ -183,10 +260,10 @@ export default function InscriptionClientScreen({
                 display: 'flex',
                 flexDirection: 'row',
                 justifyContent: 'center',
-                marginVertical: 10,
+                marginTop: 70,
               }}>
-              <Pressable
-                android_ripple={{color: '7B4C7A'}}
+              <TouchableOpacity
+                
                 style={{
                   paddingHorizontal: 10,
                 }}
@@ -195,12 +272,12 @@ export default function InscriptionClientScreen({
                   style={{
                     textAlign: 'center',
                     fontSize: 15,
-                    fontWeight: '500',
-                    color: '#841584',
+                    fontFamily:CustomFont.Poppins,
+                    color: couleurs.primary,
                   }}>
                   Besoin d'aide ?
                 </Text>
-              </Pressable>
+              </TouchableOpacity>
             </View>
 
             

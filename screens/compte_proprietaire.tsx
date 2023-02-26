@@ -11,6 +11,7 @@ import {
 
 import ArrowLeftIcon from '../components/ArrowLeft';
 import EditIcon from '../components/Edit';
+import { couleurs } from '../components/color';
 
 export default function CompteProprietaire({navigation}: {navigation: any}) {
   return (
@@ -30,7 +31,7 @@ export default function CompteProprietaire({navigation}: {navigation: any}) {
             paddingHorizontal: 10,
           }}>
           <Pressable onPress={() => navigation.navigate('main')}>
-            <ArrowLeftIcon />
+            <ArrowLeftIcon color={couleurs.primary} />
           </Pressable>
           <Text style={{color: '#000', fontSize: 18, fontWeight: '700'}}>
             Mon etablissement
@@ -114,7 +115,7 @@ export default function CompteProprietaire({navigation}: {navigation: any}) {
                })}>
                   <View
                     style={{
-                      backgroundColor: '#841584',
+                      backgroundColor: couleurs.primary,
                       padding: 10,
                       borderRadius: 15,
                     }}>
@@ -144,7 +145,7 @@ export default function CompteProprietaire({navigation}: {navigation: any}) {
               </Text>
               <Text
                 style={{
-                  color: '#841584',
+                  color: couleurs.primary,
                   paddingVertical: 3,
                   fontSize: 15,
                   fontWeight: '600',
@@ -230,7 +231,7 @@ export default function CompteProprietaire({navigation}: {navigation: any}) {
                 </Text>
                 <Text
                   style={{
-                    color: '#841584',
+                    color: couleurs.primary,
                     paddingVertical: 3,
                     fontSize: 15,
                     fontWeight: '600',
@@ -275,7 +276,7 @@ export default function CompteProprietaire({navigation}: {navigation: any}) {
                 </Text>
                 <Text
                   style={{
-                    color: '#841584',
+                    color: couleurs.primary,
                     paddingVertical: 3,
                     fontSize: 14,
                     fontWeight: '600',
@@ -314,7 +315,7 @@ export default function CompteProprietaire({navigation}: {navigation: any}) {
                 <Pressable onPress={() => navigation.navigate('rdv')}>
                   <Text
                     style={{
-                      color: '#841584',
+                      color: couleurs.primary,
                       paddingVertical: 3,
                       fontSize: 15,
                       fontWeight: '600',
@@ -361,7 +362,7 @@ export default function CompteProprietaire({navigation}: {navigation: any}) {
                 </Text>
                 <Text
                   style={{
-                    color: '#841584',
+                    color: couleurs.primary,
                     paddingVertical: 3,
                     fontSize: 14,
                     fontWeight: '600',
@@ -389,7 +390,7 @@ export default function CompteProprietaire({navigation}: {navigation: any}) {
                 <Pressable onPress={() => null}>
                   <Text
                     style={{
-                      color: '#841584',
+                      color: couleurs.primary,
                       paddingVertical: 3,
                       fontSize: 15,
                       fontWeight: '600',
@@ -438,7 +439,7 @@ export default function CompteProprietaire({navigation}: {navigation: any}) {
                 </Text>
                 <Text
                   style={{
-                    color: '#841584',
+                    color: couleurs.primary,
                     paddingVertical: 3,
                     fontSize: 14,
                     fontWeight: '600',
@@ -466,7 +467,7 @@ export default function CompteProprietaire({navigation}: {navigation: any}) {
                 <Pressable onPress={() => null}>
                   <Text
                     style={{
-                      color: '#841584',
+                      color: couleurs.primary,
                       paddingVertical: 3,
                       fontSize: 15,
                       fontWeight: '600',

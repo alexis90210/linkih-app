@@ -13,17 +13,28 @@ import {
 } from 'react-native';
 
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
-import MenuIcon from '../components/menu';
 import SearchIcon from '../components/search';
 import CloseIcon from '../components/close';
 import MenuBarIcon from '../components/menu_bar';
 import FlagPlaceIcon from '../components/flag';
-import GpsIcon from '../components/gps';
 import axios from 'axios';
 import ApiService from '../components/api/service';
+import {CustomFont, couleurs} from '../components/color';
 
-export default function Map({navigation, route}: {navigation: any, route:any}) {
+import MapboxGL from '@rnmapbox/maps';
+
+// MapboxGL.setAccessToken('pk.eyJ1IjoiaGxjb25jZXB0aW9uIiwiYSI6ImNsY3lrM285YjA5angzbm5vZDE5NDhjNGMifQ.j6TPH1G7fM9IMI2SAtKswA');
+
+
+export default function Map({
+  navigation,
+  route,
+}: {
+  navigation: any;
+  route: any;
+}) {
   const [modalVisible, SetModalVisible] = useState(false);
+  const [isLoadedEtab, setLoadedEtab] = useState(false);
 
   const openModal = () => {
     SetModalVisible(!modalVisible);
@@ -37,32 +48,32 @@ export default function Map({navigation, route}: {navigation: any, route:any}) {
       url: ApiService.API_URL_GET_VENDEURS,
       headers: {
         Accept: 'application/json',
-       'Content-Type': 'application/json'
-     }
+        'Content-Type': 'application/json',
+      },
     })
       .then((response: {data: any}) => {
-        var api = response.data;        
-        if ( api.code == "success") {
+        var api = response.data;
+        if (api.code == 'success') {
+          setEtablissements(api.message);
+          setLoadedEtab(true)
+        }
 
-          setEtablissements(api.message)
-         }
-      
-        if ( api.code == "error") {
-          Alert.alert('Erreur', api.message, [        
+        if (api.code == 'error') {
+          Alert.alert('Erreur', api.message, [
             {text: 'OK', onPress: () => null},
           ]);
-        }         
+        }
       })
       .catch((error: any) => {
-       console.log(error);
-       Alert.alert('Erreur', error, [        
-        {text: 'OK', onPress: () => null},
-      ]);
-       
+        console.log(error);
+        Alert.alert('Erreur', error, [{text: 'OK', onPress: () => null}]);
       });
-  }
+  };
 
-  loadEtablissements()
+
+  // load etabs if not loaded yet
+  if (!isLoadedEtab) loadEtablissements();
+
 
   return (
     <SafeAreaView style={{flex: 1}}>
@@ -70,31 +81,79 @@ export default function Map({navigation, route}: {navigation: any, route:any}) {
         <MapView
           style={styles.mapStyle}
           initialRegion={{
-            latitude: Number( route.params.latitude ),
-            longitude:  Number ( route.params.longitude),
+            latitude: Number(route.params.latitude),
+            longitude: Number(route.params.longitude),
             latitudeDelta: 0.0922,
             longitudeDelta: 0.0421,
           }}
           provider={PROVIDER_GOOGLE}
           showsUserLocation={true}
           customMapStyle={[]}>
-            {etablissements.map( (marker:any , index)  => (
-               <Marker
-               key={Math.random()}
-               draggable
-               coordinate={{
-                 latitude: Number(marker.latitude),
-                 longitude:  Number(marker.longitude),
-               }}
-               onDragEnd={e =>
-                 console.log(JSON.stringify(e.nativeEvent.coordinate))
-               }
-               title={marker.nom}
-               description={'Salon'}
-               onPress={openModal}
-               image={{uri:'https://icons.iconarchive.com/icons/sonya/swarm/256/Mayor-Hair-icon.png'}}
-             />
-            ))}         
+          {etablissements.map((marker: any, index) => (
+            <Marker
+              key={Math.random()}
+              draggable
+              coordinate={{
+                latitude: Number(marker.latitude),
+                longitude: Number(marker.longitude),
+              }}
+              onDragEnd={e =>
+                console.log(JSON.stringify(e.nativeEvent.coordinate))
+              }
+              title={marker.nom}
+              description={'Salon'}
+              onPress={openModal}>
+              <View
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  alignContent: 'center',
+                }}>
+                <View
+                  style={{
+                    alignSelf: 'center',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: 5,
+                  }}>
+                  <View
+                    style={{
+                      backgroundColor: '#eee',
+                      borderRadius: 50,
+                      width: 70,
+                      height: 70,
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'center',
+                      alignContent: 'center',
+                      padding: 10,
+                      borderWidth:2,
+                      borderColor:couleurs.primary
+                    }}>
+                    <Image
+                      source={require('../assets/images/salon-de-coiffure.png')}
+                      style={{
+                        width: 40,
+                        height: 40,
+                        marginLeft: 6,
+                      }}></Image>
+                  </View>
+                  <View
+                    style={{
+                      width: 8,
+                      height: 8,
+                      alignSelf: 'center',
+                      backgroundColor: '#eee',
+                      borderRadius: 50,
+                      borderWidth:2,
+                      padding:6,
+                      borderColor:couleurs.primary
+                    }}></View>
+                </View>
+              </View>
+            </Marker>
+          ))}
         </MapView>
       </View>
 
@@ -109,8 +168,13 @@ export default function Map({navigation, route}: {navigation: any, route:any}) {
           top: 10,
           left: 10,
         }}>
-        <Pressable onPress={() => navigation.navigate('resultat_recherche', { latitude: Number( route.params.latitude ),
-            longitude:  Number ( route.params.longitude),})}>
+        <Pressable
+          onPress={() =>
+            navigation.navigate('resultat_recherche', {
+              latitude: Number(route.params.latitude),
+              longitude: Number(route.params.longitude),
+            })
+          }>
           <SearchIcon color={'#fff'} />
         </Pressable>
       </View>
@@ -131,24 +195,6 @@ export default function Map({navigation, route}: {navigation: any, route:any}) {
             padding: 10,
             width: '100%',
           }}>
-          {/* <View
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'center',
-              width: '100%',
-            }}>
-            <View
-              style={{
-                width: 45,
-                borderRadius: 100,
-                padding: 10,
-                backgroundColor: '#7B4C7A',
-              }}>
-              <GpsIcon color={'#fff'} />
-            </View>
-          </View> */}
-
           <View
             style={{
               display: 'flex',
@@ -165,8 +211,8 @@ export default function Map({navigation, route}: {navigation: any, route:any}) {
               onPress={() =>
                 navigation.navigate('resultat_recherche', {
                   title: 'Les etablissements',
-                  latitude: Number( route.params.latitude ),
-                  longitude:  Number ( route.params.longitude),
+                  latitude: Number(route.params.latitude),
+                  longitude: Number(route.params.longitude),
                 })
               }>
               <View
@@ -222,15 +268,14 @@ export default function Map({navigation, route}: {navigation: any, route:any}) {
             height: 155,
             borderRadius: 15,
           }}>
-          
-          {etablissements.map( (marker:any , index)  => (
+          {etablissements.map((marker: any, index) => (
             <Pressable
               key={Math.random()}
               onPress={() =>
                 navigation.navigate('espace_etab', {
                   nomEtab: marker.nom,
-                  latitude: Number( route.params.latitude ),
-                  longitude:  Number ( route.params.longitude),
+                  latitude: Number(route.params.latitude),
+                  longitude: Number(route.params.longitude),
                 })
               }>
               <View
@@ -272,10 +317,10 @@ export default function Map({navigation, route}: {navigation: any, route:any}) {
                     }}>
                     <Text
                       style={{
-                        fontWeight: '700',
                         fontSize: 15,
                         letterSpacing: 0.7,
                         color: '#000',
+                        fontFamily: CustomFont.Poppins
                       }}>
                       {marker.nom}
                     </Text>
@@ -288,21 +333,25 @@ export default function Map({navigation, route}: {navigation: any, route:any}) {
                         gap: 10,
                       }}>
                       <Text
-                        style={{fontWeight: '600', fontSize: 15, color: '#000'}}>
+                        style={{
+                          fontFamily: CustomFont.Poppins,
+                          fontSize: 15,
+                          color: '#000',
+                        }}>
                         5.0
                       </Text>
                       <Text
                         style={{
-                          fontWeight: '600',
+                          fontFamily: CustomFont.Poppins,
                           fontSize: 15,
-                          color: '#841584',
+                          color: couleurs.primary,
                         }}>
                         ( 450 avis )
                       </Text>
                     </View>
                     <Text
                       style={{
-                        fontWeight: '600',
+                        fontFamily: CustomFont.Poppins,
                         fontSize: 14,
                         color: '#000',
                         opacity: 0.8,
@@ -314,8 +363,6 @@ export default function Map({navigation, route}: {navigation: any, route:any}) {
               </View>
             </Pressable>
           ))}
-
-
         </ScrollView>
       </View>
 
@@ -408,7 +455,7 @@ export default function Map({navigation, route}: {navigation: any, route:any}) {
                         }}>
                         <Text
                           style={{
-                            fontWeight: '600',
+                            fontFamily: CustomFont.Poppins,
                             fontSize: 15,
                             color: '#000',
                           }}>
@@ -416,16 +463,16 @@ export default function Map({navigation, route}: {navigation: any, route:any}) {
                         </Text>
                         <Text
                           style={{
-                            fontWeight: '600',
+                            fontFamily: CustomFont.Poppins,
                             fontSize: 15,
-                            color: '#841584',
+                            color: couleurs.primary,
                           }}>
                           ( 450 avis )
                         </Text>
                       </View>
                       <Text
                         style={{
-                          fontWeight: '600',
+                          fontFamily: CustomFont.Poppins,
                           fontSize: 14,
                           color: '#000',
                           opacity: 0.8,
@@ -447,7 +494,7 @@ export default function Map({navigation, route}: {navigation: any, route:any}) {
                     gap: 10,
                     justifyContent: 'flex-start',
                   }}>
-                  <CloseIcon color={'#841584'} />
+                  <CloseIcon color={couleurs.primary} />
                   <Text style={{color: 'rgba(100,100,100,.8)'}}>Quitter</Text>
                 </Pressable>
               </View>

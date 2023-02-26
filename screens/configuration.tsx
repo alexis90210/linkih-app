@@ -6,7 +6,7 @@ import {
   StyleSheet,
   Text,
   View,
-  Pressable,
+  TouchableOpacity,
   TextInput,
   Modal,
   Image,
@@ -18,7 +18,7 @@ import SearchIcon from '../components/search';
 import LanguageIcon from '../components/language';
 import CloseIcon from '../components/close';
 import countries from '../components/countries.json';
-import { couleurs } from '../components/color';
+import { CustomFont, couleurs } from '../components/color';
 import storage from '../components/api/localstorage';
 
 // ConfigurationScreen
@@ -62,7 +62,7 @@ export default function ConfigurationScreen({navigation}: {navigation: any}) {
   const CountryList = () => {
     const renderItem = ({item}: {item: any}) => (
       <View>
-        <Pressable onPress={() => selectCountry(item)}>
+        <TouchableOpacity onPress={() => selectCountry(item)}>
           <View
             style={{
               display: 'flex',
@@ -76,13 +76,13 @@ export default function ConfigurationScreen({navigation}: {navigation: any}) {
             <Text> {item.emoji}</Text>
             <Text style={{color: 'rgba(100,100,100,1)'}}>{item.name}</Text>
           </View>
-        </Pressable>
+        </TouchableOpacity>
         <View style={{height: 1, overflow: 'hidden', paddingHorizontal: 10}}>
           <View
             style={{
               height: 1,
               borderWidth: 1,
-              borderColor: '#84158490',
+              borderColor: couleurs.primary,
               borderStyle: 'dashed',
             }}></View>
         </View>
@@ -124,7 +124,7 @@ export default function ConfigurationScreen({navigation}: {navigation: any}) {
   const LanguageList = () => {
     const renderItem = ({item}: {item: any}) => (
       <View>
-        <Pressable onPress={() => selectLanguage(item)}>
+        <TouchableOpacity onPress={() => selectLanguage(item)}>
           <View
             style={{
               display: 'flex',
@@ -136,14 +136,14 @@ export default function ConfigurationScreen({navigation}: {navigation: any}) {
             <LanguageIcon />
             <Text style={{color: 'rgba(100,100,100,1)'}}>{item.name}</Text>
           </View>
-        </Pressable>
+        </TouchableOpacity>
 
         <View style={{height: 1, overflow: 'hidden', paddingHorizontal: 10}}>
           <View
             style={{
               height: 1,
               borderWidth: 1,
-              borderColor: '#84158490',
+              borderColor: couleurs.primary,
               borderStyle: 'dashed',
             }}></View>
         </View>
@@ -226,11 +226,12 @@ export default function ConfigurationScreen({navigation}: {navigation: any}) {
                 textAlign: 'left',
                 color: '#000',
                 fontWeight: 'bold',
-                fontSize: 25,
+                fontSize: 20,
                 paddingRight: 10,
                 width: '90%',
+                fontFamily:CustomFont.Poppins
               }}>
-              Selectionnez le pays ou region et la langue
+              Configurer le pays et la langue
             </Text>
             <View
               style={{
@@ -257,6 +258,7 @@ export default function ConfigurationScreen({navigation}: {navigation: any}) {
                     height: 20,
                     opacity: 0.85,
                     marginBottom: 10,
+                    fontFamily:CustomFont.Poppins
                   }}>
                   Pays/Region
                 </Text>
@@ -264,7 +266,7 @@ export default function ConfigurationScreen({navigation}: {navigation: any}) {
                   onPressIn={handleOpenModalCountries}
                   value={currentCountry.name}
                   placeholderTextColor={'rgba(100,100,100,.7)'}
-                  placeholder="Choisir..."
+                  placeholder="Choisir un pays"
                   style={{
                     backgroundColor: 'transparent',
                     borderBottomWidth: 1,
@@ -273,6 +275,7 @@ export default function ConfigurationScreen({navigation}: {navigation: any}) {
                     width: '100%',
                     fontWeight: '600',
                     padding: 10,
+                    fontFamily:CustomFont.Poppins
                   }}></TextInput>
               </View>
 
@@ -293,6 +296,7 @@ export default function ConfigurationScreen({navigation}: {navigation: any}) {
                     height: 20,
                     opacity: 0.85,
                     marginBottom: 10,
+                    fontFamily:CustomFont.Poppins
                   }}>
                   Langue
                 </Text>
@@ -300,7 +304,7 @@ export default function ConfigurationScreen({navigation}: {navigation: any}) {
                   onPressIn={handleOpenModalLanguages}
                   value={currentLanguage.name}
                   placeholderTextColor={'rgba(100,100,100,.7)'}
-                  placeholder="Choisir..."
+                  placeholder="Choisir une langue"
                   style={{
                     backgroundColor: 'transparent',
                     borderBottomWidth: 1,
@@ -309,6 +313,7 @@ export default function ConfigurationScreen({navigation}: {navigation: any}) {
                     fontWeight: '600',
                     width: '100%',
                     padding: 10,
+                    fontFamily:CustomFont.Poppins
                   }}></TextInput>
               </View>
 
@@ -323,8 +328,8 @@ export default function ConfigurationScreen({navigation}: {navigation: any}) {
                   justifyContent:'center',
                   width:'100%'
                 }}>
-                <Pressable
-                  android_ripple={{color: '7B4C7A'}}
+                <TouchableOpacity
+                  
                   style={{
                     paddingHorizontal: 10,
                     display:'flex',
@@ -339,15 +344,16 @@ export default function ConfigurationScreen({navigation}: {navigation: any}) {
                       textAlign: 'center',
                       padding: 10,
                       paddingHorizontal: 20,
-                      fontSize: 14,
+                      fontSize: 15,
                       fontWeight: '500',
                       color: couleurs.secondary,
+                      fontFamily:CustomFont.Poppins
                     }}>
 
-                    continuez 
+                    suivant 
                   </Text>
                   {/* <ArrowRightIcon color={couleurs.secondary}/> */}
-                </Pressable>
+                </TouchableOpacity>
               </View>
 
               {/* MODAL PAYS */}
@@ -377,6 +383,7 @@ export default function ConfigurationScreen({navigation}: {navigation: any}) {
                         paddingBottom: 20,
                         fontWeight: 'bold',
                         color: 'rgba(0,0,0,.6)',
+                        fontFamily:CustomFont.Poppins
                       }}>
                       Selectionnez un pays/ region
                     </Text>
@@ -397,7 +404,7 @@ export default function ConfigurationScreen({navigation}: {navigation: any}) {
                             marginBottom: 20,
                           },
                         ]}>
-                        <SearchIcon color={'#841584'} />
+                        <SearchIcon color={couleurs.primary} />
                         <TextInput
                           value={searchText}
                           onChangeText={text => filterListCountries(text)}
@@ -408,7 +415,8 @@ export default function ConfigurationScreen({navigation}: {navigation: any}) {
                             backgroundColor: 'transparent',
                             borderRadius: 50,
                             flex: 1,
-                            color:couleurs.primary
+                            color:couleurs.primary,
+                            fontFamily:CustomFont.Poppins
                           }}></TextInput>
                       </View>
 
@@ -417,7 +425,7 @@ export default function ConfigurationScreen({navigation}: {navigation: any}) {
                       </View>
 
                       <View style={{padding: 15}}>
-                        <Pressable
+                        <TouchableOpacity
                           onPress={handleCloseModalCountries}
                           style={{
                             display: 'flex',
@@ -426,15 +434,16 @@ export default function ConfigurationScreen({navigation}: {navigation: any}) {
                             gap: 10,
                             justifyContent: 'flex-start',
                           }}>
-                          <CloseIcon color={'#841584'} />
+                          <CloseIcon color={couleurs.primary} />
                           <Text
                             style={{
                               color: 'rgba(100,100,100,.8)',
                               marginVertical: 10,
+                              fontFamily:CustomFont.Poppins
                             }}>
                             Quitter
                           </Text>
-                        </Pressable>
+                        </TouchableOpacity>
                       </View>
                     </View>
                   </View>
@@ -465,6 +474,7 @@ export default function ConfigurationScreen({navigation}: {navigation: any}) {
                         fontSize: 15,
                         fontWeight: 'bold',
                         color: 'rgba(0,0,0,.6)',
+                        fontFamily:CustomFont.Poppins
                       }}>
                       Selectionnez une langue
                     </Text>
@@ -484,7 +494,7 @@ export default function ConfigurationScreen({navigation}: {navigation: any}) {
                             marginBottom: 20,
                           },
                         ]}>
-                        <SearchIcon color={'#841584'} />
+                        <SearchIcon color={couleurs.primary} />
                         <TextInput
                           placeholderTextColor={'rgba(100,100,100,.7)'}
                           placeholder="Recherchez..."
@@ -492,6 +502,7 @@ export default function ConfigurationScreen({navigation}: {navigation: any}) {
                             backgroundColor: 'transparent',
                             borderRadius: 50,
                             flex: 1,
+                            fontFamily:CustomFont.Poppins,
                             color:couleurs.primary
                           }}></TextInput>
                       </View>
@@ -499,18 +510,19 @@ export default function ConfigurationScreen({navigation}: {navigation: any}) {
                       <LanguageList />
 
                       <View style={{padding: 15, paddingVertical: 30}}>
-                        <Pressable onPress={handleCloseModalLanguages} style={{
+                        <TouchableOpacity onPress={handleCloseModalLanguages} style={{
                       display: 'flex',
                       flexDirection: 'row',
                       alignItems: 'center',
                       gap: 10,
                       justifyContent: 'flex-start',
                     }}>
-                    <CloseIcon color={'#841584'} />
-                          <Text style={{color: 'rgba(100,100,100,.8)'}}>
+                    <CloseIcon color={couleurs.primary} />
+                          <Text style={{color: 'rgba(100,100,100,.8)',
+                    fontFamily:CustomFont.Poppins}}>
                             Quitter
                           </Text>
-                        </Pressable>
+                        </TouchableOpacity>
                       </View>
                     </View>
                   </View>

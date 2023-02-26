@@ -6,176 +6,169 @@ import {
   StyleSheet,
   Text,
   View,
-  Pressable,
+  TouchableOpacity,
   PixelRatio,
   TextInput,
   ImageBackground,
+  Image,
 } from 'react-native';
 import ShopIcon from '../components/shop';
 import AccountIcon from '../components/account';
 import EntrepreneurIcon from '../components/entrepreuneur';
+import {CustomFont, couleurs} from '../components/color';
 
 // IdentificationScreen
 export default function IdentificationScreen({navigation}: {navigation: any}) {
+  var pack = [
+    {
+      icon: <AccountIcon color={'#FFF'} />,
+      title: 'Client',
+      route: 'identification_client',
+      color: couleurs.primary,
+      bgColor: couleurs.primary
+    },
+    {
+      icon: <ShopIcon color={'#FFF'} />,
+      title: 'Societe',
+      route: 'identification_proprietaire',
+      color: couleurs.primary,
+      bgColor: couleurs.secondary
+    },
+    {
+      icon: <EntrepreneurIcon color={'#FFF'} />,
+      title: 'Auto\nEntrepreuneur',
+      route: 'identification_proprietaire',
+      color: couleurs.primary,
+      bgColor: "#413031"
+    },
+  ];
   return (
     <>
       <SafeAreaView
         style={{
-          flex:1,
-          justifyContent:'center',
-          alignContent:'center',
+          flex: 1,
+          justifyContent: 'center',
+          alignContent: 'center',
         }}>
-         <ScrollView>
-         <ImageBackground
-          resizeMode="cover"
-          source={require('../assets/images/banner.jpeg')}
-          style={{
-            height: 200,
-            width: '100%',
-          }}
-        />
+        <ScrollView>
+          <Image
+            source={require('../assets/images/banner.jpeg')}
+            style={{
+              height: 200,
+              width: '100%',
+            }}
+          />
 
           <View
             style={{
-              flex:1,
+              flex: 1,
               padding: 10,
               width: '100%',
               height: '100%',
-              display:'flex',
-              justifyContent:'center',
-              backgroundColor:'#f6f6f6f6'
+              display: 'flex',
+              justifyContent: 'center',
+              backgroundColor: '#fff',
+              position:'relative',
+              marginTop:-20,
+              borderRadius:20,
             }}>
-      
             <View>
-              <View style={{display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'center', marginVertical:30}}>
-                <Text style={{color:'#000', fontSize:16}}>Veuillez-vous identifier pour continuer</Text>
+              <View
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  marginVertical: 30,
+                }}>
+                <Text
+                  style={{
+                    color: '#000',
+                    fontSize: 16,
+                    fontFamily: CustomFont.Poppins,
+                  }}>
+                  Veuillez-vous identifier pour continuer
+                </Text>
               </View>
-            <View
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'center',
-                alignItems: 'center',
-                flexWrap: 'wrap',
-                gap: 20,
-              }}>
 
-              <Pressable
-                android_ripple={{color: '7B4C7A'}}
-                style={{
-                  borderRadius: 15,
-                  paddingHorizontal: 10,
-                  backgroundColor: '#fff',
-                  borderWidth: 1.6,
-                  borderColor: '#E2C6BB',
-                  padding: 18,
-                  width: 150,
-                  height: 100,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-                onPress={() => navigation.navigate('identification_client')}>
-                <View style={{display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'center',gap:10}}>
-                  <AccountIcon color={'#7B4C7A'}/>
-                  <Text
+              <ScrollView horizontal={true}>
+                <View
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    flexWrap: 'nowrap',
+                    gap: 10,
+                    padding: 10,
+                    borderTopWidth:1,
+                    borderBottomWidth:1,
+                    borderStyle:'dashed',
+                    borderColor:couleurs.primary
+                  }}>
+                  {pack.map((row, key) =>(<TouchableOpacity
+                   key={key}
                     style={{
-                      textAlign: 'center',
-                      color: '#7B4C7A',
-                      fontWeight: 'normal',
-                      fontSize: 15,
-                      opacity: 0.85,
-                    }}>
-                    Client
-                  </Text>
+                      borderRadius: 15,
+                      paddingHorizontal: 10,
+                      backgroundColor: row.bgColor,
+                      borderWidth: 1.6,
+                      borderColor: '#E2C6BB',
+                      padding: 18,
+                      width: 120,
+                      height: 170,
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}
+                    onPress={() =>
+                      navigation.navigate(row.route)
+                    }>
+                    <View
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        gap: 10,
+                      }}>
+                      {row.icon}
+                      <Text
+                        style={{
+                          textAlign: 'center',
+                          color: '#FFF',
+                          fontWeight: 'normal',
+                          fontSize: 15,
+                          opacity: 0.85,
+                          fontFamily:CustomFont.Poppins
+                        }}>
+                        {row.title}
+                      </Text>
+                    </View>
+                  </TouchableOpacity>))}
                 </View>
-              </Pressable>
+              </ScrollView>
 
-              <Pressable
-                android_ripple={{color: '7B4C7A'}}
+              <View
                 style={{
-                  borderRadius: 15,
-                  paddingHorizontal: 10,
-                  backgroundColor: '#fff',
-                  borderWidth: 1.6,
-                  borderColor: '#E2C6BB',
-                  padding: 18,
-                  width: 150,
-                  height: 100,
                   display: 'flex',
-                  flexDirection: 'column',
+                  flexDirection: 'row',
                   justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-                onPress={() =>
-                  navigation.navigate('identification_proprietaire')
-                }>
-               <View style={{display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'center',gap:10}}>
-                  <ShopIcon color={'#7B4C7A'}/>
-                  <Text
-                    style={{
-                      textAlign: 'center',
-                      color: '#7B4C7A',
-                      fontWeight: 'normal',
-                      fontSize: 15,
-                      opacity: 0.85,
-                    }}>
-                    Societe
-                  </Text>
-                </View>
-              </Pressable>
-
-              <Pressable
-                android_ripple={{color: '7B4C7A'}}
-                style={{
-                  borderRadius: 15,
-                  paddingHorizontal: 10,
-                  backgroundColor: '#fff',
-                  borderWidth: 1.6,
-                  borderColor: '#E2C6BB',
-                  padding: 18,
-                  width: 150,
-                  height: 100,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-                onPress={() =>
-                  navigation.navigate('identification_proprietaire')
-                }>
-               <View style={{display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'center',gap:10}}>
-                  <EntrepreneurIcon color={'#7B4C7A'}/>
-                  <Text
-                    style={{
-                      textAlign: 'center',
-                      color: '#7B4C7A',
-                      fontWeight: 'normal',
-                      fontSize: 15,
-                      opacity: 0.85,
-                    }}>
-                    Auto-entrepreneur
-                  </Text>
-                </View>
-              </Pressable>
+                  marginVertical: 30,
+                }}>
+                <Text
+                  style={{
+                    color: couleurs.primary,
+                    fontSize: 16,
+                    textAlign:'center',
+                    fontFamily: CustomFont.Poppins,
+                  }}>
+                  Je veux plus d'informations par rapport a l'identification
+                </Text>
+              </View>
             </View>
-
-            </View>
-
           </View>
-         </ScrollView>
+        </ScrollView>
       </SafeAreaView>
     </>
   );

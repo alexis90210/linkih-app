@@ -11,11 +11,12 @@ import {
   TextInput,
   Linking,
   Alert,
+  TouchableOpacity,
 } from 'react-native';
 
 import EyeSlashIcon from '../components/eye_slash';
 import EyeIcon from '../components/eye';
-import { couleurs } from '../components/color';
+import { CustomFont, couleurs } from '../components/color';
 import axios from 'axios';
 import ApiService from '../components/api/service';
 import storage from '../components/api/localstorage';
@@ -132,9 +133,9 @@ export default function IdentificationProprietaireScreen({
                 borderRadius: 11,
                 padding: 20,
                 width: '90%',
-                marginTop: 10,
+                marginTop: 20,
               }}>
-             <View
+              <View
                 style={{
                   display: 'flex',
                   flexDirection: 'column',
@@ -148,13 +149,15 @@ export default function IdentificationProprietaireScreen({
                     fontSize: 15,
                     height: 30,
                     opacity: 0.85,
+                    marginTop:14,
+                    fontFamily: CustomFont.Poppins,
                   }}>
                   Identifiant
                 </Text>
                 <TextInput
-                onChangeText={input => (data.identifiant = input)}
-                placeholderTextColor={'rgba(100,100,100,.7)'}
-                placeholder="Entrez votre identifiant ..."
+                  defaultValue={data.identifiant}
+                  onChangeText={input => (data.identifiant = input)}
+                  placeholder='Entrez votre identifiant'
                   style={{
                     backgroundColor: 'transparent',
                     borderBottomWidth: 1,
@@ -162,7 +165,8 @@ export default function IdentificationProprietaireScreen({
                     color: '#7B4C7A',
                     width: '100%',
                     fontWeight: '600',
-                    padding:10
+                    padding: 0,
+                    fontFamily: CustomFont.Poppins,
                   }}></TextInput>
               </View>
 
@@ -182,33 +186,28 @@ export default function IdentificationProprietaireScreen({
                     fontSize: 15,
                     height: 30,
                     opacity: 0.85,
+                    fontFamily: CustomFont.Poppins,
                   }}>
-                  Password
+                  Mot de passe
                 </Text>
-                <View style={{display:'flex', flexDirection:'row', alignItems:'center', justifyContent:'flex-start', width:'100%' , flexWrap:'nowrap'}}>
                 <TextInput
-                textContentType='password'
-                keyboardType='default'
-                secureTextEntry={!isVisible} 
-                onChangeText={input => (data.password = input)}
-                placeholderTextColor={'rgba(100,100,100,.7)'}
-                placeholder="Entrez votre Mot de Passe..."
+                  textContentType="password"
+                  keyboardType="default"
+                  secureTextEntry={true}
+                  defaultValue={data.password}
+                  onChangeText={input => (data.password = input)}
+                  placeholder='Entrez votre mot de passe'
                   style={{
                     backgroundColor: 'transparent',
                     borderBottomWidth: 1,
                     borderBottomColor: '#E2C6BB',
                     color: '#7B4C7A',
                     fontWeight: '600',
-                    width: '93%',
-                    padding:10
+                    width: '100%',
+                    padding: 0,
+                    fontFamily: CustomFont.Poppins,
                   }}></TextInput>
-                  <Pressable style={{padding:15}} onPress={_setVisible}>
-                    { isVisible && <EyeSlashIcon/>}
-                    { !isVisible && <EyeIcon/>}
-                  </Pressable>
-                </View>
               </View>
-
 
               <View
                 style={{
@@ -217,25 +216,26 @@ export default function IdentificationProprietaireScreen({
                   borderRadius: 30,
                   marginBottom: 20,
                 }}>
-                <Pressable
-                  onPress={() => logUser()}
-                  android_ripple={{color: '7B4C7A'}}
+                <TouchableOpacity
+                  
                   style={{
                     paddingHorizontal: 10,
                     width: '70%',
-                  }}>
+                  }}
+                  onPress={() => logUser()}>
                   <Text
                     style={{
                       textAlign: 'center',
                       padding: 10,
                       paddingHorizontal: 20,
-                      fontSize: 14,
+                      fontSize: 15,
                       fontWeight: '500',
                       color: couleurs.secondary,
+                      fontFamily: CustomFont.Poppins,
                     }}>
                     Se connecter
                   </Text>
-                </Pressable>
+                </TouchableOpacity>
               </View>
 
               <View
@@ -246,39 +246,12 @@ export default function IdentificationProprietaireScreen({
                   display: 'flex',
                   flexDirection: 'row',
                   justifyContent: 'flex-end',
-                  marginVertical:10
+                  marginVertical: 10,
                 }}>
-                <Pressable
-                  android_ripple={{color: '7B4C7A'}}
+                <TouchableOpacity
+                  
                   style={{
-                    paddingHorizontal: 10,
-                  }}
-                  onPress={() => navigation.navigate('inscription_proprietaire_1')}>
-                  <Text
-                    style={{
-                      textAlign: 'center',
-                      fontSize: 15,
-                      fontWeight: '500',
-                      color: '#841584',
-                    }}>
-                    Je n'ai pas encore un compte 
-                  </Text>
-                </Pressable>
-              </View>
-              <View
-                style={{
-                  alignItems: 'center',
-                  backgroundColor: 'transparent',
-                  borderRadius: 30,
-                  display: 'flex',
-                  flexDirection: 'row',
-                  justifyContent: 'flex-end',
-                  marginVertical:2
-                }}>
-                <Pressable
-                  android_ripple={{color: '7B4C7A'}}
-                  style={{
-                    paddingHorizontal: 10,
+                    
                   }}
                   onPress={() => null}>
                   <Text
@@ -287,41 +260,78 @@ export default function IdentificationProprietaireScreen({
                       fontSize: 15,
                       fontWeight: '500',
                       color: '#000',
+                      fontFamily: CustomFont.Poppins,
                     }}>
                     Mot de passe oublie ?
                   </Text>
-                </Pressable>
+                </TouchableOpacity>
               </View>
+
+              <View
+                style={{
+                  alignItems: 'center',
+                  backgroundColor: 'transparent',
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  borderTopWidth:1,
+                  borderStyle:'dotted',
+                  borderColor:couleurs.primary,
+                  paddingTop:15,
+                  marginTop:10
+                }}>
+                <TouchableOpacity
+                  
+                  style={{
+                    marginVertical: 10,
+                  }}
+                  onPress={() => navigation.navigate('inscription_proprietaire_1')}>
+                  <Text
+                    style={{
+                      textAlign: 'center',
+                      fontSize: 15,
+                      fontWeight: '500',
+                      color: '#000',                      
+                    fontFamily: CustomFont.Poppins,
+                    }}>
+                    Je cree mon compte
+                  </Text>
+                </TouchableOpacity>
+              </View>
+
+              
             </View>
           </View>
 
           <View
+            style={{
+              alignItems: 'center',
+              backgroundColor: 'transparent',
+              borderRadius: 30,
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'center',
+              marginVertical: 10,
+              marginTop:60
+            }}>
+            <TouchableOpacity
+              
               style={{
-                alignItems: 'center',
-                backgroundColor: 'transparent',
-                borderRadius: 30,
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'center',
-                marginVertical: 10,
-              }}>
-              <Pressable
-                android_ripple={{color: '7B4C7A'}}
+                paddingHorizontal: 10,
+              }}
+              onPress={() => null}>
+              <Text
                 style={{
-                  paddingHorizontal: 10,
-                }}
-                onPress={() => null}>
-                <Text
-                  style={{
-                    textAlign: 'center',
-                    fontSize: 15,
-                    fontWeight: '500',
-                    color: '#841584',
-                  }}>
-                  Avez-vous besoin d'aide ?
-                </Text>
-              </Pressable>
-            </View>
+                  textAlign: 'center',
+                  fontSize: 15,
+                  fontWeight: '500',
+                  color: couleurs.primary,
+                  fontFamily: CustomFont.Poppins,
+                }}>
+                Avez-vous besoin d'aide ?
+              </Text>
+            </TouchableOpacity>
+          </View>
         </ScrollView>
       </SafeAreaView>
     </>
