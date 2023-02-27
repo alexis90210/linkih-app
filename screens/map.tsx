@@ -1,18 +1,17 @@
 import Geolocation from '@react-native-community/geolocation';
-import React, {useRef, useState} from 'react';
+import React, { useState} from 'react';
 import {
   Text,
   StyleSheet,
   View,
-  Pressable,
   SafeAreaView,
   ScrollView,
   Image,
   Modal,
   Alert,
+  Pressable,
 } from 'react-native';
 
-import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import SearchIcon from '../components/search';
 import CloseIcon from '../components/close';
 import MenuBarIcon from '../components/menu_bar';
@@ -20,11 +19,11 @@ import FlagPlaceIcon from '../components/flag';
 import axios from 'axios';
 import ApiService from '../components/api/service';
 import {CustomFont, couleurs} from '../components/color';
-
 import MapboxGL from '@rnmapbox/maps';
+import GpsIcon from '../components/gps';
+import ShopIcon from '../components/shop';
 
-// MapboxGL.setAccessToken('pk.eyJ1IjoiaGxjb25jZXB0aW9uIiwiYSI6ImNsY3lrM285YjA5angzbm5vZDE5NDhjNGMifQ.j6TPH1G7fM9IMI2SAtKswA');
-
+MapboxGL.setAccessToken(ApiService.MAPBOX_GL_TOKEN);
 
 export default function Map({
   navigation,
@@ -33,6 +32,9 @@ export default function Map({
   navigation: any;
   route: any;
 }) {
+
+  
+
   const [modalVisible, SetModalVisible] = useState(false);
   const [isLoadedEtab, setLoadedEtab] = useState(false);
 
@@ -40,7 +42,23 @@ export default function Map({
     SetModalVisible(!modalVisible);
   };
 
-  const [etablissements, setEtablissements] = useState([]);
+  const [etablissements, setEtablissements] = useState<any>([]);
+  const [startCords, setstartCords] = useState([0,0]);
+
+  const _myPosition = () => {
+    Geolocation.getCurrentPosition(
+      info => {
+        let lon = Number(info.coords.longitude) ;
+        let lat = Number(info.coords.latitude);
+  
+        setstartCords([lon, lat])
+  
+      });
+  }
+
+
+
+  MapboxGL.setTelemetryEnabled(false);
 
   const loadEtablissements = () => {
     axios({
@@ -52,10 +70,12 @@ export default function Map({
       },
     })
       .then((response: {data: any}) => {
+        console.log(response.data);
+
         var api = response.data;
         if (api.code == 'success') {
           setEtablissements(api.message);
-          setLoadedEtab(true)
+          setLoadedEtab(true);
         }
 
         if (api.code == 'error') {
@@ -70,39 +90,74 @@ export default function Map({
       });
   };
 
+  if ( route.params?.recherche) {  
 
-  // load etabs if not loaded yet
-  if (!isLoadedEtab) loadEtablissements();
+    if ( !isLoadedEtab ) {
+      setEtablissements(route.params?.recherche)
+      setLoadedEtab(true)
+    }
+  } else {
+     // load etabs if not loaded yet
+  if (!isLoadedEtab) {
+    loadEtablissements();
+    _myPosition();
+  }
+  }
 
+
+
+ 
+
+
+  const defaultStyle = {
+    version: 8,
+    name: 'Land',
+    sources: {
+      map: {
+        type: 'raster',
+        tiles: ['https://a.tile.openstreetmap.org/{z}/{x}/{y}.png'],
+        tileSize: 256,
+        minzoom: 1,
+        maxzoom: 19,
+      },
+    },
+    layers: [
+      {
+        id: 'background',
+        type: 'background',
+        paint: {
+          'background-color': '#f2efea',
+        },
+      },
+      {
+        id: 'map',
+        type: 'raster',
+        source: 'map',
+        paint: {
+          'raster-fade-duration': 100,
+        },
+      },
+    ],
+  };
 
   return (
     <SafeAreaView style={{flex: 1}}>
-      <View style={styles.container}>
-        <MapView
-          style={styles.mapStyle}
-          initialRegion={{
-            latitude: Number(route.params.latitude),
-            longitude: Number(route.params.longitude),
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
-          }}
-          provider={PROVIDER_GOOGLE}
-          showsUserLocation={true}
-          customMapStyle={[]}>
-          {etablissements.map((marker: any, index) => (
-            <Marker
-              key={Math.random()}
-              draggable
-              coordinate={{
-                latitude: Number(marker.latitude),
-                longitude: Number(marker.longitude),
-              }}
-              onDragEnd={e =>
-                console.log(JSON.stringify(e.nativeEvent.coordinate))
-              }
-              title={marker.nom}
-              description={'Salon'}
-              onPress={openModal}>
+      <View style={styles.page}>
+        <View style={styles.container}>
+          <MapboxGL.MapView
+            style={styles.map}
+            styleJSON={JSON.stringify(defaultStyle)}
+            zoomEnabled={true}
+            pitchEnabled={true}
+            onPress={e => null}
+            onRegionIsChanging={e => null}
+            surfaceView={true}
+            rotateEnabled={true}
+            scrollEnabled={true}>
+            <MapboxGL.Camera zoomLevel={11} centerCoordinate={startCords} followUserLocation={true} />
+
+            {etablissements.map((marker: any, index:any) => (
+              <MapboxGL.PointAnnotation key={index} id={'marker'} coordinate={[parseFloat(marker.longitude), parseFloat(marker.latitude)]}>
               <View
                 style={{
                   display: 'flex',
@@ -115,27 +170,27 @@ export default function Map({
                     alignSelf: 'center',
                     display: 'flex',
                     flexDirection: 'column',
-                    gap: 5,
+                    gap: 3,
                   }}>
                   <View
                     style={{
                       backgroundColor: '#eee',
                       borderRadius: 50,
-                      width: 70,
-                      height: 70,
+                      width: 60,
+                      height: 60,
                       display: 'flex',
                       flexDirection: 'column',
                       justifyContent: 'center',
                       alignContent: 'center',
                       padding: 10,
-                      borderWidth:2,
-                      borderColor:couleurs.primary
+                      borderWidth: 2,
+                      borderColor: couleurs.primary,
                     }}>
                     <Image
                       source={require('../assets/images/salon-de-coiffure.png')}
                       style={{
-                        width: 40,
-                        height: 40,
+                        width: 30,
+                        height: 30,
                         marginLeft: 6,
                       }}></Image>
                   </View>
@@ -146,15 +201,16 @@ export default function Map({
                       alignSelf: 'center',
                       backgroundColor: '#eee',
                       borderRadius: 50,
-                      borderWidth:2,
-                      padding:6,
-                      borderColor:couleurs.primary
+                      borderWidth: 2,
+                      padding: 4,
+                      borderColor: couleurs.primary,
                     }}></View>
                 </View>
               </View>
-            </Marker>
-          ))}
-        </MapView>
+            </MapboxGL.PointAnnotation>
+            ))}
+          </MapboxGL.MapView>
+        </View>
       </View>
 
       {/* search button */}
@@ -176,6 +232,27 @@ export default function Map({
             })
           }>
           <SearchIcon color={'#fff'} />
+        </Pressable>
+      </View>
+
+      <View
+        style={{
+          borderRadius: 100,
+          backgroundColor: '#7B4C7A',
+          padding: 10,
+          margin: 4,
+          position: 'absolute',
+          bottom: 10,
+          right: 10,
+          zIndex:999
+        }}>
+        <Pressable
+          onPress={() =>
+            {
+              _myPosition();              
+            }
+          }>
+          <GpsIcon color={'#fff'} />
         </Pressable>
       </View>
 
@@ -204,16 +281,14 @@ export default function Map({
               marginTop: 10,
             }}>
             <Pressable
-              android_ripple={{color: '7B4C7A'}}
               style={{
                 paddingHorizontal: 10,
               }}
               onPress={() =>
                 navigation.navigate('resultat_recherche', {
-                  title: 'Les etablissements',
-                  latitude: Number(route.params.latitude),
-                  longitude: Number(route.params.longitude),
+                  title: 'Les etablissements'
                 })
+                 
               }>
               <View
                 style={{
@@ -228,12 +303,12 @@ export default function Map({
                   paddingHorizontal: 20,
                   width: 200,
                 }}>
-                <MenuBarIcon />
+                <ShopIcon color={couleurs.secondary}/>
                 <Text
                   style={{
                     textAlign: 'center',
                     padding: 10,
-                    paddingHorizontal: 20,
+                    paddingHorizontal: 10,
                     fontSize: 14,
                     fontWeight: '500',
                     color: '#fff',
@@ -265,25 +340,29 @@ export default function Map({
             display: 'flex',
             flexDirection: 'row',
             width: '80%',
-            height: 155,
+            height: 145,
             borderRadius: 15,
           }}>
-          {etablissements.map((marker: any, index) => (
+          {etablissements.map((marker: any) => (
             <Pressable
               key={Math.random()}
-              onPress={() =>
-                navigation.navigate('espace_etab', {
-                  nomEtab: marker.nom,
-                  latitude: Number(route.params.latitude),
-                  longitude: Number(route.params.longitude),
-                })
-              }>
+              onPress={() =>{
+                
+                
+                console.log('ddd');
+                // navigation.navigate('espace_etab', {
+                //   nomEtab: marker.nom,
+                //   latitude: Number(route.params.latitude),
+                //   longitude: Number(route.params.longitude),
+                // })
+                //setstartCords([ Number(marker.longitude) , Number( marker.latitude)])
+              }}>
               <View
                 style={{
                   borderRadius: 15,
                   padding: 10,
                   display: 'flex',
-                  flexDirection: 'row',
+                  flexDirection: 'column',
                   flexWrap: 'nowrap',
                   justifyContent: 'flex-start',
                   backgroundColor: '#fff',
@@ -292,81 +371,90 @@ export default function Map({
                 }}>
                 <View
                   style={{
-                    backgroundColor: 'rgba(200,200,200,1)',
-                    width: 100,
-                    borderRadius: 15,
-                    paddingLeft: 40,
-                    paddingTop: 40,
-                  }}>
-                  <FlagPlaceIcon />
-                </View>
-
-                <View
-                  style={{
-                    flex: 1,
-                    paddingHorizontal: 10,
+                    display: 'flex',
+                    flexDirection: 'row',
+                    flexWrap: 'nowrap',
+                    justifyContent: 'flex-start',
                   }}>
                   <View
                     style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      flexWrap: 'nowrap',
-                      justifyContent: 'flex-start',
-                      gap: 6,
-                      paddingTop: 10,
+                      backgroundColor: 'rgba(200,200,200,1)',
+                      width: 60,
+                      height: 60,
+                      borderRadius: 15,
+                      paddingLeft: 40,
+                      paddingTop: 40,
+                    }}></View>
+
+                  <View
+                    style={{
+                      flex: 1,
+                      paddingHorizontal: 10,
                     }}>
-                    <Text
-                      style={{
-                        fontSize: 15,
-                        letterSpacing: 0.7,
-                        color: '#000',
-                        fontFamily: CustomFont.Poppins
-                      }}>
-                      {marker.nom}
-                    </Text>
                     <View
                       style={{
                         display: 'flex',
-                        flexDirection: 'row',
+                        flexDirection: 'column',
                         flexWrap: 'nowrap',
                         justifyContent: 'flex-start',
-                        gap: 10,
+                        paddingTop: 10,
+                        gap:0
                       }}>
                       <Text
                         style={{
-                          fontFamily: CustomFont.Poppins,
                           fontSize: 15,
+                          letterSpacing: 0.7,
                           color: '#000',
-                        }}>
-                        5.0
-                      </Text>
-                      <Text
-                        style={{
                           fontFamily: CustomFont.Poppins,
-                          fontSize: 15,
-                          color: couleurs.primary,
                         }}>
-                        ( 450 avis )
+                        {marker.nom}
                       </Text>
+                      <View
+                        style={{
+                          display: 'flex',
+                          flexDirection: 'row',
+                          flexWrap: 'nowrap',
+                          justifyContent: 'flex-start',
+                          gap: 10,
+                        }}>
+                        <Text
+                          style={{
+                            fontFamily: CustomFont.Poppins,
+                            fontSize: 13,
+                            color: '#000',
+                          }}>
+                          5.0
+                        </Text>
+                        <Text
+                          style={{
+                            fontFamily: CustomFont.Poppins,
+                            fontSize: 13,
+                            color: couleurs.primary,
+                          }}>
+                          ( xx avis ) | {marker.mobile}
+                        </Text>
+
+                        
+                        
+                      </View>
                     </View>
-                    <Text
-                      style={{
-                        fontFamily: CustomFont.Poppins,
-                        fontSize: 14,
-                        color: '#000',
-                        opacity: 0.8,
-                      }}>
-                      Brzzaville, Congo , Boulevard Denis
-                    </Text>
                   </View>
                 </View>
+                <Text
+                  style={{
+                    fontFamily: CustomFont.Poppins,
+                    fontSize: 14,
+                    paddingVertical: 10,
+                    color: '#000',
+                    opacity: 0.8,
+                  }}>
+                  {marker.adresse}
+                </Text>
               </View>
             </Pressable>
           ))}
         </ScrollView>
-      </View>
-
-      <Modal visible={modalVisible} transparent={true}>
+        <Modal visible={modalVisible} transparent={true}>
         <View
           style={{
             flex: 1,
@@ -502,25 +590,24 @@ export default function Map({
           </View>
         </View>
       </Modal>
+      </View>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
+  page: {
+    flex: 1,
+    justifyContent: 'center',
     alignItems: 'center',
-    justifyContent: 'flex-end',
+    backgroundColor: couleurs.primary,
   },
-  mapStyle: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
+  container: {
+    height: '110%',
+    width: '100%',
+    backgroundColor:couleurs.primary,
+  },
+  map: {
+    flex: 1,
   },
 });

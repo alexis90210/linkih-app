@@ -191,7 +191,6 @@ export default function ConfigurationScreen({navigation}: {navigation: any}) {
           langage: currentLanguage
     
         },
-        expires: 1000 * 60 * 60
       });
   
       navigation.navigate('identification')

@@ -9,6 +9,7 @@ import {
   Pressable,
   PixelRatio,
   TextInput,
+  Alert,
 } from 'react-native';
 import { couleurs } from '../components/color';
 import axios from 'axios';
@@ -17,25 +18,17 @@ import ApiService from '../components/api/service';
 // InscriptionProprietaire3
 export default function InscriptionProprietaire4({navigation, route}: {navigation: any, route:any}) {
   
-  console.log( JSON.stringify(route.params.payload) );
-
-  const submitSaveProprietaire = () => {
-    axios({
-      method: 'POST',
-      url: ApiService.API_URL_CREATE_UTILISATEUR,
-      data: JSON.stringify(route.params.payload),
-      headers: {
-        Accept: 'application/json',
-       'Content-Type': 'application/json'
-     }
-    }).then((response: {data: any}) => {
-      console.log(response.data);
-      
-      if ( response.data.code == "success") {
-        // navigation.navigate('main')
-      }
-    }).catch( error => console.log(error) )
-  }
+  
+ const loginNow = () => {
+  console.log(route.params.api);
+  
+  navigation.navigate('identification_proprietaire', 
+    {
+      login: route.params.api.login,
+      api:route.params.api
+    }
+    )
+ }
   
 
   return (
@@ -92,7 +85,7 @@ export default function InscriptionProprietaire4({navigation, route}: {navigatio
                 style={{
                   paddingHorizontal: 10,
                 }}
-                onPress={() => submitSaveProprietaire()}>
+                onPress={() => loginNow()}>
                 <Text
                   style={{
                     textAlign: 'center',
@@ -102,9 +95,9 @@ export default function InscriptionProprietaire4({navigation, route}: {navigatio
                     padding: 10,
                     paddingHorizontal: 20,
                     fontSize: 14,
-                    width: 150,
+                    width: 250,
                   }}>
-                  Commencez !
+                  Se connecter
                 </Text>
               </Pressable>
             </View>

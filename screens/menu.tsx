@@ -216,7 +216,7 @@ function MenuScreen({navigation}: {navigation: any}) {
                 backgroundColor: '#fff',
                 paddingHorizontal: 10,
               }}
-              onPress={() => null}>
+              onPress={() => navigation.navigate('identification_proprietaire')}>
               <LogoutIcon color={couleurs.primary} />
               <Text style={{fontSize: 16, marginVertical: 10, color: '#000',fontFamily: CustomFont.Poppins}}>
                 Deconnexion

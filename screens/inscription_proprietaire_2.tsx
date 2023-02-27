@@ -15,9 +15,10 @@ import {
   MultipleSelectList,
   SelectList,
 } from 'react-native-dropdown-select-list';
-import categories from '../components/api/categories';
+import {categories} from '../components/api/categories';
 import planning from '../components/api/planning';
 import horaire from '../components/api/horaire';
+import storage from '../components/api/localstorage';
 
 // InscriptionProprietaireScreen2
 export default function InscriptionProprietaireScreen2({
@@ -100,6 +101,15 @@ export default function InscriptionProprietaireScreen2({
 
   var etablissement = route.params?.etablissement;
 
+  storage.load({
+    key: 'configuration', // Note: Do not use underscore("_") in key!
+    id: 'configuration', // Note: Do not use underscore("_") in id!
+  }).then( data => {
+    etablissement.langue = data.langage.name
+    etablissement.pays = data.pays.name
+  });
+
+
   const nextPage = () => {
     console.log(stepper);
     
@@ -158,7 +168,7 @@ export default function InscriptionProprietaireScreen2({
         social: social
       });
 
-      
+
       // redirect to new route
       navigation.navigate('inscription_proprietaire_3', {
         etablissement: etablissement,

@@ -26,7 +26,7 @@ import {CustomFont, couleurs} from '../components/color';
 import MapIcon from '../components/map';
 import axios from 'axios';
 import ApiService from '../components/api/service';
-import categories from '../components/api/categories';
+import {categories, sous_categories} from '../components/api/categories';
 
 function Main({navigation}: {navigation: any}) {
   const [myPosition, SetMyPosition] = useState({
@@ -141,7 +141,7 @@ function Main({navigation}: {navigation: any}) {
 
   // Categories
   const [modalVisibleCategories, setModalVisibleCategories] = useState(false);
-  const [currentCategorie, setCurrentCategorie] = useState({name: ''});
+  const [currentCategorie, setCurrentCategorie] = useState('');
 
   const handleOpenModalCategories = () => {
     setModalVisibleCategories(true);
@@ -168,13 +168,12 @@ function Main({navigation}: {navigation: any}) {
               marginVertical: 10,
               gap: 10,
             }}>
-            <ShopIcon color={couleurs.secondary} />
+            <ShopIcon color={couleurs.primary} />
             <Text
               style={{
-                color: 'rgba(100,100,100,1)',
                 fontFamily: CustomFont.Poppins,
               }}>
-              {item.name}
+              {item}
             </Text>
           </View>
         </TouchableOpacity>
@@ -193,7 +192,7 @@ function Main({navigation}: {navigation: any}) {
 
     return (
       <FlatList
-        data={categories}
+        data={sous_categories}
         renderItem={renderItem}
         keyExtractor={(item, index) => index.toString()}
       />
@@ -203,7 +202,7 @@ function Main({navigation}: {navigation: any}) {
   // etablissement
   const [modalVisibleEtablissement, setModalVisibleEtablissement] =
     useState(false);
-  const [currentEtablissement, setCurrentEtablissement] = useState({name: ''});
+  const [currentEtablissement, setCurrentEtablissement] = useState({nom: ''});
   const [etablissements, setEtablissements] = useState([]);
 
   const loadEtablissements = () => {
@@ -218,6 +217,7 @@ function Main({navigation}: {navigation: any}) {
       .then((response: {data: any}) => {
         var api = response.data;
         if (api.code == 'success') {
+          
           setEtablissements(api.message);
         }
         if (api.code == 'error') {
@@ -259,7 +259,13 @@ function Main({navigation}: {navigation: any}) {
               gap: 10,
             }}>
             <ShopIcon color={couleurs.secondary} />
-            <Text style={{color: 'rgba(100,100,100,1)',fontFamily: CustomFont.Poppins}}>{item.nom}</Text>
+            <Text
+              style={{
+                color: 'rgba(100,100,100,1)',
+                fontFamily: CustomFont.Poppins,
+              }}>
+              {item.nom}
+            </Text>
           </View>
         </TouchableOpacity>
 
@@ -284,6 +290,95 @@ function Main({navigation}: {navigation: any}) {
     );
   };
 
+  // SEARCH SALON BY REGION + CATEGORIE
+
+  const searchSalon = () => {
+    axios({
+      method: 'POST',
+      url: ApiService.API_URL_GET_VENDEURS,
+      data: JSON.stringify({
+        pays: 'Ascension Island', // currentVille,
+        categorie: currentCategorie,
+      }),
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    })
+      .then(response => {
+        if (response.data.code == 'success') {
+          if (response.data.message.length > 0) {
+            Alert.alert('', response.data.message.length + ' resultat trouve', [
+              {
+                text: 'Consultez ici',
+                onPress: () =>
+                  goTo('map', {
+                    ...myPosition,
+                    recherche: response.data.message,
+                  }),
+              },
+            ]);
+          } else {
+            Alert.alert('Message', "Aucun resultat n'a ete trouve", [
+              {text: 'OK', onPress: () => null},
+            ]);
+          }
+        } else {
+          Alert.alert('', 'Erreur survenue', [
+            {text: 'OK', onPress: () => null},
+          ]);
+        }
+      })
+      .catch(error => {
+        Alert.alert('', 'Erreur Network', [{text: 'OK', onPress: () => null}]);
+      });
+  };
+
+  // SEARCH BY ETAB
+  const searchOnlybYName = () => {
+    axios({
+      method: 'POST',
+      url: ApiService.API_URL_GET_VENDEURS,
+      data: JSON.stringify({
+        etablissement: currentEtablissement.nom,
+      }),
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    })
+      .then(response => {
+        if (response.data.code == 'success') {
+          if (response.data.message.length > 0) {
+            Alert.alert('', response.data.message.length + ' resultat trouve', [
+              {
+                text: 'Consultez ici',
+                onPress: () =>
+                  goTo('map', {
+                    ...myPosition,
+                    recherche: response.data.message,
+                  }),
+              },
+            ]);
+          } else {
+            Alert.alert('Message', "Aucun resultat n'a ete trouve", [
+              {text: 'OK', onPress: () => null},
+            ]);
+          }
+        } else {
+          Alert.alert('', 'Erreur survenue', [
+            {text: 'OK', onPress: () => null},
+          ]);
+        }
+      })
+      .catch(error => {
+        Alert.alert('', 'Erreur Network', [{text: 'OK', onPress: () => null}]);
+      });
+  };
+
+
+  
+
   return (
     <SafeAreaView
       style={{
@@ -302,7 +397,6 @@ function Main({navigation}: {navigation: any}) {
           paddingVertical: 8,
         }}>
         <TouchableOpacity
-          
           style={{
             paddingVertical: 10,
             paddingHorizontal: 10,
@@ -319,7 +413,6 @@ function Main({navigation}: {navigation: any}) {
           Linkih
         </Text>
         <TouchableOpacity
-          
           style={{
             paddingVertical: 10,
             paddingHorizontal: 10,
@@ -388,7 +481,8 @@ function Main({navigation}: {navigation: any}) {
                 />
                 <Text
                   style={[
-                    styles.tabText,{fontFamily: CustomFont.Poppins},
+                    styles.tabText,
+                    {fontFamily: CustomFont.Poppins},
                     activeTab === 'Tab 2' && styles.colorActive,
                   ]}>
                   Etablissement
@@ -420,7 +514,7 @@ function Main({navigation}: {navigation: any}) {
                         color: '#000',
                         fontSize: 15,
                         opacity: 0.85,
-                        fontFamily: CustomFont.Poppins
+                        fontFamily: CustomFont.Poppins,
                       }}>
                       Ville / Region
                     </Text>
@@ -437,8 +531,8 @@ function Main({navigation}: {navigation: any}) {
                         width: '100%',
                         fontWeight: '600',
                         padding: 10,
-                        fontSize:15,
-                        fontFamily: CustomFont.Poppins
+                        fontSize: 15,
+                        fontFamily: CustomFont.Poppins,
                       }}></TextInput>
                   </View>
 
@@ -457,13 +551,13 @@ function Main({navigation}: {navigation: any}) {
                         color: '#000',
                         fontSize: 15,
                         opacity: 0.85,
-                        fontFamily: CustomFont.Poppins
+                        fontFamily: CustomFont.Poppins,
                       }}>
                       Categorie
                     </Text>
                     <TextInput
                       onPressIn={handleOpenModalCategories}
-                      value={currentCategorie.name}
+                      value={currentCategorie}
                       placeholderTextColor={'rgba(100,100,100,.7)'}
                       placeholder="Selectionnez une categorie"
                       style={{
@@ -473,9 +567,9 @@ function Main({navigation}: {navigation: any}) {
                         color: '#7B4C7A',
                         width: '100%',
                         fontWeight: '600',
-                        fontSize:15,
+                        fontSize: 15,
                         padding: 10,
-                        fontFamily: CustomFont.Poppins
+                        fontFamily: CustomFont.Poppins,
                       }}></TextInput>
                   </View>
                 </View>
@@ -503,13 +597,13 @@ function Main({navigation}: {navigation: any}) {
                         textAlign: 'center',
                         color: '#000',
                         fontSize: 15,
-                        fontFamily: CustomFont.Poppins
+                        fontFamily: CustomFont.Poppins,
                       }}>
                       Etablissement
                     </Text>
                     <TextInput
                       onPressIn={handleOpenModalEtablissement}
-                      value={currentEtablissement.name}
+                      value={currentEtablissement.nom}
                       placeholderTextColor={'rgba(100,100,100,.7)'}
                       placeholder="Selectionnez un etablissement"
                       style={{
@@ -521,7 +615,7 @@ function Main({navigation}: {navigation: any}) {
                         fontWeight: '600',
                         padding: 10,
                         fontFamily: CustomFont.Poppins,
-                        fontSize:15
+                        fontSize: 15,
                       }}></TextInput>
                   </View>
                 </View>
@@ -538,23 +632,18 @@ function Main({navigation}: {navigation: any}) {
                 gap: 10,
               }}>
               <TouchableOpacity
-                
                 style={{
                   paddingHorizontal: 15,
                   borderRadius: 30,
-                  width:'100%',
+                  width: '100%',
 
-                  borderWidth:1,
+                  borderWidth: 1,
                   borderColor: couleurs.primary,
                   display: 'flex',
                   justifyContent: 'center',
                   flexDirection: 'row',
                 }}
-                onPress={() =>
-                  goTo('map', {
-                    ...myPosition,
-                  })
-                }>
+                onPress={() => activeTab === 'Tab 1' ? searchSalon() : searchOnlybYName()}>
                 <View
                   style={{
                     display: 'flex',
@@ -562,7 +651,7 @@ function Main({navigation}: {navigation: any}) {
                     flexDirection: 'row',
                     justifyContent: 'flex-start',
                     gap: 5,
-                    width:200,
+                    width: 200,
                   }}>
                   <SearchIcon color={couleurs.primary} />
                   <Text
@@ -571,23 +660,22 @@ function Main({navigation}: {navigation: any}) {
                       padding: 10,
                       paddingHorizontal: 20,
                       fontSize: 15,
-                      color:couleurs.primary,
-                      fontFamily: CustomFont.Poppins
+                      color: couleurs.primary,
+                      fontFamily: CustomFont.Poppins,
                     }}>
                     Valider la recherche
                   </Text>
                 </View>
               </TouchableOpacity>
               <TouchableOpacity
-                
                 style={{
                   paddingHorizontal: 15,
                   display: 'flex',
-                    justifyContent: 'center',
-                    flexDirection: 'row',
+                  justifyContent: 'center',
+                  flexDirection: 'row',
                   backgroundColor: couleurs.dark,
                   borderRadius: 30,
-                  width:'100%'
+                  width: '100%',
                 }}
                 onPress={() =>
                   goTo('map', {
@@ -600,7 +688,7 @@ function Main({navigation}: {navigation: any}) {
                     alignItems: 'center',
                     flexDirection: 'row',
                     justifyContent: 'flex-start',
-                    width:200,
+                    width: 200,
                     gap: 5,
                   }}>
                   <MapIcon color={couleurs.secondary} />
@@ -612,7 +700,7 @@ function Main({navigation}: {navigation: any}) {
                       fontSize: 15,
                       fontWeight: '500',
                       color: couleurs.secondary,
-                      fontFamily: CustomFont.Poppins
+                      fontFamily: CustomFont.Poppins,
                     }}>
                     Explorer sur la map
                   </Text>
@@ -700,7 +788,7 @@ function Main({navigation}: {navigation: any}) {
                     style={{
                       color: 'rgba(100,100,100,.8)',
                       marginVertical: 10,
-                      fontFamily: CustomFont.Poppins
+                      fontFamily: CustomFont.Poppins,
                     }}>
                     Quitter
                   </Text>
@@ -711,7 +799,7 @@ function Main({navigation}: {navigation: any}) {
         </View>
       </Modal>
 
-      {/* MODAL LANGAGE */}
+      {/* MODAL CATEGORIE */}
       <Modal visible={modalVisibleCategories} transparent={true}>
         <View
           style={{
@@ -735,40 +823,14 @@ function Main({navigation}: {navigation: any}) {
                 fontSize: 15,
                 fontWeight: 'bold',
                 color: 'rgba(0,0,0,.6)',
-                fontFamily: CustomFont.Poppins
+                fontFamily: CustomFont.Poppins,
               }}>
               Selectionnez une categorie
             </Text>
             <View style={{width: '100%', paddingHorizontal: 10}}>
-              <View
-                style={[
-                  {
-                    width: '100%',
-                    height: 45,
-                    paddingHorizontal: 20,
-                    backgroundColor: 'rgba(100,100,100,.2)',
-                    borderRadius: 50,
-                    display: 'flex',
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    gap: 10,
-                    marginBottom: 20,
-                  },
-                ]}>
-                <SearchIcon color={couleurs.secondary} />
-                <TextInput
-                  placeholderTextColor={'rgba(100,100,100,.7)'}
-                  placeholder="Recherchez une categorie"
-                  style={{
-                    backgroundColor: 'transparent',
-                    fontFamily: CustomFont.Poppins,
-                    borderRadius: 50,
-                    color: couleurs.primary,
-                    flex: 1,
-                  }}></TextInput>
+              <View style={{height: 300}}>
+                <CategorieList />
               </View>
-
-              <CategorieList />
 
               <View style={{padding: 15, paddingVertical: 30}}>
                 <TouchableOpacity
@@ -781,7 +843,13 @@ function Main({navigation}: {navigation: any}) {
                     justifyContent: 'flex-start',
                   }}>
                   <CloseIcon color={couleurs.secondary} />
-                  <Text style={{color: 'rgba(100,100,100,.8)',fontFamily: CustomFont.Poppins}}>Quitter</Text>
+                  <Text
+                    style={{
+                      color: 'rgba(100,100,100,.8)',
+                      fontFamily: CustomFont.Poppins,
+                    }}>
+                    Quitter
+                  </Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -812,7 +880,7 @@ function Main({navigation}: {navigation: any}) {
                 padding: 15,
                 fontSize: 15,
                 color: 'rgba(0,0,0,.6)',
-                fontFamily: CustomFont.Poppins
+                fontFamily: CustomFont.Poppins,
               }}>
               Selectionnez un etablissement
             </Text>
@@ -839,14 +907,16 @@ function Main({navigation}: {navigation: any}) {
                   style={{
                     backgroundColor: 'transparent',
                     borderRadius: 50,
-                    fontSize:15,
+                    fontSize: 15,
                     fontFamily: CustomFont.Poppins,
                     color: couleurs.primary,
                     flex: 1,
                   }}></TextInput>
               </View>
 
-              <EtablissementList />
+              <View style={{height: 200}}>
+                <EtablissementList />
+              </View>
 
               <View style={{padding: 15, paddingVertical: 30}}>
                 <TouchableOpacity
@@ -859,7 +929,13 @@ function Main({navigation}: {navigation: any}) {
                     justifyContent: 'flex-start',
                   }}>
                   <CloseIcon color={couleurs.secondary} />
-                  <Text style={{color: 'rgba(100,100,100,.8)',fontFamily: CustomFont.Poppins}}>Quitter</Text>
+                  <Text
+                    style={{
+                      color: 'rgba(100,100,100,.8)',
+                      fontFamily: CustomFont.Poppins,
+                    }}>
+                    Quitter
+                  </Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -880,28 +956,28 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 10,
     justifyContent: 'center',
-    fontFamily: CustomFont.Poppins
+    fontFamily: CustomFont.Poppins,
   },
   activeTab: {
     backgroundColor: 'transparent',
     borderBottomWidth: 2,
     borderColor: couleurs.main,
-    fontFamily: CustomFont.Poppins
+    fontFamily: CustomFont.Poppins,
   },
   colorActive: {
     color: couleurs.main,
-    fontFamily: CustomFont.Poppins
+    fontFamily: CustomFont.Poppins,
   },
   tabText: {
     color: '#000',
     fontFamily: CustomFont.Poppins,
-    fontSize:15,
+    fontSize: 15,
   },
   content: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    fontFamily: CustomFont.Poppins
+    fontFamily: CustomFont.Poppins,
   },
 });
 

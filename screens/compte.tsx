@@ -11,9 +11,24 @@ import {
 
 import ArrowLeftIcon from '../components/ArrowLeft';
 import EditIcon from '../components/Edit';
-import { couleurs } from '../components/color';
+import { CustomFont, couleurs } from '../components/color';
+import storage from '../components/api/localstorage';
 
 export default function Compte({navigation}: {navigation: any}) {
+
+  const [proprietaire, setProprietaire] = useState<any>({});
+  storage.load({
+    key: 'userconnected', // Note: Do not use underscore("_") in key!
+    id: 'userconnected', // Note: Do not use underscore("_") in id!
+  }).then( data => {
+
+    setProprietaire( data.utilisateur[0] )
+
+    console.log(proprietaire);   
+  })
+  .catch(error => console.log(error)
+  );
+
   return (
     <View>
       <SafeAreaView
@@ -81,7 +96,7 @@ export default function Compte({navigation}: {navigation: any}) {
                   fontSize: 17,
                   fontWeight: '700',
                 }}>
-                Hisoka Tegiro
+                {proprietaire.nom}
               </Text>
               <Text
                 style={{
@@ -89,35 +104,33 @@ export default function Compte({navigation}: {navigation: any}) {
                   paddingVertical: 3,
                   opacity: 0.7,
                   fontSize: 15,
-                  fontWeight: '600',
+                  fontFamily:CustomFont.Poppins,
                 }}>
-                hisoka.tegiro@gmail.com
+                {proprietaire.email}
               </Text>
               <Text
                 style={{
                   color: '#000',
                   paddingVertical: 3,
                   fontSize: 16,
-                  fontWeight: '600',
+                  fontFamily:CustomFont.Poppins,
                 }}>
-                06 950 0886
+                {proprietaire.mobile}
               </Text>
 
-              <View
+              <Text
                 style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  justifyContent: 'flex-end',
+                  color: '#000',
+                  paddingVertical: 3,
+                  fontSize: 16,
+                  fontFamily:CustomFont.Poppins,
                 }}>
-                <View
-                  style={{
-                    backgroundColor: couleurs.primary,
-                    padding: 10,
-                    borderRadius: 15,
-                  }}>
-                  <EditIcon />
-                </View>
-              </View>
+                Identifiant de connexion : <Text style={{color:couleurs.primary}}>{proprietaire.login}</Text>
+              </Text>
+
+              
+
+              
             </View>
           </View>
 
@@ -134,7 +147,7 @@ export default function Compte({navigation}: {navigation: any}) {
                   color: '#000',
                   paddingVertical: 3,
                   fontSize: 15,
-                  fontWeight: '600',
+                  fontFamily:CustomFont.Poppins,
                 }}>
                 Client depuis
               </Text>
@@ -143,9 +156,9 @@ export default function Compte({navigation}: {navigation: any}) {
                   color: couleurs.primary,
                   paddingVertical: 3,
                   fontSize: 15,
-                  fontWeight: '600',
+                  fontFamily:CustomFont.Poppins,
                 }}>
-                14-02-2023
+                1{proprietaire.date_creation}
               </Text>
             </View>
 
@@ -154,82 +167,14 @@ export default function Compte({navigation}: {navigation: any}) {
                 color: '#000',
                 paddingVertical: 3,
                 fontSize: 16,
-                fontWeight: '800',
+                fontFamily:CustomFont.Poppins,
                 marginVertical: 15,
               }}>
               Adresse
             </Text>
 
-            <View
-              style={{
-                borderRadius: 15,
-                backgroundColor: '#fff',
-                padding: 14,
-                width: '100%',
-              }}>
-              <Text
-                style={{
-                  color: '#000',
-                  paddingVertical: 3,
-                  fontSize: 16,
-                  fontWeight: '600',
-                  opacity: 0.8,
-                }}>
-                Republique du Congo
-              </Text>
-              <Text
-                style={{
-                  color: '#000',
-                  paddingVertical: 3,
-                  opacity: 0.7,
-                  fontSize: 15,
-                  fontWeight: '600',
-                }}>
-                Brazzaville, vers boulevrd denis
-              </Text>
-            </View>
 
-         
-
-            <View
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                flexDirection: 'row',
-                alignItems: 'center',
-              }}>
-              <View>
-                <Text
-                  style={{
-                    color: '#000',
-                    paddingVertical: 3,
-                    fontSize: 16,
-                    fontWeight: '800',
-                    marginVertical: 15,
-                  }}>
-                  Mes Rendez-Vous
-                </Text>
-              </View>
-              <View
-                style={{
-                  display: 'flex',
-                  justifyContent: 'flex-end',
-                  flexDirection: 'row',
-                  gap: 10,
-                }}>
-                <Pressable onPress={() => navigation.navigate('rdv')}>
-                  <Text
-                    style={{
-                      color: couleurs.primary,
-                      paddingVertical: 3,
-                      fontSize: 15,
-                      fontWeight: '600',
-                    }}>
-                    voir tout
-                  </Text>
-                </Pressable>
-              </View>
-            </View>
+     
 
             <View
               style={{
@@ -243,149 +188,35 @@ export default function Compte({navigation}: {navigation: any}) {
                   color: '#000',
                   paddingVertical: 3,
                   fontSize: 16,
-                  fontWeight: '600',
+                  fontFamily:CustomFont.Poppins,
                   opacity: 0.8,
                 }}>
-                Le grand Salon sud
+                {proprietaire.pays}
               </Text>
-              <View
-                style={{
-                  display: 'flex',
-                  justifyContent: 'flex-start',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  gap: 10,
-                }}>
-                <Text
-                  style={{
-                    color: '#000',
-                    paddingVertical: 3,
-                    fontSize: 15,
-                    fontWeight: '800',
-                  }}>
-                  Lundi .
-                </Text>
-                <Text
-                  style={{
-                    color: couleurs.primary,
-                    paddingVertical: 3,
-                    fontSize: 14,
-                    fontWeight: '600',
-                  }}>
-                  15:30:50
-                </Text>
-              </View>
-              <View
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                }}>
-                <Text
-                  style={{
-                    color: '#000',
-                    paddingVertical: 3,
-                    fontSize: 15,
-                    fontWeight: '600',
-                  }}>
-                  Maquillage
-                </Text>
-
-                <Pressable onPress={() => null}>
-                  <Text
-                    style={{
-                      color: couleurs.primary,
-                      paddingVertical: 3,
-                      fontSize: 15,
-                      fontWeight: '600',
-                    }}>
-                    Annuler
-                  </Text>
-                </Pressable>
-              </View>
             </View>
 
-            <View
-              style={{
-                borderRadius: 15,
-                backgroundColor: '#fff',
-                padding: 14,
-                width: '100%',
-                borderTopWidth: 1,
-                borderTopColor: '#f2f2f2',
-              }}>
-              <Text
-                style={{
-                  color: '#000',
-                  paddingVertical: 3,
-                  fontSize: 16,
-                  fontWeight: '600',
-                  opacity: 0.8,
-                }}>
-                Le grand Salon Nord
-              </Text>
-              <View
-                style={{
-                  display: 'flex',
-                  justifyContent: 'flex-start',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  gap: 10,
-                }}>
-                <Text
-                  style={{
-                    color: '#000',
-                    paddingVertical: 3,
-                    fontSize: 15,
-                    fontWeight: '800',
-                  }}>
-                  Jeudi .
-                </Text>
-                <Text
-                  style={{
-                    color: couleurs.primary,
-                    paddingVertical: 3,
-                    fontSize: 14,
-                    fontWeight: '600',
-                  }}>
-                  15:30:50
-                </Text>
-              </View>
-              <View
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                }}>
-                <Text
-                  style={{
-                    color: '#000',
-                    paddingVertical: 3,
-                    fontSize: 15,
-                    fontWeight: '600',
-                  }}>
-                  Soin ongle
-                </Text>
-
-                <Pressable onPress={() => null}>
-                  <Text
-                    style={{
-                      color: couleurs.primary,
-                      paddingVertical: 3,
-                      fontSize: 15,
-                      fontWeight: '600',
-                    }}>
-                    Annuler
-                  </Text>
-                </Pressable>
-              </View>
-            </View>
           </View>
 
           {/* Welcome text */}
         </ScrollView>
+        <View
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'flex-end',
+                  position:'relative',
+                  bottom:10,
+                  right:10
+                }}>
+                <View
+                  style={{
+                    backgroundColor: couleurs.primary,
+                    padding: 7,
+                    borderRadius: 15,
+                  }}>
+                  <EditIcon />
+                </View>
+              </View>
       </SafeAreaView>
     </View>
   );

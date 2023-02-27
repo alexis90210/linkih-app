@@ -23,9 +23,10 @@ import storage from '../components/api/localstorage';
 
 // IdentificationProprietaireScreen
 export default function IdentificationProprietaireScreen({
-  navigation,
+  navigation, route
 }: {
-  navigation: any;
+  navigation: any,
+  route:any
 }) {
 
   var [isVisible , setVisible] = useState(false)
@@ -39,6 +40,10 @@ export default function IdentificationProprietaireScreen({
     identifiant: '',
     password: '',
   };
+
+  if( route.params?.login.length > 0 ) {
+    data.identifiant = route.params?.login
+  }
 
   const logUser = async () => {
     console.log(data);
@@ -69,7 +74,7 @@ export default function IdentificationProprietaireScreen({
        'Content-Type': 'application/json'
      }
     })
-      .then((response: {data: any}) => {
+      .then((response: {data: any}) => {   
         
          var api = response.data;
 
@@ -80,10 +85,46 @@ export default function IdentificationProprietaireScreen({
             data: {
               pays: api.message
             },
-            expires: 1000 * 60 * 60 
           });
 
-          navigation.navigate('espace_etab')
+          storage.save({
+            key: 'firstusage', // Note: Do not use underscore("_") in key!
+            id: 'firstusage', // Note: Do not use underscore("_") in id!
+            data: {
+             isNew:false,
+             isClient:false        
+            },
+          });
+
+          axios({
+            method: 'POST',
+            url: ApiService.API_URL_USER_DATA,
+            data: JSON.stringify({
+              id:api.message.id
+            }),
+            headers: {
+              Accept: 'application/json',
+             'Content-Type': 'application/json'
+           }
+          })
+          .then((response: {data: any}) => {
+            storage.save({
+              key: 'userconnected', // Note: Do not use underscore("_") in key!
+              id: 'userconnected', // Note: Do not use underscore("_") in id!
+              data: response.data,
+            });
+            navigation.navigate('espace_etab', {
+              vendeur_id: response.data.etablissement.id,
+              isProprietaire:true
+            })
+          })
+          .catch((error) => {
+            Alert.alert('Erreur', "Nous n'avons pas pu recuper vos informations", [        
+              {text: 'OK', onPress: () => null},
+            ]);
+           })
+
+          
           
          }
 

@@ -72,10 +72,27 @@ export default function IdentificationClientScreen({
             data: {
               pays: api.message
             },
-            expires: 1000 * 60 * 60 
           });
 
-          navigation.navigate('main')
+          storage.save({
+            key: 'firstusage', // Note: Do not use underscore("_") in key!
+            id: 'firstusage', // Note: Do not use underscore("_") in id!
+            data: {
+             isNew:false,
+             isClient:true        
+            },
+          });
+
+          // navigation.navigate('main')
+          storage.save({
+            key: 'userconnected', // Note: Do not use underscore("_") in key!
+            id: 'userconnected', // Note: Do not use underscore("_") in id!
+            data: response.data,
+          });
+          navigation.navigate('main', {
+            utilisateur_id: response.data.id,
+            isProprietaire:false
+          })
           
          }
 

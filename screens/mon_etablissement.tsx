@@ -10,17 +10,17 @@ import {
   Linking,
   Modal,
 } from 'react-native';
-
-import ArrowLeftIcon from '../components/ArrowLeft';
 import EditIcon from '../components/Edit';
-import CallIcon from '../components/call';
 import RdvIcon from '../components/rdv';
-import {Rating, AirbnbRating} from 'react-native-ratings';
+import { AirbnbRating} from 'react-native-ratings';
 import CloseIcon from '../components/close';
 import AddIcon from '../components/add';
 import MinusIcon from '../components/minus';
-import { couleurs } from '../components/color';
-import ShopIcon from '../components/shop';
+import { CustomFont, couleurs } from '../components/color';
+import HomeIcon from '../components/home';
+import storage from '../components/api/localstorage';
+import MapIcon from '../components/map';
+import { FacebookIcon } from '../components/network';
 
 export default function MonEtablissement({
   route,
@@ -31,16 +31,32 @@ export default function MonEtablissement({
 }) {
   const propsTitle = route.params?.nomEtab;
   var title = 'Mon Etablissement';
-  var isConsulting = false;
-  if (propsTitle) {
-    title = propsTitle;
-    isConsulting = true;
-  }
 
   const [isVisibleModal, setVisibleModal] = useState(false);
 
   const activeModal = () => setVisibleModal(true);
   const desactiveModal = () => setVisibleModal(false);
+  const [etablissement, setEtablissement] = useState<any>({});
+  const [proprietaire, setProprietaire] = useState<any>({});
+  const [lien_reseaux_sociaux, setLien_reseaux_sociaux] = useState<any[]>([]);
+  const [horaire_ouverture, setHoraire_ouverture] = useState<any[]>([]);
+  const [rendez_vous, setRendez_vous] = useState<any[]>([]);
+  
+  storage.load({
+    key: 'userconnected', // Note: Do not use underscore("_") in key!
+    id: 'userconnected', // Note: Do not use underscore("_") in id!
+  }).then( data => {
+
+    setEtablissement(data.etablissement[0])
+    setProprietaire( data.utilisateur[0] )
+    setLien_reseaux_sociaux(data.lien_reseaux_sociaux)
+    setHoraire_ouverture(data.horaire_ouverture)
+    setRendez_vous( data.rendez_vous)
+
+    console.log(lien_reseaux_sociaux);   
+  })
+  .catch(error => console.log(error)
+  );
 
   return (
     <View>
@@ -53,17 +69,18 @@ export default function MonEtablissement({
           style={{
             display: 'flex',
             flexDirection: 'row',
-            justifyContent: 'flex-start',
+            justifyContent: 'space-between',
             gap: 30,
             paddingVertical: 15,
             paddingHorizontal: 10,
           }}>
           <Pressable onPress={() => navigation.navigate('main')}>
-            <ShopIcon color={couleurs.primary} />
+            <HomeIcon color={couleurs.primary} />
           </Pressable>
-          <Text style={{color: '#000', fontSize: 18, fontWeight: '700'}}>
+          <Text style={{color: couleurs.primary, fontSize: 18,fontFamily:CustomFont.Poppins}}>
             {title}
           </Text>
+          <MapIcon color={couleurs.primary}/>
         </View>
         <ScrollView
           contentInsetAdjustmentBehavior="automatic"
@@ -106,67 +123,43 @@ export default function MonEtablissement({
                 style={{
                   color: '#000',
                   paddingVertical: 3,
-                  fontSize: 17,
-                  fontWeight: '700',
+                  fontSize: 17,fontFamily:CustomFont.Poppins
                 }}>
-                Salon beaute plus
+                {etablissement.nom}
               </Text>
               <Text
                 style={{
                   color: '#000',
                   paddingVertical: 3,
                   opacity: 0.7,
-                  fontSize: 15,
-                  fontWeight: '600',
+                  fontSize: 15,fontFamily:CustomFont.Poppins
                 }}>
-                hisoka.tegiro@gmail.com
+                {etablissement.mail}
               </Text>
               <Text
                 style={{
                   color: '#000',
                   paddingVertical: 3,
-                  fontSize: 16,
-                  fontWeight: '600',
+                  fontSize: 16,fontFamily:CustomFont.Poppins
                 }}>
-                06 950 0886
+                {etablissement.mobile}
               </Text>
 
               <View style={{display: 'flex', flexDirection: 'row'}}>
-                {isConsulting && (
+             
                   <AirbnbRating
-                    reviewSize={4}
+                    reviewSize={10}
                     reviewColor={couleurs.primary}
                     showRating={false}
-                    count={4}
+                    count={10}
                     reviews={['Terrible', 'Bad', 'Good', 'Very Good']}
                     onFinishRating={rate => console.log(rate)}
-                    defaultRating={3}
+                    defaultRating={5}
                     size={14}
                   />
-                )}
+                
               </View>
 
-              <View
-                style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  justifyContent: 'flex-end',
-                }}>
-                <View
-                  style={{
-                    backgroundColor: couleurs.primary,
-                    padding: 10,
-                    borderRadius: 15,
-                  }}>
-                  {!isConsulting && <EditIcon />}
-                  {isConsulting && (
-                    <Pressable
-                      onPress={() => Linking.openURL(`tel:242069500886`)}>
-                      <CallIcon color={'#fff'} />
-                    </Pressable>
-                  )}
-                </View>
-              </View>
             </View>
           </View>
 
@@ -182,9 +175,8 @@ export default function MonEtablissement({
               <Text
                 style={{
                   color: '#000',
-                  paddingVertical: 3,
                   fontSize: 15,
-                  fontWeight: '600',
+                  fontFamily:CustomFont.Poppins
                 }}>
                 Client depuis
               </Text>
@@ -193,21 +185,21 @@ export default function MonEtablissement({
                   color: couleurs.primary,
                   paddingVertical: 3,
                   fontSize: 15,
-                  fontWeight: '600',
+                  fontFamily:CustomFont.Poppins
                 }}>
-                14-02-2023
+                {proprietaire.date_creation}
               </Text>
             </View>
 
             <Text
               style={{
-                color: '#000',
+                color: "#000",
                 paddingVertical: 3,
-                fontSize: 16,
-                fontWeight: '800',
+                fontSize: 15,
+                fontFamily:CustomFont.Poppins,
                 marginVertical: 15,
               }}>
-              Adresse
+              Pays et region de l'etablissement
             </Text>
 
             <View
@@ -221,11 +213,11 @@ export default function MonEtablissement({
                 style={{
                   color: '#000',
                   paddingVertical: 3,
-                  fontSize: 16,
-                  fontWeight: '600',
+                  fontSize: 15,
+                  fontFamily:CustomFont.Poppins,
                   opacity: 0.8,
                 }}>
-                Republique du Congo
+                {proprietaire.pays}
               </Text>
               <Text
                 style={{
@@ -233,14 +225,13 @@ export default function MonEtablissement({
                   paddingVertical: 3,
                   opacity: 0.7,
                   fontSize: 15,
-                  fontWeight: '600',
+                  fontFamily:CustomFont.Poppins
                 }}>
-                Brazzaville, vers boulevrd denis
+                {etablissement.adresse}
               </Text>
             </View>
 
-            {!isConsulting && (
-              <View
+            <View
                 style={{
                   display: 'flex',
                   justifyContent: 'space-between',
@@ -252,8 +243,8 @@ export default function MonEtablissement({
                     style={{
                       color: '#000',
                       paddingVertical: 3,
-                      fontSize: 16,
-                      fontWeight: '800',
+                      fontSize: 15,
+                      fontFamily:CustomFont.Poppins,
                       marginVertical: 15,
                     }}>
                     Mon abonnement
@@ -271,7 +262,7 @@ export default function MonEtablissement({
                       color: '#000',
                       paddingVertical: 3,
                       fontSize: 15,
-                      fontWeight: '600',
+                      fontFamily:CustomFont.Poppins
                     }}>
                     expire le
                   </Text>
@@ -280,15 +271,13 @@ export default function MonEtablissement({
                       color: couleurs.primary,
                       paddingVertical: 3,
                       fontSize: 15,
-                      fontWeight: '600',
+                      fontFamily:CustomFont.Poppins
                     }}>
-                    14-02-2023
+                    xx-xx-xxxx
                   </Text>
                 </View>
               </View>
-            )}
-
-            {!isConsulting && (
+          
               <View
                 style={{
                   borderRadius: 15,
@@ -300,9 +289,8 @@ export default function MonEtablissement({
                   style={{
                     color: '#000',
                     paddingVertical: 3,
-                    fontSize: 16,
-                    fontWeight: '600',
-                    opacity: 0.8,
+                    fontSize: 15,
+                    fontFamily:CustomFont.Poppins
                   }}>
                   Pack Proprietaire
                 </Text>
@@ -318,226 +306,30 @@ export default function MonEtablissement({
                       color: '#000',
                       paddingVertical: 3,
                       fontSize: 15,
-                      fontWeight: '800',
+                      fontFamily:CustomFont.Poppins
                     }}>
-                    13
+                    xx
                   </Text>
                   <Text
                     style={{
                       color: couleurs.primary,
                       paddingVertical: 3,
                       fontSize: 14,
-                      fontWeight: '600',
+                      fontFamily:CustomFont.Poppins
                     }}>
                     € TTC / mois
                   </Text>
                 </View>
               </View>
-            )}
-
-            {!isConsulting && (
-              <View
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                }}>
-                <View>
-                  <Text
-                    style={{
-                      color: '#000',
-                      paddingVertical: 3,
-                      fontSize: 16,
-                      fontWeight: '800',
-                      marginVertical: 15,
-                    }}>
-                    Mes Rendez-Vous
-                  </Text>
-                </View>
-                <View
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'flex-end',
-                    flexDirection: 'row',
-                    gap: 10,
-                  }}>
-                  <Pressable onPress={() => navigation.navigate('rdv')}>
-                    <Text
-                      style={{
-                        color: couleurs.primary,
-                        paddingVertical: 3,
-                        fontSize: 15,
-                        fontWeight: '600',
-                      }}>
-                      voir tout
-                    </Text>
-                  </Pressable>
-                </View>
-              </View>
-            )}
-            {!isConsulting && (
-              <View>
-                <View
-                  style={{
-                    borderRadius: 15,
-                    backgroundColor: '#fff',
-                    padding: 14,
-                    width: '100%',
-                  }}>
-                  <Text
-                    style={{
-                      color: '#000',
-                      paddingVertical: 3,
-                      fontSize: 16,
-                      fontWeight: '600',
-                      opacity: 0.8,
-                    }}>
-                    Le grand Salon sud
-                  </Text>
-                  <View
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'flex-start',
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      gap: 10,
-                    }}>
-                    <Text
-                      style={{
-                        color: '#000',
-                        paddingVertical: 3,
-                        fontSize: 15,
-                        fontWeight: '800',
-                      }}>
-                      Lundi .
-                    </Text>
-                    <Text
-                      style={{
-                        color: couleurs.primary,
-                        paddingVertical: 3,
-                        fontSize: 14,
-                        fontWeight: '600',
-                      }}>
-                      15:30:50
-                    </Text>
-                  </View>
-                  <View
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                    }}>
-                    <Text
-                      style={{
-                        color: '#000',
-                        paddingVertical: 3,
-                        fontSize: 15,
-                        fontWeight: '600',
-                      }}>
-                      Maquillage
-                    </Text>
-
-                    <Pressable onPress={() => null}>
-                      <Text
-                        style={{
-                          color: couleurs.primary,
-                          paddingVertical: 3,
-                          fontSize: 15,
-                          fontWeight: '600',
-                        }}>
-                        Annuler
-                      </Text>
-                    </Pressable>
-                  </View>
-                </View>
-
-                <View
-                  style={{
-                    borderRadius: 15,
-                    backgroundColor: '#fff',
-                    padding: 14,
-                    width: '100%',
-                    borderTopWidth: 1,
-                    borderTopColor: '#f2f2f2',
-                  }}>
-                  <Text
-                    style={{
-                      color: '#000',
-                      paddingVertical: 3,
-                      fontSize: 16,
-                      fontWeight: '600',
-                      opacity: 0.8,
-                    }}>
-                    Le grand Salon Nord
-                  </Text>
-                  <View
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'flex-start',
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      gap: 10,
-                    }}>
-                    <Text
-                      style={{
-                        color: '#000',
-                        paddingVertical: 3,
-                        fontSize: 15,
-                        fontWeight: '800',
-                      }}>
-                      Jeudi .
-                    </Text>
-                    <Text
-                      style={{
-                        color: couleurs.primary,
-                        paddingVertical: 3,
-                        fontSize: 14,
-                        fontWeight: '600',
-                      }}>
-                      15:30:50
-                    </Text>
-                  </View>
-                  <View
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                    }}>
-                    <Text
-                      style={{
-                        color: '#000',
-                        paddingVertical: 3,
-                        fontSize: 15,
-                        fontWeight: '600',
-                      }}>
-                      Soin ongle
-                    </Text>
-
-                    <Pressable onPress={() => null}>
-                      <Text
-                        style={{
-                          color: couleurs.primary,
-                          paddingVertical: 3,
-                          fontSize: 15,
-                          fontWeight: '600',
-                        }}>
-                        Annuler
-                      </Text>
-                    </Pressable>
-                  </View>
-                </View>
-              </View>
-            )}
+           
+             
 
             <Text
               style={{
                 color: '#000',
                 paddingVertical: 3,
-                fontSize: 16,
-                fontWeight: '800',
+                fontSize: 15,
+                fontFamily:CustomFont.Poppins,
                 marginVertical: 15,
               }}>
               Heure d'ouverture
@@ -552,9 +344,9 @@ export default function MonEtablissement({
                 paddingHorizontal: 5,
                 marginBottom: 40,
               }}>
-              {[1, 1, 1, 1, 1, 1, 1].map((row, key) => (
+              {horaire_ouverture.map((row, key) => (
                 <View
-                  key={key + Math.random()}
+                  key={Math.random()}
                   style={{
                     display: 'flex',
                     flexDirection: 'row',
@@ -562,9 +354,9 @@ export default function MonEtablissement({
                     backgroundColor: '#fff',
                     padding: 5,
                     paddingHorizontal: 15,
-                    borderRadius: 50,
+                    borderRadius: 20,
                     alignItems: 'center',
-                    width: '31%',
+                    width: '100%',
                     justifyContent: 'space-between',
                   }}>
                   <View
@@ -576,12 +368,11 @@ export default function MonEtablissement({
                       padding: 6,
                       borderRadius: 50,
                     }}>
-                    <Text style={{color: '#000'}}>Mercredi</Text>
-                    <Text style={{color: couleurs.primary, fontSize: 11}}>
-                      08h-12h
+                    <Text style={{color: '#000',fontFamily:CustomFont.Poppins}}>{row.jour}</Text>
+                    <Text style={{color: couleurs.primary, fontSize: 11,fontFamily:CustomFont.Poppins}}>
+                      {row.heure_ouverture}-{row.heure_fermeture}
                     </Text>
                   </View>
-                  {/* <CloseIcon color={couleurs.primary} /> */}
                 </View>
               ))}
             </View>
@@ -589,7 +380,7 @@ export default function MonEtablissement({
             <View style={{paddingVertical: 10}}>
               <Text
                 style={{
-                  fontWeight: '700',
+                  fontFamily:CustomFont.Poppins,
                   fontSize: 15,
                   paddingBottom: 12,
                   color: '#000',
@@ -608,9 +399,9 @@ export default function MonEtablissement({
                 paddingHorizontal: 5,
                 marginBottom: 40,
               }}>
-              {[1, 1, 1, 1].map((row, key) => (
+              {lien_reseaux_sociaux.map((row, key) => (
                 <View
-                  key={key + Math.random()}
+                  key={Math.random()}
                   style={{
                     display: 'flex',
                     flexDirection: 'row',
@@ -618,7 +409,7 @@ export default function MonEtablissement({
                     backgroundColor: '#fff',
                     padding: 5,
                     paddingHorizontal: 15,
-                    borderRadius: 50,
+                    borderRadius: 20,
                     alignItems: 'center',
                     width: '100%',
                     justifyContent: 'space-between',
@@ -626,18 +417,22 @@ export default function MonEtablissement({
                   <View
                     style={{
                       display: 'flex',
-                      flexDirection: 'column',
+                      flexDirection: 'row',
                       gap: 3,
                       backgroundColor: '#fff',
-                      padding: 10,
-                      borderRadius: 50,
+                      padding: 5,
+                      width: '100%',
+                      alignItems:'center'
                     }}>
-                    <Text style={{color: '#000'}}>Facebook</Text>
-                    <Text style={{color: couleurs.primary, fontSize: 12}}>
-                      https://facebook.com
+                    {row.nom == "facebook" && <Image source={require(`../assets/social/facebook.png`)} />}
+                    {row.nom == "twitter" && <Image source={require(`../assets/social/twitter.png`)} />}
+                    {row.nom == "instagram" && <Image source={require(`../assets/social/instagram.png`)} />}
+                    {row.nom == "linkedin" && <Image source={require(`../assets/social/linkedin.png`)} />}
+                    {row.nom == "youtube" && <Image source={require(`../assets/social/youtube.png`)} />}
+                    <Text style={{flex:1, color: couleurs.dark, fontSize: 13, fontFamily:CustomFont.Poppins}}>
+                      {row.username ? row.username : "Vous n'ave pas encore rensiegne votre username"}
                     </Text>
                   </View>
-                  {/* <CloseIcon color={couleurs.primary} /> */}
                 </View>
               ))}
             </View>
@@ -645,11 +440,11 @@ export default function MonEtablissement({
 
           {/* Welcome text */}
         </ScrollView>
-        {isConsulting && <View
+      <View
           style={{
             alignItems: 'center',
             marginVertical: 10,
-            marginHorizontal: 50,
+            marginHorizontal: 20,
             display: 'flex',
             flexDirection: 'row',
             justifyContent: 'center',
@@ -671,7 +466,7 @@ export default function MonEtablissement({
                 justifyContent: 'flex-start',
                 gap: 5,
               }}>
-              <CallIcon color={'#fff'} />
+              <EditIcon />
             </View>
           </Pressable>
           <Pressable
@@ -682,7 +477,7 @@ export default function MonEtablissement({
               backgroundColor: '#7B4C7A',
               borderRadius: 30,
             }}
-            onPress={() => setVisibleModal(true)}>
+            onPress={() => navigation.navigate('rdv', {rdvs: rendez_vous})}>
             <View
               style={{
                 display: 'flex',
@@ -701,297 +496,13 @@ export default function MonEtablissement({
                   fontWeight: '500',
                   color: '#fff',
                 }}>
-                Prendre un RDV
+                Mes Rendez-vous
               </Text>
             </View>
           </Pressable>
-        </View>}
+        </View>
 
-        {/* MODAL RENDEZ-VOUS */}
-        <Modal visible={isVisibleModal} transparent={true} style={{flex: 1}}>
-          <View
-            style={{
-              flex: 1,
-              backgroundColor: 'rgba(0, 0, 0, 0.3)',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            <View
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                backgroundColor: '#fff',
-                width: '90%',
-                borderRadius: 15,
-                padding: 10,
-              }}>
-              <Text
-                style={{
-                  padding: 15,
-                  fontSize: 15,
-                  fontWeight: 'bold',
-                  color: 'rgba(0,0,0,.7)',
-                }}>
-                Prendre un rendez-vous
-              </Text>
-              <View style={{width: '100%', paddingHorizontal: 10}}>
-                <View style={{height: 450}}>
-                 <ScrollView>
-                   {/* prestation selectionnee */}
-                   <View>
-                    <View style={{paddingVertical: 10}}>
-                      <Text
-                        style={{
-                          fontWeight: '700',
-                          fontSize: 15,
-                          paddingBottom: 12,
-                          color: '#000',
-                        }}>
-                        1. Prestation selectionnee
-                      </Text>
-                    </View>
-
-                    <View
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        gap: 10,
-                        backgroundColor: 'rgba(230,230,230,.2)',
-                        marginVertical: 10,
-                        borderRadius: 10,
-                        padding: 10,
-                        alignItems: 'center',
-                        width: '100%',
-                        justifyContent: 'space-between',
-                      }}>
-                      <View
-                        style={{
-                          display: 'flex',
-                          flexDirection: 'column',
-                          gap: 3,
-                          padding: 10,
-                          paddingVertical: 5,
-                          borderRadius: 50,
-                        }}>
-                        <Text style={{color: '#000'}}>
-                          Cliquez pour selectionner
-                        </Text>
-                      </View>
-
-                      <AddIcon color={couleurs.primary} />
-                    </View>
-
-                    <View
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        flexWrap: 'wrap',
-                        gap: 4,
-                        marginBottom: 40,
-                      }}>
-                      {[1, 1, 1, 1].map((row, key) => (
-                        <View style={{width: '100%'}}>
-                          <View
-                            key={key + Math.random()}
-                            style={{
-                              display: 'flex',
-                              flexDirection: 'row',
-                              gap: 10,
-                              backgroundColor: 'transparent',
-                              padding: 5,
-                              paddingHorizontal: 12,
-                              borderRadius: 15,
-                              alignItems: 'center',
-                              width: '100%',
-                              justifyContent: 'space-between',
-                            }}>
-                            <View
-                              style={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                                gap: 1,
-                                padding: 10,
-                                paddingVertical: 5,
-                                borderRadius: 50,
-                              }}>
-                              <Text style={{color: '#000'}}>Ongle</Text>
-                            </View>
-                            <MinusIcon color={'red'} />
-                          </View>
-                          <View
-                            style={{
-                              height: 1,
-                              width: '100%',
-                              overflow: 'hidden',
-                              paddingHorizontal: 10,
-                            }}>
-                            <View
-                              style={{
-                                height: 1,
-                                borderWidth: 1,
-                                borderColor: couleurs.primary,
-                                borderStyle: 'dashed',
-                              }}></View>
-                          </View>
-                        </View>
-                      ))}
-                    </View>
-                  </View>
-
-                  {/* date rdv */}
-                  <View>
-                    <View style={{paddingVertical: 10}}>
-                      <Text
-                        style={{
-                          fontWeight: '700',
-                          fontSize: 15,
-                          paddingBottom: 12,
-                          color: '#000',
-                        }}>
-                        2. Horaire
-                      </Text>
-                    </View>
-
-                    <View
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        gap: 10,
-                        backgroundColor: 'rgba(230,230,230,.2)',
-                        marginVertical: 10,
-                        borderRadius: 10,
-                        padding: 10,
-                        alignItems: 'center',
-                        width: '100%',
-                        justifyContent: 'space-between',
-                      }}>
-                      <View
-                        style={{
-                          display: 'flex',
-                          flexDirection: 'column',
-                          gap: 3,
-                          padding: 10,
-                          paddingVertical: 5,
-                          borderRadius: 50,
-                        }}>
-                        <Text style={{color: '#000'}}>
-                          Cliquez pour selectionner
-                        </Text>
-                      </View>
-
-                      <AddIcon color={couleurs.primary} />
-                    </View>
-
-                    <View
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        flexWrap: 'wrap',
-                        gap: 4,
-                        marginBottom: 40,
-                      }}>
-                      {[1, 1].map((row, key) => (
-                        <View style={{width: '100%'}}>
-                          <View
-                            key={key + Math.random()}
-                            style={{
-                              display: 'flex',
-                              flexDirection: 'row',
-                              gap: 10,
-                              backgroundColor: 'transparent',
-                              padding: 5,
-                              paddingHorizontal: 12,
-                              borderRadius: 15,
-                              alignItems: 'center',
-                              width: '100%',
-                              justifyContent: 'space-between',
-                            }}>
-                            <View
-                              style={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                                gap: 1,
-                                padding: 10,
-                                paddingVertical: 5,
-                                borderRadius: 50,
-                              }}>
-                              <Text style={{color: '#000'}}>Lundi</Text>
-                              <Text style={{color: couleurs.primary}}>14h</Text>
-                            </View>
-                            <MinusIcon color={'red'} />
-                          </View>
-                          <View
-                            style={{
-                              height: 1,
-                              width: '100%',
-                              overflow: 'hidden',
-                              paddingHorizontal: 10,
-                            }}>
-                            <View
-                              style={{
-                                height: 1,
-                                borderWidth: 1,
-                                borderColor: couleurs.primary,
-                                borderStyle: 'dashed',
-                              }}></View>
-                          </View>
-                        </View>
-                      ))}
-                    </View>
-                  </View>
-                 </ScrollView>
-
-                  
-                </View>
-
-                <View style={{padding: 15, justifyContent:'space-between', paddingVertical: 30 , display:'flex', flexDirection:'row'}}>
-                  <Pressable
-                    onPress={desactiveModal}
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      gap: 10,
-                      justifyContent: 'flex-start',
-                    }}>
-                    <CloseIcon color={couleurs.primary} />
-                    <Text style={{color: 'rgba(100,100,100,.8)'}}>Quitter</Text>
-                  </Pressable>
-
-                  <Pressable
-            android_ripple={{color: '7B4C7A'}}
-            style={{
-              paddingHorizontal: 10,            
-              backgroundColor: '#7B4C7A',
-              borderRadius: 30,
-            }}
-            onPress={() => null}>
-            <View
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                flexDirection: 'row',
-                justifyContent: 'flex-start',
-                gap: 5,
-              }}>
-              <Text
-                style={{
-                  textAlign: 'center',
-                  padding: 10,
-                  paddingHorizontal: 20,
-                  fontSize: 14,
-                  fontWeight: '500',
-                  color: couleurs.secondary,
-                }}>
-                valider le RDV
-              </Text>
-            </View>
-          </Pressable>
-                </View>
-              </View>
-            </View>
-          </View>
-        </Modal>
+        
       </SafeAreaView>
     </View>
   );

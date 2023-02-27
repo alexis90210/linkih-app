@@ -27,13 +27,29 @@ import MonEtablissement from './screens/mon_etablissement';
 import MenuScreen from './screens/menu';
 import { CustomFont, couleurs } from './components/color';
 import InscriptionProprietaire4 from './screens/inscription_proprietaire_4';
+import storage from './components/api/localstorage';
 
 
 const Stack = createNativeStackNavigator();
 
 export default function App(): JSX.Element {
 
+  
   const [initialRouteName, setInitialRouteName] = useState('splash')
+
+  storage.load({
+    key: 'firstusage', // Note: Do not use underscore("_") in key!
+    id: 'firstusage', // Note: Do not use underscore("_") in id!
+  }).then( data => {
+       if ( data.isClient) {
+        setInitialRouteName('identification_client')  
+       } else {
+        setInitialRouteName('identification_proprietaire')  
+       }  
+  }).catch( error => {
+    console.log(error);
+    
+  });
   
   return (
     <NavigationContainer>

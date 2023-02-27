@@ -29,18 +29,18 @@ export default function IdentificationScreen({navigation}: {navigation: any}) {
     },
     {
       icon: <ShopIcon color={'#FFF'} />,
-      title: 'Societe',
+      title: 'Societe ou Auto\nEntrepreuneur',
       route: 'identification_proprietaire',
       color: couleurs.primary,
       bgColor: couleurs.secondary
     },
-    {
-      icon: <EntrepreneurIcon color={'#FFF'} />,
-      title: 'Auto\nEntrepreuneur',
-      route: 'identification_proprietaire',
-      color: couleurs.primary,
-      bgColor: "#413031"
-    },
+    // {
+    //   icon: <EntrepreneurIcon color={'#FFF'} />,
+    //   title: 'Auto\nEntrepreuneur',
+    //   route: 'identification_proprietaire',
+    //   color: couleurs.primary,
+    //   bgColor: "#413031"
+    // },
   ];
   return (
     <>
@@ -114,7 +114,7 @@ export default function IdentificationScreen({navigation}: {navigation: any}) {
                       borderWidth: 1.6,
                       borderColor: '#E2C6BB',
                       padding: 18,
-                      width: 120,
+                      width: 180,
                       height: 170,
                       display: 'flex',
                       flexDirection: 'column',

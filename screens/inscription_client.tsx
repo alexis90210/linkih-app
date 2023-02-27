@@ -16,6 +16,7 @@ import storage from '../components/api/localstorage';
 import ApiService from '../components/api/service';
 import axios from 'axios';
 import UserPosition from '../components/api/user_position';
+import Geolocation from '@react-native-community/geolocation';
 
 // InscriptionClientScreen
 export default function InscriptionClientScreen({
@@ -29,11 +30,28 @@ export default function InscriptionClientScreen({
     email:'',
     password:'',
     role:'ROLE_CLIENT',
-    longitude:UserPosition.longitude,
-    latitude:UserPosition.latitude,
+    longitude:'',
+    latitude: '',
     adresse:'',
-    mobile:''
+    mobile:'',
+    pays:'',
+    langue:'',
   }
+
+  Geolocation.getCurrentPosition(
+    info => {
+      client.longitude = info.coords.longitude
+      client.latitude = info.coords.latitude      
+    }
+  );
+
+  storage.load({
+    key: 'configuration', // Note: Do not use underscore("_") in key!
+    id: 'configuration', // Note: Do not use underscore("_") in id!
+  }).then( data => {
+    client.langue = data.langage.name
+    client.pays = data.pays.name
+  });
 
   const onSubmit = () => {
     console.log(client);
@@ -55,7 +73,7 @@ export default function InscriptionClientScreen({
       ]);
       return;
     }
-
+    
     axios({
       method: 'POST',
       url: ApiService.API_URL_CREATE_UTILISATEUR,
@@ -82,7 +100,7 @@ export default function InscriptionClientScreen({
       })
       .catch((error: any) => {
         console.log(error);
-        Alert.alert('Erreur', error, [        
+        Alert.alert('Erreur', "Erreur survenue, il se pourrait que les informations fournis soit incorrects ou deja utilise pour un autre compte", [        
           {text: 'OK', onPress: () => null},
         ]);       
       });
