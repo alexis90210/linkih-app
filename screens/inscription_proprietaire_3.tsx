@@ -177,7 +177,7 @@ export default function InscriptionProprietaire3({
                 display: 'flex',
                 flexDirection: 'row',
                 justifyContent: 'center',
-                backgroundColor: '#7B4C7A',
+                backgroundColor: couleurs.primary,
                 borderRadius: 30,
               }}>
               <TouchableOpacity

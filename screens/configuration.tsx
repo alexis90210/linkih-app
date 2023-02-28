@@ -478,37 +478,11 @@ export default function ConfigurationScreen({navigation}: {navigation: any}) {
                       Selectionnez une langue
                     </Text>
                     <View style={{width: '100%', paddingHorizontal: 10}}>
-                      <View
-                        style={[
-                          {
-                            width: '100%',
-                            height: 45,
-                            paddingHorizontal: 20,
-                            backgroundColor: 'rgba(100,100,100,.2)',
-                            borderRadius: 50,
-                            display: 'flex',
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            gap: 10,
-                            marginBottom: 20,
-                          },
-                        ]}>
-                        <SearchIcon color={couleurs.primary} />
-                        <TextInput
-                          placeholderTextColor={'rgba(100,100,100,.7)'}
-                          placeholder="Recherchez..."
-                          style={{
-                            backgroundColor: 'transparent',
-                            borderRadius: 50,
-                            flex: 1,
-                            fontFamily:CustomFont.Poppins,
-                            color:couleurs.primary
-                          }}></TextInput>
-                      </View>
+                      
 
                       <LanguageList />
 
-                      <View style={{padding: 15, paddingVertical: 30}}>
+                      <View style={{padding: 0, paddingVertical: 30}}>
                         <TouchableOpacity onPress={handleCloseModalLanguages} style={{
                       display: 'flex',
                       flexDirection: 'row',

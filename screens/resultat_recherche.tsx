@@ -3,21 +3,23 @@ import React, {useState} from 'react';
 import {
   SafeAreaView,
   ScrollView,
-  StyleSheet,
   Text,
   View,
-  Pressable,
-  PixelRatio,
   TextInput,
   Alert,
+  Image,
+  TouchableOpacity,
+  Linking,
+  Modal,
 } from 'react-native';
 import ArrowLeftIcon from '../components/ArrowLeft';
 import SearchIcon from '../components/search';
-import FlagPlaceIcon from '../components/flag';
-import {useNavigation} from '@react-navigation/native';
-import {couleurs} from '../components/color';
+import {CustomFont, couleurs} from '../components/color';
 import axios from 'axios';
 import ApiService from '../components/api/service';
+import EyeIcon from '../components/eye';
+import CloseIcon from '../components/close';
+import MapIcon from '../components/map';
 
 // ResultatRechercheScreen
 export default function ResultatRechercheScreen({
@@ -30,6 +32,12 @@ export default function ResultatRechercheScreen({
   var title = 'Ma recherche';
 
   const [etablissements, setEtablissements] = useState([]);
+  const [isLoading, setLoading] = useState(false);
+  const [closeModal, setCloseModal] = useState(false);
+
+  const _setCloseModal = () => {
+    setCloseModal(!closeModal);
+  };
 
   const loadEtablissements = () => {
     axios({
@@ -43,8 +51,7 @@ export default function ResultatRechercheScreen({
       .then((response: {data: any}) => {
         var api = response.data;
         if (api.code == 'success') {
-         
-          
+          setLoading(true);
           setEtablissements(api.message);
         }
 
@@ -60,7 +67,7 @@ export default function ResultatRechercheScreen({
       });
   };
 
-  loadEtablissements();
+  if (!isLoading) loadEtablissements();
 
   const distance = (lat1: any, lon1: any, lat2: any, lon2: any) => {
     const R = 6371; // rayon de la Terre en kilomètres
@@ -77,13 +84,10 @@ export default function ResultatRechercheScreen({
 
     const d = R * c; // distance en kilomètres
 
-    console.log(c);
-
     return d;
   };
 
   const LoadDistance = (data: any) => {
-    
     let d = distance(
       Number(data.data.latitude),
       Number(data.data.longitude),
@@ -105,7 +109,7 @@ export default function ResultatRechercheScreen({
     data: any;
   }) => {
     return (
-      <Pressable onPress={() => navigation.navigate('espace_etab')}>
+      <TouchableOpacity>
         <View
           style={{
             borderRadius: 15,
@@ -115,83 +119,177 @@ export default function ResultatRechercheScreen({
             flexWrap: 'nowrap',
             justifyContent: 'flex-start',
             backgroundColor: '#fff',
-            flex: 1,
+            width: '100%',
+            height: 260,
             marginRight: 10,
-            height: 210,
           }}>
-          <View
-            style={{
-              backgroundColor: 'rgba(200,200,200,.5)',
-              width: '100%',
-              borderRadius: 15,
-              height: 80,
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'center',
-            }}>
-            <View style={{paddingTop: 30}}>
-              <FlagPlaceIcon />
-            </View>
-          </View>
-
           <View
             style={{
               display: 'flex',
               flexDirection: 'column',
               flexWrap: 'nowrap',
               justifyContent: 'flex-start',
-              gap: 4,
-              paddingTop: 10,
-              width: '100%',
-              paddingHorizontal: 10,
-              height: 80,
             }}>
-            <Text
-              style={{
-                fontWeight: '700',
-                fontSize: 15,
-                letterSpacing: 0.7,
-                color: '#000',
-              }}>
-              {data.nom}
-            </Text>
+            <Image
+              source={require('../assets/images/cover.jpg')}
+              style={{width: '100%', height: 100}}
+            />
+
             <View
               style={{
-                display: 'flex',
-                flexDirection: 'row',
-                flexWrap: 'nowrap',
-                justifyContent: 'flex-start',
-                gap: 10,
+                paddingHorizontal: 10,
+                backgroundColor: couleurs.secondary,
               }}>
-              <Text style={{fontWeight: '600', fontSize: 15, color: '#000'}}>
-                5.0
-              </Text>
-              <Text style={{fontWeight: '600', fontSize: 15, color: couleurs.primary}}>
-                ( 450 avis )
-              </Text>
-            </View>
-            <Text
-              style={{
-                fontWeight: '600',
-                fontSize: 14,
-                color: '#000',
-                opacity: 0.8,
-              }}>
-              Brzzaville, Congo , Boulevard Denis
-            </Text>
-            <View
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-                flexWrap: 'nowrap',
-                justifyContent: 'flex-end',
-                gap: 10,
-              }}>
-              <LoadDistance  data={data}/>
+              <View
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  flexWrap: 'nowrap',
+                  justifyContent: 'flex-start',
+                  paddingTop: 10,
+                }}>
+                <Text
+                  style={{
+                    fontSize: 15,
+                    color: '#000',
+                    fontFamily: CustomFont.Poppins,
+                  }}>
+                  testing
+                </Text>
+
+                <Text
+                  style={{
+                    fontFamily: CustomFont.Poppins,
+                    fontSize: 13,
+                    color: couleurs.dark,
+                  }}>
+                  3,6 ( 250 )
+                </Text>
+                <Text
+                  style={{
+                    fontFamily: CustomFont.Poppins,
+                    fontSize: 13,
+                    color: '#000',
+                  }}>
+                  Restaurant . $$ .{' '}
+                  <Text style={{color: couleurs.primary}}>5000m</Text>
+                </Text>
+                <Text
+                  style={{
+                    fontFamily: CustomFont.Poppins,
+                    fontSize: 14,
+                    color: '#000',
+                  }}>
+                  {/* {marker.adresse} */}
+                  <Text style={{color: 'green'}}>Ouvert</Text> . Ferme a 01:00
+                </Text>
+
+                <View
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    flexWrap: 'nowrap',
+                    justifyContent: 'flex-start',
+                    gap: 10,
+                    marginTop: 7,
+                  }}>
+                  <View
+                    style={{
+                      alignItems: 'center',
+                      backgroundColor: couleurs.primary,
+                      borderRadius: 30,
+                      marginBottom: 20,
+                      width: 120,
+                      height: 31,
+                    }}>
+                    <TouchableOpacity
+                      style={{
+                        paddingHorizontal: 10,
+                        position: 'relative',
+                        bottom: 2,
+                        display: 'flex',
+                        justifyContent: 'flex-start',
+                        alignItems: 'center',
+                        flexDirection: 'row',
+                      }}
+                      onPress={() => null}>
+                      <Image
+                        source={require('../assets/images/itinary.png')}
+                        style={{width: 15, height: 15}}
+                      />
+                      <Text
+                        style={{
+                          textAlign: 'center',
+                          padding: 5,
+                          fontSize: 15,
+                          color: couleurs.white,
+                          fontFamily: CustomFont.Poppins,
+                        }}>
+                        Itineraire
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+
+                  <View
+                    style={{
+                      alignItems: 'center',
+                      backgroundColor: 'transparent',
+                      borderRadius: 30,
+                      marginBottom: 20,
+                      width: 120,
+                      height: 31,
+                      borderWidth: 1,
+                      borderColor: couleurs.primary,
+                    }}>
+                    <TouchableOpacity
+                      style={{
+                        paddingHorizontal: 10,
+                        position: 'relative',
+                        bottom: 2,
+                        display: 'flex',
+                        justifyContent: 'flex-start',
+                        alignItems: 'center',
+                        flexDirection: 'row',
+                      }}
+                      onPress={() => Linking.openURL('tel:2522334444')}>
+                      <Image
+                        source={require('../assets/images/telephone.png')}
+                        style={{width: 18, height: 18}}
+                      />
+                      <Text
+                        style={{
+                          textAlign: 'center',
+                          padding: 5,
+                          fontSize: 15,
+                          color: couleurs.primary,
+                          fontFamily: CustomFont.Poppins,
+                        }}>
+                        Appeler
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+
+                  <View
+                    style={{
+                      flex: 1,
+                      justifyContent: 'flex-end',
+                      flexDirection: 'row',
+                    }}>
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigation.navigate('autre_etab', {
+                          nomEtab: 'for test',
+                        })
+                      }>
+                      <EyeIcon color={couleurs.primary} />
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </View>
             </View>
           </View>
         </View>
-      </Pressable>
+      </TouchableOpacity>
     );
   };
 
@@ -207,56 +305,52 @@ export default function ResultatRechercheScreen({
           style={{
             display: 'flex',
             flexDirection: 'row',
-            justifyContent: 'flex-start',
+            justifyContent: 'space-between',
             gap: 30,
             paddingVertical: 15,
             paddingHorizontal: 10,
+            backgroundColor: couleurs.primary,
+            alignItems: 'center',
           }}>
-          <Pressable onPress={() => navigation.goBack()}>
-            <ArrowLeftIcon color={couleurs.primary} />
-          </Pressable>
-          <Text style={{color: '#000', fontSize: 18, fontWeight: '700'}}>
-            {title}
-          </Text>
+          <View
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              gap: 40,
+            }}>
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+              <ArrowLeftIcon color={couleurs.white} />
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={() => navigation.navigate('map')}>
+              <MapIcon color={couleurs.white} />
+            </TouchableOpacity>
+          </View>
+          <View style={{width: 220, paddingLeft: 30}}>
+            <Text
+              style={{color: couleurs.white, fontSize: 18, fontWeight: '700'}}>
+              {title}
+            </Text>
+          </View>
+
+          <TouchableOpacity onPress={() => _setCloseModal()}>
+            <SearchIcon color={couleurs.white} />
+          </TouchableOpacity>
         </View>
+
         <ScrollView
           contentInsetAdjustmentBehavior="automatic"
           style={{
             backgroundColor: '#f6f6f6f6',
           }}>
-          <View style={{width: '100%', paddingHorizontal: 10}}>
-            <View
-              style={[
-                {
-                  width: '100%',
-                  height: 45,
-                  paddingHorizontal: 20,
-                  backgroundColor: 'rgba(255,255,255,.74)',
-                  borderRadius: 50,
-                  display: 'flex',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  gap: 10,
-                },
-              ]}>
-              <SearchIcon color={couleurs.primary} />
-              <TextInput
-                placeholder="Recherchez..."
-                style={{
-                  backgroundColor: 'rgba(255,255,255,.74)',
-                  borderRadius: 50,
-                  color: couleurs.primary,
-                  flex: 1,
-                }}></TextInput>
-            </View>
-          </View>
-
           <View
             style={{
               display: 'flex',
               justifyContent: 'flex-start',
               flexDirection: 'column',
-              gap: 10,
+              gap: 20,
               paddingHorizontal: 10,
               marginTop: 15,
               marginBottom: 40,
@@ -272,6 +366,60 @@ export default function ResultatRechercheScreen({
             })}
           </View>
         </ScrollView>
+
+        {/* MODAL FILTRE */}
+        <Modal visible={closeModal}>
+          <View
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              gap: 30,
+              paddingVertical: 15,
+              paddingHorizontal: 10,
+              backgroundColor: couleurs.primary,
+            }}>
+            <View></View>
+
+            <Text
+              style={{color: couleurs.white, fontSize: 18, fontWeight: '700'}}>
+              Filtres
+            </Text>
+
+            <TouchableOpacity
+              onPress={() => _setCloseModal()}
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                gap: 10,
+                alignItems: 'center',
+              }}>
+              <Text style={{color: couleurs.white}}>Effacer</Text>
+              <CloseIcon color={couleurs.white} />
+            </TouchableOpacity>
+          </View>
+
+          <View
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 10,
+              padding: 10,
+            }}>
+            <View
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                gap: 10,
+                alignItems: 'center',
+              }}>
+              <Text style={{fontWeight: 'bold', color: couleurs.dark}}>
+                Trier par
+              </Text>
+              <Text style={{color: couleurs.dark}}>Trier par</Text>
+            </View>
+          </View>
+        </Modal>
       </SafeAreaView>
     </>
   );

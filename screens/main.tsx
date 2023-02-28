@@ -312,10 +312,13 @@ function Main({navigation}: {navigation: any}) {
               {
                 text: 'Consultez ici',
                 onPress: () =>
-                  goTo('map', {
-                    ...myPosition,
-                    recherche: response.data.message,
-                  }),
+                  // goTo('map', {
+                  //   ...myPosition,
+                  //   recherche: response.data.message,
+                  // }),
+                  navigation.navigate('resultat_recherche', {
+                    title: 'Les etablissements',
+                  })
               },
             ]);
           } else {
@@ -354,10 +357,13 @@ function Main({navigation}: {navigation: any}) {
               {
                 text: 'Consultez ici',
                 onPress: () =>
-                  goTo('map', {
-                    ...myPosition,
-                    recherche: response.data.message,
-                  }),
+                  // goTo('map', {
+                  //   ...myPosition,
+                  //   recherche: response.data.message,
+                  // }),
+                  navigation.navigate('resultat_recherche', {
+                    title: 'Les etablissements',
+                  })
               },
             ]);
           } else {

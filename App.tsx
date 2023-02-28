@@ -24,6 +24,7 @@ import InscriptionProprietaire3 from './screens/inscription_proprietaire_3';
 import IdentificationProprietaireScreen from './screens/identfication_proprietaire';
 import CompteProprietaire from './screens/compte_proprietaire';
 import MonEtablissement from './screens/mon_etablissement';
+import AutreEtablissement from './screens/autre_etablissement';
 import MenuScreen from './screens/menu';
 import { CustomFont, couleurs } from './components/color';
 import InscriptionProprietaire4 from './screens/inscription_proprietaire_4';
@@ -305,6 +306,22 @@ export default function App(): JSX.Element {
         <Stack.Screen
           name="espace_etab"
           component={MonEtablissement}
+          options={{
+            title: 'Espace etablissement',
+            headerShadowVisible: false,
+            headerTitleStyle: {fontSize: 18, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
+            headerTintColor:couleurs.primary,
+            headerShown: false,
+            presentation: 'modal',
+            animationTypeForReplace: 'push',
+            animation: 'slide_from_right',
+          }}
+        />
+
+        {/* espace autre etablissement */}
+        <Stack.Screen
+          name="autre_etab"
+          component={AutreEtablissement}
           options={{
             title: 'Espace etablissement',
             headerShadowVisible: false,
