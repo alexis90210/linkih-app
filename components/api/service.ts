@@ -1,7 +1,7 @@
 export default class ApiService {
   // BASE API URL
-  // static API_URL = 'http://192.168.1.89:8000/api/v1/';
-  static API_URL = 'http://192.168.1.93:8000/api/v1/';
+  static API_URL = 'http://192.168.1.89:8000/api/v1/'; 
+  // static API_URL = 'http://192.168.1.93:8000/api/v1/';
   
 
   // OTHER CONFIG

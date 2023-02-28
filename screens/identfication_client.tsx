@@ -169,7 +169,7 @@ export default function IdentificationClientScreen({
                     backgroundColor: 'transparent',
                     borderBottomWidth: 1,
                     borderBottomColor: '#E2C6BB',
-                    color: '#7B4C7A',
+                    color: couleurs.primary,
                     width: '100%',
                     fontWeight: '600',
                     padding: 0,
@@ -208,7 +208,7 @@ export default function IdentificationClientScreen({
                     backgroundColor: 'transparent',
                     borderBottomWidth: 1,
                     borderBottomColor: '#E2C6BB',
-                    color: '#7B4C7A',
+                    color: couleurs.primary,
                     fontWeight: '600',
                     width: '100%',
                     padding: 0,
@@ -219,7 +219,7 @@ export default function IdentificationClientScreen({
               <View
                 style={{
                   alignItems: 'center',
-                  backgroundColor: '#7B4C7A',
+                  backgroundColor: couleurs.primary,
                   borderRadius: 30,
                   marginBottom: 20,
                 }}>
@@ -237,7 +237,7 @@ export default function IdentificationClientScreen({
                       paddingHorizontal: 20,
                       fontSize: 15,
                       fontWeight: '500',
-                      color: couleurs.secondary,
+                      color: couleurs.white,
                       fontFamily: CustomFont.Poppins,
                     }}>
                     Se connecter

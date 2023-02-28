@@ -21,26 +21,19 @@ import {CustomFont, couleurs} from '../components/color';
 export default function IdentificationScreen({navigation}: {navigation: any}) {
   var pack = [
     {
-      icon: <AccountIcon color={'#FFF'} />,
+      icon: <AccountIcon color={couleurs.white} />,
       title: 'Client',
       route: 'identification_client',
       color: couleurs.primary,
       bgColor: couleurs.primary
     },
     {
-      icon: <ShopIcon color={'#FFF'} />,
+      icon: <ShopIcon color={couleurs.dark} />,
       title: 'Societe ou Auto\nEntrepreuneur',
       route: 'identification_proprietaire',
-      color: couleurs.primary,
-      bgColor: couleurs.secondary
+      color: couleurs.dark,
+      bgColor: couleurs.primaryLight
     },
-    // {
-    //   icon: <EntrepreneurIcon color={'#FFF'} />,
-    //   title: 'Auto\nEntrepreuneur',
-    //   route: 'identification_proprietaire',
-    //   color: couleurs.primary,
-    //   bgColor: "#413031"
-    // },
   ];
   return (
     <>
@@ -52,7 +45,7 @@ export default function IdentificationScreen({navigation}: {navigation: any}) {
         }}>
         <ScrollView>
           <Image
-            source={require('../assets/images/banner.jpeg')}
+            source={require('../assets/images/1.jpg')}
             style={{
               height: 200,
               width: '100%',
@@ -67,7 +60,7 @@ export default function IdentificationScreen({navigation}: {navigation: any}) {
               height: '100%',
               display: 'flex',
               justifyContent: 'center',
-              backgroundColor: '#fff',
+              backgroundColor: couleurs.white,
               position:'relative',
               marginTop:-20,
               borderRadius:20,
@@ -136,7 +129,7 @@ export default function IdentificationScreen({navigation}: {navigation: any}) {
                       <Text
                         style={{
                           textAlign: 'center',
-                          color: '#FFF',
+                          color: key == 0 ? couleurs.white :couleurs.dark,
                           fontWeight: 'normal',
                           fontSize: 15,
                           opacity: 0.85,
@@ -163,7 +156,7 @@ export default function IdentificationScreen({navigation}: {navigation: any}) {
                     textAlign:'center',
                     fontFamily: CustomFont.Poppins,
                   }}>
-                  Je veux plus d'informations par rapport a l'identification
+                  {"Je veux plus d'informations par \n rapport a l'identification"}
                 </Text>
               </View>
             </View>

@@ -90,7 +90,7 @@ export default function MonEtablissement({
           {/* Banner Image */}
           <View style={{paddingHorizontal: 12, width: '100%'}}>
             <Image
-              source={require('../assets/images/banner.jpeg')}
+              source={require('../assets/images/cover.jpg')}
               style={{
                 height: 200,
                 width: '100%',
@@ -454,7 +454,7 @@ export default function MonEtablissement({
             android_ripple={{color: '7B4C7A'}}
             style={{
               padding: 8,
-              backgroundColor: '#7B4C7A',
+              backgroundColor: couleurs.primary,
               borderRadius: 30,
             }}
             onPress={() => Linking.openURL('tel:2522334444')}>
@@ -474,7 +474,7 @@ export default function MonEtablissement({
             style={{
               paddingHorizontal: 30,
               width: 230,
-              backgroundColor: '#7B4C7A',
+              backgroundColor: couleurs.primary,
               borderRadius: 30,
             }}
             onPress={() => navigation.navigate('rdv', {rdvs: rendez_vous})}>

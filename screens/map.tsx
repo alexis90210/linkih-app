@@ -22,6 +22,7 @@ import {CustomFont, couleurs} from '../components/color';
 import MapboxGL from '@rnmapbox/maps';
 import GpsIcon from '../components/gps';
 import ShopIcon from '../components/shop';
+import defaultStyle from '../components/api/defaultMpaStyle';
 
 MapboxGL.setAccessToken(ApiService.MAPBOX_GL_TOKEN);
 
@@ -108,38 +109,6 @@ export default function Map({
 
  
 
-
-  const defaultStyle = {
-    version: 8,
-    name: 'Land',
-    sources: {
-      map: {
-        type: 'raster',
-        tiles: ['https://a.tile.openstreetmap.org/{z}/{x}/{y}.png'],
-        tileSize: 256,
-        minzoom: 1,
-        maxzoom: 19,
-      },
-    },
-    layers: [
-      {
-        id: 'background',
-        type: 'background',
-        paint: {
-          'background-color': '#f2efea',
-        },
-      },
-      {
-        id: 'map',
-        type: 'raster',
-        source: 'map',
-        paint: {
-          'raster-fade-duration': 100,
-        },
-      },
-    ],
-  };
-
   return (
     <SafeAreaView style={{flex: 1}}>
       <View style={styles.page}>
@@ -206,7 +175,7 @@ export default function Map({
                       borderColor: couleurs.primary,
                     }}></View>
                 </View>
-              </View>
+              </View>             
             </MapboxGL.PointAnnotation>
             ))}
           </MapboxGL.MapView>
@@ -217,7 +186,7 @@ export default function Map({
       <View
         style={{
           borderRadius: 100,
-          backgroundColor: '#7B4C7A',
+          backgroundColor:couleurs.primary,
           padding: 10,
           margin: 4,
           position: 'absolute',
@@ -238,7 +207,7 @@ export default function Map({
       <View
         style={{
           borderRadius: 100,
-          backgroundColor: '#7B4C7A',
+          backgroundColor:couleurs.primary,
           padding: 10,
           margin: 4,
           position: 'absolute',
@@ -293,7 +262,7 @@ export default function Map({
               <View
                 style={{
                   alignItems: 'center',
-                  backgroundColor: '#7B4C7A',
+                  backgroundColor:couleurs.primary,
                   borderRadius: 30,
                   marginBottom: 10,
                   display: 'flex',

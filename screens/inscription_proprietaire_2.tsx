@@ -8,17 +8,23 @@ import {
   TouchableOpacity,
   TextInput,
   Image,
+  StyleSheet,
 } from 'react-native';
-import CloseIcon from '../components/close';
 import {CustomFont, couleurs} from '../components/color';
-import {
-  MultipleSelectList,
-  SelectList,
-} from 'react-native-dropdown-select-list';
+import {SelectList} from 'react-native-dropdown-select-list';
 import {categories} from '../components/api/categories';
 import planning from '../components/api/planning';
 import horaire from '../components/api/horaire';
 import storage from '../components/api/localstorage';
+
+import MapboxGL from '@rnmapbox/maps';
+import ApiService from '../components/api/service';
+import defaultStyle from '../components/api/defaultMpaStyle';
+import Geolocation from '@react-native-community/geolocation';
+import { SvgUri } from 'react-native-svg';
+import CategorieSvg from '../assets/svg/success.svg';
+
+MapboxGL.setAccessToken(ApiService.MAPBOX_GL_TOKEN);
 
 // InscriptionProprietaireScreen2
 export default function InscriptionProprietaireScreen2({
@@ -77,6 +83,8 @@ export default function InscriptionProprietaireScreen2({
     setSelectedHoraireFermetureDimanche,
   ] = useState('');
 
+  MapboxGL.setTelemetryEnabled(false);
+
   var social = {
     facebook: '',
     twitter: '',
@@ -101,18 +109,19 @@ export default function InscriptionProprietaireScreen2({
 
   var etablissement = route.params?.etablissement;
 
-  storage.load({
-    key: 'configuration', // Note: Do not use underscore("_") in key!
-    id: 'configuration', // Note: Do not use underscore("_") in id!
-  }).then( data => {
-    etablissement.langue = data.langage.name
-    etablissement.pays = data.pays.name
-  });
-
+  storage
+    .load({
+      key: 'configuration', // Note: Do not use underscore("_") in key!
+      id: 'configuration', // Note: Do not use underscore("_") in id!
+    })
+    .then(data => {
+      etablissement.langue = data.langage.name;
+      etablissement.pays = data.pays.name;
+    });
 
   const nextPage = () => {
     console.log(stepper);
-    
+
     if (stepper == 4) {
       // formating horaire
 
@@ -160,25 +169,192 @@ export default function InscriptionProprietaireScreen2({
         fermeture: selectedHoraireFermetureDimanche,
       });
 
-
       console.log({
         etablissement: etablissement,
         categorie: selectedCategorie,
         horaires: horaires,
-        social: social
+        social: social,
       });
-
 
       // redirect to new route
       navigation.navigate('inscription_proprietaire_3', {
         etablissement: etablissement,
         categorie: selectedCategorie,
         horaires: horaires,
-        social: social
+        social: social,
       });
     } else {
       setStepper(stepper + 1);
     }
+  };
+
+  const AdressMap = () => {
+    const [startCords, setstartCords] = useState([0, 0]);
+
+    Geolocation.getCurrentPosition(info => {
+      let lon = Number(info.coords.longitude);
+      let lat = Number(info.coords.latitude);
+
+
+      setstartCords([lon, lat]);
+
+      // console.log(startCords);
+    });
+
+    return (
+      <>
+        <View style={{flex: 1, height: 450}}>
+          <MapboxGL.MapView
+            style={styles.map}
+            styleJSON={JSON.stringify(defaultStyle)}
+            zoomEnabled={true}
+            pitchEnabled={true}
+            onPress={e => null}
+            onRegionIsChanging={e => null}
+            surfaceView={true}
+            rotateEnabled={true}
+            scrollEnabled={true}>
+            <MapboxGL.Camera
+              zoomLevel={11}
+              centerCoordinate={startCords}
+              followUserLocation={true}
+            />
+
+            <MapboxGL.PointAnnotation
+              id={'marker'}
+              coordinate={startCords}
+              draggable
+              onDragStart={ (e) =>  console.log(e) }>
+              <View
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  alignContent: 'center',
+                }}>
+                <View
+                  style={{
+                    alignSelf: 'center',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: 3,
+                  }}>
+                  <View
+                    style={{
+                      backgroundColor: '#eee',
+                      borderRadius: 50,
+                      width: 60,
+                      height: 60,
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'center',
+                      alignContent: 'center',
+                      padding: 10,
+                      borderWidth: 2,
+                      borderColor: couleurs.primary,
+                    }}>
+                    <Image
+                      source={require('../assets/images/salon-de-coiffure.png')}
+                      style={{
+                        width: 30,
+                        height: 30,
+                        marginLeft: 6,
+                      }}></Image>
+                  </View>
+                  <View
+                    style={{
+                      width: 8,
+                      height: 8,
+                      alignSelf: 'center',
+                      backgroundColor: '#eee',
+                      borderRadius: 50,
+                      borderWidth: 2,
+                      padding: 4,
+                      borderColor: couleurs.primary,
+                    }}></View>
+                </View>
+              </View>
+            </MapboxGL.PointAnnotation>
+          </MapboxGL.MapView>
+        </View>
+
+        <View
+          style={{
+            position: 'relative',
+            width: '100%',
+            height: 200,
+            borderTopLeftRadius: 20,
+            borderTopRightRadius: 20,
+            backgroundColor: '#eee',
+            top: -20,
+            display: 'flex',
+            flexDirection: 'column',
+            padding: 20,
+          }}>
+          <TextInput
+            defaultValue={''}
+            onChangeText={input => null}
+            placeholder="Entrez votre adresse"
+            style={{
+              backgroundColor: 'transparent',
+              borderBottomWidth: 1,
+              borderBottomColor: '#E2C6BB',
+              color: couleurs.primary,
+              width: '100%',
+              padding: 0,
+              marginTop: 30,
+              fontFamily: CustomFont.Poppins,
+            }}></TextInput>
+
+          <TextInput
+            defaultValue={''}
+            onChangeText={input => null}
+            placeholder="Entrez votre ZIP/ code postal"
+            style={{
+              backgroundColor: 'transparent',
+              borderBottomWidth: 1,
+              borderBottomColor: '#E2C6BB',
+              color: couleurs.primary,
+              width: '100%',
+              padding: 0,
+              marginTop: 30,
+              fontFamily: CustomFont.Poppins,
+            }}></TextInput>
+
+
+         
+              <View
+                style={{
+                  alignItems: 'center',
+                  backgroundColor: couleurs.primary,
+                  borderRadius: 30,
+                  marginTop: 40,
+                
+                }}>
+                <TouchableOpacity
+                  
+                  style={{
+                    paddingHorizontal: 10,
+                    width: '70%',
+                  }}
+                  onPress={() => nextPage()}>
+                  <Text
+                    style={{
+                      textAlign: 'center',
+                      padding: 10,
+                      paddingHorizontal: 20,
+                      fontSize: 15,
+                      fontWeight: '500',
+                      color: couleurs.white,
+                      fontFamily: CustomFont.Poppins,
+                    }}>
+                    Confirmez l'adressse
+                  </Text>
+                </TouchableOpacity>
+              </View>
+        </View>
+      </>
+    );
   };
 
   return (
@@ -197,31 +373,7 @@ export default function InscriptionProprietaireScreen2({
           <View style={{marginTop: 5}}></View>
 
           {/* Adresse de l'etablissement */}
-          {stepper == 1 && (
-            <View style={{paddingVertical: 10}}>
-              <Text
-                style={{
-                  fontFamily: CustomFont.Poppins,
-                  fontSize: 15,
-                  paddingBottom: 12,
-                  color: '#000',
-                  paddingLeft: 20,
-                }}>
-                Adresse de l'etablissement
-              </Text>
-              <View style={{backgroundColor: '#fff', paddingLeft: 20}}>
-                <TextInput
-                  style={{
-                    color: couleurs.primary,
-                    fontFamily: CustomFont.Poppins,
-                  }}
-                  defaultValue={etablissement.adresse}
-                  onChangeText={input => (etablissement.adresse = input)}
-                  placeholderTextColor={'rgba(100,100,100,.7)'}
-                  placeholder="Entrez l'adresse de l'etablissement"></TextInput>
-              </View>
-            </View>
-          )}
+          {stepper == 1 && <AdressMap />}
 
           {/* Categories selectionnees */}
           {stepper == 2 && (
@@ -276,7 +428,7 @@ export default function InscriptionProprietaireScreen2({
                     flexWrap: 'wrap',
                     gap: 10,
                     paddingHorizontal: 5,
-                    marginVertical: 40,
+                    marginTop: 40,
                   }}>
                   {selectedCategorie.map((row, key) => (
                     <View
@@ -700,38 +852,40 @@ export default function InscriptionProprietaireScreen2({
               justifyContent: 'center',
               paddingHorizontal: 10,
             }}>
-            <View
-              style={{
-                alignItems: 'center',
-                backgroundColor: couleurs.primary,
-                borderRadius: 30,
-                marginTop: 40,
-                height: 45,
-                width: '100%',
-              }}>
-              <TouchableOpacity
+            {stepper != 1 && (
+              <View
                 style={{
-                  paddingHorizontal: 10,
+                  alignItems: 'center',
+                  backgroundColor: couleurs.primary,
+                  borderRadius: 30,
+                  height: 45,
                   width: '100%',
-                }}
-                onPress={() => nextPage()}>
-                <Text
+                }}>
+                <TouchableOpacity
                   style={{
-                    textAlign: 'center',
-                    padding: 10,
-                    paddingHorizontal: 20,
-                    fontSize: 14,
-                    color: couleurs.secondary,
-                    fontFamily: CustomFont.Poppins,
-                  }}>
-                  Suivant
-                </Text>
-              </TouchableOpacity>
-            </View>
+                    paddingHorizontal: 10,
+                    width: '100%',
+                  }}
+                  onPress={() => nextPage()}>
+                  <Text
+                    style={{
+                      textAlign: 'center',
+                      padding: 10,
+                      paddingHorizontal: 20,
+                      fontSize: 14,
+                      color: couleurs.secondary,
+                      fontFamily: CustomFont.Poppins,
+                    }}>
+                    Suivant
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            )}
           </View>
 
           {stepper > 1 && (
-            <View style={{padding: 10}}>
+            <>
+              <View style={{padding: 10}}>
               <TouchableOpacity onPress={() => setStepper(stepper - 1)}>
                 <Text
                   style={{
@@ -750,6 +904,11 @@ export default function InscriptionProprietaireScreen2({
                 </Text>
               </TouchableOpacity>
             </View>
+
+            {/* IMAGE SVG GOES HERE */}
+            {/* <SvgUri svgXmlData={CategorieSvg} height="300" width='100%'/> */}
+            <Image source={require('../assets/images/success.png')} style={{height:250, width:'100%'}} />
+            </>
           )}
 
           <View style={{marginVertical: 20}}></View>
@@ -760,3 +919,20 @@ export default function InscriptionProprietaireScreen2({
     </>
   );
 }
+
+const styles = StyleSheet.create({
+  page: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: couleurs.primary,
+  },
+  container: {
+    height: '110%',
+    width: '100%',
+    backgroundColor: couleurs.primary,
+  },
+  map: {
+    flex: 1,
+  },
+});

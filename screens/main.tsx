@@ -392,7 +392,7 @@ function Main({navigation}: {navigation: any}) {
           flexDirection: 'row',
           justifyContent: 'space-between',
           alignItems: 'center',
-          backgroundColor: '#7B4C7A',
+          backgroundColor: couleurs.primary,
           width: '100%',
           paddingVertical: 8,
         }}>
@@ -428,7 +428,7 @@ function Main({navigation}: {navigation: any}) {
         }}>
         {/* Banner Image */}
         <Image
-          source={require('../assets/images/banner.jpeg')}
+          source={require('../assets/images/1.jpg')}
           style={{
             height: 200,
             width: '100%',
@@ -462,7 +462,7 @@ function Main({navigation}: {navigation: any}) {
                 style={[styles.tab, activeTab === 'Tab 1' && styles.activeTab]}
                 onPress={() => handleTabPress('Tab 1')}>
                 <FilterIcon
-                  color={activeTab === 'Tab 1' ? couleurs.main : '#000'}
+                  color={activeTab === 'Tab 1' ? couleurs.primary : '#000'}
                 />
                 <Text
                   style={[
@@ -477,7 +477,7 @@ function Main({navigation}: {navigation: any}) {
                 style={[styles.tab, activeTab === 'Tab 2' && styles.activeTab]}
                 onPress={() => handleTabPress('Tab 2')}>
                 <ShopIcon
-                  color={activeTab === 'Tab 2' ? couleurs.main : '#000'}
+                  color={activeTab === 'Tab 2' ? couleurs.primary : '#000'}
                 />
                 <Text
                   style={[
@@ -527,7 +527,7 @@ function Main({navigation}: {navigation: any}) {
                         backgroundColor: 'transparent',
                         borderBottomWidth: 1,
                         borderBottomColor: '#E2C6BB',
-                        color: '#7B4C7A',
+                        color: couleurs.primary,
                         width: '100%',
                         fontWeight: '600',
                         padding: 10,
@@ -564,7 +564,7 @@ function Main({navigation}: {navigation: any}) {
                         backgroundColor: 'transparent',
                         borderBottomWidth: 1,
                         borderBottomColor: '#E2C6BB',
-                        color: '#7B4C7A',
+                        color: couleurs.primary,
                         width: '100%',
                         fontWeight: '600',
                         fontSize: 15,
@@ -610,7 +610,7 @@ function Main({navigation}: {navigation: any}) {
                         backgroundColor: 'transparent',
                         borderBottomWidth: 1,
                         borderBottomColor: '#E2C6BB',
-                        color: '#7B4C7A',
+                        color: couleurs.primary,
                         width: '100%',
                         fontWeight: '600',
                         padding: 10,
@@ -748,7 +748,7 @@ function Main({navigation}: {navigation: any}) {
                     width: '100%',
                     height: 45,
                     paddingHorizontal: 20,
-                    backgroundColor: 'rgba(100,100,100,.2)',
+                    backgroundColor: couleurs.primaryLight,
                     borderRadius: 50,
                     display: 'flex',
                     flexDirection: 'row',
@@ -891,7 +891,7 @@ function Main({navigation}: {navigation: any}) {
                     width: '100%',
                     height: 45,
                     paddingHorizontal: 20,
-                    backgroundColor: 'rgba(100,100,100,.2)',
+                    backgroundColor: couleurs.primaryLight,
                     borderRadius: 50,
                     display: 'flex',
                     flexDirection: 'row',
@@ -900,7 +900,7 @@ function Main({navigation}: {navigation: any}) {
                     marginBottom: 20,
                   },
                 ]}>
-                <SearchIcon color={couleurs.secondary} />
+                <SearchIcon color={couleurs.dark} />
                 <TextInput
                   placeholderTextColor={'rgba(100,100,100,.7)'}
                   placeholder="Recherchez un salon"
@@ -928,7 +928,7 @@ function Main({navigation}: {navigation: any}) {
                     gap: 10,
                     justifyContent: 'flex-start',
                   }}>
-                  <CloseIcon color={couleurs.secondary} />
+                  <CloseIcon color={couleurs.primary} />
                   <Text
                     style={{
                       color: 'rgba(100,100,100,.8)',
@@ -961,11 +961,11 @@ const styles = StyleSheet.create({
   activeTab: {
     backgroundColor: 'transparent',
     borderBottomWidth: 2,
-    borderColor: couleurs.main,
+    borderColor: couleurs.primary,
     fontFamily: CustomFont.Poppins,
   },
   colorActive: {
-    color: couleurs.main,
+    color: couleurs.primary,
     fontFamily: CustomFont.Poppins,
   },
   tabText: {

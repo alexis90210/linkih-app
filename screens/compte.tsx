@@ -48,7 +48,7 @@ export default function Compte({navigation}: {navigation: any}) {
           <Pressable onPress={() => navigation.goBack()}>
             <ArrowLeftIcon color={couleurs.primary} />
           </Pressable>
-          <Text style={{color: '#000', fontSize: 18, fontWeight: '700'}}>
+          <Text style={{color: couleurs.primary, fontSize: 18}}>
             Mon compte
           </Text>
         </View>
@@ -60,7 +60,7 @@ export default function Compte({navigation}: {navigation: any}) {
           {/* Banner Image */}
           <View style={{paddingHorizontal: 12, width: '100%'}}>
             <Image
-              source={require('../assets/images/banner.jpeg')}
+              source={require('../assets/images/1.jpg')}
               style={{
                 height: 200,
                 width: '100%',

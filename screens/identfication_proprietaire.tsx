@@ -203,7 +203,7 @@ export default function IdentificationProprietaireScreen({
                     backgroundColor: 'transparent',
                     borderBottomWidth: 1,
                     borderBottomColor: '#E2C6BB',
-                    color: '#7B4C7A',
+                    color: couleurs.primary,
                     width: '100%',
                     fontWeight: '600',
                     padding: 0,
@@ -242,7 +242,7 @@ export default function IdentificationProprietaireScreen({
                     backgroundColor: 'transparent',
                     borderBottomWidth: 1,
                     borderBottomColor: '#E2C6BB',
-                    color: '#7B4C7A',
+                    color: couleurs.primary,
                     fontWeight: '600',
                     width: '100%',
                     padding: 0,
@@ -253,7 +253,7 @@ export default function IdentificationProprietaireScreen({
               <View
                 style={{
                   alignItems: 'center',
-                  backgroundColor: '#7B4C7A',
+                  backgroundColor: couleurs.primary,
                   borderRadius: 30,
                   marginBottom: 20,
                 }}>

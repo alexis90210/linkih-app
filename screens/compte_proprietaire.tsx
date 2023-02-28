@@ -45,7 +45,7 @@ export default function CompteProprietaire({navigation}: {navigation: any}) {
           {/* Banner Image */}
           <View style={{paddingHorizontal: 12, width: '100%'}}>
             <Image
-              source={require('../assets/images/banner.jpeg')}
+              source={require('../assets/images/1.jpg')}
               style={{
                 height: 200,
                 width: '100%',

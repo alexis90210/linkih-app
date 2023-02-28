@@ -167,7 +167,7 @@ export default function App(): JSX.Element {
             headerShadowVisible: false,
             headerTitleStyle: {fontSize: 18, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
             headerTintColor:couleurs.primary,
-            headerShown: true,
+            headerShown: false,
             presentation: 'modal',
             animationTypeForReplace: 'push',
             animation: 'slide_from_right',

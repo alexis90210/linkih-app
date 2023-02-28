@@ -1,11 +1,12 @@
 export class couleurs {
-    static primary = '#7B4C7A';//'#841584';
-    static secondary = '#E2C6BB';
+    static primary = '#9c702b';
+    static secondary = '#fefefe'; 
     static white = '#FFF';
     static black = '#000';
     static main = "#7B4C7A";
     static dark = "#413031";
-    static success = "green"
+    static success = "green";
+    static primaryLight = "#f4e0a2";
 }
 
 export class CustomFont {
