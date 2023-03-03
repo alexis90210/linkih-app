@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   PixelRatio,
   TextInput,
+  Image,
 } from 'react-native';
 import ShopIcon from '../components/shop';
 import { CustomFont, couleurs } from '../components/color';
@@ -34,7 +35,7 @@ export default function SplashScreen({navigation}: {navigation: any}) {
             }}>
 
 
-                  <ShopIcon color={couleurs.secondary}/>
+            <Image source={require('../assets/images/logo.png')} style={{height:70, width:180}} />
 
             <Text
               style={{

@@ -14,6 +14,7 @@ import {CustomFont, couleurs} from '../components/color';
 import ImagePicker from 'react-native-image-crop-picker';
 import ApiService from '../components/api/service';
 import axios from 'axios';
+import ArrowLeftIcon from '../components/ArrowLeft';
 
 // InscriptionProprietaire3
 export default function InscriptionProprietaire3({
@@ -105,6 +106,24 @@ export default function InscriptionProprietaire3({
           height: '100%',
           backgroundColor: '#fff',
         }}>
+          <View
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'flex-start',
+            gap: 30,
+            paddingVertical: 10,
+            paddingHorizontal: 10,
+            backgroundColor:couleurs.primary,
+          }}>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <ArrowLeftIcon color={couleurs.white} />
+          </TouchableOpacity>
+          <Text style={{color: couleurs.white, fontSize: 16, fontFamily: CustomFont.Poppins}}>
+            Image de couverture
+          </Text>
+        </View>
+
         <ScrollView contentInsetAdjustmentBehavior="automatic">
           <View
             style={{
@@ -121,7 +140,7 @@ export default function InscriptionProprietaire3({
                 style={{
                   borderWidth: 1,
                   borderStyle: 'dashed',
-                  padding: 10,
+                  // padding: 10,
                   display: 'flex',
                   flexDirection: 'column',
                   justifyContent: 'center',
@@ -130,13 +149,15 @@ export default function InscriptionProprietaire3({
                   borderColor: couleurs.primary,
                   height: 180,
                   width: '100%',
+                  borderRadius:20
                 }}>
                 {photoCover && (
                   <Image
                     source={{uri: photoCover}}
                     style={{
-                      height: 160,
+                      height: 180,
                       width: '100%',
+                      borderRadius:20
                     }}
                   />
                 )}

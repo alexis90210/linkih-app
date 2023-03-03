@@ -3,7 +3,7 @@ import {
   Text,
   StyleSheet,
   View,
-  Pressable,
+  TouchableOpacity,
   SafeAreaView,
   ScrollView,
   Image,
@@ -71,16 +71,17 @@ export default function MonEtablissement({
             flexDirection: 'row',
             justifyContent: 'space-between',
             gap: 30,
-            paddingVertical: 15,
+            paddingVertical: 10,
             paddingHorizontal: 10,
+            backgroundColor:couleurs.primary
           }}>
-          <Pressable onPress={() => navigation.navigate('main')}>
-            <HomeIcon color={couleurs.primary} />
-          </Pressable>
-          <Text style={{color: couleurs.primary, fontSize: 18,fontFamily:CustomFont.Poppins}}>
+          <TouchableOpacity onPress={() => navigation.navigate('main')}>
+            <HomeIcon color={couleurs.white} />
+          </TouchableOpacity>
+          <Text style={{color: couleurs.white, fontSize: 18,fontFamily:CustomFont.Poppins}}>
             {title}
           </Text>
-          <MapIcon color={couleurs.primary}/>
+          <TouchableOpacity onPress={ () => navigation.navigate('map')}><MapIcon color={couleurs.white}/></TouchableOpacity>
         </View>
         <ScrollView
           contentInsetAdjustmentBehavior="automatic"
@@ -88,7 +89,7 @@ export default function MonEtablissement({
             backgroundColor: '#f6f6f6f6',
           }}>
           {/* Banner Image */}
-          <View style={{paddingHorizontal: 12, width: '100%'}}>
+          <View style={{paddingHorizontal: 12,marginTop:15, width: '100%'}}>
             <Image
               source={require('../assets/images/cover.jpg')}
               style={{
@@ -96,6 +97,8 @@ export default function MonEtablissement({
                 width: '100%',
                 borderRadius: 15,
                 marginTop: 2,
+                borderWidth:1,
+                borderColor:couleurs.primary
               }}
             />
           </View>
@@ -113,7 +116,7 @@ export default function MonEtablissement({
             <View
               style={{
                 borderRadius: 15,
-                backgroundColor: '#fff',
+                backgroundColor: couleurs.primary,
                 padding: 14,
                 width: '100%',
                 shadowColor: 'gray',
@@ -121,7 +124,7 @@ export default function MonEtablissement({
               }}>
               <Text
                 style={{
-                  color: '#000',
+                  color: couleurs.white,
                   paddingVertical: 3,
                   fontSize: 17,fontFamily:CustomFont.Poppins
                 }}>
@@ -129,7 +132,7 @@ export default function MonEtablissement({
               </Text>
               <Text
                 style={{
-                  color: '#000',
+                  color: couleurs.white,
                   paddingVertical: 3,
                   opacity: 0.7,
                   fontSize: 15,fontFamily:CustomFont.Poppins
@@ -138,7 +141,7 @@ export default function MonEtablissement({
               </Text>
               <Text
                 style={{
-                  color: '#000',
+                  color: couleurs.white,
                   paddingVertical: 3,
                   fontSize: 16,fontFamily:CustomFont.Poppins
                 }}>
@@ -191,30 +194,32 @@ export default function MonEtablissement({
               </Text>
             </View>
 
-            <Text
-              style={{
-                color: "#000",
-                paddingVertical: 3,
-                fontSize: 15,
-                fontFamily:CustomFont.Poppins,
-                marginVertical: 15,
-              }}>
-              Pays et region de l'etablissement
-            </Text>
-
+            {/* ADRESSE */}
             <View
               style={{
                 borderRadius: 15,
                 backgroundColor: '#fff',
                 padding: 14,
                 width: '100%',
+                alignSelf:'center',
+                shadowColor: 'gray',
               }}>
               <Text
                 style={{
                   color: '#000',
                   paddingVertical: 3,
-                  fontSize: 15,
-                  fontFamily:CustomFont.Poppins,
+                  fontSize: 17,
+                  fontFamily:CustomFont.Poppins
+                }}>
+                Pays et region de l'etablissement
+              </Text>
+
+              <Text
+                style={{
+                  color: '#000',
+                  paddingVertical: 3,
+                  fontSize: 16,
+                  fontWeight: '600',
                   opacity: 0.8,
                 }}>
                 {proprietaire.pays}
@@ -225,31 +230,40 @@ export default function MonEtablissement({
                   paddingVertical: 3,
                   opacity: 0.7,
                   fontSize: 15,
-                  fontFamily:CustomFont.Poppins
+                  fontWeight: '600',
                 }}>
-                {etablissement.adresse}
+               {etablissement.adresse}
               </Text>
             </View>
 
+            {/* ABONNEMENT */}
             <View
+              style={{
+                borderRadius: 15,
+                backgroundColor: '#fff',
+                padding: 14,
+                width: '100%',
+                alignSelf:'center',
+                shadowColor: 'gray',
+                marginTop:10
+              }}>
+              <Text
+                style={{
+                  color: '#000',
+                  paddingVertical: 3,
+                  fontSize: 15,
+                  fontFamily:CustomFont.Poppins
+                }}>
+                Mon abonnement
+              </Text>
+
+              <View
                 style={{
                   display: 'flex',
                   justifyContent: 'space-between',
                   flexDirection: 'row',
                   alignItems: 'center',
                 }}>
-                <View>
-                  <Text
-                    style={{
-                      color: '#000',
-                      paddingVertical: 3,
-                      fontSize: 15,
-                      fontFamily:CustomFont.Poppins,
-                      marginVertical: 15,
-                    }}>
-                    Mon abonnement
-                  </Text>
-                </View>
                 <View
                   style={{
                     display: 'flex',
@@ -277,74 +291,41 @@ export default function MonEtablissement({
                   </Text>
                 </View>
               </View>
-          
-              <View
+              <Text
                 style={{
-                  borderRadius: 15,
-                  backgroundColor: '#fff',
-                  padding: 14,
-                  width: '100%',
+                  color: '#000',
+                  paddingVertical: 3,
+                  opacity: 0.7,
+                  fontSize: 15,
+                  fontWeight: '600',
                 }}>
-                <Text
-                  style={{
-                    color: '#000',
-                    paddingVertical: 3,
-                    fontSize: 15,
-                    fontFamily:CustomFont.Poppins
-                  }}>
-                  Pack Proprietaire
-                </Text>
-                <View
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'flex-start',
-                    flexDirection: 'row',
-                    gap: 10,
-                  }}>
-                  <Text
-                    style={{
-                      color: '#000',
-                      paddingVertical: 3,
-                      fontSize: 15,
-                      fontFamily:CustomFont.Poppins
-                    }}>
-                    xx
-                  </Text>
-                  <Text
-                    style={{
-                      color: couleurs.primary,
-                      paddingVertical: 3,
-                      fontSize: 14,
-                      fontFamily:CustomFont.Poppins
-                    }}>
-                    € TTC / mois
-                  </Text>
-                </View>
-              </View>
-           
-             
+               20 € TTC / mois
+              </Text>
+            </View>
 
-            <Text
+                {/* HORAIRE OUVERTURE */}
+            <View
+              style={{
+                borderRadius: 15,
+                backgroundColor: '#fff',
+                padding: 14,
+                width: '100%',
+                alignSelf:'center',
+                shadowColor: 'gray',
+                marginTop:10
+              }}>
+
+<Text
               style={{
                 color: '#000',
                 paddingVertical: 3,
                 fontSize: 15,
                 fontFamily:CustomFont.Poppins,
-                marginVertical: 15,
               }}>
               Heure d'ouverture
             </Text>
 
-            <View
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-                flexWrap: 'wrap',
-                gap: 10,
-                paddingHorizontal: 5,
-                marginBottom: 40,
-              }}>
-              {horaire_ouverture.map((row, key) => (
+            {horaire_ouverture.map((row, key) => (
                 <View
                   key={Math.random()}
                   style={{
@@ -353,62 +334,6 @@ export default function MonEtablissement({
                     gap: 4,
                     backgroundColor: '#fff',
                     padding: 5,
-                    paddingHorizontal: 15,
-                    borderRadius: 20,
-                    alignItems: 'center',
-                    width: '100%',
-                    justifyContent: 'space-between',
-                  }}>
-                  <View
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      gap: 3,
-                      backgroundColor: '#fff',
-                      padding: 6,
-                      borderRadius: 50,
-                    }}>
-                    <Text style={{color: '#000',fontFamily:CustomFont.Poppins}}>{row.jour}</Text>
-                    <Text style={{color: couleurs.primary, fontSize: 11,fontFamily:CustomFont.Poppins}}>
-                      {row.heure_ouverture}-{row.heure_fermeture}
-                    </Text>
-                  </View>
-                </View>
-              ))}
-            </View>
-
-            <View style={{paddingVertical: 10}}>
-              <Text
-                style={{
-                  fontFamily:CustomFont.Poppins,
-                  fontSize: 15,
-                  paddingBottom: 12,
-                  color: '#000',
-                  paddingLeft: 20,
-                }}>
-                Lien reseaux sociaux
-              </Text>
-            </View>
-
-            <View
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-                flexWrap: 'wrap',
-                gap: 10,
-                paddingHorizontal: 5,
-                marginBottom: 40,
-              }}>
-              {lien_reseaux_sociaux.map((row, key) => (
-                <View
-                  key={Math.random()}
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    gap: 10,
-                    backgroundColor: '#fff',
-                    padding: 5,
-                    paddingHorizontal: 15,
                     borderRadius: 20,
                     alignItems: 'center',
                     width: '100%',
@@ -420,22 +345,117 @@ export default function MonEtablissement({
                       flexDirection: 'row',
                       gap: 3,
                       backgroundColor: '#fff',
-                      padding: 5,
+                      borderRadius: 50,
+                      alignItems: 'center',
                       width: '100%',
-                      alignItems:'center'
+                      justifyContent: 'space-between',
                     }}>
-                    {row.nom == "facebook" && <Image source={require(`../assets/social/facebook.png`)} />}
-                    {row.nom == "twitter" && <Image source={require(`../assets/social/twitter.png`)} />}
-                    {row.nom == "instagram" && <Image source={require(`../assets/social/instagram.png`)} />}
-                    {row.nom == "linkedin" && <Image source={require(`../assets/social/linkedin.png`)} />}
-                    {row.nom == "youtube" && <Image source={require(`../assets/social/youtube.png`)} />}
-                    <Text style={{flex:1, color: couleurs.dark, fontSize: 13, fontFamily:CustomFont.Poppins}}>
-                      {row.username ? row.username : "Vous n'ave pas encore rensiegne votre username"}
+                    <Text style={{color: '#000',fontFamily:CustomFont.Poppins}}>{row.jour}</Text>
+                    <Text style={{color: couleurs.primary, fontSize: 11,fontFamily:CustomFont.Poppins}}>
+                      {row.heure_ouverture}-{row.heure_fermeture}
                     </Text>
                   </View>
                 </View>
               ))}
+
+
+              </View>
+
+
+            
+
+            {/* LIEN RESEAUX SOCIAUX */}
+
+            <View
+              style={{
+                borderRadius: 15,
+                backgroundColor: '#fff',
+                padding: 14,
+                width: '100%',
+                alignSelf:'center',
+                shadowColor: 'gray',
+                marginTop:10
+              }}>
+
+              <Text
+                style={{
+                  fontFamily:CustomFont.Poppins,
+                  fontSize: 15,
+                  paddingBottom: 12,
+                  color: '#000',
+                }}>
+                Lien reseaux sociaux
+              </Text>
+
+                 <View
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                flexWrap: 'wrap',
+                gap: 10,
+              }}>
+    
+                <Image source={ require('../assets/social/facebook.png')} 
+                style={{width:30, height: 30}} />
+
+                <Image source={ require('../assets/social/twitter.png')} 
+                                style={{width:30, height: 30}} />
+
+                <Image source={ require('../assets/social/instagram.png')} 
+                                style={{width:30, height: 30}} />
+
+                <Image source={ require('../assets/social/linkedin.png')} 
+                                style={{width:30, height: 30}} />
+
+                <Image source={ require('../assets/social/youtube.png')} 
+                                style={{width:30, height: 30}} />
+       
             </View>
+     
+
+              </View>
+
+              {/*GALLERIE */}
+
+            <View
+              style={{
+                borderRadius: 15,
+                backgroundColor: '#fff',
+                padding: 14,
+                width: '100%',
+                alignSelf:'center',
+                shadowColor: 'gray',
+                marginTop:10
+              }}>
+
+              <Text
+                style={{
+                  fontFamily:CustomFont.Poppins,
+                  fontSize: 15,
+                  paddingBottom: 12,
+                  color: '#000',
+                }}>
+                Gallerie
+              </Text>
+
+                 <View
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                flexWrap: 'wrap',
+                gap: 10,
+              }}>
+    
+                {[1,2,,5,3].map( (row,key) => (<Image key={key} source={ require('../assets/images/cover.jpg')} 
+                style={{width:150, height: 100}} />))}
+       
+            </View>
+     
+
+              </View>
+          
+
+
           </View>
 
           {/* Welcome text */}
@@ -450,8 +470,7 @@ export default function MonEtablissement({
             justifyContent: 'center',
             gap: 30,
           }}>
-          <Pressable
-            android_ripple={{color: '7B4C7A'}}
+          <TouchableOpacity
             style={{
               padding: 8,
               backgroundColor: couleurs.primary,
@@ -468,9 +487,8 @@ export default function MonEtablissement({
               }}>
               <EditIcon />
             </View>
-          </Pressable>
-          <Pressable
-            android_ripple={{color: '7B4C7A'}}
+          </TouchableOpacity>
+          <TouchableOpacity
             style={{
               paddingHorizontal: 30,
               width: 230,
@@ -499,7 +517,7 @@ export default function MonEtablissement({
                 Mes Rendez-vous
               </Text>
             </View>
-          </Pressable>
+          </TouchableOpacity>
         </View>
 
         

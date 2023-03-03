@@ -20,6 +20,8 @@ import ApiService from '../components/api/service';
 import EyeIcon from '../components/eye';
 import CloseIcon from '../components/close';
 import MapIcon from '../components/map';
+import BouncyCheckbox from 'react-native-bouncy-checkbox';
+import { AirbnbRating } from 'react-native-ratings';
 
 // ResultatRechercheScreen
 export default function ResultatRechercheScreen({
@@ -379,10 +381,11 @@ export default function ResultatRechercheScreen({
               paddingHorizontal: 10,
               backgroundColor: couleurs.primary,
             }}>
-            <View></View>
+           
 
             <Text
-              style={{color: couleurs.white, fontSize: 18, fontWeight: '700'}}>
+              style={{fontFamily:CustomFont.Poppins,color: couleurs.white,
+               fontSize: 18,}}>
               Filtres
             </Text>
 
@@ -394,7 +397,7 @@ export default function ResultatRechercheScreen({
                 gap: 10,
                 alignItems: 'center',
               }}>
-              <Text style={{color: couleurs.white}}>Effacer</Text>
+              <Text style={{fontFamily:CustomFont.Poppins,color: couleurs.white}}>Effacer</Text>
               <CloseIcon color={couleurs.white} />
             </TouchableOpacity>
           </View>
@@ -409,14 +412,139 @@ export default function ResultatRechercheScreen({
             <View
               style={{
                 display: 'flex',
-                flexDirection: 'row',
+                flexDirection: 'column',
                 gap: 10,
-                alignItems: 'center',
+                alignItems: 'flex-start',
               }}>
-              <Text style={{fontWeight: 'bold', color: couleurs.dark}}>
+              <Text style={{ fontWeight:'700', fontFamily:CustomFont.Poppins, color: couleurs.dark}}>
                 Trier par
               </Text>
-              <Text style={{color: couleurs.dark}}>Trier par</Text>
+
+              <View
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  flexDirection: 'row',
+                  width: '100%',
+                }}>
+                <Text style={{fontFamily:CustomFont.Poppins,color: couleurs.dark}}>Les plus proches</Text>
+                <BouncyCheckbox
+                  size={20}
+                  fillColor={couleurs.primary}
+                  unfillColor={couleurs.white}
+                  iconStyle={{borderColor: couleurs.primary}}
+                  innerIconStyle={{borderWidth: 2}}
+                  textStyle={{fontFamily: CustomFont.Poppins}}
+                  onPress={(isChecked: boolean) => {}}
+                />
+              </View>
+
+              <View
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  flexDirection: 'row',
+                  width: '100%',
+                }}>
+                <Text style={{fontFamily:CustomFont.Poppins,color: couleurs.dark}}>Les mieux notes</Text>
+                <BouncyCheckbox
+                  size={20}
+                  fillColor={couleurs.primary}
+                  unfillColor={couleurs.white}
+                  iconStyle={{borderColor: couleurs.primary}}
+                  innerIconStyle={{borderWidth: 2}}
+                  textStyle={{fontFamily: CustomFont.Poppins}}
+                  onPress={(isChecked: boolean) => {}}
+                />
+              </View>
+
+              {/* SEPARATEUR */}
+              <View style={{height:1, overflow:'hidden', width:'100%'}}>
+                <View style={{height:1,  borderWidth:1, borderColor:couleurs.primary, borderStyle:'dashed'}}></View>
+              </View>
+              {/* SEPARATEUR */}
+
+              <Text style={{fontFamily:CustomFont.Poppins, fontWeight:'700', color: couleurs.dark}}>
+                A moins de : 10km
+              </Text>
+
+               {/* SEPARATEUR */}
+               <View style={{height:1, overflow:'hidden', width:'100%'}}>
+                <View style={{height:1,  borderWidth:1, borderColor:couleurs.primary, borderStyle:'dashed'}}></View>
+              </View>
+              {/* SEPARATEUR */}
+
+
+              <Text style={{ fontWeight:'700', fontFamily:CustomFont.Poppins, color: couleurs.dark}}>
+                Note minimum
+              </Text>
+
+              <AirbnbRating
+                    reviewSize={10}
+                    reviewColor={couleurs.primary}
+                    showRating={false}
+                    count={10}
+                    reviews={['Terrible', 'Bad', 'Good', 'Very Good']}
+                    onFinishRating={rate => console.log(rate)}
+                    defaultRating={5}
+                    size={14}
+                  />
+
+
+
+              <View
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  flexDirection: 'row',
+                  width: '100%',
+                }}>
+                <View>
+                <Text style={{ fontWeight:'700', fontFamily:CustomFont.Poppins, color: couleurs.dark}}>
+                Nouveau salon
+              </Text>
+              <Text style={{color: couleurs.primary}}>Eablissement, Restaurant, ...</Text>
+                </View>
+                <BouncyCheckbox
+                  size={20}
+                  fillColor={couleurs.primary}
+                  unfillColor={couleurs.white}
+                  iconStyle={{borderColor: couleurs.primary}}
+                  innerIconStyle={{borderWidth: 2}}
+                  textStyle={{fontFamily: CustomFont.Poppins}}
+                  onPress={(isChecked: boolean) => {}}
+                />
+              </View>
+
+
+              <View
+                style={{
+                  alignItems: 'center',
+                  backgroundColor: couleurs.primary,
+                  borderRadius: 30,
+                  height: 45,
+                  marginTop: 50,
+                  width: '100%',
+                }}>
+                <TouchableOpacity
+                  style={{
+                    paddingHorizontal: 10,
+                    width: '100%',
+                  }}
+                  onPress={() => null}>
+                  <Text
+                    style={{
+                      textAlign: 'center',
+                      padding: 10,
+                      paddingHorizontal: 20,
+                      fontSize: 14,
+                      color: couleurs.secondary,
+                      fontFamily: CustomFont.Poppins,
+                    }}>
+                    APPLIQUER
+                  </Text>
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
         </Modal>

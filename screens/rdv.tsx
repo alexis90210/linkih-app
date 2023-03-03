@@ -28,13 +28,14 @@ export default function Rdv({navigation, route}: {navigation: any, route:any}) {
             flexDirection: 'row',
             justifyContent: 'flex-start',
             gap: 30,
-            paddingVertical: 15,
+            paddingVertical: 10,
             paddingHorizontal: 10,
+            backgroundColor:couleurs.primary,
           }}>
           <Pressable onPress={() => navigation.goBack()}>
-            <ArrowLeftIcon color={couleurs.primary} />
+            <ArrowLeftIcon color={couleurs.white} />
           </Pressable>
-          <Text style={{color: couleurs.primary, fontSize: 18, fontFamily: CustomFont.Poppins}}>
+          <Text style={{color: couleurs.white, fontSize: 16, fontFamily: CustomFont.Poppins}}>
             Mes rendez-vous
           </Text>
         </View>

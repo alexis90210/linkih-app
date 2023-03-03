@@ -10,6 +10,7 @@ import {
   PixelRatio,
   TextInput,
   Alert,
+  Image,
 } from 'react-native';
 import { couleurs } from '../components/color';
 import axios from 'axios';
@@ -48,10 +49,11 @@ export default function InscriptionProprietaire4({navigation, route}: {navigatio
               alignItems: 'center',
               marginTop: '45%',
             }}>
+              <Image source={require('../assets/images/success.png')} style={{height:250, width:'100%'}} />
             <Text
               style={{
                 textAlign: 'center',
-                color: '#7B4C7A',
+                color: couleurs.primary,
                 fontWeight: '600',
                 textTransform: 'uppercase',
                 fontSize: 17,
@@ -78,7 +80,7 @@ export default function InscriptionProprietaire4({navigation, route}: {navigatio
                 display: 'flex',
                 flexDirection: 'row',
                 justifyContent: 'center',
-                backgroundColor: '#7B4C7A' ,borderRadius: 30,
+                backgroundColor: couleurs.primary ,borderRadius: 30,
               }}>
               <Pressable
               android_ripple={{color: '7B4C7A'}}

@@ -355,6 +355,8 @@ export default function ConfigurationScreen({navigation}: {navigation: any}) {
                 </TouchableOpacity>
               </View>
 
+              
+
               {/* MODAL PAYS */}
 
               <Modal visible={modalVisibleCountries} transparent={true}>
@@ -502,6 +504,36 @@ export default function ConfigurationScreen({navigation}: {navigation: any}) {
                 </View>
               </Modal>
             </View>
+
+            <View
+            style={{
+              alignItems: 'center',
+              backgroundColor: 'transparent',
+              borderRadius: 30,
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'center',
+              marginVertical: 10,
+              marginTop:60
+            }}>
+            <TouchableOpacity
+              
+              style={{
+                paddingHorizontal: 10,
+              }}
+              onPress={() => null}>
+              <Text
+                style={{
+                  textAlign: 'center',
+                  fontSize: 15,
+                  fontWeight: '500',
+                  color: couleurs.primary,
+                  fontFamily: CustomFont.Poppins,
+                }}>
+                Avez-vous besoin d'aide ?
+              </Text>
+            </TouchableOpacity>
+          </View>
           </View>
         </ScrollView>
       </SafeAreaView>

@@ -158,7 +158,7 @@ export default function InscriptionProprietaireScreen1({
                   style={{
                     backgroundColor: 'transparent',
                     borderBottomWidth: 1,
-                    borderBottomColor: couleurs.secondary,
+                    borderBottomColor: couleurs.primary,
                     color: couleurs.primary,
                     width: '100%',
                     fontFamily:CustomFont.Poppins,
@@ -193,7 +193,7 @@ export default function InscriptionProprietaireScreen1({
                   style={{
                     backgroundColor: 'transparent',
                     borderBottomWidth: 1,
-                    borderBottomColor: couleurs.secondary,
+                    borderBottomColor: couleurs.primary,
                     color: couleurs.primary,
                     width: '100%',
                     fontFamily:CustomFont.Poppins,
@@ -228,7 +228,7 @@ export default function InscriptionProprietaireScreen1({
                   style={{
                     backgroundColor: 'transparent',
                     borderBottomWidth: 1,
-                    borderBottomColor: couleurs.secondary,
+                    borderBottomColor: couleurs.primary,
                     color: couleurs.primary,
                     width: '100%',
                     fontFamily:CustomFont.Poppins,
@@ -276,15 +276,15 @@ export default function InscriptionProprietaireScreen1({
                     style={{
                       backgroundColor: 'transparent',
                       borderBottomWidth: 1,
-                      borderBottomColor: couleurs.secondary,
+                      borderBottomColor: couleurs.primary,
                       color: couleurs.primary,
                       fontFamily:CustomFont.Poppins,
-                      width: '93%',
+                      flex:1,
                       padding: 10,                      
                     }}></TextInput>
-                  <TouchableOpacity style={{padding: 15}} onPress={_setVisible}>
+                  <TouchableOpacity style={{padding: 15, width:20, height:20}} onPress={_setVisible}>
                     {isVisible && <EyeSlashIcon />}
-                    {!isVisible && <EyeIcon />}
+                    {!isVisible && <EyeIcon color={couleurs.primary} />}
                   </TouchableOpacity>
                 </View>
               </View>

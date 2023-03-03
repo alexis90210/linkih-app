@@ -102,9 +102,12 @@ export default function App(): JSX.Element {
             title: 'Connexion client',
             
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 18, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
-            headerTintColor:couleurs.primary,
+            headerTitleStyle: {fontSize: 18, color:couleurs.white, fontFamily: CustomFont.Poppins,},
+            headerTintColor:couleurs.white,
             headerShown: true,
+            headerStyle: {
+      backgroundColor: couleurs.primary,
+    },
             presentation: 'modal',
             animationTypeForReplace: 'push',
             animation: 'slide_from_right',
@@ -118,9 +121,12 @@ export default function App(): JSX.Element {
           options={{
             title: 'Inscription client',
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 18, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
-            headerTintColor:couleurs.primary,
+            headerTitleStyle: {fontSize: 18, color:couleurs.white, fontFamily: CustomFont.Poppins,},
+            headerTintColor:couleurs.white,
             headerShown: true,
+            headerStyle: {
+      backgroundColor: couleurs.primary,
+    },
             presentation: 'modal',
             animationTypeForReplace: 'push',
             animation: 'slide_from_right',
@@ -134,9 +140,12 @@ export default function App(): JSX.Element {
           options={{
             title: 'Connexion proprietaire',
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 18, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
-            headerTintColor:couleurs.primary,
+            headerTitleStyle: {fontSize: 18, color:couleurs.white, fontFamily: CustomFont.Poppins,},
+            headerTintColor:couleurs.white,
             headerShown: true,
+            headerStyle: {
+      backgroundColor: couleurs.primary,
+    },
             presentation: 'modal',
             animationTypeForReplace: 'push',
             animation: 'slide_from_right',
@@ -150,9 +159,12 @@ export default function App(): JSX.Element {
           options={{
             title: 'Creation du compte proprietaire',
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 18, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
-            headerTintColor:couleurs.primary,
+            headerTitleStyle: {fontSize: 18, color:couleurs.white, fontFamily: CustomFont.Poppins,},
+            headerTintColor:couleurs.white,
             headerShown: true,
+            headerStyle: {
+      backgroundColor: couleurs.primary,
+    },
             presentation: 'modal',
             animationTypeForReplace: 'push',
             animation: 'slide_from_right',
@@ -182,9 +194,9 @@ export default function App(): JSX.Element {
           options={{
             title: 'Image de couverture',
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 18, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
+            headerTitleStyle: {fontSize: 18, color:couleurs.primary, fontFamily: CustomFont.Poppins},
             headerTintColor:couleurs.primary,
-            headerShown: true,
+            headerShown: false,
             presentation: 'modal',
             animationTypeForReplace: 'push',
             animation: 'slide_from_right',

@@ -161,7 +161,7 @@ export default function InscriptionClientScreen({
                   style={{
                     backgroundColor: 'transparent',
                     borderBottomWidth: 1,
-                    borderBottomColor: couleurs.secondary,
+                    borderBottomColor: couleurs.primary,
                     color: couleurs.primary,
                     width: '100%',
                     fontFamily:CustomFont.Poppins,
@@ -194,7 +194,7 @@ export default function InscriptionClientScreen({
                   style={{
                     backgroundColor: 'transparent',
                     borderBottomWidth: 1,
-                    borderBottomColor: couleurs.secondary,
+                    borderBottomColor: couleurs.primary,
                     color: couleurs.primary,
                     width: '100%',
                     fontFamily:CustomFont.Poppins,
@@ -231,7 +231,7 @@ export default function InscriptionClientScreen({
                   style={{
                     backgroundColor: 'transparent',
                     borderBottomWidth: 1,
-                    borderBottomColor: couleurs.secondary,
+                    borderBottomColor: couleurs.primary,
                     color: couleurs.primary,
                     fontSize:15,
                     width: '100%',

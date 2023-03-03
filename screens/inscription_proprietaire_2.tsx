@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 
+
 import {
   SafeAreaView,
   ScrollView,
@@ -9,20 +10,24 @@ import {
   TextInput,
   Image,
   StyleSheet,
+  Pressable,
+  Dimensions,
 } from 'react-native';
 import {CustomFont, couleurs} from '../components/color';
 import {SelectList} from 'react-native-dropdown-select-list';
 import {categories} from '../components/api/categories';
-import planning from '../components/api/planning';
-import horaire from '../components/api/horaire';
 import storage from '../components/api/localstorage';
 
 import MapboxGL from '@rnmapbox/maps';
 import ApiService from '../components/api/service';
 import defaultStyle from '../components/api/defaultMpaStyle';
 import Geolocation from '@react-native-community/geolocation';
-import { SvgUri } from 'react-native-svg';
-import CategorieSvg from '../assets/svg/success.svg';
+import axios from 'axios';
+
+import BouncyCheckbox from 'react-native-bouncy-checkbox';
+import {TimePickerModal} from 'react-native-paper-dates';
+import planning from '../components/api/planning';
+import ArrowLeftIcon from '../components/ArrowLeft';
 
 MapboxGL.setAccessToken(ApiService.MAPBOX_GL_TOKEN);
 
@@ -108,6 +113,7 @@ export default function InscriptionProprietaireScreen2({
   });
 
   var etablissement = route.params?.etablissement;
+  etablissement.postcode = '';
 
   storage
     .load({
@@ -188,173 +194,52 @@ export default function InscriptionProprietaireScreen2({
     }
   };
 
-  const AdressMap = () => {
-    const [startCords, setstartCords] = useState([0, 0]);
+  const [startCords, setstartCords] = useState([0, 0]);
+  const [isLoaded, setLoaded] = useState(false);
 
-    Geolocation.getCurrentPosition(info => {
-      let lon = Number(info.coords.longitude);
-      let lat = Number(info.coords.latitude);
+  const [adresse, setAdresse] = useState('');
+  const [postcode, setPCode] = useState('');
 
+  Geolocation.getCurrentPosition(info => {
+    let lon = Number(info.coords.longitude);
+    let lat = Number(info.coords.latitude);
 
+    if (!isLoaded) {
       setstartCords([lon, lat]);
+      _onDragGetAdresse(lon, lat);
+      setLoaded(true);
+    }
+  });
 
-      // console.log(startCords);
-    });
+  const _onDragGetAdresse = (lon: number, lat: number) => {
+    axios({
+      method: 'GET',
+      url: `https://api.mapbox.com/geocoding/v5/mapbox.places/${lon},${lat}.json?limit&types=address%2Cpostcode&access_token=${ApiService.MAPBOX_GL_TOKEN}`,
+    })
+      .then(response => {
+        etablissement.postcode = response.data.features[1].text;
+        etablissement.adresse = response.data.features[1].place_name;
 
-    return (
-      <>
-        <View style={{flex: 1, height: 450}}>
-          <MapboxGL.MapView
-            style={styles.map}
-            styleJSON={JSON.stringify(defaultStyle)}
-            zoomEnabled={true}
-            pitchEnabled={true}
-            onPress={e => null}
-            onRegionIsChanging={e => null}
-            surfaceView={true}
-            rotateEnabled={true}
-            scrollEnabled={true}>
-            <MapboxGL.Camera
-              zoomLevel={11}
-              centerCoordinate={startCords}
-              followUserLocation={true}
-            />
+        setAdresse(response.data.features[1].place_name);
+        setPCode(response.data.features[1].text);
 
-            <MapboxGL.PointAnnotation
-              id={'marker'}
-              coordinate={startCords}
-              draggable
-              onDragStart={ (e) =>  console.log(e) }>
-              <View
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'center',
-                  alignContent: 'center',
-                }}>
-                <View
-                  style={{
-                    alignSelf: 'center',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: 3,
-                  }}>
-                  <View
-                    style={{
-                      backgroundColor: '#eee',
-                      borderRadius: 50,
-                      width: 60,
-                      height: 60,
-                      display: 'flex',
-                      flexDirection: 'column',
-                      justifyContent: 'center',
-                      alignContent: 'center',
-                      padding: 10,
-                      borderWidth: 2,
-                      borderColor: couleurs.primary,
-                    }}>
-                    <Image
-                      source={require('../assets/images/salon-de-coiffure.png')}
-                      style={{
-                        width: 30,
-                        height: 30,
-                        marginLeft: 6,
-                      }}></Image>
-                  </View>
-                  <View
-                    style={{
-                      width: 8,
-                      height: 8,
-                      alignSelf: 'center',
-                      backgroundColor: '#eee',
-                      borderRadius: 50,
-                      borderWidth: 2,
-                      padding: 4,
-                      borderColor: couleurs.primary,
-                    }}></View>
-                </View>
-              </View>
-            </MapboxGL.PointAnnotation>
-          </MapboxGL.MapView>
-        </View>
+        console.log(adresse, postcode);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
 
-        <View
-          style={{
-            position: 'relative',
-            width: '100%',
-            height: 200,
-            borderTopLeftRadius: 20,
-            borderTopRightRadius: 20,
-            backgroundColor: '#eee',
-            top: -20,
-            display: 'flex',
-            flexDirection: 'column',
-            padding: 20,
-          }}>
-          <TextInput
-            defaultValue={''}
-            onChangeText={input => null}
-            placeholder="Entrez votre adresse"
-            style={{
-              backgroundColor: 'transparent',
-              borderBottomWidth: 1,
-              borderBottomColor: '#E2C6BB',
-              color: couleurs.primary,
-              width: '100%',
-              padding: 0,
-              marginTop: 30,
-              fontFamily: CustomFont.Poppins,
-            }}></TextInput>
+  ///////////////////////////////////////////////////
+  const [visible, setVisible] = React.useState(false);
 
-          <TextInput
-            defaultValue={''}
-            onChangeText={input => null}
-            placeholder="Entrez votre ZIP/ code postal"
-            style={{
-              backgroundColor: 'transparent',
-              borderBottomWidth: 1,
-              borderBottomColor: '#E2C6BB',
-              color: couleurs.primary,
-              width: '100%',
-              padding: 0,
-              marginTop: 30,
-              fontFamily: CustomFont.Poppins,
-            }}></TextInput>
+  const onDismiss = () => {
+    setVisible(false);
+  };
 
-
-         
-              <View
-                style={{
-                  alignItems: 'center',
-                  backgroundColor: couleurs.primary,
-                  borderRadius: 30,
-                  marginTop: 40,
-                
-                }}>
-                <TouchableOpacity
-                  
-                  style={{
-                    paddingHorizontal: 10,
-                    width: '70%',
-                  }}
-                  onPress={() => nextPage()}>
-                  <Text
-                    style={{
-                      textAlign: 'center',
-                      padding: 10,
-                      paddingHorizontal: 20,
-                      fontSize: 15,
-                      fontWeight: '500',
-                      color: couleurs.white,
-                      fontFamily: CustomFont.Poppins,
-                    }}>
-                    Confirmez l'adressse
-                  </Text>
-                </TouchableOpacity>
-              </View>
-        </View>
-      </>
-    );
+  const onConfirm = ({hours, minutes}: {hours: any; minutes: any}) => {
+    setVisible(false);
+    console.log({hours, minutes});
   };
 
   return (
@@ -365,39 +250,212 @@ export default function InscriptionProprietaireScreen2({
           height: '100%',
           backgroundColor: '#f6f6f6f6',
         }}>
+          {stepper != 1 && <View
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'flex-start',
+            gap: 30,
+            paddingVertical: 10,
+            paddingHorizontal: 10,
+            backgroundColor:couleurs.primary,
+            marginBottom:15
+          }}>
+          <Pressable onPress={() => setStepper(stepper - 1)}>
+            <ArrowLeftIcon color={couleurs.white} />
+          </Pressable>
+          <Text style={{color: couleurs.white, fontSize: 16, fontFamily: CustomFont.Poppins}}>
+            {  stepper == 2 && "Categories"  }
+            {  stepper == 3 && "Heure d'ouverture"  }
+            {  stepper == 4 && "Lien reseaux sociaux"  }
+          </Text>
+        </View>}
         <ScrollView
           contentInsetAdjustmentBehavior="automatic"
           style={{
             backgroundColor: '#f6f6f6f6',
           }}>
-          <View style={{marginTop: 5}}></View>
-
           {/* Adresse de l'etablissement */}
-          {stepper == 1 && <AdressMap />}
+          {stepper == 1 && (
+            <View style={{ flex: 1  }}>
+              <View style={{
+                  height: Dimensions.get('window').height
+                  
+                }}>
+                <MapboxGL.MapView
+                  style={styles.map}
+                  styleJSON={JSON.stringify(defaultStyle)}
+                  zoomEnabled={true}
+                  pitchEnabled={true}
+                  onPress={e => null}
+                  onRegionIsChanging={e => null}
+                  surfaceView={true}
+                  rotateEnabled={true}
+                  scrollEnabled={true}>
+                  <MapboxGL.UserLocation />
+                  <MapboxGL.Camera
+                    zoomLevel={11}
+                    centerCoordinate={startCords}
+                    followUserLocation={true}
+                  />
+
+                  <MapboxGL.PointAnnotation
+                    id={'marker'}
+                    coordinate={startCords}
+                    draggable
+                    onDragEnd={(e: any) => {
+                      _onDragGetAdresse(
+                        e.geometry.coordinates[0],
+                        e.geometry.coordinates[1],
+                      );
+                    }}>
+                    <View
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        alignContent: 'center',
+                      }}>
+                      <View
+                        style={{
+                          alignSelf: 'center',
+                          display: 'flex',
+                          flexDirection: 'column',
+                          gap: 3,
+                        }}>
+                        <View
+                          style={{
+                            backgroundColor: '#eee',
+                            borderRadius: 50,
+                            width: 60,
+                            height: 60,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            justifyContent: 'center',
+                            alignContent: 'center',
+                            padding: 10,
+                            borderWidth: 2,
+                            borderColor: couleurs.primary,
+                          }}>
+                          <Image
+                            source={require('../assets/images/salon-de-coiffure.png')}
+                            style={{
+                              width: 30,
+                              height: 30,
+                              marginLeft: 6,
+                            }}></Image>
+                        </View>
+                        <View
+                          style={{
+                            width: 8,
+                            height: 8,
+                            alignSelf: 'center',
+                            backgroundColor: '#eee',
+                            borderRadius: 50,
+                            borderWidth: 2,
+                            padding: 4,
+                            borderColor: couleurs.primary,
+                          }}></View>
+                      </View>
+                    </View>
+                  </MapboxGL.PointAnnotation>
+                </MapboxGL.MapView>
+              </View>
+
+              <View
+              style={{
+                borderRadius: 100,
+                backgroundColor: couleurs.primary,
+                padding: 10,
+                margin: 4,
+                position: 'absolute',
+                top: 10,
+                left: 10,
+              }}>
+              <Pressable
+                onPress={() =>
+                  navigation.goBack()
+                }>
+                <ArrowLeftIcon color={'#fff'} />
+              </Pressable>
+            </View>
+
+              <View
+                style={{
+                  position: 'absolute',
+                  borderTopLeftRadius: 20,
+                  borderTopRightRadius: 20,
+                  backgroundColor: '#eee',
+                  bottom: 0,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  width:'100%',
+                  padding: 20,
+                }}>
+                <TextInput
+                  defaultValue={adresse}
+                  onChangeText={input => (etablissement.adresse = input)}
+                  placeholder="Entrez votre adresse"
+                  style={{
+                    backgroundColor: 'transparent',
+                    borderBottomWidth: 1,
+                    borderBottomColor: '#E2C6BB',
+                    color: couleurs.primary,
+                    width: '100%',
+                    padding: 0,
+                    marginTop: 10,
+                    fontFamily: CustomFont.Poppins,
+                  }}></TextInput>
+
+                <TextInput
+                  defaultValue={postcode}
+                  onChangeText={input => (etablissement.postcode = input)}
+                  placeholder="Entrez votre ZIP/ code postal"
+                  style={{
+                    backgroundColor: 'transparent',
+                    borderBottomWidth: 1,
+                    borderBottomColor: '#E2C6BB',
+                    color: couleurs.primary,
+                    width: '100%',
+                    padding: 0,
+                    marginTop: 30,
+                    fontFamily: CustomFont.Poppins,
+                  }}></TextInput>
+
+                <View
+                  style={{
+                    alignItems: 'center',
+                    backgroundColor: couleurs.primary,
+                    borderRadius: 30,
+                    marginTop: 30,
+                  }}>
+                  <TouchableOpacity
+                    style={{
+                      paddingHorizontal: 10,
+                      width: '70%',
+                    }}
+                    onPress={() => nextPage()}>
+                    <Text
+                      style={{
+                        textAlign: 'center',
+                        padding: 10,
+                        paddingHorizontal: 20,
+                        fontSize: 15,
+                        fontWeight: '500',
+                        color: couleurs.white,
+                        fontFamily: CustomFont.Poppins,
+                      }}>
+                      Confirmez l'adressse
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
+          )}
 
           {/* Categories selectionnees */}
           {stepper == 2 && (
             <View>
-              <View
-                style={{
-                  paddingVertical: 10,
-                  display: 'flex',
-                  flexDirection: 'row',
-                  flexWrap: 'wrap',
-                  justifyContent: 'space-between',
-                }}>
-                <Text
-                  style={{
-                    fontFamily: CustomFont.Poppins,
-                    fontSize: 15,
-                    paddingBottom: 12,
-                    color: '#000',
-                    paddingLeft: 20,
-                  }}>
-                  Categories
-                </Text>
-              </View>
-
               <View style={{marginHorizontal: 10}}>
                 <SelectList
                   setSelected={(val: String) => {
@@ -472,245 +530,113 @@ export default function InscriptionProprietaireScreen2({
           {/* Heure d'ouverture */}
           {stepper == 3 && (
             <View>
-              <View style={{paddingVertical: 10}}>
-                <Text
-                  style={{
-                    fontFamily: CustomFont.Poppins,
-                    fontSize: 15,
-                    paddingBottom: 12,
-                    color: '#000',
-                    padding: 20,
-                  }}>
-                  Heure d'ouverture
-                </Text>
-              </View>
-
               <View
                 style={{
                   display: 'flex',
                   flexDirection: 'column',
                   flexWrap: 'wrap',
                   gap: 10,
-                  paddingHorizontal: 5,
+                  paddingHorizontal: 10,
                   marginBottom: 10,
                 }}>
-                {planning.map((row, key) => (
+                 
+                {planning.map( row => (
+                 <>
+                   <View
+                  key={Math.random()}
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'flex-start',
+                    flexDirection: 'column',
+                  }}>
+                  <Text
+                    style={{
+                      fontFamily: CustomFont.Poppins,
+                      fontSize: 15,
+                      color: couleurs.dark,
+                    }}>
+                    {row}
+                  </Text>
                   <View
-                    key={key}
                     style={{
                       display: 'flex',
+                      justifyContent: 'flex-start',
+                      gap: 60,
                       flexDirection: 'row',
-                      backgroundColor: '#fff',
-                      paddingTop: 10,
-                      paddingHorizontal: 15,
-                      alignItems: 'center',
-                      width: '100%',
-                      justifyContent: 'space-between',
                     }}>
                     <View
                       style={{
                         display: 'flex',
-                        flexDirection: 'column',
-                        gap: -10,
-                        backgroundColor: '#fff',
-                        width: '100%',
+                        justifyContent: 'flex-start',
+                        gap: 2,
+                        flexDirection: 'row',
+                        alignItems: 'center',
                       }}>
-                      <View
-                        style={{
-                          display: 'flex',
-                          flexDirection: 'row',
-                          justifyContent: 'space-between',
-                          width: '100%',
-                        }}>
-                        <Text
+                      <BouncyCheckbox
+                        size={20}
+                        fillColor={couleurs.primary}
+                        unfillColor={couleurs.white}
+                        iconStyle={{borderColor: couleurs.primary}}
+                        innerIconStyle={{borderWidth: 2}}
+                        textStyle={{fontFamily: CustomFont.Poppins}}
+                        onPress={(isChecked: boolean) => {}}
+                      />
+                      <Text>Ouvert</Text>
+                    </View>
+
+                    <View
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        gap: 10,
+                        flexDirection: 'row',
+                      }}>
+                      <TouchableOpacity onPress={() => setVisible(true)}>
+                        <View
                           style={{
-                            color: '#000',
-                            fontFamily: CustomFont.Poppins,
-                          }}>
-                          {row}
-                        </Text>
-                        <Text
-                          style={{
-                            fontFamily: CustomFont.Poppins,
-                            fontSize: 13,
-                            borderRadius: 30,
-                            height: 25,
-                            color: couleurs.primary,
-                            textAlign: 'center',
+                            borderWidth: 1,
+                            borderRadius: 10,
+                            width: 120,
+                            height: 40,
+                            display: 'flex',
+                            justifyContent: 'center',
+                            gap: 5,
+                            flexDirection: 'row',
                             borderColor: couleurs.primary,
                           }}>
-                          {row == 'Lundi'
-                            ? selectedHoraireOuvertureLundi &&
-                              selectedHoraireFermetureLundi
-                              ? 'Ouvert'
-                              : ''
-                            : ''}
-                          {row == 'Mardi'
-                            ? selectedHoraireOuvertureMardi &&
-                              selectedHoraireFermetureMardi
-                              ? 'Ouvert'
-                              : ''
-                            : ''}
-                          {row == 'Mercredi'
-                            ? selectedHoraireOuvertureMercredi &&
-                              selectedHoraireFermetureMercredi
-                              ? 'Ouvert'
-                              : ''
-                            : ''}
-                          {row == 'Jeudi'
-                            ? selectedHoraireOuvertureJeudi &&
-                              selectedHoraireFermetureJeudi
-                              ? 'Ouvert'
-                              : ''
-                            : ''}
-                          {row == 'Vendredi'
-                            ? selectedHoraireOuvertureVendredi &&
-                              selectedHoraireFermetureVendredi
-                              ? 'Ouvert'
-                              : ''
-                            : ''}
-                          {row == 'Samedi'
-                            ? selectedHoraireOuvertureSamedi &&
-                              selectedHoraireFermetureSamedi
-                              ? 'Ouvert'
-                              : ''
-                            : ''}
-                          {row == 'Dimanche'
-                            ? selectedHoraireOuvertureDimanche &&
-                              selectedHoraireFermetureDimanche
-                              ? 'Ouvert'
-                              : ''
-                            : ''}
-                        </Text>
-                      </View>
-                      <View
-                        style={{
-                          display: 'flex',
-                          flexDirection: 'row',
-                          justifyContent: 'space-between',
-                          width: '100%',
-                        }}>
-                        <SelectList
-                          setSelected={(val: String) => {
-                            if (row == 'Lundi') {
-                              setSelectedHoraireOuvertureLundi(val as never);
-                            }
-                            if (row == 'Mardi') {
-                              setSelectedHoraireOuvertureMardi(val as never);
-                            }
-                            if (row == 'Mercredi') {
-                              setSelectedHoraireOuvertureMercredi(val as never);
-                            }
-                            if (row == 'Jeudi') {
-                              setSelectedHoraireOuvertureJeudi(val as never);
-                            }
-                            if (row == 'Vendredi') {
-                              setSelectedHoraireOuvertureVendredi(val as never);
-                            }
-                            if (row == 'Samedi') {
-                              setSelectedHoraireOuvertureSamedi(val as never);
-                            }
-                            if (row == 'Dimanche') {
-                              setSelectedHoraireOuvertureDimanche(val as never);
-                            }
-                          }}
-                          data={horaire}
-                          save="value"
-                          onSelect={() => {
-                            if (row == 'Lundi') {
-                              console.log(selectedHoraireOuvertureLundi);
-                            }
-                            if (row == 'Mardi') {
-                              console.log(selectedHoraireOuvertureMardi);
-                            }
-                            if (row == 'Mercredi') {
-                              console.log(selectedHoraireOuvertureMercredi);
-                            }
-                            if (row == 'Jeudi') {
-                              console.log(selectedHoraireOuvertureJeudi);
-                            }
-                            if (row == 'Vendredi') {
-                              console.log(selectedHoraireOuvertureVendredi);
-                            }
-                            if (row == 'Samedi') {
-                              console.log(selectedHoraireOuvertureSamedi);
-                            }
-                            if (row == 'Dimanche') {
-                              console.log(selectedHoraireOuvertureDimanche);
-                            }
-                          }}
-                          fontFamily={CustomFont.Poppins}
-                          searchPlaceholder={'Horaires'}
-                          placeholder={'Heure Ouverture'}
-                          boxStyles={{
-                            borderWidth: 0,
-                          }}
-                          dropdownTextStyles={{color: couleurs.dark}}
-                          dropdownStyles={{borderColor: couleurs.primary}}
-                        />
+                          <Text style={{position: 'relative', top: 9}}>
+                            00:00
+                          </Text>
+                        </View>
+                      </TouchableOpacity>
 
-                        <SelectList
-                          setSelected={(val: String) => {
-                            if (row == 'Lundi') {
-                              setSelectedHoraireFermetureLundi(val as never);
-                            }
-                            if (row == 'Mardi') {
-                              setSelectedHoraireFermetureMardi(val as never);
-                            }
-                            if (row == 'Mercredi') {
-                              setSelectedHoraireFermetureMercredi(val as never);
-                            }
-                            if (row == 'Jeudi') {
-                              setSelectedHoraireFermetureJeudi(val as never);
-                            }
-                            if (row == 'Vendredi') {
-                              setSelectedHoraireFermetureVendredi(val as never);
-                            }
-                            if (row == 'Samedi') {
-                              setSelectedHoraireFermetureSamedi(val as never);
-                            }
-                            if (row == 'Dimanche') {
-                              setSelectedHoraireFermetureDimanche(val as never);
-                            }
-                          }}
-                          data={horaire}
-                          save="value"
-                          onSelect={() => {
-                            if (row == 'Lundi') {
-                              console.log(selectedHoraireFermetureLundi);
-                            }
-                            if (row == 'Mardi') {
-                              console.log(selectedHoraireFermetureMardi);
-                            }
-                            if (row == 'Mercredi') {
-                              console.log(selectedHoraireFermetureMercredi);
-                            }
-                            if (row == 'Jeudi') {
-                              console.log(selectedHoraireFermetureJeudi);
-                            }
-                            if (row == 'Vendredi') {
-                              console.log(selectedHoraireFermetureVendredi);
-                            }
-                            if (row == 'Samedi') {
-                              console.log(selectedHoraireFermetureSamedi);
-                            }
-                            if (row == 'Dimanche') {
-                              console.log(selectedHoraireFermetureDimanche);
-                            }
-                          }}
-                          fontFamily={CustomFont.Poppins}
-                          searchPlaceholder={'Horaires'}
-                          placeholder={'Heure Fermeture'}
-                          boxStyles={{
-                            borderWidth: 0,
-                          }}
-                          dropdownTextStyles={{color: couleurs.dark}}
-                          dropdownStyles={{borderColor: couleurs.primary}}
-                        />
-                      </View>
+                      <TouchableOpacity onPress={() => setVisible(true)}>
+                        <View
+                          style={{
+                            borderWidth: 1,
+                            borderRadius: 10,
+                            width: 120,
+                            height: 40,
+                            display: 'flex',
+                            justifyContent: 'center',
+                            gap: 5,
+                            flexDirection: 'row',
+                            borderColor: couleurs.primary,
+                          }}>
+                          <Text style={{position: 'relative', top: 9}}>
+                            00:00
+                          </Text>
+                        </View>
+                      </TouchableOpacity>
                     </View>
                   </View>
+                </View>
+                <View style={{height:1, overflow:'hidden', paddingHorizontal:10}}>
+                <View style={{height:1,  borderWidth:1, borderColor:couleurs.primary, borderStyle:'dashed'}}></View>
+              </View>
+                 </>
                 ))}
+                
               </View>
             </View>
           )}
@@ -719,16 +645,6 @@ export default function InscriptionProprietaireScreen2({
           {stepper == 4 && (
             <View>
               <View style={{paddingVertical: 10}}>
-                <Text
-                  style={{
-                    fontFamily: CustomFont.Poppins,
-                    fontSize: 15,
-                    paddingBottom: 12,
-                    color: '#000',
-                    paddingLeft: 20,
-                  }}>
-                  Lien reseaux sociaux
-                </Text>
                 <View
                   style={{
                     backgroundColor: '#fff',
@@ -782,6 +698,7 @@ export default function InscriptionProprietaireScreen2({
                     display: 'flex',
                     flexDirection: 'row',
                   }}>
+                    
                   <Image source={require('../assets/social/linkedin.png')} />
                   <TextInput
                     style={{
@@ -851,6 +768,7 @@ export default function InscriptionProprietaireScreen2({
               width: '100%',
               justifyContent: 'center',
               paddingHorizontal: 10,
+              marginTop: 20,
             }}>
             {stepper != 1 && (
               <View
@@ -886,35 +804,49 @@ export default function InscriptionProprietaireScreen2({
           {stepper > 1 && (
             <>
               <View style={{padding: 10}}>
-              <TouchableOpacity onPress={() => setStepper(stepper - 1)}>
-                <Text
-                  style={{
-                    fontFamily: CustomFont.Poppins,
-                    fontSize: 15,
-                    padding: 7,
-                    marginTop: 10,
-                    color: couleurs.primary,
-                    borderStyle: 'dashed',
-                    borderWidth: 1,
-                    borderRadius: 30,
-                    textAlign: 'center',
-                    borderColor: couleurs.primary,
-                  }}>
-                  Retour
-                </Text>
-              </TouchableOpacity>
-            </View>
+                <TouchableOpacity onPress={() => setStepper(stepper - 1)}>
+                  <Text
+                    style={{
+                      fontFamily: CustomFont.Poppins,
+                      fontSize: 15,
+                      padding: 7,
+                      marginTop: 10,
+                      color: couleurs.primary,
+                      borderStyle: 'dashed',
+                      borderWidth: 1,
+                      borderRadius: 30,
+                      textAlign: 'center',
+                      borderColor: couleurs.primary,
+                    }}>
+                    Retour
+                  </Text>
+                </TouchableOpacity>
+              </View>
 
-            {/* IMAGE SVG GOES HERE */}
-            {/* <SvgUri svgXmlData={CategorieSvg} height="300" width='100%'/> */}
-            <Image source={require('../assets/images/success.png')} style={{height:250, width:'100%'}} />
+              {/* IMAGE SVG GOES HERE */}
+              {stepper == 2 && (
+                <Image
+                  source={require('../assets/images/success.png')}
+                  style={{height: 250, width: '100%'}}
+                />
+              )}
             </>
           )}
 
-          <View style={{marginVertical: 20}}></View>
+          {stepper != 1 && <View style={{marginVertical: 20}}></View>}
         </ScrollView>
 
-        {/* MODAL BOTTOM SHEET */}
+        {/* MODAL TIME PICKER */}
+        <TimePickerModal
+          visible={visible}
+          onDismiss={onDismiss}
+          onConfirm={onConfirm}
+          hours={12}
+          minutes={14}
+          inputFontSize={16}
+        />
+
+       
       </SafeAreaView>
     </>
   );

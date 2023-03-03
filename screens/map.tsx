@@ -121,6 +121,7 @@ export default function Map({
             surfaceView={true}
             rotateEnabled={true}
             scrollEnabled={true}>
+              <MapboxGL.UserLocation/>
             <MapboxGL.Camera
               zoomLevel={11}
               centerCoordinate={startCords}
@@ -233,7 +234,6 @@ export default function Map({
         style={{
           position: 'absolute',
           margin: 4,
-          position: 'absolute',
           top: 10,
           right: 10,
           display: 'flex',
