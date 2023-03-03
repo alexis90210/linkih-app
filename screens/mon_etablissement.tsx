@@ -12,15 +12,15 @@ import {
 } from 'react-native';
 import EditIcon from '../components/Edit';
 import RdvIcon from '../components/rdv';
-import { AirbnbRating} from 'react-native-ratings';
+import {AirbnbRating} from 'react-native-ratings';
 import CloseIcon from '../components/close';
 import AddIcon from '../components/add';
 import MinusIcon from '../components/minus';
-import { CustomFont, couleurs } from '../components/color';
+import {CustomFont, couleurs} from '../components/color';
 import HomeIcon from '../components/home';
 import storage from '../components/api/localstorage';
 import MapIcon from '../components/map';
-import { FacebookIcon } from '../components/network';
+import {FacebookIcon} from '../components/network';
 
 export default function MonEtablissement({
   route,
@@ -33,7 +33,7 @@ export default function MonEtablissement({
   var title = 'Mon Etablissement';
 
   const [isVisibleModal, setVisibleModal] = useState(false);
-
+  const [isVisibleModalAbonnement,setVisibleModalAbonnement ] = useState(true)
   const activeModal = () => setVisibleModal(true);
   const desactiveModal = () => setVisibleModal(false);
   const [etablissement, setEtablissement] = useState<any>({});
@@ -41,22 +41,22 @@ export default function MonEtablissement({
   const [lien_reseaux_sociaux, setLien_reseaux_sociaux] = useState<any[]>([]);
   const [horaire_ouverture, setHoraire_ouverture] = useState<any[]>([]);
   const [rendez_vous, setRendez_vous] = useState<any[]>([]);
-  
-  storage.load({
-    key: 'userconnected', // Note: Do not use underscore("_") in key!
-    id: 'userconnected', // Note: Do not use underscore("_") in id!
-  }).then( data => {
 
-    setEtablissement(data.etablissement[0])
-    setProprietaire( data.utilisateur[0] )
-    setLien_reseaux_sociaux(data.lien_reseaux_sociaux)
-    setHoraire_ouverture(data.horaire_ouverture)
-    setRendez_vous( data.rendez_vous)
+  storage
+    .load({
+      key: 'userconnected', // Note: Do not use underscore("_") in key!
+      id: 'userconnected', // Note: Do not use underscore("_") in id!
+    })
+    .then(data => {
+      setEtablissement(data.etablissement[0]);
+      setProprietaire(data.utilisateur[0]);
+      setLien_reseaux_sociaux(data.lien_reseaux_sociaux);
+      setHoraire_ouverture(data.horaire_ouverture);
+      setRendez_vous(data.rendez_vous);
 
-    console.log(lien_reseaux_sociaux);   
-  })
-  .catch(error => console.log(error)
-  );
+      console.log(lien_reseaux_sociaux);
+    })
+    .catch(error => console.log(error));
 
   return (
     <View>
@@ -73,15 +73,22 @@ export default function MonEtablissement({
             gap: 30,
             paddingVertical: 10,
             paddingHorizontal: 10,
-            backgroundColor:couleurs.primary
+            backgroundColor: couleurs.primary,
           }}>
           <TouchableOpacity onPress={() => navigation.navigate('main')}>
             <HomeIcon color={couleurs.white} />
           </TouchableOpacity>
-          <Text style={{color: couleurs.white, fontSize: 18,fontFamily:CustomFont.Poppins}}>
+          <Text
+            style={{
+              color: couleurs.white,
+              fontSize: 18,
+              fontFamily: CustomFont.Poppins,
+            }}>
             {title}
           </Text>
-          <TouchableOpacity onPress={ () => navigation.navigate('map')}><MapIcon color={couleurs.white}/></TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate('map')}>
+            <MapIcon color={couleurs.white} />
+          </TouchableOpacity>
         </View>
         <ScrollView
           contentInsetAdjustmentBehavior="automatic"
@@ -89,7 +96,7 @@ export default function MonEtablissement({
             backgroundColor: '#f6f6f6f6',
           }}>
           {/* Banner Image */}
-          <View style={{paddingHorizontal: 12,marginTop:15, width: '100%'}}>
+          <View style={{paddingHorizontal: 12, marginTop: 15, width: '100%'}}>
             <Image
               source={require('../assets/images/cover.jpg')}
               style={{
@@ -97,8 +104,8 @@ export default function MonEtablissement({
                 width: '100%',
                 borderRadius: 15,
                 marginTop: 2,
-                borderWidth:1,
-                borderColor:couleurs.primary
+                borderWidth: 1,
+                borderColor: couleurs.primary,
               }}
             />
           </View>
@@ -126,7 +133,8 @@ export default function MonEtablissement({
                 style={{
                   color: couleurs.white,
                   paddingVertical: 3,
-                  fontSize: 17,fontFamily:CustomFont.Poppins
+                  fontSize: 17,
+                  fontFamily: CustomFont.Poppins,
                 }}>
                 {etablissement.nom}
               </Text>
@@ -135,7 +143,8 @@ export default function MonEtablissement({
                   color: couleurs.white,
                   paddingVertical: 3,
                   opacity: 0.7,
-                  fontSize: 15,fontFamily:CustomFont.Poppins
+                  fontSize: 15,
+                  fontFamily: CustomFont.Poppins,
                 }}>
                 {etablissement.mail}
               </Text>
@@ -143,26 +152,24 @@ export default function MonEtablissement({
                 style={{
                   color: couleurs.white,
                   paddingVertical: 3,
-                  fontSize: 16,fontFamily:CustomFont.Poppins
+                  fontSize: 16,
+                  fontFamily: CustomFont.Poppins,
                 }}>
                 {etablissement.mobile}
               </Text>
 
               <View style={{display: 'flex', flexDirection: 'row'}}>
-             
-                  <AirbnbRating
-                    reviewSize={10}
-                    reviewColor={couleurs.primary}
-                    showRating={false}
-                    count={10}
-                    reviews={['Terrible', 'Bad', 'Good', 'Very Good']}
-                    onFinishRating={rate => console.log(rate)}
-                    defaultRating={5}
-                    size={14}
-                  />
-                
+                <AirbnbRating
+                  reviewSize={10}
+                  reviewColor={couleurs.primary}
+                  showRating={false}
+                  count={10}
+                  reviews={['Terrible', 'Bad', 'Good', 'Very Good']}
+                  onFinishRating={rate => console.log(rate)}
+                  defaultRating={5}
+                  size={14}
+                />
               </View>
-
             </View>
           </View>
 
@@ -179,7 +186,7 @@ export default function MonEtablissement({
                 style={{
                   color: '#000',
                   fontSize: 15,
-                  fontFamily:CustomFont.Poppins
+                  fontFamily: CustomFont.Poppins,
                 }}>
                 Client depuis
               </Text>
@@ -188,7 +195,7 @@ export default function MonEtablissement({
                   color: couleurs.primary,
                   paddingVertical: 3,
                   fontSize: 15,
-                  fontFamily:CustomFont.Poppins
+                  fontFamily: CustomFont.Poppins,
                 }}>
                 {proprietaire.date_creation}
               </Text>
@@ -201,7 +208,7 @@ export default function MonEtablissement({
                 backgroundColor: '#fff',
                 padding: 14,
                 width: '100%',
-                alignSelf:'center',
+                alignSelf: 'center',
                 shadowColor: 'gray',
               }}>
               <Text
@@ -209,7 +216,7 @@ export default function MonEtablissement({
                   color: '#000',
                   paddingVertical: 3,
                   fontSize: 17,
-                  fontFamily:CustomFont.Poppins
+                  fontFamily: CustomFont.Poppins,
                 }}>
                 Pays et region de l'etablissement
               </Text>
@@ -232,7 +239,7 @@ export default function MonEtablissement({
                   fontSize: 15,
                   fontWeight: '600',
                 }}>
-               {etablissement.adresse}
+                {etablissement.adresse}
               </Text>
             </View>
 
@@ -243,16 +250,16 @@ export default function MonEtablissement({
                 backgroundColor: '#fff',
                 padding: 14,
                 width: '100%',
-                alignSelf:'center',
+                alignSelf: 'center',
                 shadowColor: 'gray',
-                marginTop:10
+                marginTop: 10,
               }}>
               <Text
                 style={{
                   color: '#000',
                   paddingVertical: 3,
                   fontSize: 15,
-                  fontFamily:CustomFont.Poppins
+                  fontFamily: CustomFont.Poppins,
                 }}>
                 Mon abonnement
               </Text>
@@ -276,7 +283,7 @@ export default function MonEtablissement({
                       color: '#000',
                       paddingVertical: 3,
                       fontSize: 15,
-                      fontFamily:CustomFont.Poppins
+                      fontFamily: CustomFont.Poppins,
                     }}>
                     expire le
                   </Text>
@@ -285,7 +292,7 @@ export default function MonEtablissement({
                       color: couleurs.primary,
                       paddingVertical: 3,
                       fontSize: 15,
-                      fontFamily:CustomFont.Poppins
+                      fontFamily: CustomFont.Poppins,
                     }}>
                     xx-xx-xxxx
                   </Text>
@@ -299,33 +306,32 @@ export default function MonEtablissement({
                   fontSize: 15,
                   fontWeight: '600',
                 }}>
-               20 € TTC / mois
+                20 € TTC / mois
               </Text>
             </View>
 
-                {/* HORAIRE OUVERTURE */}
+            {/* HORAIRE OUVERTURE */}
             <View
               style={{
                 borderRadius: 15,
                 backgroundColor: '#fff',
                 padding: 14,
                 width: '100%',
-                alignSelf:'center',
+                alignSelf: 'center',
                 shadowColor: 'gray',
-                marginTop:10
+                marginTop: 10,
               }}>
+              <Text
+                style={{
+                  color: '#000',
+                  paddingVertical: 3,
+                  fontSize: 15,
+                  fontFamily: CustomFont.Poppins,
+                }}>
+                Heure d'ouverture
+              </Text>
 
-<Text
-              style={{
-                color: '#000',
-                paddingVertical: 3,
-                fontSize: 15,
-                fontFamily:CustomFont.Poppins,
-              }}>
-              Heure d'ouverture
-            </Text>
-
-            {horaire_ouverture.map((row, key) => (
+              {horaire_ouverture.map((row, key) => (
                 <View
                   key={Math.random()}
                   style={{
@@ -350,19 +356,22 @@ export default function MonEtablissement({
                       width: '100%',
                       justifyContent: 'space-between',
                     }}>
-                    <Text style={{color: '#000',fontFamily:CustomFont.Poppins}}>{row.jour}</Text>
-                    <Text style={{color: couleurs.primary, fontSize: 11,fontFamily:CustomFont.Poppins}}>
+                    <Text
+                      style={{color: '#000', fontFamily: CustomFont.Poppins}}>
+                      {row.jour}
+                    </Text>
+                    <Text
+                      style={{
+                        color: couleurs.primary,
+                        fontSize: 11,
+                        fontFamily: CustomFont.Poppins,
+                      }}>
                       {row.heure_ouverture}-{row.heure_fermeture}
                     </Text>
                   </View>
                 </View>
               ))}
-
-
-              </View>
-
-
-            
+            </View>
 
             {/* LIEN RESEAUX SOCIAUX */}
 
@@ -372,14 +381,13 @@ export default function MonEtablissement({
                 backgroundColor: '#fff',
                 padding: 14,
                 width: '100%',
-                alignSelf:'center',
+                alignSelf: 'center',
                 shadowColor: 'gray',
-                marginTop:10
+                marginTop: 10,
               }}>
-
               <Text
                 style={{
-                  fontFamily:CustomFont.Poppins,
+                  fontFamily: CustomFont.Poppins,
                   fontSize: 15,
                   paddingBottom: 12,
                   color: '#000',
@@ -387,35 +395,41 @@ export default function MonEtablissement({
                 Lien reseaux sociaux
               </Text>
 
-                 <View
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-                flexWrap: 'wrap',
-                gap: 10,
-              }}>
-    
-                <Image source={ require('../assets/social/facebook.png')} 
-                style={{width:30, height: 30}} />
+              <View
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  flexWrap: 'wrap',
+                  gap: 10,
+                }}>
+                <Image
+                  source={require('../assets/social/facebook.png')}
+                  style={{width: 30, height: 30}}
+                />
 
-                <Image source={ require('../assets/social/twitter.png')} 
-                                style={{width:30, height: 30}} />
+                <Image
+                  source={require('../assets/social/twitter.png')}
+                  style={{width: 30, height: 30}}
+                />
 
-                <Image source={ require('../assets/social/instagram.png')} 
-                                style={{width:30, height: 30}} />
+                <Image
+                  source={require('../assets/social/instagram.png')}
+                  style={{width: 30, height: 30}}
+                />
 
-                <Image source={ require('../assets/social/linkedin.png')} 
-                                style={{width:30, height: 30}} />
+                <Image
+                  source={require('../assets/social/linkedin.png')}
+                  style={{width: 30, height: 30}}
+                />
 
-                <Image source={ require('../assets/social/youtube.png')} 
-                                style={{width:30, height: 30}} />
-       
-            </View>
-     
-
+                <Image
+                  source={require('../assets/social/youtube.png')}
+                  style={{width: 30, height: 30}}
+                />
               </View>
+            </View>
 
-              {/*GALLERIE */}
+            {/*GALLERIE */}
 
             <View
               style={{
@@ -423,14 +437,13 @@ export default function MonEtablissement({
                 backgroundColor: '#fff',
                 padding: 14,
                 width: '100%',
-                alignSelf:'center',
+                alignSelf: 'center',
                 shadowColor: 'gray',
-                marginTop:10
+                marginTop: 10,
               }}>
-
               <Text
                 style={{
-                  fontFamily:CustomFont.Poppins,
+                  fontFamily: CustomFont.Poppins,
                   fontSize: 15,
                   paddingBottom: 12,
                   color: '#000',
@@ -438,29 +451,27 @@ export default function MonEtablissement({
                 Gallerie
               </Text>
 
-                 <View
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-                flexWrap: 'wrap',
-                gap: 10,
-              }}>
-    
-                {[1,2,,5,3].map( (row,key) => (<Image key={key} source={ require('../assets/images/cover.jpg')} 
-                style={{width:150, height: 100}} />))}
-       
-            </View>
-     
-
+              <View
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  flexWrap: 'wrap',
+                  gap: 10,
+                }}>
+                {[1, 2, , 5, 3].map((row, key) => (
+                  <Image
+                    key={key}
+                    source={require('../assets/images/cover.jpg')}
+                    style={{width: 150, height: 100}}
+                  />
+                ))}
               </View>
-          
-
-
+            </View>
           </View>
 
           {/* Welcome text */}
         </ScrollView>
-      <View
+        <View
           style={{
             alignItems: 'center',
             marginVertical: 10,
@@ -519,9 +530,221 @@ export default function MonEtablissement({
             </View>
           </TouchableOpacity>
         </View>
-
-        
       </SafeAreaView>
+
+      {/* MODAL ABONNEMENT */}
+      <Modal visible={isVisibleModalAbonnement}>
+        <View style={{flex: 1, backgroundColor: couleurs.dark, padding: 20}}>
+          <View
+            style={{
+              display: 'flex',
+              marginBottom: 50,
+              flexDirection: 'row',
+              justifyContent: 'flex-end',
+              width: '100%',
+            }}>
+            
+            <TouchableOpacity onPress={ () => setVisibleModalAbonnement(false)}>
+            <CloseIcon color={couleurs.white} />
+            </TouchableOpacity>
+          </View>
+
+          <Text
+            style={{
+              fontFamily: CustomFont.Poppins,
+              fontSize: 17,
+              width: '70%',
+              color: couleurs.white,
+            }}>
+            Achetez votre abonnement maintenant
+          </Text>
+
+          <View
+            style={{
+              borderWidth: 2,
+              marginTop: 30,
+              borderColor: couleurs.primary,
+              borderRadius: 20,
+            }}>
+            <View
+              style={{
+                backgroundColor: couleurs.primary,
+                borderTopLeftRadius: 20,
+                borderTopRightRadius: 20,
+                paddingVertical: 10,
+              }}>
+              <Text style={{color: couleurs.dark, alignSelf: 'center'}}>
+                Abonnement starter
+              </Text>
+            </View>
+
+            <View
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                padding: 30,
+              }}>
+              <Text
+                style={{
+                  color: couleurs.white,
+                  fontSize: 18,
+                  fontWeight: '700',
+                }}>
+                Mensuel
+              </Text>
+              <View>
+                <Text
+                  style={{
+                    color: couleurs.white,
+                    fontSize: 18,
+                    fontWeight: '700',
+                  }}>
+                  $10.99/mo
+                </Text>
+                <Text
+                  style={{
+                    color: couleurs.white,
+                    fontSize: 15,
+                    fontWeight: '400',
+                    textDecorationLine: 'line-through',
+                    textDecorationColor: couleurs.primary,
+                    textDecorationStyle:'solid',
+                    alignSelf:'flex-end'
+                  }}>
+                  $39.99/mo
+                </Text>
+              </View>
+            </View>
+
+            <View
+              style={{
+                marginBottom:20,
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'center',
+                backgroundColor: couleurs.primary,
+                borderRadius: 30,
+                marginHorizontal:40
+              }}>
+              <TouchableOpacity
+                style={{
+                  paddingHorizontal: 10,
+                  width: '80%',
+                }}
+                onPress={() => null}>
+                <Text
+                  style={{
+                    textAlign: 'center',
+                    alignSelf: 'center',
+                    fontWeight: '500',
+                    color: couleurs.dark,
+                    padding: 10,
+                    paddingHorizontal: 20,
+                    fontSize: 14,
+                  }}>                   
+                    Commencez !
+                  
+                </Text>
+              </TouchableOpacity>              
+            </View>
+            
+          </View>
+
+          <View
+            style={{
+              borderWidth: 2,
+              marginTop: 30,
+              borderColor: couleurs.primaryLight,
+              borderRadius: 20,
+            }}>
+            <View
+              style={{
+                backgroundColor: couleurs.primaryLight,
+                borderTopLeftRadius: 20,
+                borderTopRightRadius: 20,
+                paddingVertical: 10,
+              }}>
+              <Text style={{color: couleurs.dark, alignSelf: 'center'}}>
+                Abonnement Flex
+              </Text>
+            </View>
+
+            <View
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                padding: 30,
+              }}>
+              <Text
+                style={{
+                  color: couleurs.primaryLight,
+                  fontSize: 18,
+                  fontWeight: '700',
+                }}>
+                Mensuel
+              </Text>
+              <View>
+                <Text
+                  style={{
+                    color: couleurs.primaryLight,
+                    fontSize: 18,
+                    fontWeight: '700',
+                  }}>
+                  $10.99/mo
+                </Text>
+                <Text
+                  style={{
+                    color: couleurs.primaryLight,
+                    fontSize: 15,
+                    fontWeight: '400',
+                    textDecorationLine: 'line-through',
+                    textDecorationColor: couleurs.primaryLight,
+                    textDecorationStyle:'solid',
+                    alignSelf:'flex-end'
+                  }}>
+                  $39.99/mo
+                </Text>
+              </View>
+            </View>
+
+            <View
+              style={{
+                marginBottom:20,
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'center',
+                backgroundColor: couleurs.primaryLight,
+                borderRadius: 30,
+                marginHorizontal:40
+              }}>
+              <TouchableOpacity
+                style={{
+                  paddingHorizontal: 10,
+                  width: '80%',
+                }}
+                onPress={() => null}>
+                <Text
+                  style={{
+                    textAlign: 'center',
+                    alignSelf: 'center',
+                    fontWeight: '500',
+                    color: couleurs.dark,
+                    padding: 10,
+                    paddingHorizontal: 20,
+                    fontSize: 14,
+                  }}>                   
+                    Commencez !
+                  
+                </Text>
+              </TouchableOpacity>              
+            </View>
+            
+          </View>
+
+        </View>
+      </Modal>
     </View>
   );
 }

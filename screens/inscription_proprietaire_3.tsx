@@ -192,6 +192,8 @@ export default function InscriptionProprietaire3({
               </Text>
             </TouchableOpacity>
 
+            
+
             <View
               style={{
                 marginVertical: 20,
