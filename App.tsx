@@ -29,6 +29,7 @@ import MenuScreen from './screens/menu';
 import { CustomFont, couleurs } from './components/color';
 import InscriptionProprietaire4 from './screens/inscription_proprietaire_4';
 import storage from './components/api/localstorage';
+import Reabonnement from './screens/reabonnement';
 
 
 const Stack = createNativeStackNavigator();
@@ -132,6 +133,28 @@ export default function App(): JSX.Element {
             animation: 'slide_from_right',
           }}
         />
+
+        {/* reabonnement */}
+        <Stack.Screen
+          name="reabonnement"
+          component={Reabonnement}
+          options={{
+            title: 'Reabonnement',
+            headerShadowVisible: false,
+            headerTitleStyle: {fontSize: 18, color:couleurs.white, fontFamily: CustomFont.Poppins,},
+            headerTintColor:couleurs.white,
+            headerShown: false,
+            headerStyle: {
+      backgroundColor: couleurs.primary,
+    },
+            presentation: 'modal',
+            animationTypeForReplace: 'push',
+            animation: 'slide_from_right',
+          }}
+        />
+
+
+
 
         {/* identification_proprietaire */}
         <Stack.Screen

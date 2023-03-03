@@ -85,7 +85,7 @@ function MenuScreen({navigation}: {navigation: any}) {
                 paddingHorizontal: 10,
               }}
               onPress={() => {
-                null;
+                navigation.navigate('reabonnement')
               }}>
               <BillIcon color={couleurs.primary} />
               <Text style={{fontSize: 16, marginVertical: 10, color: '#000',fontFamily: CustomFont.Poppins}}>

@@ -532,7 +532,7 @@ function Main({navigation}: {navigation: any}) {
                       style={{
                         backgroundColor: 'transparent',
                         borderBottomWidth: 1,
-                        borderBottomColor: '#E2C6BB',
+                        borderBottomColor: couleurs.primaryLight,
                         color: couleurs.primary,
                         width: '100%',
                         fontWeight: '600',
@@ -569,7 +569,7 @@ function Main({navigation}: {navigation: any}) {
                       style={{
                         backgroundColor: 'transparent',
                         borderBottomWidth: 1,
-                        borderBottomColor: '#E2C6BB',
+                        borderBottomColor: couleurs.primaryLight,
                         color: couleurs.primary,
                         width: '100%',
                         fontWeight: '600',
@@ -615,7 +615,7 @@ function Main({navigation}: {navigation: any}) {
                       style={{
                         backgroundColor: 'transparent',
                         borderBottomWidth: 1,
-                        borderBottomColor: '#E2C6BB',
+                        borderBottomColor: couleurs.primaryLight,
                         color: couleurs.primary,
                         width: '100%',
                         fontWeight: '600',

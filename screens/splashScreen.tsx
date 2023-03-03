@@ -22,7 +22,7 @@ export default function SplashScreen({navigation}: {navigation: any}) {
         style={{
           width: '100%',
           height: '100%',
-          backgroundColor: couleurs.primary,
+          backgroundColor: couleurs.dark,
         }}>
         <ScrollView contentInsetAdjustmentBehavior="automatic">
           <View
@@ -35,8 +35,8 @@ export default function SplashScreen({navigation}: {navigation: any}) {
             }}>
 
 
-            <Image source={require('../assets/images/logo.png')} style={{height:70, width:180}} />
-
+              <Image source={require('../assets/images/logo.png')} style={{height:70, width:180}} />
+          
             <Text
               style={{
                 marginTop:30,
