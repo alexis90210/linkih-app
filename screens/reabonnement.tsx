@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   Dimensions,
   Modal,
+  ActivityIndicator,
 } from 'react-native';
 
 import ArrowLeftIcon from '../components/ArrowLeft';
@@ -22,6 +23,8 @@ export default function Reabonnement({navigation, route}: {navigation: any, rout
   return (
     <View>
       <SafeAreaView>  
+
+        <ActivityIndicator size="large" color={couleurs.primary} />
          {/* MODAL ABONNEMENT */}
       <Modal visible={isVisibleModalAbonnement}>
         <View style={{flex: 1, backgroundColor: couleurs.dark, paddingHorizontal: 20, paddingVertical:20}}>

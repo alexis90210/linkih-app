@@ -41,7 +41,7 @@ export default function IdentificationProprietaireScreen({
     password: '',
   };
 
-  if( route.params?.login.length > 0 ) {
+  if( route.params?.login && route.params?.login.length > 0 ) {
     data.identifiant = route.params?.login
   }
 
@@ -67,7 +67,8 @@ export default function IdentificationProprietaireScreen({
       url: ApiService.API_URL_LOGIN,
       data: JSON.stringify({
         login: data.identifiant,
-        password: data.password
+        password: data.password,
+        role:'ROLE_VENDEUR'
       }),
       headers: {
         Accept: 'application/json',
@@ -79,6 +80,7 @@ export default function IdentificationProprietaireScreen({
          var api = response.data;
 
          if ( api.code == "success") {
+
           storage.save({
             key: 'credentials', // Note: Do not use underscore("_") in key!
             id: 'credentials', // Note: Do not use underscore("_") in id!
@@ -111,12 +113,23 @@ export default function IdentificationProprietaireScreen({
             storage.save({
               key: 'userconnected', // Note: Do not use underscore("_") in key!
               id: 'userconnected', // Note: Do not use underscore("_") in id!
-              data: response.data,
+              data: {
+                ...response.data,
+                role:api.message.role
+              },
             });
-            navigation.navigate('espace_etab', {
-              vendeur_id: response.data.etablissement.id,
-              isProprietaire:true
-            })
+
+            Alert.alert('Succes', "Authentification reussie", [        
+              {text: 'Mon compte', onPress: () => {
+                
+                navigation.navigate('MonEtablissement', {
+                  vendeur_id: response.data.etablissement.id,
+                  isProprietaire:true
+                })
+              }},
+            ]);
+
+            
           })
           .catch((error) => {
             Alert.alert('Erreur', "Nous n'avons pas pu recuper vos informations", [        
@@ -124,18 +137,16 @@ export default function IdentificationProprietaireScreen({
             ]);
            })
 
-          
-          
          }
 
          if ( api.code == "error") {
           Alert.alert('Erreur', api.message, [        
-            {text: 'OK', onPress: () => null},
+            {text: 'Confirmer maintenant', onPress: () => navigation.navigate('confirmation_screen',{
+              vendeur_id : api.vendeur_id
+            })},
           ]);
          }
 
-
-         
       })
       .catch((error: any) => {
        console.log(error);

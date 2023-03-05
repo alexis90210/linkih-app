@@ -1,10 +1,9 @@
-import React from 'react';
-import {Text, View, Pressable, SafeAreaView, ScrollView} from 'react-native';
+import React, { useState } from 'react';
+import {Text, View, TouchableOpacity, SafeAreaView, ScrollView, Linking} from 'react-native';
 
 import ShopIcon from '../components/shop';
 import LogoutIcon from '../components/logout';
 import AccountIcon from '../components/account';
-import ArrowLeftIcon from '../components/ArrowLeft';
 import ArrowRightIcon from '../components/ArrowRight';
 import BillIcon from '../components/bill';
 import LawIcon from '../components/Law';
@@ -12,12 +11,42 @@ import Law2Icon from '../components/Law2';
 import Law3Icon from '../components/Law3';
 import CallIcon from '../components/call';
 import { CustomFont, couleurs } from '../components/color';
+import storage from '../components/api/localstorage';
 
 function MenuScreen({navigation}: {navigation: any}) {
+
+  const [isVendeur, SetVendeur] = useState( false)
+  const [isClient, SetClient] = useState( false)
+
+  storage
+  .load({
+    key: 'userconnected', // Note: Do not use underscore("_") in key!
+    id: 'userconnected', // Note: Do not use underscore("_") in id!
+  })
+  .then(data => {
+
+    // console.log(data);
+
+
+    if ( data.role == 'ROLE_VENDEUR' ) {
+      SetVendeur(true)
+    }
+
+    else if ( data.role == 'ROLE_CLIENT' ) {
+      SetClient(true)
+    }
+
+    else {
+      navigation.navigate('identification')
+    }
+
+  })
+  .catch(error => console.log(error));
+  
   return (
     <SafeAreaView
       style={{
-        backgroundColor: '#f6f6f6',
+        backgroundColor: couleurs.white,
         flex: 1,
       }}>
       <View
@@ -28,13 +57,14 @@ function MenuScreen({navigation}: {navigation: any}) {
           gap: 30,
           paddingVertical: 15,
           paddingHorizontal: 10,
+          backgroundColor: couleurs.primary
         }}>
-        <Text style={{color: couleurs.primary, fontSize: 18, fontFamily: CustomFont.Poppins}}>
+        <Text style={{color: couleurs.white, fontSize: 17, fontFamily: CustomFont.Poppins}}>
           Parametres du compte
         </Text>
-        <Pressable onPress={() => navigation.goBack()}>
-          <ArrowRightIcon color={couleurs.primary} />
-        </Pressable>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <ArrowRightIcon color={couleurs.white} />
+        </TouchableOpacity>
       </View>
       <ScrollView>
         <View>
@@ -44,20 +74,21 @@ function MenuScreen({navigation}: {navigation: any}) {
               flexDirection: 'column',
               justifyContent: 'space-around',
             }}>
-            {/* Informations personnelles */}
-            <Text style={{padding: 10, fontSize: 15, paddingHorizontal: 10, color:'rgba(100,100,100,.8)',fontFamily: CustomFont.Poppins}}>
-              Informations personnelles
-            </Text>
-            <Pressable
-              android_ripple={{color: '7B4C7A'}}
+            {/* Mon compte */}
+           
+            <TouchableOpacity
               style={{
                 display: 'flex',
                 flexDirection: 'row',
+                borderBottomWidth:1,
+                borderColor: '#9c702b20',
+                borderStyle:'solid',
                 justifyContent: 'flex-start',
                 gap: 10,
                 backgroundColor: '#fff',
                 paddingHorizontal: 10,
                 alignItems: 'center',
+                marginTop:0
               }}
               onPress={() => {
                 navigation.navigate('compte');
@@ -66,18 +97,17 @@ function MenuScreen({navigation}: {navigation: any}) {
               <Text style={{fontSize: 16, marginVertical: 10, color: '#000',fontFamily: CustomFont.Poppins}}>
                 Mon compte
               </Text>
-            </Pressable>
+            </TouchableOpacity>
 
             {/*  Mon etablissement */}
-            <Text style={{padding: 10, fontSize: 15, paddingHorizontal: 10, color:'rgba(100,100,100,.8)',fontFamily: CustomFont.Poppins}}>
-              Mon etablissement
-            </Text>
-
-            <Pressable
-              android_ripple={{color: '7B4C7A'}}
+          
+            {isVendeur && (<TouchableOpacity
               style={{
                 display: 'flex',
                 flexDirection: 'row',
+                borderTopWidth:1,
+                borderColor: '#9c702b20',
+                borderStyle:'solid',
                 justifyContent: 'flex-start',
                 gap: 10,
                 alignItems: 'center',
@@ -91,13 +121,15 @@ function MenuScreen({navigation}: {navigation: any}) {
               <Text style={{fontSize: 16, marginVertical: 10, color: '#000',fontFamily: CustomFont.Poppins}}>
                 Reabonnement
               </Text>
-            </Pressable>
+            </TouchableOpacity>)}
 
-            <Pressable
-              android_ripple={{color: '7B4C7A'}}
+           { isVendeur && ( <TouchableOpacity
               style={{
                 display: 'flex',
                 flexDirection: 'row',
+                borderTopWidth:1,
+                borderColor: '#9c702b20',
+                borderStyle:'solid',
                 justifyContent: 'flex-start',
                 gap: 10,
                 alignItems: 'center',
@@ -105,46 +137,47 @@ function MenuScreen({navigation}: {navigation: any}) {
                 paddingHorizontal: 10,
               }}
               onPress={() => {
-                navigation.navigate('espace_etab');
+                navigation.navigate('MonEtablissement');
               }}>
               <ShopIcon color={couleurs.primary} />
               <Text style={{fontSize: 16, marginVertical: 10, color: '#000',fontFamily: CustomFont.Poppins}}>
                 Mon etablissement
               </Text>
-            </Pressable>
+            </TouchableOpacity>)}
 
-            {/*  A propos de Linkih */}
-            <Text style={{padding: 10, fontSize: 15, paddingHorizontal: 10, color:'rgba(100,100,100,.8)',fontFamily: CustomFont.Poppins}}>
-              A propos de Linkih
-            </Text>
+         
 
-            <Pressable
-              android_ripple={{color: '7B4C7A'}}
+            <TouchableOpacity
               style={{
                 display: 'flex',
                 flexDirection: 'row',
+                borderTopWidth:1,
+                borderColor: '#9c702b20',
+                borderStyle:'solid',
                 justifyContent: 'flex-start',
                 gap: 10,
                 alignItems: 'center',
                 backgroundColor: '#fff',
                 paddingHorizontal: 10,
               }}
-              onPress={() => {
-                null;
-              }}>
+              onPress={() => 
+                Linking.openURL(`tel:242069500886`)
+              }>
               <CallIcon color={couleurs.primary} />
               <Text style={{fontSize: 16, marginVertical: 10, color: '#000',fontFamily: CustomFont.Poppins}}>
                 Contactez-nous
               </Text>
-            </Pressable>
+            </TouchableOpacity>
 
 
 
-            <Pressable
-              android_ripple={{color: '7B4C7A'}}
+            <TouchableOpacity
               style={{
                 display: 'flex',
                 flexDirection: 'row',
+                borderTopWidth:1,
+                borderColor: '#9c702b20',
+                borderStyle:'solid',
                 justifyContent: 'flex-start',
                 gap: 10,
                 alignItems: 'center',
@@ -158,13 +191,15 @@ function MenuScreen({navigation}: {navigation: any}) {
               <Text style={{fontSize: 16, marginVertical: 10, color: '#000',fontFamily: CustomFont.Poppins}}>
                 Condition generale d'utilisation
               </Text>
-            </Pressable>
+            </TouchableOpacity>
 
-            <Pressable
-              android_ripple={{color: '7B4C7A'}}
+            <TouchableOpacity
               style={{
                 display: 'flex',
                 flexDirection: 'row',
+                borderTopWidth:1,
+                borderColor: '#9c702b20',
+                borderStyle:'solid',
                 justifyContent: 'flex-start',
                 gap: 10,
                 alignItems: 'center',
@@ -178,13 +213,15 @@ function MenuScreen({navigation}: {navigation: any}) {
               <Text style={{fontSize: 16, marginVertical: 10, color: '#000',fontFamily: CustomFont.Poppins}}>
                 Politique de confidentialite
               </Text>
-            </Pressable>
+            </TouchableOpacity>
 
-            <Pressable
-              android_ripple={{color: '7B4C7A'}}
+            <TouchableOpacity
               style={{
                 display: 'flex',
                 flexDirection: 'row',
+                borderTopWidth:1,
+                borderColor: '#9c702b20',
+                borderStyle:'solid',
                 justifyContent: 'flex-start',
                 gap: 10,
                 alignItems: 'center',
@@ -198,30 +235,29 @@ function MenuScreen({navigation}: {navigation: any}) {
               <Text style={{fontSize: 16, marginVertical: 10, color: '#000',fontFamily: CustomFont.Poppins}}>
                 Mentions legales
               </Text>
-            </Pressable>
+            </TouchableOpacity>
 
             {/*  Session de connexion */}
-            <Text style={{padding: 10, fontSize: 15, paddingHorizontal: 10, color:'rgba(100,100,100,.8)',fontFamily: CustomFont.Poppins}}>
-              Session de connexion
-            </Text>
-
-            <Pressable
-              android_ripple={{color: '7B4C7A'}}
+         
+            <TouchableOpacity
               style={{
                 display: 'flex',
                 flexDirection: 'row',
+                borderTopWidth:1,
+                borderColor: '#9c702b20',
+                borderStyle:'solid',
                 justifyContent: 'flex-start',
                 gap: 10,
                 alignItems: 'center',
                 backgroundColor: '#fff',
                 paddingHorizontal: 10,
               }}
-              onPress={() => navigation.navigate('identification_proprietaire')}>
+              onPress={() =>  navigation.navigate(isVendeur ? 'identification_proprietaire' : 'identification_client' )}>
               <LogoutIcon color={couleurs.primary} />
               <Text style={{fontSize: 16, marginVertical: 10, color: '#000',fontFamily: CustomFont.Poppins}}>
                 Deconnexion
               </Text>
-            </Pressable>
+            </TouchableOpacity>
           </View>
         </View>
       </ScrollView>

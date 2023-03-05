@@ -7,13 +7,15 @@ import {
   View,
   TouchableOpacity,
   TextInput,
-  Alert
+  Alert,
+  Modal,
 } from 'react-native';
 import EyeSlashIcon from '../components/eye_slash';
 import EyeIcon from '../components/eye';
 import {CustomFont, couleurs} from '../components/color';
 import UserPosition from '../components/api/user_position';
 import Geolocation from '@react-native-community/geolocation';
+import ArrowLeftIcon from '../components/ArrowLeft';
 
 // InscriptionProprietaireScreen1
 export default function InscriptionProprietaireScreen1({
@@ -22,73 +24,55 @@ export default function InscriptionProprietaireScreen1({
   navigation: any;
 }) {
   var [isVisible, setVisible] = useState(false);
+  var [isVisibleModalInfoPrivee, setVisibleModalInfoPrivee] = useState(false);
 
   const _setVisible = () => {
     if (isVisible) setVisible(false);
     if (!isVisible) setVisible(true);
   };
 
-  var etablissement:any = {
-    nom:"",
-    email:"",
-    mobile:"",
-    password:"",
-    role: "ROLE_VENDEUR",
-    longitude: "",
-    latitude: "",
-    adresse:"",
-    corps_metier:""
-  }
+  var etablissement: any = {
+    nom: '',
+    email: '',
+    mobile: '',
+    password: '',
+    role: 'ROLE_VENDEUR',
+    longitude: '',
+    latitude: '',
+    adresse: '',
+    corps_metier: '',
+  };
 
-  Geolocation.getCurrentPosition(
-    info => {
-      etablissement.longitude = info.coords.longitude
-      etablissement.latitude = info.coords.latitude      
-    }
-  );
-
+  Geolocation.getCurrentPosition(info => {
+    etablissement.longitude = info.coords.longitude;
+    etablissement.latitude = info.coords.latitude;
+  });
 
   const getEtablissementData = () => {
+    console.log(etablissement);
 
+    if (etablissement.nom.length < 2) {
+      Alert.alert('', "Le nom de l'entreprise est trop court", [
+        {text: 'OK', onPress: () => null},
+      ]);
+      return;
+    }
 
-    console.log( etablissement ); 
-    
+    if (etablissement.mobile.length < 6) {
+      Alert.alert('', "Le mobile de l'entreprise est trop court", [
+        {text: 'OK', onPress: () => null},
+      ]);
+      return;
+    }
+
     var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-    if(!etablissement.email.match(mailformat))
-    {
-      Alert.alert('', "Email invalide", [        
-        {text: 'OK', onPress: () => null},
-      ]);
+    if (!etablissement.email.match(mailformat)) {
+      Alert.alert('', 'Email invalide', [{text: 'OK', onPress: () => null}]);
       return;
     }
 
-    if(etablissement.password.length < 4)
-    {
-      Alert.alert('', "Mot de passe trop court", [        
-        {text: 'OK', onPress: () => null},
-      ]);
-      return;
-    }
-
-    if(etablissement.nom.length < 2)
-    {
-      Alert.alert('', "Le nom de l'entreprise est trop court", [        
-        {text: 'OK', onPress: () => null},
-      ]);
-      return;
-    }
-
-    if(etablissement.mobile.length < 2)
-    {
-      Alert.alert('', "Le mobile de l'entreprise est trop court", [        
-        {text: 'OK', onPress: () => null},
-      ]);
-      return;
-    }
-
-    if(etablissement.mobile.length < 6)
-    {
-      Alert.alert('', "Le mobile de l'entreprise est trop court", [        
+    if (etablissement.password.length < 4) {
+      Alert.alert('', 'Mot de passe trop court', [
         {text: 'OK', onPress: () => null},
       ]);
       return;
@@ -97,10 +81,12 @@ export default function InscriptionProprietaireScreen1({
 
 
     navigation.navigate('inscription_proprietaire_2', {
-      etablissement:etablissement
+      etablissement: etablissement,
     });
+    
+  };
 
-  }
+
 
   return (
     <>
@@ -144,9 +130,8 @@ export default function InscriptionProprietaireScreen1({
                     textAlign: 'center',
                     color: '#000',
                     fontSize: 15,
-                    height: 30,
                     opacity: 0.85,
-                    fontFamily:CustomFont.Poppins
+                    fontFamily: CustomFont.Poppins,
                   }}>
                   Nom entreprise
                 </Text>
@@ -161,10 +146,12 @@ export default function InscriptionProprietaireScreen1({
                     borderBottomColor: couleurs.primary,
                     color: couleurs.primary,
                     width: '100%',
-                    fontFamily:CustomFont.Poppins,
+                    fontFamily: CustomFont.Poppins,
                     padding: 10,
                   }}></TextInput>
               </View>
+
+           
 
               <View
                 style={{
@@ -172,18 +159,17 @@ export default function InscriptionProprietaireScreen1({
                   flexDirection: 'column',
                   justifyContent: 'flex-start',
                   alignItems: 'flex-start',
-                  marginTop:20
+                  marginTop: 10,
                 }}>
                 <Text
                   style={{
                     textAlign: 'center',
                     color: '#000',
                     fontSize: 15,
-                    height: 30,
                     opacity: 0.85,
-                    fontFamily:CustomFont.Poppins,
+                    fontFamily: CustomFont.Poppins,
                   }}>
-                 Email
+                  Email
                 </Text>
                 <TextInput
                   placeholderTextColor={'rgba(100,100,100,.7)'}
@@ -196,7 +182,7 @@ export default function InscriptionProprietaireScreen1({
                     borderBottomColor: couleurs.primary,
                     color: couleurs.primary,
                     width: '100%',
-                    fontFamily:CustomFont.Poppins,
+                    fontFamily: CustomFont.Poppins,
                     padding: 10,
                   }}></TextInput>
               </View>
@@ -207,18 +193,17 @@ export default function InscriptionProprietaireScreen1({
                   flexDirection: 'column',
                   justifyContent: 'flex-start',
                   alignItems: 'flex-start',
-                  marginTop:20
+                  marginTop: 10,
                 }}>
                 <Text
                   style={{
                     textAlign: 'center',
                     color: '#000',
                     fontSize: 15,
-                    height: 30,
                     opacity: 0.85,
-                    fontFamily:CustomFont.Poppins,
+                    fontFamily: CustomFont.Poppins,
                   }}>
-                 Mobile
+                  Mobile
                 </Text>
                 <TextInput
                   placeholderTextColor={'rgba(100,100,100,.7)'}
@@ -231,7 +216,7 @@ export default function InscriptionProprietaireScreen1({
                     borderBottomColor: couleurs.primary,
                     color: couleurs.primary,
                     width: '100%',
-                    fontFamily:CustomFont.Poppins,
+                    fontFamily: CustomFont.Poppins,
                     padding: 10,
                   }}></TextInput>
               </View>
@@ -250,9 +235,8 @@ export default function InscriptionProprietaireScreen1({
                     textAlign: 'center',
                     color: '#000',
                     fontSize: 15,
-                    height: 30,
                     opacity: 0.85,
-                    fontFamily:CustomFont.Poppins,
+                    fontFamily: CustomFont.Poppins,
                   }}>
                   Mot de passe
                 </Text>
@@ -278,11 +262,13 @@ export default function InscriptionProprietaireScreen1({
                       borderBottomWidth: 1,
                       borderBottomColor: couleurs.primary,
                       color: couleurs.primary,
-                      fontFamily:CustomFont.Poppins,
-                      flex:1,
-                      padding: 10,                      
+                      fontFamily: CustomFont.Poppins,
+                      flex: 1,
+                      padding: 10,
                     }}></TextInput>
-                  <TouchableOpacity style={{padding: 15, width:20, height:20}} onPress={_setVisible}>
+                  <TouchableOpacity
+                    style={{padding: 15, width: 20, height: 20}}
+                    onPress={_setVisible}>
                     {isVisible && <EyeSlashIcon />}
                     {!isVisible && <EyeIcon color={couleurs.primary} />}
                   </TouchableOpacity>
@@ -301,14 +287,14 @@ export default function InscriptionProprietaireScreen1({
                     paddingHorizontal: 10,
                     width: '70%',
                   }}
-                  onPress={() => getEtablissementData() }>
+                  onPress={() => getEtablissementData()}>
                   <Text
                     style={{
                       textAlign: 'center',
                       padding: 10,
                       paddingHorizontal: 20,
                       fontSize: 15,
-                      fontFamily:CustomFont.Poppins,
+                      fontFamily: CustomFont.Poppins,
                       color: couleurs.secondary,
                     }}>
                     Suivant
@@ -335,7 +321,7 @@ export default function InscriptionProprietaireScreen1({
                   style={{
                     textAlign: 'center',
                     fontSize: 15,
-                    fontFamily:CustomFont.Poppins,
+                    fontFamily: CustomFont.Poppins,
                     color: couleurs.primary,
                   }}>
                   Avez-vous besoin d'aide ?

@@ -3,25 +3,23 @@ import React, { useState } from 'react';
 import {
   SafeAreaView,
   ScrollView,
-  StyleSheet,
   Text,
   View,
   Pressable,
-  PixelRatio,
   TextInput,
   Alert,
-  Image,
   ActivityIndicator,
 } from 'react-native';
 import { CustomFont, couleurs } from '../components/color';
 import axios from 'axios';
 import ApiService from '../components/api/service';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 
-// InscriptionProprietaire4
-export default function InscriptionProprietaire4({navigation, route}: {navigation: any, route:any}) {
+// confirmationCompteScreen
+export default function ConfirmationCompteScreen({navigation, route}: {navigation: any, route:any}) {
   
   const [isLoading, setLoading] = useState(false)
+  const [isLoadingScreen, setLoadingScreen] = useState(false)
+
 
   var code = ''
  
@@ -41,7 +39,7 @@ export default function InscriptionProprietaire4({navigation, route}: {navigatio
     method: 'POST',
     url: ApiService.API_SEND_COMPTE_VERIFICATION,
     data: JSON.stringify({
-      vendeur_id: route.params.api.vendeur_id,
+      vendeur_id: route.params.vendeur_id,
       code:code
     }),
       headers: {
@@ -56,11 +54,7 @@ export default function InscriptionProprietaire4({navigation, route}: {navigatio
       console.log(response.data);
 
       if( response.data.code == 'success') {
-        navigation.navigate('inscription_proprietaire_5', 
-        {
-          login: route.params.api.login,
-          api:route.params.api
-        }
+        navigation.navigate('identification_proprietaire'      
         )
       } else {
         Alert.alert('', response.data.message, [
@@ -84,7 +78,7 @@ export default function InscriptionProprietaire4({navigation, route}: {navigatio
     method: 'POST',
     url: ApiService.API_SEND_MAIL_CONFIRMATION,
     data: JSON.stringify({
-      vendeur_id: route.params.api.vendeur_id
+      vendeur_id: route.params.vendeur_id
     }),
       headers: {
         Accept: 'application/json',
@@ -109,6 +103,14 @@ export default function InscriptionProprietaire4({navigation, route}: {navigatio
       ]);
 
     });
+ }
+
+
+ // loading screen
+
+ if ( !isLoadingScreen ){
+  setLoadingScreen(true)
+  sendEmail()
  }
   
 
@@ -138,7 +140,7 @@ export default function InscriptionProprietaire4({navigation, route}: {navigatio
                 fontSize: 17,
                 width:'80%'
               }}>
-              {"Felicitations, \nPlus qu'une derniere etape"}
+              {"Confirmation de compte, \nPlus qu'une derniere etape"}
             </Text>
             <Text
               style={{

@@ -3,24 +3,25 @@ import {
   Text,
   StyleSheet,
   View,
-  Pressable,
+  TouchableOpacity,
   SafeAreaView,
   ScrollView,
   Image,
   Linking,
-  Modal,
+  Modal
 } from 'react-native';
 
 import ArrowLeftIcon from '../components/ArrowLeft';
 import EditIcon from '../components/Edit';
 import CallIcon from '../components/call';
 import RdvIcon from '../components/rdv';
-import {Rating, AirbnbRating} from 'react-native-ratings';
+import { AirbnbRating} from 'react-native-ratings';
 import CloseIcon from '../components/close';
-import AddIcon from '../components/add';
-import MinusIcon from '../components/minus';
-import {couleurs} from '../components/color';
-import ShopIcon from '../components/shop';
+import {CustomFont, couleurs} from '../components/color';
+import { TimePickerModal } from 'react-native-paper-dates';
+import {Picker} from '@react-native-picker/picker';
+import planning from '../components/api/planning';
+import { sous_categories } from '../components/api/categories';
 
 export default function AutreEtablissement({
   route,
@@ -42,7 +43,21 @@ export default function AutreEtablissement({
   const activeModal = () => setVisibleModal(true);
   const desactiveModal = () => setVisibleModal(false);
 
+   ///////////////////////////////////////////////////
+   const [visibleHeureModal, setVisibleHeureModal] = React.useState(false);
 
+   const onDismissHeureModal = () => {
+     setVisibleHeureModal(false);
+   };
+ 
+   const onConfirmHeureModal = ({hours, minutes}: {hours: any; minutes: any}) => {
+     setVisibleHeureModal(false);
+     console.log({hours, minutes});
+   };
+
+   //////////////////////////////////////////////////
+   const [selectedJour, setSelectedJour] = useState();
+   const [selectedCategorie, setSelectedCategorie] = useState();
 
 
   return (
@@ -61,10 +76,10 @@ export default function AutreEtablissement({
             paddingVertical: 15,
             paddingHorizontal: 10,
           }}>
-          <Pressable onPress={() => navigation.goBack()}>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
             <ArrowLeftIcon color={couleurs.primary} />
-          </Pressable>
-          <Text style={{color: '#000', fontSize: 18, fontWeight: '700'}}>
+          </TouchableOpacity>
+          <Text style={{color: '#000', fontSize: 18 , fontFamily:CustomFont.Poppins,}}>
             {title}
           </Text>
         </View>
@@ -110,7 +125,7 @@ export default function AutreEtablissement({
                   color: '#000',
                   paddingVertical: 3,
                   fontSize: 17,
-                  fontWeight: '700',
+                  fontFamily:CustomFont.Poppins,
                 }}>
                 Salon beaute plus
               </Text>
@@ -120,7 +135,7 @@ export default function AutreEtablissement({
                   paddingVertical: 3,
                   opacity: 0.7,
                   fontSize: 15,
-                  fontWeight: '600',
+                 fontFamily:CustomFont.Poppins,
                 }}>
                 hisoka.tegiro@gmail.com
               </Text>
@@ -129,7 +144,7 @@ export default function AutreEtablissement({
                   color: '#000',
                   paddingVertical: 3,
                   fontSize: 16,
-                  fontWeight: '600',
+                 fontFamily:CustomFont.Poppins,
                 }}>
                 06 950 0886
               </Text>
@@ -148,32 +163,7 @@ export default function AutreEtablissement({
                   />
                 )}
               </View>
-              <View
-              style={{
-                display: 'flex',
-                justifyContent: 'flex-start',
-                flexDirection: 'row',
-                gap: 10,
-              }}>
-              <Text
-                style={{
-                  color: '#000',
-                  paddingVertical: 3,
-                  fontSize: 15,
-                  fontWeight: '600',
-                }}>
-                Client depuis
-              </Text>
-              <Text
-                style={{
-                  color: couleurs.primary,
-                  paddingVertical: 3,
-                  fontSize: 15,
-                  fontWeight: '600',
-                }}>
-                14-02-2023
-              </Text>
-            </View>
+              
             <View
                   style={{
                     backgroundColor: couleurs.primary,
@@ -185,21 +175,27 @@ export default function AutreEtablissement({
                   }}>
                   {!isConsulting && <EditIcon />}
                   {isConsulting && (
-                    <Pressable
+                    <TouchableOpacity
                       onPress={() => Linking.openURL(`tel:242069500886`)}>
                       <CallIcon color={'#fff'} />
-                    </Pressable>
+                    </TouchableOpacity>
                   )}
                 </View>
             </View>
 
           </View>
 
+          
+
           <View
             style={{marginHorizontal: 12, marginBottom: 10, marginTop: 120}}>
             
             <View
               style={{
+                display: 'flex',
+                justifyContent: 'flex-start',
+                flexDirection: 'row',
+                gap: 10,
                 borderRadius: 15,
                 backgroundColor: '#fff',
                 padding: 14,
@@ -211,8 +207,38 @@ export default function AutreEtablissement({
                 style={{
                   color: '#000',
                   paddingVertical: 3,
+                  fontSize: 15,
+                  fontFamily:CustomFont.Poppins,
+                }}>
+                Client depuis
+              </Text>
+              <Text
+                style={{
+                  color: couleurs.primary,
+                  paddingVertical: 3,
+                  fontSize: 15,
+                  fontFamily:CustomFont.Poppins,
+                }}>
+                14-02-2023
+              </Text>
+            </View>
+
+            <View
+              style={{
+                borderRadius: 15,
+                backgroundColor: '#fff',
+                padding: 14,
+                width: '100%',
+                alignSelf:'center',
+                shadowColor: 'gray',
+                marginTop:10
+              }}>
+              <Text
+                style={{
+                  color: '#000',
+                  paddingVertical: 3,
                   fontSize: 17,
-                  fontWeight: '700',
+                  fontFamily:CustomFont.Poppins,
                 }}>
                 Adresse
               </Text>
@@ -222,8 +248,9 @@ export default function AutreEtablissement({
                   color: '#000',
                   paddingVertical: 3,
                   fontSize: 16,
-                  fontWeight: '600',
+                  fontFamily:CustomFont.Poppins,
                   opacity: 0.8,
+                  marginTop:10
                 }}>
                 Republique du Congo
               </Text>
@@ -233,7 +260,7 @@ export default function AutreEtablissement({
                   paddingVertical: 3,
                   opacity: 0.7,
                   fontSize: 15,
-                  fontWeight: '600',
+                  fontFamily:CustomFont.Poppins,
                 }}>
                 Brazzaville, vers boulevrd denis
               </Text>
@@ -242,7 +269,7 @@ export default function AutreEtablissement({
 
             <View
               style={{
-                marginTop:20,
+                marginTop:10,
                 borderRadius: 15,
                 backgroundColor: '#fff',
                 padding: 14,
@@ -255,7 +282,7 @@ export default function AutreEtablissement({
                   color: '#000',
                   paddingVertical: 3,
                   fontSize: 17,
-                  fontWeight: '700',
+                  fontFamily:CustomFont.Poppins,
                 }}>
                 Heure d'ouverture
               </Text>
@@ -266,6 +293,7 @@ export default function AutreEtablissement({
                 flexDirection: 'row',
                 flexWrap: 'wrap',
                 justifyContent:'flex-start',
+                marginTop:10,
                 gap: 5,
               }}>
               {[1, 1, 1, 1, 1, 1, 1].map((row, key) => (
@@ -291,8 +319,8 @@ export default function AutreEtablissement({
                       borderRadius: 10,
                       width:106,
                     }}>
-                    <Text style={{color: couleurs.white}}>Mercredi</Text>
-                    <Text style={{color: couleurs.white, fontSize: 11}}>
+                    <Text style={{color: couleurs.white,fontFamily:CustomFont.Poppins,}}>Mercredi</Text>
+                    <Text style={{color: couleurs.white, fontSize: 11,fontFamily:CustomFont.Poppins,}}>
                       08h-12h
                     </Text>
                   </View>
@@ -320,6 +348,7 @@ export default function AutreEtablissement({
                   paddingVertical: 3,
                   fontSize: 17,
                   fontWeight: '700',
+                  fontFamily:CustomFont.Poppins,
                 }}>
                 Lien reseaux sociaux
               </Text>
@@ -330,22 +359,23 @@ export default function AutreEtablissement({
                 flexDirection: 'row',
                 flexWrap: 'wrap',
                 gap: 10,
+                marginTop:20
               }}>
     
                 <Image source={ require('../assets/social/facebook.png')} 
-                style={{width:60, height: 60}} />
+                style={{width:35, height: 35}} />
 
                 <Image source={ require('../assets/social/twitter.png')} 
-                                style={{width:60, height: 60}} />
+                                style={{width:35, height: 35}} />
 
                 <Image source={ require('../assets/social/instagram.png')} 
-                                style={{width:60, height: 60}} />
+                                style={{width:35, height: 35}} />
 
                 <Image source={ require('../assets/social/linkedin.png')} 
-                                style={{width:60, height: 60}} />
+                                style={{width:35, height: 35}} />
 
                 <Image source={ require('../assets/social/youtube.png')} 
-                                style={{width:60, height: 60}} />
+                                style={{width:35, height: 35}} />
        
             </View>
 
@@ -369,14 +399,17 @@ export default function AutreEtablissement({
             style={{
               alignItems: 'center',
               marginVertical: 10,
-              marginHorizontal: 50,
               display: 'flex',
               flexDirection: 'row',
               justifyContent: 'center',
               gap: 30,
+              position:'absolute',
+              backgroundColor:couleurs.white,
+              paddingVertical:7,
+              width:'100%',
+              bottom:-10
             }}>
-            <Pressable
-              android_ripple={{color: '7B4C7A'}}
+            <TouchableOpacity
               style={{
                 padding: 8,
                 backgroundColor: couleurs.primary,
@@ -393,9 +426,8 @@ export default function AutreEtablissement({
                 }}>
                 <CallIcon color={'#fff'} />
               </View>
-            </Pressable>
-            <Pressable
-              android_ripple={{color: '7B4C7A'}}
+            </TouchableOpacity>
+            <TouchableOpacity
               style={{
                 paddingHorizontal: 30,
                 width: 230,
@@ -420,11 +452,12 @@ export default function AutreEtablissement({
                     fontSize: 14,
                     fontWeight: '500',
                     color: '#fff',
+                    fontFamily:CustomFont.Poppins,
                   }}>
                   Prendre un RDV
                 </Text>
               </View>
-            </Pressable>
+            </TouchableOpacity>
           </View>
         )}
 
@@ -442,16 +475,16 @@ export default function AutreEtablissement({
                 display: 'flex',
                 flexDirection: 'column',
                 backgroundColor: '#fff',
-                width: '90%',
                 borderRadius: 15,
-                padding: 10,
+                padding: 10,width:'100%'
               }}>
               <Text
                 style={{
                   padding: 15,
-                  fontSize: 15,
+                  fontSize: 17,
                   fontWeight: 'bold',
                   color: 'rgba(0,0,0,.7)',
+                  fontFamily:CustomFont.Poppins,
                 }}>
                 Prendre un rendez-vous
               </Text>
@@ -463,100 +496,35 @@ export default function AutreEtablissement({
                       <View style={{paddingVertical: 10}}>
                         <Text
                           style={{
-                            fontWeight: '700',
+                            fontWeight: '400',
                             fontSize: 15,
+                            paddingLeft:5,
                             paddingBottom: 12,
                             color: '#000',
+                            fontFamily:CustomFont.Poppins,
                           }}>
-                          1. Prestation selectionnee
+                          Prestation selectionnee
                         </Text>
                       </View>
 
-                      <View
-                        style={{
-                          display: 'flex',
-                          flexDirection: 'row',
-                          gap: 10,
-                          backgroundColor: 'rgba(230,230,230,.2)',
-                          marginVertical: 10,
-                          borderRadius: 10,
-                          padding: 10,
-                          alignItems: 'center',
-                          width: '100%',
-                          justifyContent: 'space-between',
-                        }}>
-                        <View
-                          style={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            gap: 3,
-                            padding: 10,
-                            paddingVertical: 5,
-                            borderRadius: 50,
+                      <View style={{
+                            borderWidth: 1,
+                            borderRadius: 10,
+                            width: '100%',
+                            height: 40,
+                            borderColor: couleurs.primary,
                           }}>
-                          <Text style={{color: '#000'}}>
-                            Cliquez pour selectionner
-                          </Text>
+                          <Picker
+                          style={{position:'relative', bottom:8}}
+                          selectedValue={selectedCategorie}
+                          onValueChange={(itemValue:any, itemIndex:any) =>
+                            setSelectedCategorie(itemValue)
+                          }>
+                          {sous_categories.map( (row, i) => (<Picker.Item key={i} label={row} value={row} />))
+                          }
+                        </Picker>
                         </View>
 
-                        <AddIcon color={couleurs.primary} />
-                      </View>
-
-                      <View
-                        style={{
-                          display: 'flex',
-                          flexDirection: 'row',
-                          flexWrap: 'wrap',
-                          gap: 4,
-                          marginBottom: 40,
-                        }}>
-                        {[1, 1, 1, 1].map((row, key) => (
-                          <View style={{width: '100%'}}>
-                            <View
-                              key={Math.random()}
-                              style={{
-                                display: 'flex',
-                                flexDirection: 'row',
-                                gap: 10,
-                                backgroundColor: 'transparent',
-                                padding: 5,
-                                paddingHorizontal: 12,
-                                borderRadius: 15,
-                                alignItems: 'center',
-                                width: '100%',
-                                justifyContent: 'space-between',
-                              }}>
-                              <View
-                                style={{
-                                  display: 'flex',
-                                  flexDirection: 'column',
-                                  gap: 1,
-                                  padding: 10,
-                                  paddingVertical: 5,
-                                  borderRadius: 50,
-                                }}>
-                                <Text style={{color: '#000'}}>Ongle</Text>
-                              </View>
-                              <MinusIcon color={'red'} />
-                            </View>
-                            <View
-                              style={{
-                                height: 1,
-                                width: '100%',
-                                overflow: 'hidden',
-                                paddingHorizontal: 10,
-                              }}>
-                              <View
-                                style={{
-                                  height: 1,
-                                  borderWidth: 1,
-                                  borderColor: couleurs.primary,
-                                  borderStyle: 'dashed',
-                                }}></View>
-                            </View>
-                          </View>
-                        ))}
-                      </View>
                     </View>
 
                     {/* date rdv */}
@@ -564,103 +532,77 @@ export default function AutreEtablissement({
                       <View style={{paddingVertical: 10}}>
                         <Text
                           style={{
-                            fontWeight: '700',
+                            fontWeight: '400',
                             fontSize: 15,
+                            paddingLeft:5,
                             paddingBottom: 12,
                             color: '#000',
+                            fontFamily:CustomFont.Poppins,
                           }}>
-                          2. Horaire
+                          Quel jour ?
                         </Text>
                       </View>
 
-                      <View
-                        style={{
-                          display: 'flex',
-                          flexDirection: 'row',
-                          gap: 10,
-                          backgroundColor: 'rgba(230,230,230,.2)',
-                          marginVertical: 10,
-                          borderRadius: 10,
-                          padding: 10,
-                          alignItems: 'center',
-                          width: '100%',
-                          justifyContent: 'space-between',
-                        }}>
+                      
+
+                      <View style={{
+                            borderWidth: 1,
+                            borderRadius: 10,
+                            width: '100%',
+                            height: 40,
+                            borderColor: couleurs.primary,
+                          }}>
+                          <Picker
+                          style={{position:'relative', bottom:8}}
+                          selectedValue={selectedJour}
+                          onValueChange={(itemValue:any, itemIndex:any) =>
+                            setSelectedJour(itemValue)
+                          }>
+                          {planning.map( (row, i) => (<Picker.Item key={i} label={row} value={row} />))
+                          }
+                        </Picker>
+                        </View>
+                    
+
+                    </View>
+
+                    {/* date rdv */}
+                    <View>
+                      <View style={{paddingVertical: 10}}>
+                        <Text
+                          style={{
+                            fontWeight: '400',
+                            fontSize: 15,
+                            paddingLeft:5,
+                            paddingBottom: 12,
+                            color: '#000',
+                            fontFamily:CustomFont.Poppins,
+                          }}>
+                          A quelle heure ?
+                        </Text>
+                      </View>
+
+                      <TouchableOpacity onPress={() => setVisibleHeureModal(true)}>
                         <View
                           style={{
+                            borderWidth: 1,
+                            borderRadius: 10,
+                            width: '100%',
+                            height: 40,
                             display: 'flex',
-                            flexDirection: 'column',
-                            gap: 3,
-                            padding: 10,
-                            paddingVertical: 5,
-                            borderRadius: 50,
+                            justifyContent: 'center',
+                            gap: 5,
+                            flexDirection: 'row',
+                            borderColor: couleurs.primary,
                           }}>
-                          <Text style={{color: '#000'}}>
-                            Cliquez pour selectionner
+                          <Text style={{position: 'relative', top: 9}}>
+                            00:00
                           </Text>
                         </View>
+                      </TouchableOpacity>
 
-                        <AddIcon color={couleurs.primary} />
-                      </View>
+                    
 
-                      <View
-                        style={{
-                          display: 'flex',
-                          flexDirection: 'row',
-                          flexWrap: 'wrap',
-                          gap: 4,
-                          marginBottom: 40,
-                        }}>
-                        {[1, 1].map((row, key) => (
-                          <View style={{width: '100%'}}>
-                            <View
-                              key={Math.random()}
-                              style={{
-                                display: 'flex',
-                                flexDirection: 'row',
-                                gap: 10,
-                                backgroundColor: 'transparent',
-                                padding: 5,
-                                paddingHorizontal: 12,
-                                borderRadius: 15,
-                                alignItems: 'center',
-                                width: '100%',
-                                justifyContent: 'space-between',
-                              }}>
-                              <View
-                                style={{
-                                  display: 'flex',
-                                  flexDirection: 'column',
-                                  gap: 1,
-                                  padding: 10,
-                                  paddingVertical: 5,
-                                  borderRadius: 50,
-                                }}>
-                                <Text style={{color: '#000'}}>Lundi</Text>
-                                <Text style={{color: couleurs.primary}}>
-                                  14h
-                                </Text>
-                              </View>
-                              <MinusIcon color={'red'} />
-                            </View>
-                            <View
-                              style={{
-                                height: 1,
-                                width: '100%',
-                                overflow: 'hidden',
-                                paddingHorizontal: 10,
-                              }}>
-                              <View
-                                style={{
-                                  height: 1,
-                                  borderWidth: 1,
-                                  borderColor: couleurs.primary,
-                                  borderStyle: 'dashed',
-                                }}></View>
-                            </View>
-                          </View>
-                        ))}
-                      </View>
                     </View>
                   </ScrollView>
                 </View>
@@ -673,7 +615,7 @@ export default function AutreEtablissement({
                     display: 'flex',
                     flexDirection: 'row',
                   }}>
-                  <Pressable
+                  <TouchableOpacity
                     onPress={desactiveModal}
                     style={{
                       display: 'flex',
@@ -683,11 +625,10 @@ export default function AutreEtablissement({
                       justifyContent: 'flex-start',
                     }}>
                     <CloseIcon color={couleurs.primary} />
-                    <Text style={{color: 'rgba(100,100,100,.8)'}}>Quitter</Text>
-                  </Pressable>
+                    <Text style={{color: 'rgba(100,100,100,.8)',fontFamily:CustomFont.Poppins,}}>Quitter</Text>
+                  </TouchableOpacity>
 
-                  <Pressable
-                    android_ripple={{color: '7B4C7A'}}
+                  <TouchableOpacity
                     style={{
                       paddingHorizontal: 10,
                       backgroundColor: couleurs.primary,
@@ -708,19 +649,29 @@ export default function AutreEtablissement({
                           padding: 10,
                           paddingHorizontal: 20,
                           fontSize: 14,
-                          fontWeight: '500',
+                          fontFamily:CustomFont.Poppins,
                           color: couleurs.secondary,
                         }}>
                         valider le RDV
                       </Text>
                     </View>
-                  </Pressable>
+                  </TouchableOpacity>
                 </View>
               </View>
             </View>
           </View>
         </Modal>
       </SafeAreaView>
+      {/* MODAL TIME PICKER */}
+      <TimePickerModal
+          visible={visibleHeureModal}
+          onDismiss={onDismissHeureModal}
+          onConfirm={onConfirmHeureModal}
+          hours={12}
+          minutes={14}
+          inputFontSize={16}
+        />
+
     </View>
   );
 }

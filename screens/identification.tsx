@@ -11,11 +11,13 @@ import {
   TextInput,
   ImageBackground,
   Image,
+  Pressable,
 } from 'react-native';
 import ShopIcon from '../components/shop';
 import AccountIcon from '../components/account';
 import EntrepreneurIcon from '../components/entrepreuneur';
 import {CustomFont, couleurs} from '../components/color';
+import ArrowLeftIcon from '../components/ArrowLeft';
 
 // IdentificationScreen
 export default function IdentificationScreen({navigation}: {navigation: any}) {
@@ -24,13 +26,22 @@ export default function IdentificationScreen({navigation}: {navigation: any}) {
       icon: <AccountIcon color={couleurs.white} />,
       title: 'Client',
       route: 'identification_client',
+      props: 'ROLE_CLIENT',
       color: couleurs.primary,
       bgColor: couleurs.primary
     },
     {
       icon: <ShopIcon color={couleurs.dark} />,
-      title: 'Societe ou Auto\nEntrepreuneur',
+      title: 'Societe',
       route: 'identification_proprietaire',
+      props:'ROLE_SOCIETE',
+      color: couleurs.dark,
+      bgColor: couleurs.primaryLight
+    },{
+      icon: <ShopIcon color={couleurs.dark} />,
+      title: 'Auto\nEntrepreuneur',
+      route: 'identification_proprietaire',
+      props:'ROLE_AUTO_ENTREPREUNEUR',
       color: couleurs.dark,
       bgColor: couleurs.primaryLight
     },
@@ -52,6 +63,24 @@ export default function IdentificationScreen({navigation}: {navigation: any}) {
             }}
           />
 
+<View
+        style={{
+          borderRadius: 100,
+          backgroundColor: couleurs.primary,
+          padding: 10,
+          margin: 4,
+          position: 'absolute',
+          top: 10,
+          left: 10,
+        }}>
+        <Pressable
+          onPress={() =>
+            navigation.goBack()
+          }>
+          <ArrowLeftIcon color={'#fff'} />
+        </Pressable>
+      </View>
+      
           <View
             style={{
               flex: 1,
@@ -104,18 +133,17 @@ export default function IdentificationScreen({navigation}: {navigation: any}) {
                       borderRadius: 15,
                       paddingHorizontal: 10,
                       backgroundColor: row.bgColor,
-                      borderWidth: 1.6,
-                      borderColor: '#E2C6BB',
+                    
                       padding: 18,
-                      width: 180,
-                      height: 170,
+                      width: 120,
+                      height: 140,
                       display: 'flex',
                       flexDirection: 'column',
                       justifyContent: 'center',
                       alignItems: 'center',
                     }}
                     onPress={() =>
-                      navigation.navigate(row.route)
+                      navigation.navigate(row.route, {is:row.props})
                     }>
                     <View
                       style={{
@@ -123,6 +151,7 @@ export default function IdentificationScreen({navigation}: {navigation: any}) {
                         flexDirection: 'column',
                         justifyContent: 'center',
                         alignItems: 'center',
+                        // padding:15,
                         gap: 10,
                       }}>
                       {row.icon}
@@ -131,7 +160,7 @@ export default function IdentificationScreen({navigation}: {navigation: any}) {
                           textAlign: 'center',
                           color: key == 0 ? couleurs.white :couleurs.dark,
                           fontWeight: 'normal',
-                          fontSize: 15,
+                          fontSize: 13,
                           opacity: 0.85,
                           fontFamily:CustomFont.Poppins
                         }}>

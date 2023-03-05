@@ -218,20 +218,9 @@ export default function ConfigurationScreen({navigation}: {navigation: any}) {
               flexDirection: 'column',
               justifyContent: 'center',
               alignItems: 'center',
-              marginTop: 40,
+             
             }}>
-            <Text
-              style={{
-                textAlign: 'left',
-                color: '#000',
-                fontWeight: 'bold',
-                fontSize: 20,
-                paddingRight: 10,
-                width: '90%',
-                fontFamily:CustomFont.Poppins
-              }}>
-              Configurer le pays et la langue
-            </Text>
+       
             <View
               style={{
                 marginVertical: 20,
@@ -239,7 +228,7 @@ export default function ConfigurationScreen({navigation}: {navigation: any}) {
                 borderRadius: 11,
                 padding: 20,
                 width: '90%',
-                marginTop: 40,
+                marginTop: 20,
               }}>
               <View
                 style={{
@@ -314,6 +303,8 @@ export default function ConfigurationScreen({navigation}: {navigation: any}) {
                     padding: 10,
                     fontFamily:CustomFont.Poppins
                   }}></TextInput>
+
+                  
               </View>
 
               <View
@@ -485,7 +476,7 @@ export default function ConfigurationScreen({navigation}: {navigation: any}) {
                       <LanguageList />
 
                       <View style={{padding: 0, paddingVertical: 30}}>
-                        <TouchableOpacity onPress={handleCloseModalLanguages} style={{
+                        {/* <TouchableOpacity onPress={handleCloseModalLanguages} style={{
                       display: 'flex',
                       flexDirection: 'row',
                       alignItems: 'center',
@@ -497,7 +488,7 @@ export default function ConfigurationScreen({navigation}: {navigation: any}) {
                     fontFamily:CustomFont.Poppins}}>
                             Quitter
                           </Text>
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
                       </View>
                     </View>
                   </View>

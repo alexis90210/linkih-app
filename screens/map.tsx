@@ -514,7 +514,7 @@ export default function Map({
               <View style={{width: '100%', paddingHorizontal: 10}}>
                 <Pressable
                   onPress={() =>
-                    navigation.navigate('espace_etab', {
+                    navigation.navigate('MonEtablissement', {
                       nomEtab: 'Maison de beaute',
                     })
                   }>

@@ -28,8 +28,10 @@ import AutreEtablissement from './screens/autre_etablissement';
 import MenuScreen from './screens/menu';
 import { CustomFont, couleurs } from './components/color';
 import InscriptionProprietaire4 from './screens/inscription_proprietaire_4';
+import InscriptionProprietaire5 from './screens/inscription_proprietaire_5';
 import storage from './components/api/localstorage';
 import Reabonnement from './screens/reabonnement';
+import ConfirmationCompteScreen from './screens/confirmation_screen';
 
 
 const Stack = createNativeStackNavigator();
@@ -76,7 +78,13 @@ export default function App(): JSX.Element {
           name="configuration"
           component={ConfigurationScreen}
           options={{
-            headerShown: false,
+            title:'Configuration',
+            headerTitleStyle: {fontSize: 18, color:couleurs.white, fontFamily: CustomFont.Poppins,},
+            headerTintColor:couleurs.white,
+            headerShown: true,
+            headerStyle: {
+      backgroundColor: couleurs.primary,
+    },
             presentation: 'modal',
             animationTypeForReplace: 'push',
             animation: 'slide_from_right',
@@ -89,11 +97,27 @@ export default function App(): JSX.Element {
           component={IdentificationScreen}
           options={{
             headerShown: false,
+
             presentation: 'modal',
             animationTypeForReplace: 'push',
             animation: 'slide_from_right'
           }}
         />
+
+        {/* confirmation_screen */}
+        <Stack.Screen
+          name="confirmation_screen"
+          component={ConfirmationCompteScreen}
+          options={{
+            headerShown: false,
+
+            presentation: 'modal',
+            animationTypeForReplace: 'push',
+            animation: 'slide_from_right'
+          }}
+        />
+
+
 
         {/* identification_client */}
         <Stack.Screen
@@ -231,7 +255,23 @@ export default function App(): JSX.Element {
           name="inscription_proprietaire_4"
           component={InscriptionProprietaire4}
           options={{
-            title: 'Image de couverture',
+            title: '',
+            headerShadowVisible: false,
+            headerTitleStyle: {fontSize: 18, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
+            headerTintColor:couleurs.primary,
+            headerShown: false,
+            presentation: 'modal',
+            animationTypeForReplace: 'push',
+            animation: 'slide_from_right',
+          }}
+        />
+
+        {/* inscription_proprietaire_5 */}
+        <Stack.Screen
+          name="inscription_proprietaire_5"
+          component={InscriptionProprietaire5}
+          options={{
+            title: '',
             headerShadowVisible: false,
             headerTitleStyle: {fontSize: 18, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
             headerTintColor:couleurs.primary,
@@ -339,7 +379,7 @@ export default function App(): JSX.Element {
 
         {/* espace etablissement */}
         <Stack.Screen
-          name="espace_etab"
+          name="MonEtablissement"
           component={MonEtablissement}
           options={{
             title: 'Espace etablissement',

@@ -54,7 +54,8 @@ export default function IdentificationClientScreen({
       url: ApiService.API_URL_LOGIN,
       data: JSON.stringify({
         login: data.identifiant,
-        password: data.password
+        password: data.password,
+        role:'ROLE_CLIENT'
       }),
       headers: {
         Accept: 'application/json',
@@ -83,16 +84,45 @@ export default function IdentificationClientScreen({
             },
           });
 
-          // navigation.navigate('main')
-          storage.save({
-            key: 'userconnected', // Note: Do not use underscore("_") in key!
-            id: 'userconnected', // Note: Do not use underscore("_") in id!
-            data: response.data,
-          });
-          navigation.navigate('main', {
-            utilisateur_id: response.data.id,
-            isProprietaire:false
+          axios({
+            method: 'POST',
+            url: ApiService.API_URL_USER_DATA,
+            data: JSON.stringify({
+              id:api.message.id
+            }),
+            headers: {
+              Accept: 'application/json',
+             'Content-Type': 'application/json'
+           }
           })
+          .then((response: {data: any}) => {
+            storage.save({
+              key: 'userconnected', // Note: Do not use underscore("_") in key!
+              id: 'userconnected', // Note: Do not use underscore("_") in id!
+              data: {
+                ...response.data,
+                role:api.message.role
+              },
+            });
+
+            Alert.alert('Succes', "Authentification reussie", [        
+              {text: 'Mon compte', onPress: () => {
+                
+                navigation.navigate('main', {
+                  utilisateur_id: response.data.id,
+                  isProprietaire:false
+                })
+      
+              }},
+            ]);
+
+            
+          })
+          .catch((error) => {
+            Alert.alert('Erreur', "Nous n'avons pas pu recuper vos informations", [        
+              {text: 'OK', onPress: () => null},
+            ]);
+           })
           
          }
 

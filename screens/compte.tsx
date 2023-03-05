@@ -17,17 +17,28 @@ import storage from '../components/api/localstorage';
 export default function Compte({navigation}: {navigation: any}) {
 
   const [proprietaire, setProprietaire] = useState<any>({});
-  storage.load({
-    key: 'userconnected', // Note: Do not use underscore("_") in key!
-    id: 'userconnected', // Note: Do not use underscore("_") in id!
-  }).then( data => {
+  const [isLoadedProprietaire, setisLoadedProprietaire] = useState(false);
+  
+  if(!isLoadedProprietaire){
+      storage.load({
+      key: 'userconnected', // Note: Do not use underscore("_") in key!
+      id: 'userconnected', // Note: Do not use underscore("_") in id!
+    }).then( data => {
 
-    setProprietaire( data.utilisateur[0] )
+    if( data.utilisateur ) setProprietaire( data.utilisateur[0] )
+    else  setProprietaire( {
+      nom : data.message.nom,
+      prenom : data.message.prenom,
+      client:true,
+      vendeur_id: ""
+    })
 
-    console.log(proprietaire);   
-  })
-  .catch(error => console.log(error)
-  );
+    setisLoadedProprietaire(true)
+      
+    })
+    .catch(error => console.log(error)
+    );
+  }
 
   return (
     <View>
@@ -43,12 +54,13 @@ export default function Compte({navigation}: {navigation: any}) {
             justifyContent: 'flex-start',
             gap: 30,
             paddingVertical: 15,
+            backgroundColor:couleurs.primary,
             paddingHorizontal: 10,
           }}>
           <Pressable onPress={() => navigation.goBack()}>
-            <ArrowLeftIcon color={couleurs.primary} />
+            <ArrowLeftIcon color={couleurs.white} />
           </Pressable>
-          <Text style={{color: couleurs.primary, fontSize: 18}}>
+          <Text style={{color: couleurs.white, fontSize: 18}}>
             Mon compte
           </Text>
         </View>
@@ -58,7 +70,7 @@ export default function Compte({navigation}: {navigation: any}) {
             backgroundColor: '#f6f6f6f6',
           }}>
           {/* Banner Image */}
-          <View style={{paddingHorizontal: 12, width: '100%'}}>
+          <View style={{paddingHorizontal: 12, marginTop:10, width: '100%'}}>
             <Image
               source={require('../assets/images/1.jpg')}
               style={{
@@ -83,24 +95,24 @@ export default function Compte({navigation}: {navigation: any}) {
             <View
               style={{
                 borderRadius: 15,
-                backgroundColor: '#fff',
+                backgroundColor: couleurs.primary,
                 padding: 14,
                 width: '100%',
                 shadowColor: 'gray',
-                height: 155,
               }}>
               <Text
                 style={{
-                  color: '#000',
+                  color: couleurs.white,
                   paddingVertical: 3,
-                  fontSize: 17,
-                  fontWeight: '700',
+                  fontSize: 16,
+                  fontWeight:'700',
+                  fontFamily: CustomFont.Poppins
                 }}>
                 {proprietaire.nom}
               </Text>
               <Text
                 style={{
-                  color: '#000',
+                  color: couleurs.white,
                   paddingVertical: 3,
                   opacity: 0.7,
                   fontSize: 15,
@@ -110,37 +122,29 @@ export default function Compte({navigation}: {navigation: any}) {
               </Text>
               <Text
                 style={{
-                  color: '#000',
+                  color: couleurs.white,
                   paddingVertical: 3,
-                  fontSize: 16,
+                  fontSize: 15,
                   fontFamily:CustomFont.Poppins,
                 }}>
                 {proprietaire.mobile}
               </Text>
-
-              <Text
-                style={{
-                  color: '#000',
-                  paddingVertical: 3,
-                  fontSize: 16,
-                  fontFamily:CustomFont.Poppins,
-                }}>
-                Identifiant de connexion : <Text style={{color:couleurs.primary}}>{proprietaire.login}</Text>
-              </Text>
-
-              
-
-              
             </View>
           </View>
 
-          <View style={{marginHorizontal: 12, marginBottom: 60, marginTop:120}}>
+          <View style={{marginHorizontal: 12, marginBottom: 60, marginTop:80}}>
             <View
               style={{
                 display: 'flex',
                 justifyContent: 'flex-start',
                 flexDirection: 'row',
                 gap: 10,
+                borderRadius: 15,
+                backgroundColor: '#fff',
+                padding: 14,
+                width: '100%',
+                alignSelf:'center',
+                shadowColor: 'gray',
               }}>
               <Text
                 style={{
@@ -158,23 +162,10 @@ export default function Compte({navigation}: {navigation: any}) {
                   fontSize: 15,
                   fontFamily:CustomFont.Poppins,
                 }}>
-                1{proprietaire.date_creation}
+                {proprietaire.date_creation}
               </Text>
             </View>
 
-            <Text
-              style={{
-                color: '#000',
-                paddingVertical: 3,
-                fontSize: 16,
-                fontFamily:CustomFont.Poppins,
-                marginVertical: 15,
-              }}>
-              Adresse
-            </Text>
-
-
-     
 
             <View
               style={{
@@ -182,17 +173,66 @@ export default function Compte({navigation}: {navigation: any}) {
                 backgroundColor: '#fff',
                 padding: 14,
                 width: '100%',
+                alignSelf:'center',
+                shadowColor: 'gray',
+                marginTop:10
               }}>
               <Text
                 style={{
                   color: '#000',
                   paddingVertical: 3,
                   fontSize: 16,
+                  fontWeight:'700',
+                  fontFamily: CustomFont.Poppins
+                }}>
+                Identifiant
+              </Text>
+
+              <Text
+                style={{
+                  color: '#000',
+                  paddingVertical: 3,
+                  fontSize: 15,
+                  fontFamily:CustomFont.Poppins,
+                  opacity: 0.8,
+                }}>
+                {proprietaire.login}
+              </Text>
+              
+            </View>
+
+            <View
+              style={{
+                borderRadius: 15,
+                backgroundColor: '#fff',
+                padding: 14,
+                width: '100%',
+                alignSelf:'center',
+                shadowColor: 'gray',
+                marginTop:10
+              }}>
+              <Text
+                style={{
+                  color: '#000',
+                  paddingVertical: 3,
+                  fontSize: 16,
+                  fontWeight:'700',
+                  fontFamily: CustomFont.Poppins
+                }}>
+                Adresse
+              </Text>
+
+              <Text
+                style={{
+                  color: '#000',
+                  paddingVertical: 3,
+                  fontSize: 15,
                   fontFamily:CustomFont.Poppins,
                   opacity: 0.8,
                 }}>
                 {proprietaire.pays}
               </Text>
+              
             </View>
 
           </View>

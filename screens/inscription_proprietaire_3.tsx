@@ -65,17 +65,9 @@ export default function InscriptionProprietaire3({
         setLoading(false)
 
         if (api.code == 'success') {
-          Alert.alert(
-            'SUCCES',
-            `Votre compte a bien ete cree, veuillez vous connecter . \nVotre login est : ${api.login}`,
-            [
-              {
-                text: 'Continuer',
-                onPress: () =>
-                  navigation.navigate('inscription_proprietaire_4', {api: api}),
-              },
-            ],
-          );
+          
+          navigation.navigate('inscription_proprietaire_4', {api: api})
+         
         }
         if (api.code == 'error') {
           Alert.alert('Erreur', api.message, [

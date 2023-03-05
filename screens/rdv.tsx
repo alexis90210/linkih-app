@@ -6,15 +6,20 @@ import {
   Pressable,
   SafeAreaView,
   ScrollView,
-  Image,
+  Slider,
 } from 'react-native';
 
 import ArrowLeftIcon from '../components/ArrowLeft';
-import { CustomFont, couleurs } from '../components/color';
+import {CustomFont, couleurs} from '../components/color';
+import {sous_categories} from '../components/api/categories';
 
-export default function Rdv({navigation, route}: {navigation: any, route:any}) {
-
-  
+export default function Rdv({
+  navigation,
+  route,
+}: {
+  navigation: any;
+  route: any;
+}) {
   return (
     <View>
       <SafeAreaView
@@ -30,105 +35,240 @@ export default function Rdv({navigation, route}: {navigation: any, route:any}) {
             gap: 30,
             paddingVertical: 10,
             paddingHorizontal: 10,
-            backgroundColor:couleurs.primary,
+            backgroundColor: couleurs.primary,
           }}>
           <Pressable onPress={() => navigation.goBack()}>
             <ArrowLeftIcon color={couleurs.white} />
           </Pressable>
-          <Text style={{color: couleurs.white, fontSize: 16, fontFamily: CustomFont.Poppins}}>
+          <Text
+            style={{
+              color: couleurs.white,
+              fontSize: 16,
+              fontFamily: CustomFont.Poppins,
+            }}>
             Mes rendez-vous
           </Text>
         </View>
+
+        {/* NAV */}
+        <View
+          style={{
+            backgroundColor: 'white',
+            width: '100%',
+            flexDirection: 'row',
+            justifyContent: 'space-around',
+            paddingHorizontal: 10,
+            height: 50,
+            alignItems: 'center',
+            marginTop: 10,
+          }}>
+          <View>
+            <Text>Passé</Text>
+          </View>
+          <View>
+            <Text>Hier</Text>
+          </View>
+          <View
+            style={{
+              backgroundColor: couleurs.primary,
+              borderRadius: 20,
+              padding: 10,
+            }}>
+            <Text style={{color: couleurs.white}}>Aujourd'hui</Text>
+          </View>
+
+          <View>
+            <Text>Démain</Text>
+          </View>
+          <View>
+            <Text>A vénir</Text>
+          </View>
+        </View>
+
+        {/* main */}
         <ScrollView
           contentInsetAdjustmentBehavior="automatic"
           style={{
             backgroundColor: '#f6f6f6f6',
           }}>
-        
-          {/* <View style={{marginHorizontal: 12, marginBottom: 60}}>
-           {route.params.rdvs.map( (row:any,key:any) => (<View>
-           <View
-              style={{
-                borderRadius: 15,
-                backgroundColor: '#fff',
-                padding: 14,
-                width: '100%',
-              }}>
-              <Text
-                style={{
-                  color: '#000',
-                  paddingVertical: 3,
-                  fontSize: 16,
-                  fontFamily: CustomFont.Poppins,
-                  opacity: 0.8,
-                }}>
-                Le grand Salon sud
-              </Text>
+          <View style={{marginHorizontal: 12, marginVertical: 10}}>
+            <View>
               <View
                 style={{
-                  display: 'flex',
-                  justifyContent: 'flex-start',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  gap: 10,
+                  borderRadius: 15,
+                  backgroundColor: '#fff',
+                  padding: 14,
+                  width: '100%',
                 }}>
                 <Text
                   style={{
                     color: '#000',
-                    paddingVertical: 3,
-                    fontSize: 15,
-                    fontFamily: CustomFont.Poppins
-                  }}>
-                  Lundi .
-                </Text>
-                <Text
-                  style={{
-                    color: couleurs.primary,
                     paddingVertical: 3,
                     fontSize: 14,
                     fontFamily: CustomFont.Poppins,
+                    opacity: 0.8,
                   }}>
-                  15:30:50
+                  {sous_categories[0]}
                 </Text>
-              </View>
-              <View
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                }}>
-                <Text
+                <View
                   style={{
-                    color: '#000',
-                    paddingVertical: 3,
-                    fontSize: 15,
-                    fontFamily: CustomFont.Poppins,
+                    display: 'flex',
+                    justifyContent: 'flex-start',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    gap: 10,
                   }}>
-                  Maquillage
-                </Text>
-
-                <Pressable onPress={() => null}>
+                  <Text
+                    style={{
+                      color: '#000',
+                      paddingVertical: 3,
+                      fontSize: 14,
+                      fontFamily: CustomFont.Poppins,
+                    }}>
+                    Lundi .
+                  </Text>
                   <Text
                     style={{
                       color: couleurs.primary,
                       paddingVertical: 3,
-                      fontSize: 15,
+                      fontSize: 13,
                       fontFamily: CustomFont.Poppins,
                     }}>
-                    Annuler
+                    15:30:50
                   </Text>
-                </Pressable>
+                </View>
+                <View
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                  }}>
+                  <Text
+                    style={{
+                      color: '#000',
+                      paddingVertical: 3,
+                      fontSize: 13,
+                      fontFamily: CustomFont.Poppins,
+                    }}>
+                    14,00 $
+                  </Text>
+
+                  <Pressable onPress={() => null}>
+                    <Text
+                      style={{
+                        color: couleurs.primary,
+                        paddingVertical: 3,
+                        fontSize: 14,
+                        fontFamily: CustomFont.Poppins,
+                      }}>
+                      Valider
+                    </Text>
+                  </Pressable>
+                </View>
+              </View>
+
+              <View
+                style={{height: 1, overflow: 'hidden', paddingHorizontal: 10}}>
+                <View
+                  style={{
+                    height: 1,
+                    borderWidth: 1,
+                    borderColor: couleurs.primary,
+                    borderStyle: 'dashed',
+                  }}></View>
               </View>
             </View>
 
-            <View style={{height:1, overflow:'hidden', paddingHorizontal:10}}>
-              <View style={{height:1,  borderWidth:1, borderColor:couleurs.primary, borderStyle:'dashed'}}></View>
+            <View style={{
+                  marginTop:10}}>
+              <View
+                style={{
+                  borderRadius: 15,
+                  backgroundColor: '#fff',
+                  padding: 14,
+                  width: '100%'
+                }}>
+                <Text
+                  style={{
+                    color: '#000',
+                    paddingVertical: 3,
+                    fontSize: 14,
+                    fontFamily: CustomFont.Poppins,
+                    opacity: 0.8,
+                  }}>
+                  {sous_categories[0]}
+                </Text>
+                <View
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'flex-start',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    gap: 10,
+                  }}>
+                  <Text
+                    style={{
+                      color: '#000',
+                      paddingVertical: 3,
+                      fontSize: 14,
+                      fontFamily: CustomFont.Poppins,
+                    }}>
+                    Lundi .
+                  </Text>
+                  <Text
+                    style={{
+                      color: couleurs.primary,
+                      paddingVertical: 3,
+                      fontSize: 13,
+                      fontFamily: CustomFont.Poppins,
+                    }}>
+                    15:30:50
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                  }}>
+                  <Text
+                    style={{
+                      color: '#000',
+                      paddingVertical: 3,
+                      fontSize: 13,
+                      fontFamily: CustomFont.Poppins,
+                    }}>
+                    14,00 $
+                  </Text>
+
+                  <Pressable onPress={() => null}>
+                    <Text
+                      style={{
+                        color: couleurs.primary,
+                        paddingVertical: 3,
+                        fontSize: 14,
+                        fontFamily: CustomFont.Poppins,
+                      }}>
+                      Valider
+                    </Text>
+                  </Pressable>
+                </View>
+              </View>
+
+              <View
+                style={{height: 1, overflow: 'hidden', paddingHorizontal: 10}}>
+                <View
+                  style={{
+                    height: 1,
+                    borderWidth: 1,
+                    borderColor: couleurs.primary,
+                    borderStyle: 'dashed',
+                  }}></View>
+              </View>
             </View>
-           </View>)) }
-
-
-          </View> */}
+          </View>
 
           {/* Welcome text */}
         </ScrollView>
