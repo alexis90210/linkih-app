@@ -32,6 +32,8 @@ import InscriptionProprietaire5 from './screens/inscription_proprietaire_5';
 import storage from './components/api/localstorage';
 import Reabonnement from './screens/reabonnement';
 import ConfirmationCompteScreen from './screens/confirmation_screen';
+import PersonnalisationReservation from './screens/personnalisation_reservation';
+import PersonnalisationReservationCreneau from './screens/personnalisation_reservation_creneau';
 
 
 const Stack = createNativeStackNavigator();
@@ -130,6 +132,42 @@ export default function App(): JSX.Element {
             headerTitleStyle: {fontSize: 18, color:couleurs.white, fontFamily: CustomFont.Poppins,},
             headerTintColor:couleurs.white,
             headerShown: true,
+            headerStyle: {
+      backgroundColor: couleurs.primary,
+    },
+            presentation: 'modal',
+            animationTypeForReplace: 'push',
+            animation: 'slide_from_right',
+          }}
+        />
+
+        {/* personnalisation_reservation */}
+        <Stack.Screen
+          name="personnalisation_reservation"
+          component={PersonnalisationReservation}
+          options={{
+            headerShadowVisible: false,
+            headerTitleStyle: {fontSize: 18, color:couleurs.white, fontFamily: CustomFont.Poppins,},
+            headerTintColor:couleurs.white,
+            headerShown: false,
+            headerStyle: {
+      backgroundColor: couleurs.primary,
+    },
+            presentation: 'modal',
+            animationTypeForReplace: 'push',
+            animation: 'slide_from_right',
+          }}
+        />
+
+        {/* personnalisation_reservation_creneau */}
+        <Stack.Screen
+          name="personnalisation_reservation_creneau"
+          component={PersonnalisationReservationCreneau}
+          options={{
+            headerShadowVisible: false,
+            headerTitleStyle: {fontSize: 18, color:couleurs.white, fontFamily: CustomFont.Poppins,},
+            headerTintColor:couleurs.white,
+            headerShown: false,
             headerStyle: {
       backgroundColor: couleurs.primary,
     },

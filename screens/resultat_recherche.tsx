@@ -21,10 +21,9 @@ import EyeIcon from '../components/eye';
 import CloseIcon from '../components/close';
 import MapIcon from '../components/map';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
-import { AirbnbRating } from 'react-native-ratings';
-import { sous_categories } from '../components/api/categories';
-import { ImageSlider } from "react-native-image-slider-banner";
-import Accordion from 'react-native-collapsible/Accordion';
+import {AirbnbRating} from 'react-native-ratings';
+import {sous_categories} from '../components/api/categories';
+import {ImageSlider} from 'react-native-image-slider-banner';
 // ResultatRechercheScreen
 export default function ResultatRechercheScreen({
   navigation,
@@ -112,34 +111,49 @@ export default function ResultatRechercheScreen({
     navigation: any;
     data: any;
   }) => {
+    const DATA = [sous_categories[0], sous_categories[1], sous_categories[2]];
 
-    const DATA = [
-      sous_categories[0],
-      sous_categories[1],
-      sous_categories[2],
-    ];
-    
-    const Item = ({title}:{title:any}) => (
+    const Item = ({title}: {title: any}) => (
       <>
-        <View style={{display:'flex', flexDirection:'row', justifyContent:'space-between'}}>
-        <Text style={{fontFamily: CustomFont.Poppins, fontSize:15, width:200}} numberOfLines={1}>{title}</Text>
-        <Text style={{fontFamily: CustomFont.Poppins, fontSize:15, color:couleurs.primary}}>{Math.random().toFixed(3)}€</Text>
-      </View>
-      <View
-                style={{height: 1, overflow: 'hidden', paddingHorizontal: 10}}>
-                <View
-                  style={{
-                    height: 1,
-                    borderWidth: 1,
-                    borderColor: couleurs.primary,
-                    borderStyle: 'dashed',
-                  }}></View>
-              </View>
+        <View
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+          }}>
+          <Text
+            style={{fontFamily: CustomFont.Poppins, fontSize: 15, width: 200}}
+            numberOfLines={1}>
+            {title}
+          </Text>
+          <Text
+            style={{
+              fontFamily: CustomFont.Poppins,
+              fontSize: 15,
+              color: couleurs.primary,
+            }}>
+            {Math.random().toFixed(3)}€
+          </Text>
+        </View>
+        <View style={{height: 1, overflow: 'hidden', paddingHorizontal: 10}}>
+          <View
+            style={{
+              height: 1,
+              borderWidth: 1,
+              borderColor: couleurs.primary,
+              borderStyle: 'dashed',
+            }}></View>
+        </View>
       </>
     );
 
     return (
-      <TouchableOpacity>
+      <TouchableOpacity
+        onPress={() =>
+          navigation.navigate('autre_etab', {
+            nomEtab: data.nom,
+          })
+        }>
         <View
           style={{
             borderRadius: 15,
@@ -164,19 +178,6 @@ export default function ResultatRechercheScreen({
               source={require('../assets/images/cover.jpg')}
               style={{width: '100%', height: 100}}
             />
-
-            <ImageSlider 
-                data={[
-                    {img: require('../assets/images/cover.jpg') },
-                    {img: require('../assets/images/cover.jpg') },
-                    {img: require('../assets/images/cover.jpg') }
-                ]}
-                autoPlay={true}
-                onItemChanged={(item) => console.log("item", item)}
-                closeIconColor={couleurs.white}
-                
-            />
-
             <View
               style={{
                 paddingHorizontal: 10,
@@ -196,7 +197,7 @@ export default function ResultatRechercheScreen({
                     color: '#000',
                     fontFamily: CustomFont.Poppins,
                   }}>
-                  testing
+                  {data.nom}
                 </Text>
 
                 <Text
@@ -234,8 +235,8 @@ export default function ResultatRechercheScreen({
                     justifyContent: 'flex-start',
                     gap: 10,
                     marginVertical: 7,
-                    borderBottomWidth:1,
-                    borderColor: 'rgba(200,200,200,.6)'
+                    borderBottomWidth: 1,
+                    borderColor: 'rgba(200,200,200,.6)',
                   }}>
                   <View
                     style={{
@@ -330,7 +331,7 @@ export default function ResultatRechercheScreen({
                   </View>
                 </View>
 
-                {DATA.map( (row:any,key) => (
+                {DATA.map((row: any, key) => (
                   <Item key={key} title={row} />
                 ))}
               </View>
@@ -427,11 +428,12 @@ export default function ResultatRechercheScreen({
               paddingHorizontal: 10,
               backgroundColor: couleurs.primary,
             }}>
-           
-
             <Text
-              style={{fontFamily:CustomFont.Poppins,color: couleurs.white,
-               fontSize: 18,}}>
+              style={{
+                fontFamily: CustomFont.Poppins,
+                color: couleurs.white,
+                fontSize: 18,
+              }}>
               Filtres
             </Text>
 
@@ -443,7 +445,10 @@ export default function ResultatRechercheScreen({
                 gap: 10,
                 alignItems: 'center',
               }}>
-              <Text style={{fontFamily:CustomFont.Poppins,color: couleurs.white}}>Effacer</Text>
+              <Text
+                style={{fontFamily: CustomFont.Poppins, color: couleurs.white}}>
+                Effacer
+              </Text>
               <CloseIcon color={couleurs.white} />
             </TouchableOpacity>
           </View>
@@ -462,7 +467,12 @@ export default function ResultatRechercheScreen({
                 gap: 10,
                 alignItems: 'flex-start',
               }}>
-              <Text style={{ fontWeight:'700', fontFamily:CustomFont.Poppins, color: couleurs.dark}}>
+              <Text
+                style={{
+                  fontWeight: '700',
+                  fontFamily: CustomFont.Poppins,
+                  color: couleurs.dark,
+                }}>
                 Trier par
               </Text>
 
@@ -473,7 +483,13 @@ export default function ResultatRechercheScreen({
                   flexDirection: 'row',
                   width: '100%',
                 }}>
-                <Text style={{fontFamily:CustomFont.Poppins,color: couleurs.dark}}>Les plus proches</Text>
+                <Text
+                  style={{
+                    fontFamily: CustomFont.Poppins,
+                    color: couleurs.dark,
+                  }}>
+                  Les plus proches
+                </Text>
                 <BouncyCheckbox
                   size={20}
                   fillColor={couleurs.primary}
@@ -492,7 +508,13 @@ export default function ResultatRechercheScreen({
                   flexDirection: 'row',
                   width: '100%',
                 }}>
-                <Text style={{fontFamily:CustomFont.Poppins,color: couleurs.dark}}>Les mieux notes</Text>
+                <Text
+                  style={{
+                    fontFamily: CustomFont.Poppins,
+                    color: couleurs.dark,
+                  }}>
+                  Les mieux notes
+                </Text>
                 <BouncyCheckbox
                   size={20}
                   fillColor={couleurs.primary}
@@ -505,38 +527,57 @@ export default function ResultatRechercheScreen({
               </View>
 
               {/* SEPARATEUR */}
-              <View style={{height:1, overflow:'hidden', width:'100%'}}>
-                <View style={{height:1,  borderWidth:1, borderColor:couleurs.primary, borderStyle:'dashed'}}></View>
+              <View style={{height: 1, overflow: 'hidden', width: '100%'}}>
+                <View
+                  style={{
+                    height: 1,
+                    borderWidth: 1,
+                    borderColor: couleurs.primary,
+                    borderStyle: 'dashed',
+                  }}></View>
               </View>
               {/* SEPARATEUR */}
 
-              <Text style={{fontFamily:CustomFont.Poppins, fontWeight:'700', color: couleurs.dark}}>
+              <Text
+                style={{
+                  fontFamily: CustomFont.Poppins,
+                  fontWeight: '700',
+                  color: couleurs.dark,
+                }}>
                 A moins de : 10km
               </Text>
 
-               {/* SEPARATEUR */}
-               <View style={{height:1, overflow:'hidden', width:'100%'}}>
-                <View style={{height:1,  borderWidth:1, borderColor:couleurs.primary, borderStyle:'dashed'}}></View>
+              {/* SEPARATEUR */}
+              <View style={{height: 1, overflow: 'hidden', width: '100%'}}>
+                <View
+                  style={{
+                    height: 1,
+                    borderWidth: 1,
+                    borderColor: couleurs.primary,
+                    borderStyle: 'dashed',
+                  }}></View>
               </View>
               {/* SEPARATEUR */}
 
-
-              <Text style={{ fontWeight:'700', fontFamily:CustomFont.Poppins, color: couleurs.dark}}>
+              <Text
+                style={{
+                  fontWeight: '700',
+                  fontFamily: CustomFont.Poppins,
+                  color: couleurs.dark,
+                }}>
                 Note minimum
               </Text>
 
               <AirbnbRating
-                    reviewSize={10}
-                    reviewColor={couleurs.primary}
-                    showRating={false}
-                    count={10}
-                    reviews={['Terrible', 'Bad', 'Good', 'Very Good']}
-                    onFinishRating={rate => console.log(rate)}
-                    defaultRating={5}
-                    size={14}
-                  />
-
-
+                reviewSize={10}
+                reviewColor={couleurs.primary}
+                showRating={false}
+                count={10}
+                reviews={['Terrible', 'Bad', 'Good', 'Very Good']}
+                onFinishRating={rate => console.log(rate)}
+                defaultRating={5}
+                size={14}
+              />
 
               <View
                 style={{
@@ -546,10 +587,17 @@ export default function ResultatRechercheScreen({
                   width: '100%',
                 }}>
                 <View>
-                <Text style={{ fontWeight:'700', fontFamily:CustomFont.Poppins, color: couleurs.dark}}>
-                Nouveau salon
-              </Text>
-              <Text style={{color: couleurs.primary}}>Eablissement, Restaurant, ...</Text>
+                  <Text
+                    style={{
+                      fontWeight: '700',
+                      fontFamily: CustomFont.Poppins,
+                      color: couleurs.dark,
+                    }}>
+                    Nouveau salon
+                  </Text>
+                  <Text style={{color: couleurs.primary}}>
+                    Eablissement, Restaurant, ...
+                  </Text>
                 </View>
                 <BouncyCheckbox
                   size={20}
@@ -561,7 +609,6 @@ export default function ResultatRechercheScreen({
                   onPress={(isChecked: boolean) => {}}
                 />
               </View>
-
 
               <View
                 style={{
