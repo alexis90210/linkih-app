@@ -161,9 +161,6 @@ export default function Map({
                   borderColor:couleurs.secondary,
                   alignSelf:'center'                  
                 }}></View>
-
-
-
                 </View>
               </MapboxGL.PointAnnotation>
 
