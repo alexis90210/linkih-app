@@ -28,18 +28,6 @@ import ArrowLeftIcon from '../components/ArrowLeft';
 
 MapboxGL.setAccessToken(ApiService.MAPBOX_GL_TOKEN);
 
-
-const shape = {
-  'type': 'FeatureCollection',
-  'features': [{
-      'type': 'Feature',
-      'geometry': {
-          'type': 'Point',
-          'coordinates': [76.343981, 10.279141]
-      }
-  }]
-};
-
 export default function Map({
   navigation,
   route,
@@ -124,7 +112,9 @@ export default function Map({
       <View style={styles.page}>
         <View style={styles.container}>
           <MapboxGL.MapView
-            style={styles.map}
+            style={{
+              flex: 1,
+            }}
             styleJSON={JSON.stringify(defaultStyle)}
             zoomEnabled={true}
             pitchEnabled={true}
@@ -134,20 +124,49 @@ export default function Map({
             rotateEnabled={false}
             scrollEnabled={true}
             >          
-            <MapboxGL.UserLocation visible={true} />
-
+          
              <MapboxGL.Camera
               zoomLevel={11}
-              centerCoordinate={
-                etablissements.length > 0
-                  ? [
-                      parseFloat(etablissements[0].longitude),
-                      parseFloat(etablissements[0].latitude),
-                    ]
-                  : [0, 0]
-              }
+              centerCoordinate={[
+                parseFloat(UserPosition.longitude),
+                parseFloat(UserPosition.latitude),
+              ]}
               followUserLocation={true}
-            />
+            /> 
+
+                <MapboxGL.PointAnnotation
+                key={'userPosition'}
+                id={'marker'}
+                coordinate={[
+                  parseFloat(UserPosition.longitude),
+                  parseFloat(UserPosition.latitude),
+                ]}>
+                <View style={{
+                  width:150,
+                  height:150,
+                  borderRadius:100,
+                  backgroundColor: 'rgba(0,200, 0, .4)',
+                  display:'flex',
+                  flexDirection:'row',
+                  justifyContent:'center'                
+                }}>
+
+                <View style={{
+                  width:20,
+                  height:20,
+                  borderRadius:100,
+                  backgroundColor: couleurs.primary,
+                  borderWidth:3,
+                  borderStyle:'solid',
+                  borderColor:couleurs.secondary,
+                  alignSelf:'center'                  
+                }}></View>
+
+
+
+                </View>
+              </MapboxGL.PointAnnotation>
+
 
             {etablissements.map((marker: any, index: any) => (
               <MapboxGL.PointAnnotation
@@ -657,13 +676,3 @@ const styles = StyleSheet.create({
   },
 });
 
-const tyles =  StyleSheet.create({
-  circles: {
-    visibility: 'visible',
-    circleRadius: 40,
-    circleColor: '#A9A9A9',
-    circleStrokeColor: '#A9A9A9',
-    circleStrokeWidth: 5,
-    circleOpacity: 0.0
-  },
-});

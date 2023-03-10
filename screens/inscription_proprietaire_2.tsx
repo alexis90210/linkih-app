@@ -461,7 +461,7 @@ export default function InscriptionProprietaireScreen2({
                   surfaceView={true}
                   rotateEnabled={true}
                   scrollEnabled={true}>
-                  <MapboxGL.UserLocation />
+                  {/* <MapboxGL.UserLocation /> */}
                   <MapboxGL.Camera
                     zoomLevel={11}
                     centerCoordinate={startCords}
