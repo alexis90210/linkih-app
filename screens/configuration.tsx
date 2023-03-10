@@ -12,192 +12,63 @@ import {
   Image,
   FlatList,
   Alert,
+  Pressable,
 } from 'react-native';
 
 import SearchIcon from '../components/search';
 import LanguageIcon from '../components/language';
 import CloseIcon from '../components/close';
 import countries from '../components/countries.json';
-import { CustomFont, couleurs } from '../components/color';
+import {CustomFont, couleurs} from '../components/color';
 import storage from '../components/api/localstorage';
+import ArrowLeftIcon from '../components/ArrowLeft';
+import ArrowRightIcon from '../components/ArrowRight';
 
 // ConfigurationScreen
 export default function ConfigurationScreen({navigation}: {navigation: any}) {
   // countries
-  const [modalVisibleCountries, setModalVisibleCountries] = useState(false);
   const [currentCountry, setCurrentCountry] = useState({name: ''});
-  const [filteredCountries, setFilteredCountries] = useState(countries);
-  const [searchText, setSearchText] = useState('');
 
-  const handleOpenModalCountries = () => {
-    setModalVisibleCountries(true);
-  };
-
-  const handleCloseModalCountries = () => {
-    setModalVisibleCountries(false);
-  };
+  const [Stepper, setStepper] = useState(0);
 
   const selectCountry = (item: any) => {
     setCurrentCountry(item);
-    setSearchText(item.name);
-    handleCloseModalCountries();
+    setStepper(1)
   };
 
-  const filterListCountries = (input: any) => {
-    setSearchText(input);
-
-    if (searchText != '') {
-      var filtered = countries.filter((country, key) => {
-        return country.name
-          .toString()
-          .toLowerCase()
-          .includes(searchText.toString().toLowerCase());
-      });
-      setFilteredCountries(filtered);
-    } else {
-      setFilteredCountries(countries);
-    }
-  };
-
-  const CountryList = () => {
-    const renderItem = ({item}: {item: any}) => (
-      <View>
-        <TouchableOpacity onPress={() => selectCountry(item)}>
-          <View
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
-              marginVertical: 10,
-              paddingHorizontal: 18,
-              gap: 10,
-            }}>
-            {/* <WorldIcon /> */}
-            <Text> {item.emoji}</Text>
-            <Text style={{color: 'rgba(100,100,100,1)'}}>{item.name}</Text>
-          </View>
-        </TouchableOpacity>
-        <View style={{height: 1, overflow: 'hidden', paddingHorizontal: 10}}>
-          <View
-            style={{
-              height: 1,
-              borderWidth: 1,
-              borderColor: couleurs.primary,
-              borderStyle: 'dashed',
-            }}></View>
-        </View>
-      </View>
-    );
-
-    return (
-      <FlatList
-        data={filteredCountries}
-        renderItem={renderItem}
-        keyExtractor={(item, index) => index.toString()}
-      />
-    );
-  };
 
   // Languages
-  const [modalVisibleLanguages, setModalVisibleLanguages] = useState(false);
   const [currentLanguage, setCurrentLanguage] = useState({name: ''});
 
   const langages = [
-    {name: 'Francais', flag: 'https://www.countryflags.io/AF/flat/64.png'},
-    {name: 'Anglais', flag: 'https://www.countryflags.io/AL/flat/64.png'}
+    {name: 'Francais', flag:  "🇫🇷"},
+    {name: 'Anglais', flag: "🇺🇸"},
     // add more langages here
   ];
 
-  const handleOpenModalLanguages = () => {
-    setModalVisibleLanguages(true);
-  };
-
-  const handleCloseModalLanguages = () => {
-    setModalVisibleLanguages(false);
-  };
 
   const selectLanguage = (item: any) => {
     setCurrentLanguage(item);
-    handleCloseModalLanguages();
+    saveConfiguration()
   };
-
-  const LanguageList = () => {
-    const renderItem = ({item}: {item: any}) => (
-      <View>
-        <TouchableOpacity onPress={() => selectLanguage(item)}>
-          <View
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
-              marginVertical: 10,
-              gap: 10,
-            }}>
-            <LanguageIcon />
-            <Text style={{color: 'rgba(100,100,100,1)'}}>{item.name}</Text>
-          </View>
-        </TouchableOpacity>
-
-        <View style={{height: 1, overflow: 'hidden', paddingHorizontal: 10}}>
-          <View
-            style={{
-              height: 1,
-              borderWidth: 1,
-              borderColor: couleurs.primary,
-              borderStyle: 'dashed',
-            }}></View>
-        </View>
-      </View>
-    );
-
-    return (
-      <FlatList
-        data={langages}
-        renderItem={renderItem}
-        keyExtractor={(item, index) => index.toString()}
-      />
-    );
-  };
-
-
 
   // get and save configuration
 
   const saveConfiguration = () => {
 
-    if ( !currentCountry.name ){
-      //
-      Alert.alert('Erreur', 'Veuillez selectionner un pays', [        
-        {text: 'OK', onPress: () => console.log('OK Pressed')},
-      ]);
+    storage.save({
+      key: 'configuration', // Note: Do not use underscore("_") in key!
+      id: 'configuration', // Note: Do not use underscore("_") in id!
+      data: {
+        pays: currentCountry,
+        langage: currentLanguage,
+      },
+    });
 
-      return
-    }
-    if ( !currentLanguage.name ) {
-      //
-      Alert.alert('Erreur', 'Veuillez selectionner une langue', [        
-        {text: 'OK', onPress: () => console.log('OK Pressed')},
-      ]);
+    navigation.navigate('identification');
+  };
 
-
-      return
-    }
-
-      storage.save({
-        key: 'configuration', // Note: Do not use underscore("_") in key!
-        id: 'configuration', // Note: Do not use underscore("_") in id!
-        data: {
-          pays: currentCountry,
-          langage: currentLanguage
-    
-        },
-      });
-  
-      navigation.navigate('identification')
-
-         
-    
-  } 
+  // saveConfiguration()
 
   return (
     <>
@@ -207,8 +78,31 @@ export default function ConfigurationScreen({navigation}: {navigation: any}) {
           height: '100%',
           backgroundColor: '#fff',
         }}>
+        <View
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'flex-start',
+            gap: 30,
+            paddingVertical: 10,
+            paddingHorizontal: 10,
+            backgroundColor: couleurs.primary,
+          }}>
+          <Pressable onPress={() => Stepper > 0 ? setStepper(Stepper-1): navigation.goBack()}>
+            <ArrowLeftIcon color={couleurs.white} />
+          </Pressable>
+          <Text
+            style={{
+              color: couleurs.white,
+              fontSize: 16,
+              fontFamily: CustomFont.Poppins,
+            }}>
+            {Stepper == 0 && 'Choisir un pays'}
+            {Stepper == 1 && 'Choisir une langue'}
+          </Text>
+        </View>
+
         <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
           style={{
             backgroundColor: '#f6f6f6f6',
           }}>
@@ -218,313 +112,90 @@ export default function ConfigurationScreen({navigation}: {navigation: any}) {
               flexDirection: 'column',
               justifyContent: 'center',
               alignItems: 'center',
-             
             }}>
-       
-            <View
-              style={{
-                marginVertical: 20,
-                backgroundColor: '#fff',
-                borderRadius: 11,
-                padding: 20,
-                width: '90%',
-                marginTop: 20,
-              }}>
-              <View
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'flex-start',
-                  alignItems: 'flex-start',
-                  paddingTop: 20,
-                }}>
-                <Text
-                  style={{
-                    textAlign: 'center',
-                    color: '#000',
-                    fontSize: 15,
-                    height: 20,
-                    opacity: 0.85,
-                    marginBottom: 10,
-                    fontFamily:CustomFont.Poppins
-                  }}>
-                  Pays/Region
-                </Text>
-                <TextInput
-                  onPressIn={handleOpenModalCountries}
-                  value={currentCountry.name}
-                  placeholderTextColor={'rgba(100,100,100,.7)'}
-                  placeholder="Choisir un pays"
-                  style={{
-                    backgroundColor: 'transparent',
-                    borderBottomWidth: 1,
-                    borderBottomColor: '#E2C6BB',
-                    color: couleurs.primary,
-                    width: '100%',
-                    fontWeight: '600',
-                    padding: 10,
-                    fontFamily:CustomFont.Poppins
-                  }}></TextInput>
-              </View>
-
-              <View
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'flex-start',
-                  alignItems: 'flex-start',
-                  marginTop: 20,
-                  marginBottom: 50,
-                }}>
-                <Text
-                  style={{
-                    textAlign: 'center',
-                    color: '#000',
-                    fontSize: 15,
-                    height: 20,
-                    opacity: 0.85,
-                    marginBottom: 10,
-                    fontFamily:CustomFont.Poppins
-                  }}>
-                  Langue
-                </Text>
-                <TextInput
-                  onPressIn={handleOpenModalLanguages}
-                  value={currentLanguage.name}
-                  placeholderTextColor={'rgba(100,100,100,.7)'}
-                  placeholder="Choisir une langue"
-                  style={{
-                    backgroundColor: 'transparent',
-                    borderBottomWidth: 1,
-                    borderBottomColor: '#E2C6BB',
-                    color: couleurs.primary,
-                    fontWeight: '600',
-                    width: '100%',
-                    padding: 10,
-                    fontFamily:CustomFont.Poppins
-                  }}></TextInput>
-
-                  
-              </View>
-
-              <View
-                style={{
-                  alignItems: 'center',
-                  backgroundColor: couleurs.primary,
-                  borderRadius: 30,
-                  marginBottom: 30,
-                  display:'flex',
-                  flexDirection:'row',
-                  justifyContent:'center',
-                  width:'100%'
-                }}>
-                <TouchableOpacity
-                  
-                  style={{
-                    paddingHorizontal: 10,
-                    display:'flex',
-                    flexDirection:'row',
-                    alignItems:'center',
-                    gap:10
-                  }}
-                  onPress={() => saveConfiguration()}>
-                   
-                  <Text
-                    style={{
-                      textAlign: 'center',
-                      padding: 10,
-                      paddingHorizontal: 20,
-                      fontSize: 15,
-                      fontWeight: '500',
-                      color: couleurs.secondary,
-                      fontFamily:CustomFont.Poppins
-                    }}>
-
-                    suivant 
-                  </Text>
-                  {/* <ArrowRightIcon color={couleurs.secondary}/> */}
-                </TouchableOpacity>
-              </View>
-
-              
-
-              {/* MODAL PAYS */}
-
-              <Modal visible={modalVisibleCountries} transparent={true}>
-                <View
-                  style={{
-                    flex: 1,
-                    backgroundColor: 'rgba(0, 0, 0, 0.3)',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}>
-                  <View
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      backgroundColor: '#fff',
-                      width: '90%',
-                      borderRadius: 15,
-                      paddingHorizontal: 10,
-                    }}>
-                    <Text
-                      style={{
-                        padding: 15,
-                        fontSize: 15,
-                        paddingTop: 30,
-                        paddingBottom: 20,
-                        fontWeight: 'bold',
-                        color: 'rgba(0,0,0,.6)',
-                        fontFamily:CustomFont.Poppins
-                      }}>
-                      Selectionnez un pays/ region
-                    </Text>
-                    <View style={{width: '100%', paddingHorizontal: 10}}>
-                      <View
-                        style={[
-                          {
-                            width: '100%',
-                            height: 45,
-                            paddingHorizontal: 20,
-                            backgroundColor: 'rgba(100,100,100,.2)',
-                            borderRadius: 50,
-                            display: 'flex',
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            gap: 10,
-                            position: 'absolute',
-                            marginBottom: 20,
-                          },
-                        ]}>
-                        <SearchIcon color={couleurs.primary} />
-                        <TextInput
-                          value={searchText}
-                          onChangeText={text => filterListCountries(text)}
-                          placeholderTextColor={'rgba(100,100,100,.7)'}
-                          placeholder="Recherchez..."
-                          
-                          style={{
-                            backgroundColor: 'transparent',
-                            borderRadius: 50,
-                            flex: 1,
-                            color:couleurs.primary,
-                            fontFamily:CustomFont.Poppins
-                          }}></TextInput>
-                      </View>
-
-                      <View style={{height: 300, marginTop: 55}}>
-                        <CountryList />
-                      </View>
-
-                      <View style={{padding: 15}}>
-                        <TouchableOpacity
-                          onPress={handleCloseModalCountries}
+            {Stepper == 0 && (
+              <View style={{width: '100%',
+              marginTop:2,}}>
+                {countries.map((item: any, index: any) => (
+                  <View key={index}>
+                    <TouchableOpacity onPress={() => selectCountry(item)}>
+                      <View style={{
+                          display: 'flex',
+                          flexDirection: 'row',
+                          alignItems: 'space-between',
+                          paddingVertical: 16,
+                          gap: 10,
+                          width:'100%',
+                          paddingHorizontal:20
+                        }}>
+                        <View
                           style={{
                             display: 'flex',
                             flexDirection: 'row',
                             alignItems: 'center',
-                            gap: 10,
-                            justifyContent: 'flex-start',
+                            gap: 10,    
+                            flex:1                      
                           }}>
-                          <CloseIcon color={couleurs.primary} />
-                          <Text
-                            style={{
-                              color: 'rgba(100,100,100,.8)',
-                              marginVertical: 10,
-                              fontFamily:CustomFont.Poppins
-                            }}>
-                            Quitter
+                          {/* <WorldIcon /> */}
+                          <Text> {item.emoji}</Text>
+                          <Text style={{color: 'rgba(100,100,100,1)'}}>
+                            {item.name}
                           </Text>
-                        </TouchableOpacity>
+                        </View>
+                        <ArrowRightIcon color={'#ddd'}/>
                       </View>
+                    </TouchableOpacity>
+                    <View
+                      style={{
+                        height: 1,
+                        overflow: 'hidden',
+                        paddingHorizontal: 10,
+                      }}>
+                      <View
+                        style={{
+                          height: 2,
+                          borderWidth: 1,
+                          borderColor: '#ddd',
+                          borderStyle: 'solid',
+                        }}></View>
                     </View>
                   </View>
-                </View>
-              </Modal>
+                ))}
+              </View>
+            )}
 
-              {/* MODAL LANGAGE */}
-              <Modal visible={modalVisibleLanguages} transparent={true}>
+            {Stepper == 1 && (
+              langages.map( (item:any, index:any) => (
+                <View key={index} style={{width:'100%'}}>
+              <TouchableOpacity onPress={() => selectLanguage(item)}>
                 <View
                   style={{
-                    flex: 1,
-                    backgroundColor: 'rgba(0, 0, 0, 0.3)',
-                    justifyContent: 'center',
+                    display: 'flex',
+                    flexDirection: 'row',
                     alignItems: 'center',
+                    width:'100%',                   
+                    paddingVertical: 16,
+                paddingHorizontal:20,
+                marginTop:2,
+                    gap: 10,
                   }}>
-                  <View
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      backgroundColor: '#fff',
-                      width: '90%',
-                      borderRadius: 15,
-                      padding: 10,
-                    }}>
-                    <Text
-                      style={{
-                        padding: 15,
-                        fontSize: 15,
-                        fontWeight: 'bold',
-                        color: 'rgba(0,0,0,.6)',
-                        fontFamily:CustomFont.Poppins
-                      }}>
-                      Selectionnez une langue
-                    </Text>
-                    <View style={{width: '100%', paddingHorizontal: 10}}>
-                      
-
-                      <LanguageList />
-
-                      <View style={{padding: 0, paddingVertical: 30}}>
-                        {/* <TouchableOpacity onPress={handleCloseModalLanguages} style={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      gap: 10,
-                      justifyContent: 'flex-start',
-                    }}>
-                    <CloseIcon color={couleurs.primary} />
-                          <Text style={{color: 'rgba(100,100,100,.8)',
-                    fontFamily:CustomFont.Poppins}}>
-                            Quitter
-                          </Text>
-                        </TouchableOpacity> */}
-                      </View>
-                    </View>
-                  </View>
+                  <Text style={{color: 'rgba(100,100,100,1)'}}>{item.flag}</Text>
+                  <Text style={{color: 'rgba(100,100,100,1)'}}>{item.name}</Text>
                 </View>
-              </Modal>
+              </TouchableOpacity>
+      
+              <View style={{height: 1, overflow: 'hidden', paddingHorizontal: 10}}>
+                <View
+                  style={{
+                    height: 2,
+                    borderWidth: 1,
+                    borderColor: '#ddd',
+                    borderStyle: 'solid',
+                  }}></View>
+              </View>
             </View>
-
-            <View
-            style={{
-              alignItems: 'center',
-              backgroundColor: 'transparent',
-              borderRadius: 30,
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'center',
-              marginVertical: 10,
-              marginTop:60
-            }}>
-            <TouchableOpacity
-              
-              style={{
-                paddingHorizontal: 10,
-              }}
-              onPress={() => null}>
-              <Text
-                style={{
-                  textAlign: 'center',
-                  fontSize: 15,
-                  fontWeight: '500',
-                  color: couleurs.primary,
-                  fontFamily: CustomFont.Poppins,
-                }}>
-                Avez-vous besoin d'aide ?
-              </Text>
-            </TouchableOpacity>
-          </View>
+              ))
+            )}
           </View>
         </ScrollView>
       </SafeAreaView>

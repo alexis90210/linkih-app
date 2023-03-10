@@ -350,11 +350,11 @@ export default function InscriptionProprietaireScreen2({
                       marginVertical: 8,
                       fontFamily: CustomFont.Poppins,
                     }}>
-                    SCIEM entreprise
+                    SIRET entreprise
                   </Text>
                   <TextInput
                     placeholderTextColor={'rgba(100,100,100,.7)'}
-                    placeholder="Entrez le SCIEM entreprise"
+                    placeholder="Entrez le SIRET entreprise"
                     defaultValue={sciem}
                     onChangeText={input => (
                       (etablissement.sciem = input)
@@ -386,11 +386,11 @@ export default function InscriptionProprietaireScreen2({
                       marginVertical: 8,
                       fontFamily: CustomFont.Poppins,
                     }}>
-                    Nom & prenom du responsable
+                    Nom(s) & prenom(s)
                   </Text>
                   <TextInput
                     placeholderTextColor={'rgba(100,100,100,.7)'}
-                    placeholder="Entrez le Nom & prenom du responsable"
+                    placeholder="Entrez le Nom(s) & prenom(s)"
                     defaultValue={nom_prenom_responsable}
                     onChangeText={input => (
                       (etablissement.nom_prenom_responsable = input)
@@ -819,7 +819,7 @@ export default function InscriptionProprietaireScreen2({
           {/*  Lien reseaux sociaux */}
           {stepper == 4 && (
             <View>
-              <View style={{paddingVertical: 10}}>
+              <View style={{padding: 10}}>
                 <View
                   style={{
                     backgroundColor: '#fff',
@@ -840,7 +840,7 @@ export default function InscriptionProprietaireScreen2({
                     defaultValue={social.facebook}
                     onChangeText={input => (social.facebook = input)}
                     placeholderTextColor={'rgba(100,100,100,.7)'}
-                    placeholder="Entrez votre lien Facebook"></TextInput>
+                    placeholder="Entrez le lien de votre page Facebook"></TextInput>
                 </View>
 
                 <View
@@ -862,7 +862,7 @@ export default function InscriptionProprietaireScreen2({
                     defaultValue={social.twitter}
                     onChangeText={input => (social.twitter = input)}
                     placeholderTextColor={'rgba(100,100,100,.7)'}
-                    placeholder="Entrez votre lien Twitter"></TextInput>
+                    placeholder="Entrez le lien de votre compte Twitter"></TextInput>
                 </View>
 
                 <View
@@ -884,7 +884,7 @@ export default function InscriptionProprietaireScreen2({
                     defaultValue={social.linkedin}
                     onChangeText={input => (social.linkedin = input)}
                     placeholderTextColor={'rgba(100,100,100,.7)'}
-                    placeholder="Entrez votre lien LinkedIn"></TextInput>
+                    placeholder="Entrez le lien de votre compte LinkedIn"></TextInput>
                 </View>
 
                 <View
@@ -906,7 +906,7 @@ export default function InscriptionProprietaireScreen2({
                     defaultValue={social.facebook}
                     onChangeText={input => (social.facebook = input)}
                     placeholderTextColor={'rgba(100,100,100,.7)'}
-                    placeholder="Entrez votre lien instagram"></TextInput>
+                    placeholder="Entrez  le lien de votre compte instagram"></TextInput>
                 </View>
 
                 <View
@@ -928,7 +928,7 @@ export default function InscriptionProprietaireScreen2({
                     defaultValue={social.facebook}
                     onChangeText={input => (social.facebook = input)}
                     placeholderTextColor={'rgba(100,100,100,.7)'}
-                    placeholder="Entrez votre lien Youtube"></TextInput>
+                    placeholder="Entrez le lien de votre compte Youtube"></TextInput>
                 </View>
 
                 <View
@@ -950,7 +950,7 @@ export default function InscriptionProprietaireScreen2({
                     defaultValue={social.tiktok}
                     onChangeText={input => (social.tiktok = input)}
                     placeholderTextColor={'rgba(100,100,100,.7)'}
-                    placeholder="Entrez votre lien tik-tok"></TextInput>
+                    placeholder="Entrez  le lien de votre compte tik-tok"></TextInput>
                 </View>
               </View>
             </View>

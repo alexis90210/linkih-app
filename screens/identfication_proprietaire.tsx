@@ -12,6 +12,8 @@ import {
   Linking,
   Alert,
   TouchableOpacity,
+  ActivityIndicator,
+  Modal,
 } from 'react-native';
 
 import EyeSlashIcon from '../components/eye_slash';
@@ -20,6 +22,7 @@ import { CustomFont, couleurs } from '../components/color';
 import axios from 'axios';
 import ApiService from '../components/api/service';
 import storage from '../components/api/localstorage';
+import LoadingModal from '../components/Loading';
 
 // IdentificationProprietaireScreen
 export default function IdentificationProprietaireScreen({
@@ -36,6 +39,8 @@ export default function IdentificationProprietaireScreen({
    if ( !isVisible )  setVisible(true);
   }
 
+  const [isProccessing, setIsProccessing] = useState(false)
+
   var data = {
     identifiant: '',
     password: '',
@@ -49,18 +54,21 @@ export default function IdentificationProprietaireScreen({
     console.log(data);
 
     if (!data.identifiant ) {
-      Alert.alert('Erreur', 'Veuillez entrer un identifiant', [        
+      Alert.alert('', 'Veuillez entrer un identifiant', [        
         {text: 'OK', onPress: () => null},
       ]);
       return;
     }
 
     if (!data.password) {
-      Alert.alert('Erreur', 'Veuillez entrer un mot de passe valide', [        
+      Alert.alert('', 'Veuillez entrer un mot de passe valide', [        
         {text: 'OK', onPress: () => null},
       ]);
       return;
     }
+
+    setIsProccessing(true)
+
 
     axios({
       method: 'POST',
@@ -78,6 +86,8 @@ export default function IdentificationProprietaireScreen({
       .then((response: {data: any}) => {   
         
          var api = response.data;
+
+         
 
          if ( api.code == "success") {
 
@@ -110,6 +120,9 @@ export default function IdentificationProprietaireScreen({
            }
           })
           .then((response: {data: any}) => {
+
+            setIsProccessing(false)
+
             storage.save({
               key: 'userconnected', // Note: Do not use underscore("_") in key!
               id: 'userconnected', // Note: Do not use underscore("_") in id!
@@ -119,20 +132,16 @@ export default function IdentificationProprietaireScreen({
               },
             });
 
-            Alert.alert('Succes', "Authentification reussie", [        
-              {text: 'Mon compte', onPress: () => {
-                
-                navigation.navigate('MonEtablissement', {
-                  vendeur_id: response.data.etablissement.id,
-                  isProprietaire:true
-                })
-              }},
-            ]);
+            navigation.navigate('MonEtablissement', {
+              vendeur_id: response.data.etablissement.id,
+              isProprietaire:true
+            })
 
             
           })
           .catch((error) => {
-            Alert.alert('Erreur', "Nous n'avons pas pu recuper vos informations", [        
+            setIsProccessing(false)
+            Alert.alert('', "Nous n'avons pas pu recuper vos informations", [        
               {text: 'OK', onPress: () => null},
             ]);
            })
@@ -140,17 +149,21 @@ export default function IdentificationProprietaireScreen({
          }
 
          if ( api.code == "error") {
-          Alert.alert('Erreur', api.message, [        
-            {text: 'Confirmer maintenant', onPress: () => navigation.navigate('confirmation_screen',{
-              vendeur_id : api.vendeur_id
-            })},
-          ]);
+          setIsProccessing(false)
+          // Alert.alert('', api.message, [        
+          //   {text: 'Confirmer maintenant', onPress: () => navigation.navigate('confirmation_screen',{
+          //     vendeur_id : api.vendeur_id
+          //   })},
+          // ]);
+
+          Alert.alert('', api.message);
          }
 
       })
       .catch((error: any) => {
+        setIsProccessing(false)
        console.log(error);
-       Alert.alert('Erreur', error, [        
+       Alert.alert('', error, [        
         {text: 'OK', onPress: () => null},
       ]);
        

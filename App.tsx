@@ -83,7 +83,7 @@ export default function App(): JSX.Element {
             title:'Configuration',
             headerTitleStyle: {fontSize: 18, color:couleurs.white, fontFamily: CustomFont.Poppins,},
             headerTintColor:couleurs.white,
-            headerShown: true,
+            headerShown: false,
             headerStyle: {
       backgroundColor: couleurs.primary,
     },

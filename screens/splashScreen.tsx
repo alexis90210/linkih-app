@@ -17,14 +17,8 @@ import { CustomFont, couleurs } from '../components/color';
 // SplashScreen
 export default function SplashScreen({navigation}: {navigation: any}) {
   return (
-    <>
-      <SafeAreaView
-        style={{
-          width: '100%',
-          height: '100%',
-          backgroundColor: couleurs.dark,
-        }}>
-        <ScrollView contentInsetAdjustmentBehavior="automatic">
+
+        <ScrollView contentInsetAdjustmentBehavior="automatic" style={{backgroundColor:couleurs.dark}}>
           <View
             style={{
               flex:1,
@@ -93,7 +87,6 @@ export default function SplashScreen({navigation}: {navigation: any}) {
             </View>
           </View>
         </ScrollView>
-      </SafeAreaView>
-    </>
+
   );
 }

@@ -1727,10 +1727,9 @@
   dependencies:
     "nanoid" "^3.1.23"
 
-"@rnmapbox/maps@^10.0.0-beta.70":
-  "integrity" "sha512-AEBzKBCdPB5IgbAURuh/Qemfoc5nbe/fPmx4iK42Ck4fvWF/VNDJoQ//kKsjZCScJQK+c7/iW6WwsumK5HI/Rg=="
-  "resolved" "https://registry.npmjs.org/@rnmapbox/maps/-/maps-10.0.0-beta.70.tgz"
-  "version" "10.0.0-beta.70"
+"@rnmapbox/maps@github:rnmapbox/maps#main":
+  "resolved" "git+ssh://git@github.com/rnmapbox/maps.git#1f24127b917a9aab2b64f7e996ce5f89256bbd16"
+  "version" "10.0.0-beta.75"
   dependencies:
     "@mapbox/geo-viewport" ">=0.4.0"
     "@turf/along" "6.5.0"
@@ -1777,6 +1776,13 @@
   "version" "10.0.2"
   dependencies:
     "@sinonjs/commons" "^2.0.0"
+
+"@stripe/stripe-terminal-react-native@^0.0.1-beta.11":
+  "integrity" "sha512-/8iHvqfmC/iffh9vgfeZLbLl+qSNb7u0dM2hsWQG7O7Wd63DtY4eiOIoXan+bPl3mHOoLN6opHLF+qFNBOn2OQ=="
+  "resolved" "https://registry.npmjs.org/@stripe/stripe-terminal-react-native/-/stripe-terminal-react-native-0.0.1-beta.11.tgz"
+  "version" "0.0.1-beta.11"
+  dependencies:
+    "base-64" "^1.0.0"
 
 "@tsconfig/react-native@^2.0.2":
   "integrity" "sha512-jE58snEKBd9DXfyR4+ssZmYJ/W2mOSnNrvljR0aLyQJL9JKX6vlWELHkRjb3HBbcM9Uy0hZGijXbqEAjOERW2A=="
@@ -2526,6 +2532,11 @@
   "integrity" "sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw=="
   "resolved" "https://registry.npmjs.org/balanced-match/-/balanced-match-1.0.2.tgz"
   "version" "1.0.2"
+
+"base-64@^1.0.0":
+  "integrity" "sha512-kwDPIFCGx0NZHog36dj+tHiwP4QMzsZ3AgMViUBKI0+V5n4U0ufTCUMhnQ04diaRI8EX/QcPfql7zlhZ7j4zgg=="
+  "resolved" "https://registry.npmjs.org/base-64/-/base-64-1.0.0.tgz"
+  "version" "1.0.0"
 
 "base@^0.11.1":
   "integrity" "sha512-5T6P4xPgpp0YDFvSWwEZ4NoE3aM4QBQXDzmVbraCkFj8zHM+mba8SyqB5DbZWyR7mYHo6Y7BdQo3MoA4m0TeQg=="

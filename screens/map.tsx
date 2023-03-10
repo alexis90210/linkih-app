@@ -23,12 +23,22 @@ import {CustomFont, couleurs} from '../components/color';
 import MapboxGL from '@rnmapbox/maps';
 import GpsIcon from '../components/gps';
 import EyeIcon from '../components/eye';
-import CallIcon from '../components/call';
-import ShopIcon from '../components/shop';
 import defaultStyle from '../components/api/defaultMpaStyle';
 import ArrowLeftIcon from '../components/ArrowLeft';
 
 MapboxGL.setAccessToken(ApiService.MAPBOX_GL_TOKEN);
+
+
+const shape = {
+  'type': 'FeatureCollection',
+  'features': [{
+      'type': 'Feature',
+      'geometry': {
+          'type': 'Point',
+          'coordinates': [76.343981, 10.279141]
+      }
+  }]
+};
 
 export default function Map({
   navigation,
@@ -107,6 +117,8 @@ export default function Map({
     }
   }
 
+  
+
   return (
     <SafeAreaView style={{flex: 1}}>
       <View style={styles.page}>
@@ -119,12 +131,21 @@ export default function Map({
             onPress={e => null}
             onRegionIsChanging={e => null}
             surfaceView={true}
-            rotateEnabled={true}
-            scrollEnabled={true}>
-              <MapboxGL.UserLocation/>
-            <MapboxGL.Camera
+            rotateEnabled={false}
+            scrollEnabled={true}
+            >          
+            <MapboxGL.UserLocation visible={true} />
+
+             <MapboxGL.Camera
               zoomLevel={11}
-              centerCoordinate={startCords}
+              centerCoordinate={
+                etablissements.length > 0
+                  ? [
+                      parseFloat(etablissements[0].longitude),
+                      parseFloat(etablissements[0].latitude),
+                    ]
+                  : [0, 0]
+              }
               followUserLocation={true}
             />
 
@@ -202,10 +223,7 @@ export default function Map({
           top: 10,
           left: 10,
         }}>
-        <Pressable
-          onPress={() =>
-            navigation.goBack()
-          }>
+        <Pressable onPress={() => navigation.goBack()}>
           <ArrowLeftIcon color={'#fff'} />
         </Pressable>
       </View>
@@ -240,42 +258,42 @@ export default function Map({
           flexDirection: 'row',
           justifyContent: 'center',
         }}>
-         <Pressable
+        <Pressable
+          style={{
+            paddingHorizontal: 10,
+          }}
+          onPress={() =>
+            navigation.navigate('resultat_recherche', {
+              title: 'Les etablissements',
+            })
+          }>
+          <View
+            style={{
+              alignItems: 'center',
+              backgroundColor: couleurs.primary,
+              borderRadius: 30,
+              marginBottom: 10,
+              display: 'flex',
+              justifyContent: 'flex-start',
+              flexDirection: 'row',
+              gap: 4,
+              paddingHorizontal: 20,
+              width: 200,
+            }}>
+            <SearchIcon color={couleurs.secondary} />
+            <Text
               style={{
+                textAlign: 'center',
+                padding: 10,
                 paddingHorizontal: 10,
-              }}
-              onPress={() =>
-                navigation.navigate('resultat_recherche', {
-                  title: 'Les etablissements',
-                })
-              }>
-              <View
-                style={{
-                  alignItems: 'center',
-                  backgroundColor: couleurs.primary,
-                  borderRadius: 30,
-                  marginBottom: 10,
-                  display: 'flex',
-                  justifyContent: 'flex-start',
-                  flexDirection: 'row',
-                  gap: 4,
-                  paddingHorizontal: 20,
-                  width: 200,
-                }}>
-                <SearchIcon color={couleurs.secondary} />
-                <Text
-                  style={{
-                    textAlign: 'center',
-                    padding: 10,
-                    paddingHorizontal: 10,
-                    fontSize: 14,
-                    fontWeight: '500',
-                    color: '#fff',
-                  }}>
-                  Affichage sur liste
-                </Text>
-              </View>
-            </Pressable>
+                fontSize: 14,
+                fontWeight: '500',
+                color: '#fff',
+              }}>
+              Affichage sur liste
+            </Text>
+          </View>
+        </Pressable>
       </View>
 
       <View
@@ -636,5 +654,16 @@ const styles = StyleSheet.create({
   },
   map: {
     flex: 1,
+  },
+});
+
+const tyles =  StyleSheet.create({
+  circles: {
+    visibility: 'visible',
+    circleRadius: 40,
+    circleColor: '#A9A9A9',
+    circleStrokeColor: '#A9A9A9',
+    circleStrokeWidth: 5,
+    circleOpacity: 0.0
   },
 });

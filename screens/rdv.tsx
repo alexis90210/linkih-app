@@ -51,6 +51,7 @@ export default function Rdv({
         </View>
 
         {/* NAV */}
+        <View style={{paddingHorizontal:12}}>
         <View
           style={{
             backgroundColor: 'white',
@@ -60,7 +61,7 @@ export default function Rdv({
             paddingHorizontal: 10,
             height: 50,
             alignItems: 'center',
-            marginTop: 10,
+            marginTop: 10, borderRadius:10
           }}>
           <View>
             <Text>Passé</Text>
@@ -83,6 +84,7 @@ export default function Rdv({
           <View>
             <Text>A vénir</Text>
           </View>
+        </View>
         </View>
 
         {/* main */}

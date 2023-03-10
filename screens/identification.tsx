@@ -100,12 +100,12 @@ export default function IdentificationScreen({navigation}: {navigation: any}) {
                   display: 'flex',
                   flexDirection: 'row',
                   justifyContent: 'center',
-                  marginVertical: 30,
+                  marginVertical:20,
                 }}>
                 <Text
                   style={{
                     color: '#000',
-                    fontSize: 16,
+                    fontSize: 14,
                     fontFamily: CustomFont.Poppins,
                   }}>
                   Veuillez-vous identifier pour continuer
@@ -122,10 +122,10 @@ export default function IdentificationScreen({navigation}: {navigation: any}) {
                     flexWrap: 'nowrap',
                     gap: 10,
                     padding: 10,
-                    borderTopWidth:1,
-                    borderBottomWidth:1,
-                    borderStyle:'dashed',
-                    borderColor:couleurs.primary
+                    // borderTopWidth:1,
+                    // borderBottomWidth:1,
+                    // borderStyle:'dashed',
+                    // borderColor:couleurs.primary
                   }}>
                   {pack.map((row, key) =>(<TouchableOpacity
                    key={key}
@@ -171,7 +171,12 @@ export default function IdentificationScreen({navigation}: {navigation: any}) {
                 </View>
               </ScrollView>
 
-              <View
+              
+            </View>
+            
+          </View>
+
+          <View
                 style={{
                   display: 'flex',
                   flexDirection: 'row',
@@ -180,16 +185,14 @@ export default function IdentificationScreen({navigation}: {navigation: any}) {
                 }}>
                 <Text
                   style={{
-                    color: couleurs.primary,
-                    fontSize: 16,
+                    color: couleurs.dark,
+                    fontSize: 13,
                     textAlign:'center',
                     fontFamily: CustomFont.Poppins,
                   }}>
                   {"Je veux plus d'informations par \n rapport a l'identification"}
                 </Text>
               </View>
-            </View>
-          </View>
         </ScrollView>
       </SafeAreaView>
     </>

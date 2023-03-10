@@ -222,10 +222,15 @@ export default function ResultatRechercheScreen({
                     fontFamily: CustomFont.Poppins,
                     fontSize: 14,
                     color: '#000',
+                    marginBottom: 3
                   }}>
                   {/* {marker.adresse} */}
                   <Text style={{color: 'green'}}>Ouvert</Text> . Ferme a 01:00
                 </Text>
+
+                {DATA.map((row: any, key) => (
+                  <Item key={key} title={row} />
+                ))}
 
                 <View
                   style={{
@@ -234,9 +239,7 @@ export default function ResultatRechercheScreen({
                     flexWrap: 'nowrap',
                     justifyContent: 'flex-start',
                     gap: 10,
-                    marginVertical: 7,
-                    borderBottomWidth: 1,
-                    borderColor: 'rgba(200,200,200,.6)',
+                    marginVertical: 14
                   }}>
                   <View
                     style={{
@@ -331,9 +334,7 @@ export default function ResultatRechercheScreen({
                   </View>
                 </View>
 
-                {DATA.map((row: any, key) => (
-                  <Item key={key} title={row} />
-                ))}
+               
               </View>
             </View>
           </View>
@@ -359,7 +360,7 @@ export default function ResultatRechercheScreen({
             paddingVertical: 15,
             paddingHorizontal: 10,
             backgroundColor: couleurs.primary,
-            alignItems: 'center',
+            alignItems: 'center', width: '100%',
           }}>
           <View
             style={{
@@ -367,7 +368,7 @@ export default function ResultatRechercheScreen({
               flexDirection: 'row',
               justifyContent: 'space-between',
               alignItems: 'center',
-              gap: 40,
+              gap: 20,
             }}>
             <TouchableOpacity onPress={() => navigation.goBack()}>
               <ArrowLeftIcon color={couleurs.white} />
@@ -377,7 +378,7 @@ export default function ResultatRechercheScreen({
               <MapIcon color={couleurs.white} />
             </TouchableOpacity>
           </View>
-          <View style={{width: 220, paddingLeft: 30}}>
+          <View style={{ paddingLeft: 30, flex:1}}>
             <Text
               style={{color: couleurs.white, fontSize: 18, fontWeight: '700'}}>
               {title}
@@ -538,14 +539,179 @@ export default function ResultatRechercheScreen({
               </View>
               {/* SEPARATEUR */}
 
+
+              <View
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  flexDirection: 'row',
+                  width: '100%',
+                }}>
+                <Text
+                  style={{
+                    fontFamily: CustomFont.Poppins,
+                    color: couleurs.dark,
+                    fontWeight:'bold'
+                  }}>
+                   A moins de : 10 km
+                </Text>
+                <BouncyCheckbox
+                  size={20}
+                  fillColor={couleurs.primary}
+                  unfillColor={couleurs.white}
+                  iconStyle={{borderColor: couleurs.primary}}
+                  innerIconStyle={{borderWidth: 2}}
+                  textStyle={{fontFamily: CustomFont.Poppins}}
+                  onPress={(isChecked: boolean) => {}}
+                />
+              </View>              
+
+              {/* SEPARATEUR */}
+              <View style={{height: 1, overflow: 'hidden', width: '100%'}}>
+                <View
+                  style={{
+                    height: 1,
+                    borderWidth: 1,
+                    borderColor: couleurs.primary,
+                    borderStyle: 'dashed',
+                  }}></View>
+              </View>
+              {/* SEPARATEUR */}
+
+
               <Text
                 style={{
-                  fontFamily: CustomFont.Poppins,
                   fontWeight: '700',
+                  fontFamily: CustomFont.Poppins,
                   color: couleurs.dark,
                 }}>
-                A moins de : 10km
+                Trier par Prix
               </Text>
+
+              <View
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  flexDirection: 'row',
+                  width: '100%',
+                }}>
+                <Text
+                  style={{
+                    fontFamily: CustomFont.Poppins,
+                    color: couleurs.dark,
+                  }}>
+                  Moins de 10 €
+                </Text>
+                <BouncyCheckbox
+                  size={20}
+                  fillColor={couleurs.primary}
+                  unfillColor={couleurs.white}
+                  iconStyle={{borderColor: couleurs.primary}}
+                  innerIconStyle={{borderWidth: 2}}
+                  textStyle={{fontFamily: CustomFont.Poppins}}
+                  onPress={(isChecked: boolean) => {}}
+                />
+              </View>
+
+              <View
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  flexDirection: 'row',
+                  width: '100%',
+                }}>
+                <Text
+                  style={{
+                    fontFamily: CustomFont.Poppins,
+                    color: couleurs.dark,
+                  }}>
+                  Moins de 30 €
+                </Text>
+                <BouncyCheckbox
+                  size={20}
+                  fillColor={couleurs.primary}
+                  unfillColor={couleurs.white}
+                  iconStyle={{borderColor: couleurs.primary}}
+                  innerIconStyle={{borderWidth: 2}}
+                  textStyle={{fontFamily: CustomFont.Poppins}}
+                  onPress={(isChecked: boolean) => {}}
+                />
+              </View>
+
+              <View
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  flexDirection: 'row',
+                  width: '100%',
+                }}>
+                <Text
+                  style={{
+                    fontFamily: CustomFont.Poppins,
+                    color: couleurs.dark,
+                  }}>
+                  Moins de 60 €
+                </Text>
+                <BouncyCheckbox
+                  size={20}
+                  fillColor={couleurs.primary}
+                  unfillColor={couleurs.white}
+                  iconStyle={{borderColor: couleurs.primary}}
+                  innerIconStyle={{borderWidth: 2}}
+                  textStyle={{fontFamily: CustomFont.Poppins}}
+                  onPress={(isChecked: boolean) => {}}
+                />
+              </View>
+
+              <View
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  flexDirection: 'row',
+                  width: '100%',
+                }}>
+                <Text
+                  style={{
+                    fontFamily: CustomFont.Poppins,
+                    color: couleurs.dark,
+                  }}>
+                  Moins de 100 €
+                </Text>
+                <BouncyCheckbox
+                  size={20}
+                  fillColor={couleurs.primary}
+                  unfillColor={couleurs.white}
+                  iconStyle={{borderColor: couleurs.primary}}
+                  innerIconStyle={{borderWidth: 2}}
+                  textStyle={{fontFamily: CustomFont.Poppins}}
+                  onPress={(isChecked: boolean) => {}}
+                />
+              </View>
+
+              <View
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  flexDirection: 'row',
+                  width: '100%',
+                }}>
+                <Text
+                  style={{
+                    fontFamily: CustomFont.Poppins,
+                    color: couleurs.dark,
+                  }}>
+                  Plus de 100 €
+                </Text>
+                <BouncyCheckbox
+                  size={20}
+                  fillColor={couleurs.primary}
+                  unfillColor={couleurs.white}
+                  iconStyle={{borderColor: couleurs.primary}}
+                  innerIconStyle={{borderWidth: 2}}
+                  textStyle={{fontFamily: CustomFont.Poppins}}
+                  onPress={(isChecked: boolean) => {}}
+                />
+              </View>
 
               {/* SEPARATEUR */}
               <View style={{height: 1, overflow: 'hidden', width: '100%'}}>
@@ -569,13 +735,13 @@ export default function ResultatRechercheScreen({
               </Text>
 
               <AirbnbRating
-                reviewSize={10}
+                reviewSize={5}
                 reviewColor={couleurs.primary}
                 showRating={false}
-                count={10}
+                count={5}
                 reviews={['Terrible', 'Bad', 'Good', 'Very Good']}
                 onFinishRating={rate => console.log(rate)}
-                defaultRating={5}
+                defaultRating={0}
                 size={14}
               />
 
