@@ -23,4 +23,7 @@ export default class ApiService {
   static API_URL_USER_DATA = this.API_URL + 'utilisateur/data';
   static API_SEND_MAIL_CONFIRMATION = this.API_URL + 'send/mail';
   static API_SEND_COMPTE_VERIFICATION = this.API_URL + 'confirme/compte'
+  static API_URL_GET_RENDEZ_VOUS = this.API_URL + "rendez-vous";
+  static API_URL_GET_VENDEURS_PRESTATIONS = this.API_URL + "vendeur/prestation";
+  static API_URL_GET_VENDEURS_HORAIRES =   this.API_URL + 'horaire/ouverture';
 }

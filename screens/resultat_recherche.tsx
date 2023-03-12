@@ -284,6 +284,7 @@ export default function ResultatRechercheScreen({
         onPress={() =>
           navigation.navigate('autre_etab', {
             nomEtab: data.nom,
+            vendeur_data: data
           })
         }>
         <View

@@ -38,6 +38,7 @@ function Main({navigation}: {navigation: any}) {
 
     SetUserRole(data.role)
         
+
   })
   .catch(error => console.log(error)
   );
@@ -116,7 +117,7 @@ function Main({navigation}: {navigation: any}) {
 
   // Categories
   const [modalVisibleCategories, setModalVisibleCategories] = useState(false);
-  const [currentCategorie, setCurrentCategorie] = useState<any>(null);
+  const [currentCategorie, setCurrentCategorie] = useState<any>({});
 
   const handleOpenModalCategories = () => {
     setModalVisibleCategories(true);
@@ -327,7 +328,10 @@ function Main({navigation}: {navigation: any}) {
             paddingVertical: 10,
             paddingHorizontal: 10,
           }}
-          onPress={() => navigation.navigate('rdv')}>
+          onPress={() => 
+            userConnectedRole != 'ROLE_CLIENT' ? 
+          navigation.navigate('rdv') : 
+          navigation.navigate('rdv_client')}>
           <RdvIcon color={couleurs.secondary} />
         </TouchableOpacity>
       </View>

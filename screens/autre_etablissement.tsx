@@ -10,6 +10,7 @@ import {
   Linking,
   Modal,
   FlatList,
+  Alert,
 } from 'react-native';
 
 import ArrowLeftIcon from '../components/ArrowLeft';
@@ -25,6 +26,8 @@ import planning from '../components/api/planning';
 import {sous_categories} from '../components/api/categories';
 import MinusIcon from '../components/minus';
 import AddIcon from '../components/add';
+import axios from 'axios';
+import ApiService from '../components/api/service';
 
 export default function AutreEtablissement({
   route,
@@ -40,6 +43,46 @@ export default function AutreEtablissement({
     title = propsTitle;
     isConsulting = true;
   }
+ 
+  // LOAD VENDEUR DATA
+  const [VendeurData, setVendeurData] = useState<any>([]);
+  const [VendeurDataLoaded, setSetVendeurDataLoaded] = useState(false);
+
+  const loadVendeurData = () => {
+    axios({
+      method: 'POST',
+      url: ApiService.API_URL_USER_DATA,
+      data:JSON.stringify({
+        id: route.params?.vendeur_data?.id
+      }),
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response: {data: any}) => {
+        console.log(response.data);
+
+        var api = response.data;
+        if (api.code == 'success') {
+          setVendeurData(api.message);
+          setSetVendeurDataLoaded(true);
+        }
+
+        if (api.code == 'error') {
+          Alert.alert('', api.message);
+        }
+      })
+      .catch((error: any) => {
+        console.log(error);
+        Alert.alert('', error );
+      });
+  };
+  // CHECK LOAD OF HORAIRES
+  if (!VendeurDataLoaded) loadVendeurData();
+
+  /// END
+
 
   const [isVisibleModal, setVisibleModal] = useState(false);
 
@@ -68,87 +111,87 @@ export default function AutreEtablissement({
   const [selectedJour, setSelectedJour] = useState();
   const [selectedCategorie, setSelectedCategorie] = useState();
 
-  const [sections, setSections] = useState([
-    {
-      id: 1,
-      title: 'Section 1',
-      isCollapsed: false,
-      data: [
-        {
-          id: 1,
-          title: 'title of elt',
-          price: '13€',
-          content: 'This is the first item in section 1.',
-        },
-        {
-          id: 2,
-          title: 'title of elt',
-          price: '13€',
-          content: 'This is the second item in section 1.',
-        },
-        {
-          id: 3,
-          title: 'title of elt',
-          price: '13€',
-          content: 'This is the third item in section 1.',
-        },
-      ],
-    },
-    {
-      id: 2,
-      title: 'Section 2',
-      isCollapsed: true,
-      data: [
-        {
-          id: 4,
-          title: 'title of elt',
-          price: '13€',
-          content: 'This is the first item in section 2.',
-        },
-        {
-          id: 5,
-          title: 'title of elt',
-          price: '13€',
-          content: 'This is the second item in section 2.',
-        },
-        {
-          id: 6,
-          title: 'title of elt',
-          price: '13€',
-          content: 'This is the third item in section 2.',
-        },
-      ],
-    },
-    {
-      id: 3,
-      title: 'Section 3',
-      isCollapsed: true,
-      data: [
-        {
-          id: 7,
-          title: 'title of elt',
-          price: '13€',
-          content: 'This is the first item in section 3.',
-        },
-        {
-          id: 8,
-          title: 'title of elt',
-          price: '13€',
-          content: 'This is the second item in section 3.',
-        },
-        {
-          id: 9,
-          title: 'title of elt',
-          price: '13€',
-          content: 'This is the third item in section 3.',
-        },
-      ],
-    },
-  ]);
+  const [sections, setSections] = useState<any>([]);
+  const [sectionsLoaded, setSetSectionsLoaded] = useState(false);
 
+  const loadPrestations = () => {
+    axios({
+      method: 'POST',
+      url: ApiService.API_URL_GET_VENDEURS_PRESTATIONS,
+      data:JSON.stringify({
+        vendeur_id: route.params?.vendeur_data?.id
+      }),
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response: {data: any}) => {
+        console.log(response.data);
+
+        var api = response.data;
+        if (api.code == 'success') {
+          setSections(api.message);
+          setSetSectionsLoaded(true);
+        }
+
+        if (api.code == 'error') {
+          Alert.alert('', api.message);
+        }
+      })
+      .catch((error: any) => {
+        console.log(error);
+        Alert.alert('', error );
+      });
+  };
+  // CHECK LOAD OF PRESTATIONS
+  if (!sectionsLoaded) loadPrestations();
+
+
+  // LOAD HORAIRE
+  const [horaires, sethoraires] = useState<any>([]);
+  const [horairesLoaded, setSethorairesLoaded] = useState(false);
+
+  const loadHoraires = () => {
+    axios({
+      method: 'POST',
+      url: ApiService.API_URL_GET_VENDEURS_HORAIRES,
+      data:JSON.stringify({
+        vendeur_id: route.params?.vendeur_data?.id
+      }),
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response: {data: any}) => {
+        console.log(response.data);
+
+        var api = response.data;
+        if (api.code == 'success') {
+          sethoraires(api.message);
+          setSethorairesLoaded(true);
+        }
+
+        if (api.code == 'error') {
+          Alert.alert('', api.message);
+        }
+      })
+      .catch((error: any) => {
+        console.log(error);
+        Alert.alert('', error );
+      });
+  };
+  // CHECK LOAD OF HORAIRES
+  if (!horairesLoaded) loadHoraires();
+
+
+
+
+  // HANDLING COLLAPSE
   const toggleCollapse = (id: any) => {
-    setSections(prevState =>
-      prevState.map(section =>
+    setSections((prevState:any) =>
+      prevState.map((section:any) =>
         section.id === id
           ? {...section, isCollapsed: !section.isCollapsed}
           : section,
@@ -156,12 +199,14 @@ export default function AutreEtablissement({
     );
   };
 
+  // GET LAYOUT
   const getItemLayout = (data: any, index: any) => ({
     length: 40 + (data[index].isCollapsed ? 0 : 20),
     offset: 40 * index,
     index,
   });
 
+  //  RENDER ITEM
   const renderItem = ({item}: {item: any}) => (
     <View
       style={{
@@ -307,7 +352,7 @@ export default function AutreEtablissement({
                   fontSize: 17,
                   fontFamily: CustomFont.Poppins,
                 }}>
-                Salon beaute plus
+                {VendeurData.nom}
               </Text>
               <Text
                 style={{
@@ -316,8 +361,7 @@ export default function AutreEtablissement({
                   opacity: 0.7,
                   fontSize: 15,
                   fontFamily: CustomFont.Poppins,
-                }}>
-                hisoka.tegiro@gmail.com
+                }}>{VendeurData.mail}
               </Text>
               <Text
                 style={{
@@ -326,7 +370,7 @@ export default function AutreEtablissement({
                   fontSize: 16,
                   fontFamily: CustomFont.Poppins,
                 }}>
-                06 950 0886
+                {VendeurData.mobile}
               </Text>
 
               <View style={{display: 'flex', flexDirection: 'row'}}>
@@ -338,7 +382,7 @@ export default function AutreEtablissement({
                     count={4}
                     reviews={['Terrible', 'Bad', 'Good', 'Very Good']}
                     onFinishRating={rate => console.log(rate)}
-                    defaultRating={3}
+                    defaultRating={VendeurData.note}
                     size={14}
                   />
                 )}
@@ -368,7 +412,7 @@ export default function AutreEtablissement({
             style={{marginHorizontal: 12, marginBottom: 10, marginTop: 120}}>
             {/* SALON OVERVIEW */}
             
-              <Text
+              {sections.length > 0 && <Text
                 style={{
                   color: '#000',
                   paddingVertical: 15,
@@ -378,7 +422,7 @@ export default function AutreEtablissement({
                   textAlign:'center'
                 }}>
                Choisir une prestation a reserver
-              </Text>
+              </Text>}
             <FlatList
               data={sections}
               renderItem={renderItem}
@@ -493,7 +537,7 @@ export default function AutreEtablissement({
                   marginTop: 10,
                   gap: 5,
                 }}>
-                {[1, 1, 1, 1, 1, 1, 1].map((row, key) => (
+                {horaires.map((row:any, key:any) => (
                   <View
                     key={key}
                     style={{
@@ -521,7 +565,7 @@ export default function AutreEtablissement({
                           color: couleurs.white,
                           fontFamily: CustomFont.Poppins,
                         }}>
-                        Mercredi
+                        {row.jour}
                       </Text>
                       <Text
                         style={{
@@ -529,7 +573,7 @@ export default function AutreEtablissement({
                           fontSize: 11,
                           fontFamily: CustomFont.Poppins,
                         }}>
-                        08h-12h
+                        {row.ouverture}-{row.fermeture}
                       </Text>
                     </View>
                     {/* <CloseIcon color={couleurs.primary} /> */}
