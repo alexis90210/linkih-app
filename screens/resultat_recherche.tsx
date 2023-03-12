@@ -22,8 +22,6 @@ import CloseIcon from '../components/close';
 import MapIcon from '../components/map';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import {AirbnbRating} from 'react-native-ratings';
-import {sous_categories} from '../components/api/categories';
-import {ImageSlider} from 'react-native-image-slider-banner';
 import GetLocation from 'react-native-get-location';
 // ResultatRechercheScreen
 export default function ResultatRechercheScreen({
@@ -72,11 +70,9 @@ export default function ResultatRechercheScreen({
   };
 
     // SEARCH SALON BY REGION + CATEGORIE
-
     const searchByCategorie = () => {
 
-      console.log(route.params.currentCategorie);
-      
+      console.log(route.params.currentCategorie);      
 
       axios({
         method: 'POST',
@@ -171,6 +167,7 @@ export default function ResultatRechercheScreen({
       latitude: 0,
       longitude: 0,
     });
+    const [myPositionLoaded, SetMyPositionLoaded] = useState(false);
     const getUserPosition = () => {
       GetLocation.getCurrentPosition({
         enableHighAccuracy: true,
@@ -178,6 +175,8 @@ export default function ResultatRechercheScreen({
       })
         .then(location => {
           console.log(location);
+
+          SetMyPositionLoaded(true)
   
           SetMyPosition({
             latitude: Number(location.latitude),
@@ -191,7 +190,7 @@ export default function ResultatRechercheScreen({
         });
     };
 
-    if ( myPosition.longitude == 0 ) {
+    if ( !myPositionLoaded ) {
       getUserPosition()
     }
   
@@ -236,6 +235,8 @@ export default function ResultatRechercheScreen({
       </Text>
     );
   };
+
+  // LOAD RESULT DATA
 
   var LoadResultatRecherche = ({
     navigation,
@@ -346,7 +347,7 @@ export default function ResultatRechercheScreen({
                     fontSize: 13,
                     color: '#000',
                   }}>
-                  Restaurant . $$ .{' '}
+                  Entrepreuneur - Societe . $$ .{' '}
                   <Text style={{color: couleurs.primary}}>
 
                     <LoadDistance etab={data}/>
@@ -360,7 +361,7 @@ export default function ResultatRechercheScreen({
                     marginBottom: 3
                   }}>
                   {/* {marker.adresse} */}
-                  <Text style={{color: 'green'}}>Ouvert</Text> . Ferme a 01:00
+                  <Text style={{color: 'green'}}>Ouvert</Text> . Ferme a 81:00
                 </Text>
 
                 {data.prestations && data.prestations.map((row: any, key:any) => (
@@ -581,10 +582,7 @@ export default function ResultatRechercheScreen({
                 gap: 10,
                 alignItems: 'center',
               }}>
-              <Text
-                style={{fontFamily: CustomFont.Poppins, color: couleurs.white}}>
-                Effacer
-              </Text>
+             
               <CloseIcon color={couleurs.white} />
             </TouchableOpacity>
           </View>
@@ -722,56 +720,7 @@ export default function ResultatRechercheScreen({
                 }}>
                 Trier par Prix
               </Text>
-
-              <View
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  flexDirection: 'row',
-                  width: '100%',
-                }}>
-                <Text
-                  style={{
-                    fontFamily: CustomFont.Poppins,
-                    color: couleurs.dark,
-                  }}>
-                  Moins de 10 €
-                </Text>
-                <BouncyCheckbox
-                  size={20}
-                  fillColor={couleurs.primary}
-                  unfillColor={couleurs.white}
-                  iconStyle={{borderColor: couleurs.primary}}
-                  innerIconStyle={{borderWidth: 2}}
-                  textStyle={{fontFamily: CustomFont.Poppins}}
-                  onPress={(isChecked: boolean) => {}}
-                />
-              </View>
-
-              <View
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  flexDirection: 'row',
-                  width: '100%',
-                }}>
-                <Text
-                  style={{
-                    fontFamily: CustomFont.Poppins,
-                    color: couleurs.dark,
-                  }}>
-                  Moins de 30 €
-                </Text>
-                <BouncyCheckbox
-                  size={20}
-                  fillColor={couleurs.primary}
-                  unfillColor={couleurs.white}
-                  iconStyle={{borderColor: couleurs.primary}}
-                  innerIconStyle={{borderWidth: 2}}
-                  textStyle={{fontFamily: CustomFont.Poppins}}
-                  onPress={(isChecked: boolean) => {}}
-                />
-              </View>
+        
 
               <View
                 style={{
@@ -925,7 +874,7 @@ export default function ResultatRechercheScreen({
                     paddingHorizontal: 10,
                     width: '100%',
                   }}
-                  onPress={() => null}>
+                  onPress={() => _setCloseModal()}>
                   <Text
                     style={{
                       textAlign: 'center',

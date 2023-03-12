@@ -40,14 +40,14 @@ export default function RdvClient({
   }
 
   // GET USER CONNECTED
-  const [userConnectedRole, SetUserRole] = useState<any>({})
+  const [userConnected, SetUserConnected] = useState<any>({})
 
   storage.load({
     key: 'userconnected', // Note: Do not use underscore("_") in key!
     id: 'userconnected', // Note: Do not use underscore("_") in id!
   }).then( data => {
 
-    SetUserRole(data.role)
+    SetUserConnected(data.utilisateur[0])
   })
   .catch(error => console.log(error)
   );
@@ -61,8 +61,8 @@ export default function RdvClient({
      method: 'POST',
      url: ApiService.API_URL_GET_RENDEZ_VOUS,
      data:JSON.stringify({
-        utilisateur_id: userConnectedRole.id,
-        date: date
+        utilisateur_id: userConnected.id,
+        // date: date
      }),
      headers: {
        Accept: 'application/json',
@@ -70,7 +70,9 @@ export default function RdvClient({
      },
    })
      .then((response: {data: any}) => {
+
        var api = response.data;
+
        if (api.code == 'success') {
         setLoading(false)
          setLoadedRendezVous(true)
@@ -196,94 +198,81 @@ export default function RdvClient({
           }}>
           <View style={{marginHorizontal: 12, marginVertical: 10}}>
             
-            {(rendezvous.length> 0 && !isLoading) && <View style={{
-                  marginTop:10}}>
-              <View
+            {(rendezvous.length> 0 && !isLoading) && 
+            rendezvous.map( (row:any, key:any) =>(<View key={key} style={{
+              marginTop:10}}>
+          <View
+            style={{
+              borderRadius: 15,
+              backgroundColor: '#fff',
+              padding: 14,
+              width: '100%',
+              borderWidth: 1,
+              borderColor: couleurs.primary,
+              borderStyle: 'dashed',
+            }}>
+            <Text
+              style={{
+                color: '#000',
+                paddingVertical: 3,
+                fontSize: 16,
+                fontFamily: CustomFont.Poppins,
+                opacity: 0.8,
+              }}>
+              {row.boutique}
+            </Text>
+            <View
+              style={{
+                display: 'flex',
+                justifyContent: 'flex-start',
+                flexDirection: 'row',
+                alignItems: 'center',
+                gap: 10,
+              }}>
+              <Text
                 style={{
-                  borderRadius: 15,
-                  backgroundColor: '#fff',
-                  padding: 14,
-                  width: '100%'
+                  color: '#000',
+                  paddingVertical: 3,
+                  fontSize: 14,
+                  fontFamily: CustomFont.Poppins,
                 }}>
+                {new Date(row.date).toLocaleDateString()} .
+              </Text>
+              <Text
+                style={{
+                  color: couleurs.primary,
+                  paddingVertical: 3,
+                  fontSize: 13,
+                  fontFamily: CustomFont.Poppins,
+                }}>
+                {row.heure}
+              </Text>
+            </View>
+            {route.prix && <Text
+                style={{
+                  color: '#000',
+                  paddingVertical: 3,
+                  fontSize: 13,
+                  fontFamily: CustomFont.Poppins,
+                }}>
+                {route.prix}
+              </Text>}
+
+              <Pressable onPress={() => null}>
                 <Text
                   style={{
-                    color: '#000',
+                    color: couleurs.primary,
                     paddingVertical: 3,
                     fontSize: 14,
                     fontFamily: CustomFont.Poppins,
-                    opacity: 0.8,
                   }}>
-                  {sous_categories[0]}
+                  {row.statut == 0 ? "Attente de confirmation" : "Confirme"}
                 </Text>
-                <View
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'flex-start',
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    gap: 10,
-                  }}>
-                  <Text
-                    style={{
-                      color: '#000',
-                      paddingVertical: 3,
-                      fontSize: 14,
-                      fontFamily: CustomFont.Poppins,
-                    }}>
-                    Lundi .
-                  </Text>
-                  <Text
-                    style={{
-                      color: couleurs.primary,
-                      paddingVertical: 3,
-                      fontSize: 13,
-                      fontFamily: CustomFont.Poppins,
-                    }}>
-                    15:30:50
-                  </Text>
-                </View>
-                <View
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                  }}>
-                  <Text
-                    style={{
-                      color: '#000',
-                      paddingVertical: 3,
-                      fontSize: 13,
-                      fontFamily: CustomFont.Poppins,
-                    }}>
-                    14,00 $
-                  </Text>
+              </Pressable>
+          </View>
 
-                  <Pressable onPress={() => null}>
-                    <Text
-                      style={{
-                        color: couleurs.primary,
-                        paddingVertical: 3,
-                        fontSize: 14,
-                        fontFamily: CustomFont.Poppins,
-                      }}>
-                      Valider
-                    </Text>
-                  </Pressable>
-                </View>
-              </View>
-
-              <View
-                style={{height: 1, overflow: 'hidden', paddingHorizontal: 10}}>
-                <View
-                  style={{
-                    height: 1,
-                    borderWidth: 1,
-                    borderColor: couleurs.primary,
-                    borderStyle: 'dashed',
-                  }}></View>
-              </View>
-            </View>}
+        </View>))
+            }
 
             {isLoading && <View style={{width:'100%', height:200, marginTop:100, display:'flex', flexDirection:'row', justifyContent:'center'}}>
                 <ActivityIndicator size={'large'}></ActivityIndicator>

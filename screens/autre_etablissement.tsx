@@ -15,8 +15,6 @@ import {
 
 import ArrowLeftIcon from '../components/ArrowLeft';
 import EditIcon from '../components/Edit';
-import CallIcon from '../components/call';
-import RdvIcon from '../components/rdv';
 import {AirbnbRating} from 'react-native-ratings';
 import CloseIcon from '../components/close';
 import {CustomFont, couleurs} from '../components/color';
@@ -28,6 +26,7 @@ import MinusIcon from '../components/minus';
 import AddIcon from '../components/add';
 import axios from 'axios';
 import ApiService from '../components/api/service';
+import CallIcon from '../components/call';
 
 export default function AutreEtablissement({
   route,
@@ -51,9 +50,9 @@ export default function AutreEtablissement({
   const loadVendeurData = () => {
     axios({
       method: 'POST',
-      url: ApiService.API_URL_USER_DATA,
+      url: ApiService.API_URL_GET_VENDEURS,
       data:JSON.stringify({
-        id: route.params?.vendeur_data?.id
+        vendeur_id: route.params?.vendeur_data?.id
       }),
       headers: {
         Accept: 'application/json',
@@ -61,11 +60,11 @@ export default function AutreEtablissement({
       },
     })
       .then((response: {data: any}) => {
-        console.log(response.data);
+        console.log('==>', response.data.message[0]);
 
         var api = response.data;
         if (api.code == 'success') {
-          setVendeurData(api.message);
+          setVendeurData(api.message[0]);
           setSetVendeurDataLoaded(true);
         }
 
@@ -361,7 +360,7 @@ export default function AutreEtablissement({
                   opacity: 0.7,
                   fontSize: 15,
                   fontFamily: CustomFont.Poppins,
-                }}>{VendeurData.mail}
+                }}>{VendeurData.email}
               </Text>
               <Text
                 style={{
@@ -409,7 +408,7 @@ export default function AutreEtablissement({
           </View>
 
           <View
-            style={{marginHorizontal: 12, marginBottom: 10, marginTop: 120}}>
+            style={{marginHorizontal: 12, marginBottom: 10, marginTop: 100}}>
             {/* SALON OVERVIEW */}
             
               {sections.length > 0 && <Text
@@ -423,13 +422,54 @@ export default function AutreEtablissement({
                 }}>
                Choisir une prestation a reserver
               </Text>}
-            <FlatList
+            {sections.length > 0 && <FlatList
               data={sections}
               renderItem={renderItem}
               keyExtractor={item => item.id.toString()}
               getItemLayout={getItemLayout}
               nestedScrollEnabled={true}
-            />
+            />}
+
+              {sections.length == 0 && <View>
+
+                <View
+                    style={{
+                      alignItems: 'center',
+                      backgroundColor: couleurs.primary,
+                      paddingHorizontal:30,
+                      borderRadius:10,
+                      width: '100%',
+                      height: 40,
+
+                    }}>
+                    <TouchableOpacity
+                      style={{
+                        paddingHorizontal: 10,
+                        position: 'relative',
+                        bottom: -3,
+                        display: 'flex',
+                        justifyContent: 'flex-start',
+                        alignItems: 'center',
+                        flexDirection: 'row',
+                        flexWrap:'nowrap'
+                      }}
+                      onPress={() => navigation.navigate('simple_rdv', {
+                        id: VendeurData.id
+                      })}>
+                      <Text
+                        style={{
+                          textAlign: 'center',
+                          padding: 5,
+                          fontSize: 15,
+                          color: couleurs.white,
+                          fontFamily: CustomFont.Poppins,
+                        }}>
+                        Prendre un rendez-vous
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+
+                </View>}
 
             <View
               style={{
@@ -461,7 +501,7 @@ export default function AutreEtablissement({
                   fontSize: 15,
                   fontFamily: CustomFont.Poppins,
                 }}>
-                14-02-2023
+                {VendeurData.creation}
               </Text>
             </View>
 
@@ -494,7 +534,7 @@ export default function AutreEtablissement({
                   opacity: 0.8,
                   marginTop: 10,
                 }}>
-                Republique du Congo
+                {VendeurData.pays}
               </Text>
               <Text
                 style={{
@@ -504,7 +544,7 @@ export default function AutreEtablissement({
                   fontSize: 15,
                   fontFamily: CustomFont.Poppins,
                 }}>
-                Brazzaville, vers boulevrd denis
+                {VendeurData.adresse}
               </Text>
             </View>
 
@@ -663,7 +703,7 @@ export default function AutreEtablissement({
                 backgroundColor: couleurs.primary,
                 borderRadius: 30,
               }}
-              onPress={() => Linking.openURL('tel:2522334444')}>
+              onPress={() => Linking.openURL(`tel:${VendeurData.mobile}`)}>
               <View
                 style={{
                   display: 'flex',

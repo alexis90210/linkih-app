@@ -1,10 +1,10 @@
 export default class ApiService {
   
   // BASE API URL
-  // static API_URL = 'http://192.168.1.89:8000/api/v1/';     // IP HOME
+  static API_URL = 'http://192.168.1.89:8000/api/v1/';     // IP HOME
   // static API_URL = 'http://192.168.1.93:8000/api/v1/';     // IP WORK 
   // static API_URL = 'http://192.168.127.179:8000/api/v1/';  // IP MY PHONE
-  static API_URL = 'http://192.168.100.17:8000/api/v1/';      // IP MS HOUSE
+  // static API_URL = 'http://192.168.100.17:8000/api/v1/';      // IP MS HOUSE
     
   // OTHER CONFIG
   static GEOCODE_KEY = ""; 
@@ -26,4 +26,6 @@ export default class ApiService {
   static API_URL_GET_RENDEZ_VOUS = this.API_URL + "rendez-vous";
   static API_URL_GET_VENDEURS_PRESTATIONS = this.API_URL + "vendeur/prestation";
   static API_URL_GET_VENDEURS_HORAIRES =   this.API_URL + 'horaire/ouverture';
+  static API_URL_GET_VENDEURS_SOUS_PRESTATIONS =   this.API_URL + 'sous/prestation';
+  static API_URL_SAVE_RDV =   this.API_URL + 'add/rendez-vous';
 }

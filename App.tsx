@@ -38,6 +38,7 @@ import EditClientScreen from './screens/_edit_client';
 import EditAdresse from './screens/_edit_adresse';
 import BilanReservation from './screens/_bilan_reservation';
 import RdvClient from './screens/rdv_client';
+import SimpleRdv from './screens/simple_rdv';
 
 
 const Stack = createNativeStackNavigator();
@@ -520,6 +521,23 @@ export default function App(): JSX.Element {
         <Stack.Screen
           name="rdv_client"
           component={RdvClient}
+          options={{
+            title: 'rdv client',
+            headerShadowVisible: false,
+            headerTitleStyle: {fontSize: 18, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
+            headerTintColor:couleurs.primary,
+            headerShown: false,
+            presentation: 'modal',
+            animationTypeForReplace: 'push',
+            animation: 'slide_from_left',
+          }}
+        />
+
+
+        {/* SimpleRdv */}
+        <Stack.Screen
+          name="simple_rdv"
+          component={SimpleRdv}
           options={{
             title: 'rdv client',
             headerShadowVisible: false,

@@ -25,6 +25,7 @@ import GpsIcon from '../components/gps';
 import EyeIcon from '../components/eye';
 import defaultStyle from '../components/api/defaultMpaStyle';
 import ArrowLeftIcon from '../components/ArrowLeft';
+import {AirbnbRating} from 'react-native-ratings';
 
 MapboxGL.setAccessToken(ApiService.MAPBOX_GL_TOKEN);
 
@@ -72,11 +73,13 @@ export default function Map({
       },
     })
       .then((response: {data: any}) => {
-        console.log(response.data);
+
+        console.log(response.data.message);
 
         var api = response.data;
         if (api.code == 'success') {
-          setEtablissements(api.message);
+          
+          setEtablissements( api.message );
           setLoadedEtab(true);
         }
 
@@ -104,6 +107,47 @@ export default function Map({
       _myPosition();
     }
   }
+
+
+  // DISTANCE HANDLING
+  const distance = (lat1: any, lon1: any, lat2: any, lon2: any) => {
+    const R = 6371; // rayon de la Terre en kilomètres
+    const dLat = ((lat2 - lat1) * Math.PI) / 180; // différence de latitude en radians
+    const dLon = ((lon2 - lon1) * Math.PI) / 180; // différence de longitude en radians
+
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos((lat1 * Math.PI) / 180) *
+        Math.cos((lat2 * Math.PI) / 180) *
+        Math.sin(dLon / 2) *
+        Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+    const d = R * c; // distance en kilomètres
+
+    if ( d < 1) {
+      return (d * 1000).toFixed(0)  + ' m'
+    }
+
+    return d.toFixed(2) + ' km';
+  };
+
+  const LoadDistance = (etab: any) => {
+
+ 
+    let d = distance(
+      Number(etab.etab.latitude),
+      Number(etab.etab.longitude),
+      Number(UserPosition.latitude),
+      Number(UserPosition.longitude),
+    )
+
+    return (
+      <Text style={{fontWeight: '600', fontSize: 15, color: couleurs.primary}}>
+        {d} 
+      </Text>
+    );
+  };
 
   return (
     <SafeAreaView style={{flex: 1}}>
@@ -242,7 +286,7 @@ export default function Map({
         </Pressable>
       </View>
 
-      <View
+      {/* <View
         style={{
           borderRadius: 100,
           backgroundColor: 'green',
@@ -259,7 +303,7 @@ export default function Map({
           }}>
           <GpsIcon color={'#fff'} />
         </Pressable>
-      </View>
+      </View> */}
 
       {/* listing view button */}
       <View
@@ -329,8 +373,8 @@ export default function Map({
             height: 280,
             borderRadius: 15,
           }}>
-          {etablissements.map((marker: any) => (
-            <Pressable key={Math.random()}>
+          {etablissements.map((marker: any, key:any) => (
+            <Pressable key={key}>
               <View
                 style={{
                   borderRadius: 15,
@@ -370,6 +414,7 @@ export default function Map({
                       onPress={() =>
                         navigation.navigate('autre_etab', {
                           nomEtab: marker.nom,
+                          vendeur_data: marker
                         })
                       }>
                       <EyeIcon color={'#fff'} />
@@ -404,7 +449,17 @@ export default function Map({
                           fontSize: 13,
                           color: couleurs.dark,
                         }}>
-                        3,6 ( 250 )
+
+                        <AirbnbRating
+                          reviewSize={4}
+                          reviewColor={couleurs.primary}
+                          showRating={false}
+                          count={4}
+                          reviews={['Terrible', 'Bad', 'Good', 'Very Good']}
+                          onFinishRating={(rate:any) => console.log(rate)}
+                          defaultRating={marker.note}
+                          size={14}
+                        />
                       </Text>
                       <Text
                         style={{
@@ -412,8 +467,10 @@ export default function Map({
                           fontSize: 13,
                           color: '#000',
                         }}>
-                        Restaurant . $$ .{' '}
-                        <Text style={{color: couleurs.primary}}>5000m</Text>
+                        Entrepreneur . Societe . $$ .{' '}
+                        <Text style={{color: couleurs.primary}}>
+                          <LoadDistance etab={marker} />
+                        </Text>
                       </Text>
                       <Text
                         style={{
@@ -423,7 +480,7 @@ export default function Map({
                         }}>
                         {/* {marker.adresse} */}
                         <Text style={{color: 'green'}}>Ouvert</Text> . Ferme a
-                        01:00
+                        18:00
                       </Text>
 
                       <View
@@ -493,7 +550,7 @@ export default function Map({
                               alignItems: 'center',
                               flexDirection: 'row',
                             }}
-                            onPress={() => Linking.openURL('tel:2522334444')}>
+                            onPress={() => Linking.openURL(`tel:${marker.mobile}`)}>
                             <Image
                               source={require('../assets/images/telephone.png')}
                               style={{width: 18, height: 18}}
