@@ -7,6 +7,7 @@ import {
   SafeAreaView,
   ScrollView,
   Image,
+  TouchableOpacity,
 } from 'react-native';
 
 import ArrowLeftIcon from '../components/ArrowLeft';
@@ -30,7 +31,8 @@ export default function Compte({navigation}: {navigation: any}) {
       nom : data.message.nom,
       prenom : data.message.prenom,
       client:true,
-      vendeur_id: ""
+      vendeur_id: "",
+      data: data.message
     })
 
     setisLoadedProprietaire(true)
@@ -201,6 +203,9 @@ export default function Compte({navigation}: {navigation: any}) {
               
             </View>
 
+            <TouchableOpacity onPress={ () => navigation.navigate('edit_adresse', {
+              ...proprietaire
+            })}>
             <View
               style={{
                 borderRadius: 15,
@@ -234,17 +239,25 @@ export default function Compte({navigation}: {navigation: any}) {
               </Text>
               
             </View>
+            </TouchableOpacity>
 
           </View>
 
           {/* Welcome text */}
         </ScrollView>
+        <TouchableOpacity onPress={ () => {
+        
+            navigation.navigate('edit_client', {
+              ...proprietaire
+            })
+          
+        }}>
         <View
                 style={{
                   display: 'flex',
                   flexDirection: 'row',
                   justifyContent: 'flex-end',
-                  position:'relative',
+                  position:'absolute',
                   bottom:10,
                   right:10
                 }}>
@@ -257,6 +270,7 @@ export default function Compte({navigation}: {navigation: any}) {
                   <EditIcon />
                 </View>
               </View>
+        </TouchableOpacity>
       </SafeAreaView>
     </View>
   );

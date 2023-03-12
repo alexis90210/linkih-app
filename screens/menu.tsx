@@ -76,7 +76,7 @@ function MenuScreen({navigation}: {navigation: any}) {
             }}>
             {/* Mon compte */}
            
-            <TouchableOpacity
+          { !isVendeur && <TouchableOpacity
               style={{
                 display: 'flex',
                 flexDirection: 'row',
@@ -97,9 +97,97 @@ function MenuScreen({navigation}: {navigation: any}) {
               <Text style={{fontSize: 16, marginVertical: 10, color: '#000',fontFamily: CustomFont.Poppins}}>
                 Mon compte
               </Text>
-            </TouchableOpacity>
+            </TouchableOpacity>}
 
             {/*  Mon etablissement */}
+
+            {isVendeur && (<TouchableOpacity
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                borderTopWidth:1,
+                borderColor: '#9c702b20',
+                borderStyle:'solid',
+                justifyContent: 'flex-start',
+                gap: 10,
+                alignItems: 'center',
+                backgroundColor: '#fff',
+                paddingHorizontal: 10,
+              }}
+              onPress={() => {
+               
+              }}>
+              <BillIcon color={couleurs.primary} />
+              <Text style={{fontSize: 16, marginVertical: 10, color: '#000',fontFamily: CustomFont.Poppins}}>
+                Mes prestations
+              </Text>
+            </TouchableOpacity>)}
+
+            {isVendeur && (<TouchableOpacity
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                borderTopWidth:1,
+                borderColor: '#9c702b20',
+                borderStyle:'solid',
+                justifyContent: 'flex-start',
+                gap: 10,
+                alignItems: 'center',
+                backgroundColor: '#fff',
+                paddingHorizontal: 10,
+              }}
+              onPress={() => {
+               
+              }}>
+              <BillIcon color={couleurs.primary} />
+              <Text style={{fontSize: 16, marginVertical: 10, color: '#000',fontFamily: CustomFont.Poppins}}>
+                Categorie
+              </Text>
+            </TouchableOpacity>)}
+
+            {isVendeur && (<TouchableOpacity
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                borderTopWidth:1,
+                borderColor: '#9c702b20',
+                borderStyle:'solid',
+                justifyContent: 'flex-start',
+                gap: 10,
+                alignItems: 'center',
+                backgroundColor: '#fff',
+                paddingHorizontal: 10,
+              }}
+              onPress={() => {
+               
+              }}>
+              <BillIcon color={couleurs.primary} />
+              <Text style={{fontSize: 16, marginVertical: 10, color: '#000',fontFamily: CustomFont.Poppins}}>
+                Horaire
+              </Text>
+            </TouchableOpacity>)}
+
+            {isVendeur && (<TouchableOpacity
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                borderTopWidth:1,
+                borderColor: '#9c702b20',
+                borderStyle:'solid',
+                justifyContent: 'flex-start',
+                gap: 10,
+                alignItems: 'center',
+                backgroundColor: '#fff',
+                paddingHorizontal: 10,
+              }}
+              onPress={() => {
+               
+              }}>
+              <BillIcon color={couleurs.primary} />
+              <Text style={{fontSize: 16, marginVertical: 10, color: '#000',fontFamily: CustomFont.Poppins}}>
+                Gallerie
+              </Text>
+            </TouchableOpacity>)}
           
             {isVendeur && (<TouchableOpacity
               style={{

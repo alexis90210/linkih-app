@@ -146,7 +146,15 @@ export default function PersonnalisationReservationCreneau({
     },
   ];
 
-  
+  // selected date
+  const [ selectedDate, setDate ] = useState( '' );
+
+  // handler
+  const _setDate = (date: any) => {
+    console.log( date.toLocalString() );
+    
+    setDate( date.toLocalString() );
+  };
 
   return (
     <View>
@@ -186,6 +194,7 @@ export default function PersonnalisationReservationCreneau({
           dateNumberStyle={{color: couleurs.white}}
           dateNameStyle={{color: couleurs.white}}
           iconContainer={{flex: 0.1}}
+          onDateSelected={date => _setDate(date)}
         />
 
         {/* main */}
@@ -194,127 +203,124 @@ export default function PersonnalisationReservationCreneau({
           style={{
             backgroundColor: '#f6f6f6f6',
           }}>
-            <Text style={{borderTopWidth:1, borderBottomWidth: 1, borderColor:'#ddd', backgroundColor:'couleurs.white', padding:10,marginVertical:0, textAlign:'center'}}>MATIN</Text>
-          <View style={{marginVertical: 10, paddingHorizontal: 10}}>
+          {selectedDate != '' && (
+            <View style={{marginVertical: 10, paddingHorizontal: 10}}>
+              <Text
+                style={{
+                  borderTopWidth: 1,
+                  borderBottomWidth: 1,
+                  borderColor: '#ddd',
+                  backgroundColor: 'couleurs.white',
+                  padding: 10,
+                  marginVertical: 0,
+                  textAlign: 'center',
+                }}>
+                MATIN
+              </Text>
+
+              <View
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  marginTop: 20,
+                  gap: 10,
+                  flexDirection: 'row',
+                  flexWrap: 'wrap',
+                }}>
+                {hours_matin.map((h, i) => (
+                  <TouchableOpacity
+                    onPress={() =>
+                      navigation.navigate('bilan_reservation', {
+                        props: route.params.props,
+                        creneau: {
+                          date: selectedDate,
+                          heure: h.hour,
+                        },
+                      })
+                    }>
+                    <Text
+                      key={i}
+                      style={{
+                        borderWidth: 1,
+                        borderColor: '#ddd',
+                        borderRadius: 30,
+                        padding: 10,
+                        paddingHorizontal: 20,
+                      }}>
+                      {h.hour}
+                    </Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+
+              <Text
+                style={{
+                  borderTopWidth: 1,
+                  borderBottomWidth: 1,
+                  borderColor: '#ddd',
+                  backgroundColor: 'couleurs.white',
+                  padding: 10,
+                  marginVertical: 20,
+                  textAlign: 'center',
+                }}>
+                MIDI + APRES MIDI
+              </Text>
+
+              <View
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  marginTop: 20,
+                  gap: 10,
+                  flexDirection: 'row',
+                  flexWrap: 'wrap',
+                }}>
+                {hours_apresmidi.map((h, i) => (
+                  <TouchableOpacity
+                    onPress={() =>
+                      navigation.navigate('bilan_reservation', {
+                        props: route.params.props,
+                        creneau: {
+                          date: selectedDate,
+                          heure: h.hour,
+                        },
+                      })
+                    }>
+                    <Text
+                      key={i}
+                      style={{
+                        borderWidth: 1,
+                        borderColor: '#ddd',
+                        borderRadius: 30,
+                        padding: 10,
+                        paddingHorizontal: 20,
+                      }}>
+                      {h.hour}
+                    </Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+            </View>
+          )}
+
+          {selectedDate == '' && (
             <View
               style={{
                 display: 'flex',
-                justifyContent: 'center',
-                marginTop: 20,
-                gap: 10,
                 flexDirection: 'row',
-                flexWrap: 'wrap',
-              }}>
-              {hours_matin.map((h, i) => (
-                <Text
-                  key={i}
-                  style={{
-                    borderWidth: 1,
-                    borderColor: '#ddd',
-                    borderRadius: 30,
-                    padding: 10,
-                    paddingHorizontal: 20,
-                  }}>
-                  {h.hour}
-                </Text>
-              ))}
-            </View>
-
-            <Text style={{borderTopWidth:1, borderBottomWidth: 1, borderColor:'#ddd', backgroundColor:'couleurs.white', padding:10,marginVertical:20, textAlign:'center'}}>MIDI + APRES MIDI</Text>
-
-            <View
-              style={{
-                display: 'flex',
                 justifyContent: 'center',
-                marginTop: 20,
-                gap: 10,
-                flexDirection: 'row',
-                flexWrap: 'wrap',
+                height: 300,
+                width: '100%',
+                marginTop: 200,
               }}>
-              {hours_apresmidi.map((h, i) => (
-                <Text
-                  key={i}
-                  style={{
-                    borderWidth: 1,
-                    borderColor: '#ddd',
-                    borderRadius: 30,
-                    padding: 10,
-                    paddingHorizontal: 20,
-                  }}>
-                  {h.hour}
-                </Text>
-              ))}
+              <Text style={{fontSize: 15, textAlign: 'center'}}>
+                {'Veuillez selectionner une date \npour continuer'}
+              </Text>
             </View>
-          </View>
+          )}
 
           {/* Welcome text */}
         </ScrollView>
-
-        <View
-          style={{
-            display: 'flex',
-            justifyContent: 'flex-start',
-            flexDirection: 'column',
-            backgroundColor: couleurs.white,
-            borderTopWidth: 1,
-            borderTopColor: '#ddd',
-            padding: 10,
-          }}>
-          <View
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              flexDirection: 'row',
-              padding: 10,
-            }}>
-            <Text style={{alignSelf: 'center', fontFamily: CustomFont.Poppins}}>
-              Lundi 06 mars 2022 a 02h30
-            </Text>
-            <Text
-              style={{
-                alignSelf: 'center',
-                fontFamily: CustomFont.Poppins,
-                color: couleurs.primary,
-              }}>
-              50 $
-            </Text>
-          </View>
-          <View
-            style={{
-              alignItems: 'center',
-              backgroundColor: couleurs.primary,
-              borderRadius: 30,
-              paddingHorizontal: 30,
-              width: '100%',
-              height: 40,
-            }}>
-            <TouchableOpacity
-              style={{
-                paddingHorizontal: 10,
-                position: 'relative',
-                bottom: -3,
-                display: 'flex',
-                justifyContent: 'flex-start',
-                alignItems: 'center',
-                flexDirection: 'row',
-                flexWrap: 'nowrap',
-              }}
-              onPress={() =>
-                navigation.navigate('personnalisation_reservation_creneau')
-              }>
-              <Text
-                style={{
-                  textAlign: 'center',
-                  padding: 5,
-                  fontSize: 14,
-                  color: couleurs.white,
-                  fontFamily: CustomFont.Poppins,
-                }}>
-                SUIVANT
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
       </SafeAreaView>
     </View>
   );

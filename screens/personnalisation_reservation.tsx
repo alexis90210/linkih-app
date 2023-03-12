@@ -257,6 +257,14 @@ export default function PersonnalisationReservation({
                       {row.subtitle}
                     </Text>
                   </View>
+                  <View style={{
+                      display: 'flex',
+                      justifyContent: 'flex-start',
+                      flexDirection: 'row',
+                      alignItems:'center',
+                      gap:10
+                    }}>
+                    <Text style={{fontFamily: CustomFont.Poppins, color:couleurs.primary}}>{row.price}</Text>
                   <BouncyCheckbox
                     size={20}
                     fillColor={couleurs.primary}
@@ -264,8 +272,19 @@ export default function PersonnalisationReservation({
                     iconStyle={{borderColor: couleurs.primary}}
                     innerIconStyle={{borderWidth: 2}}
                     textStyle={{fontFamily: CustomFont.Poppins}}
-                    onPress={(isChecked: boolean) => {}}
+                    onPress={(isChecked: boolean) => {
+                      if (isChecked) {
+                        navigation.navigate('personnalisation_reservation_creneau', {
+                          props:{
+                            prestation: route.params.props,
+                            detail_prestation: row
+                            
+                          }
+                        })
+                      }
+                    }}
                   />
+                  </View>
                 </View>
               ))}
             </View>
@@ -273,56 +292,6 @@ export default function PersonnalisationReservation({
 
           {/* Welcome text */}
         </ScrollView>
-
-        <View
-          style={{
-            display: 'flex',
-            justifyContent: 'flex-start',
-            flexDirection: 'column',
-            backgroundColor:couleurs.white, 
-            borderTopWidth:1,
-            borderTopColor:'#ddd',
-            padding:10
-          }}>
-          <Text style={{alignSelf: 'center', fontFamily: CustomFont.Poppins}}>
-            Duree de la prestation : 02h30
-          </Text>
-          <View
-                    style={{
-                      alignItems: 'center',
-                      backgroundColor: couleurs.primary,
-                      borderRadius: 30,
-                      paddingHorizontal:30,
-                      width: '100%',
-                      height: 40,
-
-                    }}>
-                    <TouchableOpacity
-                      style={{
-                        paddingHorizontal: 10,
-                        position: 'relative',
-                        bottom: -3,
-                        display: 'flex',
-                        justifyContent: 'flex-start',
-                        alignItems: 'center',
-                        flexDirection: 'row',
-                        flexWrap:'nowrap'
-                      }}
-                      onPress={() => navigation.navigate('personnalisation_reservation_creneau')}>
-                      
-                      <Text
-                        style={{
-                          textAlign: 'center',
-                          padding: 5,
-                          fontSize: 14,
-                          color: couleurs.white,
-                          fontFamily: CustomFont.Poppins,
-                        }}>
-                        CONTINUER
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
-        </View>
       </SafeAreaView>
     </View>
   );

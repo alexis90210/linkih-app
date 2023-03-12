@@ -14,25 +14,73 @@ import {
 } from 'react-native';
 
 import GetLocation from 'react-native-get-location';
-
 import ShopIcon from '../components/shop';
 import SearchIcon from '../components/search';
-import WorldIcon from '../components/world';
 import CloseIcon from '../components/close';
 import AccountIcon from '../components/account';
 import RdvIcon from '../components/rdv';
 import FilterIcon from '../components/filter';
-import {CustomFont, couleurs} from '../components/color';
+import { CustomFont, couleurs } from '../components/color';
 import MapIcon from '../components/map';
 import axios from 'axios';
 import ApiService from '../components/api/service';
-import {categories, sous_categories} from '../components/api/categories';
+import storage from '../components/api/localstorage';
 
 function Main({navigation}: {navigation: any}) {
+  
+  // GET USER CONNECTED
+  const [userConnectedRole, SetUserRole] = useState('')
+
+  storage.load({
+    key: 'userconnected', // Note: Do not use underscore("_") in key!
+    id: 'userconnected', // Note: Do not use underscore("_") in id!
+  }).then( data => {
+
+    SetUserRole(data.role)
+        
+  })
+  .catch(error => console.log(error)
+  );
+
+
+  // LOAD CATEGORIES
+  const [sous_categories, setCategories] = useState([]);
+  const [isLoadedCategorie, setLoadedCategorie] = useState(false);
+
+  const loadCategories = () => {
+    axios({
+      method: 'POST',
+      url: ApiService.API_URL_GET_CATEGORIES,
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response: {data: any}) => {
+        var api = response.data;
+        if (api.code == 'success') {
+          setLoadedCategorie(true)
+          setCategories(api.message);
+        }
+        if (api.code == 'error') {
+          Alert.alert('', 'Erreur survenue');
+        }
+      })
+      .catch((error: any) => {
+        console.log(error);
+        Alert.alert('', 'Erreur Network');
+      });
+  };
+
+  if ( !isLoadedCategorie ) loadCategories()
+
+  // USER POSITION
   const [myPosition, SetMyPosition] = useState({
     latitude: 0,
     longitude: 0,
   });
+
+  // GET USER POSITION
   const getUserPosition = () => {
     GetLocation.getCurrentPosition({
       enableHighAccuracy: true,
@@ -45,12 +93,6 @@ function Main({navigation}: {navigation: any}) {
           latitude: Number(location.latitude),
           longitude: Number(location.longitude),
         });
-
-        // let url = 'http://maps.googleapis.com/maps/api/geocode/json?latlng='+location.latitude+','+location.longitude+'&sensor=true&key=' + ApiService.GEOCODE_KEY
-        // axios.get(url)
-        // .then( cities => {
-        //   console.log(cities);
-        // })
       })
       .catch(error => {
         const {code, message} = error;
@@ -58,6 +100,7 @@ function Main({navigation}: {navigation: any}) {
       });
   };
 
+  //  NAVIGATE TO A NEW SCREEN
   const goTo = (screen: any, params: any) => {
     getUserPosition();
     setTimeout(() => {
@@ -71,77 +114,9 @@ function Main({navigation}: {navigation: any}) {
     setActiveTab(tabName);
   };
 
-  // Ville
-  const [modalVisibleVille, setModalVisibleVille] = useState(false);
-  const [currentVille, setCurrentVille] = useState({name: ''});
-
-  const Ville = [
-    {name: 'Brazzaville', flag: 'https://www.countryflags.io/AF/flat/64.png'},
-    {name: 'Pointe-noire', flag: 'https://www.countryflags.io/AL/flat/64.png'},
-    {name: 'Nkayi', flag: 'https://www.countryflags.io/DZ/flat/64.png'},
-    // add more Ville here
-  ];
-
-  const handleOpenModalVille = () => {
-    setModalVisibleVille(true);
-  };
-
-  const handleCloseModalVille = () => {
-    setModalVisibleVille(false);
-  };
-
-  const selectVille = (item: any) => {
-    setCurrentVille(item);
-    handleCloseModalVille();
-  };
-
-  const VilleList = () => {
-    const renderItem = ({item}: {item: any}) => (
-      <View>
-        <TouchableOpacity onPress={() => selectVille(item)}>
-          <View
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
-              marginVertical: 10,
-              paddingHorizontal: 18,
-              gap: 10,
-            }}>
-            <WorldIcon />
-            <Text
-              style={{
-                color: 'rgba(100,100,100,1)',
-                fontFamily: CustomFont.Poppins,
-              }}>
-              {item.name}
-            </Text>
-          </View>
-        </TouchableOpacity>
-        <View style={{height: 1, overflow: 'hidden', paddingHorizontal: 10}}>
-          <View
-            style={{
-              height: 1,
-              borderWidth: 1,
-              borderColor: couleurs.primary,
-              borderStyle: 'dashed',
-            }}></View>
-        </View>
-      </View>
-    );
-
-    return (
-      <FlatList
-        data={Ville}
-        renderItem={renderItem}
-        keyExtractor={(item, index) => index.toString()}
-      />
-    );
-  };
-
   // Categories
   const [modalVisibleCategories, setModalVisibleCategories] = useState(false);
-  const [currentCategorie, setCurrentCategorie] = useState('');
+  const [currentCategorie, setCurrentCategorie] = useState<any>(null);
 
   const handleOpenModalCategories = () => {
     setModalVisibleCategories(true);
@@ -173,7 +148,7 @@ function Main({navigation}: {navigation: any}) {
               style={{
                 fontFamily: CustomFont.Poppins,
               }}>
-              {item}
+              {item.nom}
             </Text>
           </View>
         </TouchableOpacity>
@@ -199,11 +174,12 @@ function Main({navigation}: {navigation: any}) {
     );
   };
 
-  // etablissement
-  const [modalVisibleEtablissement, setModalVisibleEtablissement] =
-    useState(false);
+  // LISTE DES ETABLISSEMENT
+
+  const [modalVisibleEtablissement, setModalVisibleEtablissement] = useState(false);
   const [currentEtablissement, setCurrentEtablissement] = useState({nom: ''});
   const [etablissements, setEtablissements] = useState([]);
+
 
   const loadEtablissements = () => {
     axios({
@@ -221,14 +197,12 @@ function Main({navigation}: {navigation: any}) {
           setEtablissements(api.message);
         }
         if (api.code == 'error') {
-          Alert.alert('Erreur', api.message, [
-            {text: 'OK', onPress: () => null},
-          ]);
+          Alert.alert('Erreur', api.message);
         }
       })
       .catch((error: any) => {
         console.log(error);
-        Alert.alert('Erreur', error, [{text: 'OK', onPress: () => null}]);
+        Alert.alert('Erreur', error);
       });
   };
 
@@ -293,93 +267,23 @@ function Main({navigation}: {navigation: any}) {
   // SEARCH SALON BY REGION + CATEGORIE
 
   const searchSalon = () => {
-    axios({
-      method: 'POST',
-      url: ApiService.API_URL_GET_VENDEURS,
-      data: JSON.stringify({
-        pays: 'Ascension Island', // currentVille,
-        categorie: currentCategorie,
-      }),
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
+
+    navigation.navigate('resultat_recherche', {
+      title: 'Resultat recherche',
+      currentCategorie: currentCategorie.nom,
+      activateSearch:true
     })
-      .then(response => {
-        if (response.data.code == 'success') {
-          if (response.data.message.length > 0) {
-            Alert.alert('', response.data.message.length + ' resultat trouve', [
-              {
-                text: 'Consultez ici',
-                onPress: () =>
-                  // goTo('map', {
-                  //   ...myPosition,
-                  //   recherche: response.data.message,
-                  // }),
-                  navigation.navigate('resultat_recherche', {
-                    title: 'Les etablissements',
-                  })
-              },
-            ]);
-          } else {
-            Alert.alert('Message', "Aucun resultat n'a ete trouve", [
-              {text: 'OK', onPress: () => null},
-            ]);
-          }
-        } else {
-          Alert.alert('', 'Erreur survenue', [
-            {text: 'OK', onPress: () => null},
-          ]);
-        }
-      })
-      .catch(error => {
-        Alert.alert('', 'Erreur Network', [{text: 'OK', onPress: () => null}]);
-      });
+
   };
 
   // SEARCH BY ETAB
   const searchOnlybYName = () => {
-    axios({
-      method: 'POST',
-      url: ApiService.API_URL_GET_VENDEURS,
-      data: JSON.stringify({
-        etablissement: currentEtablissement.nom,
-      }),
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
+
+    navigation.navigate('resultat_recherche', {
+      title: 'Resultat recherche',
+      currentEtablissement: currentEtablissement.nom,
+      activateSearch:true
     })
-      .then(response => {
-        if (response.data.code == 'success') {
-          if (response.data.message.length > 0) {
-            Alert.alert('', response.data.message.length + ' resultat trouve', [
-              {
-                text: 'Consultez ici',
-                onPress: () =>
-                  // goTo('map', {
-                  //   ...myPosition,
-                  //   recherche: response.data.message,
-                  // }),
-                  navigation.navigate('resultat_recherche', {
-                    title: 'Les etablissements',
-                  })
-              },
-            ]);
-          } else {
-            Alert.alert('Message', "Aucun resultat n'a ete trouve", [
-              {text: 'OK', onPress: () => null},
-            ]);
-          }
-        } else {
-          Alert.alert('', 'Erreur survenue', [
-            {text: 'OK', onPress: () => null},
-          ]);
-        }
-      })
-      .catch(error => {
-        Alert.alert('', 'Erreur Network', [{text: 'OK', onPress: () => null}]);
-      });
   };
 
 
@@ -505,43 +409,7 @@ function Main({navigation}: {navigation: any}) {
                     alignItems: 'flex-start',
                     width: '100%',
                   }}>
-                  <View
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      justifyContent: 'flex-start',
-                      alignItems: 'flex-start',
-                      paddingTop: 20,
-                      width: '100%',
-                    }}>
-                    <Text
-                      style={{
-                        textAlign: 'center',
-                        color: '#000',
-                        fontSize: 15,
-                        opacity: 0.85,
-                        fontFamily: CustomFont.Poppins,
-                      }}>
-                      Ville / Region
-                    </Text>
-                    <TextInput
-                      onPressIn={handleOpenModalVille}
-                      value={currentVille.name}
-                      placeholderTextColor={'rgba(100,100,100,.7)'}
-                      placeholder="Selectionnez votre region"
-                      style={{
-                        backgroundColor: 'transparent',
-                        borderBottomWidth: 1,
-                        borderBottomColor: couleurs.primaryLight,
-                        color: couleurs.primary,
-                        width: '100%',
-                        fontWeight: '600',
-                        padding: 10,
-                        fontSize: 15,
-                        fontFamily: CustomFont.Poppins,
-                      }}></TextInput>
-                  </View>
-
+                  
                   <View
                     style={{
                       display: 'flex',
@@ -563,7 +431,7 @@ function Main({navigation}: {navigation: any}) {
                     </Text>
                     <TextInput
                       onPressIn={handleOpenModalCategories}
-                      value={currentCategorie}
+                      value={currentCategorie.nom}
                       placeholderTextColor={'rgba(100,100,100,.7)'}
                       placeholder="Selectionnez une categorie"
                       style={{
@@ -716,94 +584,6 @@ function Main({navigation}: {navigation: any}) {
           </View>
         </View>
       </ScrollView>
-
-      {/* MODAL VILLE */}
-
-      <Modal visible={modalVisibleVille} transparent={true}>
-        <View
-          style={{
-            flex: 1,
-            backgroundColor: 'rgba(0, 0, 0, 0.3)',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <View
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              backgroundColor: '#fff',
-              width: '90%',
-              borderRadius: 15,
-              paddingHorizontal: 10,
-            }}>
-            <Text
-              style={{
-                padding: 15,
-                fontSize: 15,
-                paddingTop: 30,
-                paddingBottom: 20,
-                fontWeight: 'bold',
-                color: 'rgba(0,0,0,.6)',
-              }}>
-              Selectionnez une ville
-            </Text>
-            <View style={{width: '100%', paddingHorizontal: 10}}>
-              <View
-                style={[
-                  {
-                    width: '100%',
-                    height: 45,
-                    paddingHorizontal: 20,
-                    backgroundColor: couleurs.primaryLight,
-                    borderRadius: 50,
-                    display: 'flex',
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    gap: 10,
-
-                    marginBottom: 20,
-                  },
-                ]}>
-                <SearchIcon color={couleurs.secondary} />
-                <TextInput
-                  placeholderTextColor={'rgba(100,100,100,.7)'}
-                  placeholder="Recherchez..."
-                  style={{
-                    backgroundColor: 'transparent',
-                    borderRadius: 50,
-                    color: couleurs.primary,
-                    fontFamily: CustomFont.Poppins,
-                    flex: 1,
-                  }}></TextInput>
-              </View>
-
-              <VilleList />
-
-              <View style={{padding: 15}}>
-                <TouchableOpacity
-                  onPress={handleCloseModalVille}
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    gap: 10,
-                    justifyContent: 'flex-start',
-                  }}>
-                  <CloseIcon color={couleurs.secondary} />
-                  <Text
-                    style={{
-                      color: 'rgba(100,100,100,.8)',
-                      marginVertical: 10,
-                      fontFamily: CustomFont.Poppins,
-                    }}>
-                    Quitter
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
-        </View>
-      </Modal>
 
       {/* MODAL CATEGORIE */}
       <Modal visible={modalVisibleCategories} transparent={true}>

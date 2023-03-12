@@ -495,7 +495,7 @@ export default function AutreEtablissement({
                 }}>
                 {[1, 1, 1, 1, 1, 1, 1].map((row, key) => (
                   <View
-                    key={Math.random()}
+                    key={key}
                     style={{
                       display: 'flex',
                       flexDirection: 'row',

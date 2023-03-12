@@ -34,6 +34,10 @@ import Reabonnement from './screens/reabonnement';
 import ConfirmationCompteScreen from './screens/confirmation_screen';
 import PersonnalisationReservation from './screens/personnalisation_reservation';
 import PersonnalisationReservationCreneau from './screens/personnalisation_reservation_creneau';
+import EditClientScreen from './screens/_edit_client';
+import EditAdresse from './screens/_edit_adresse';
+import BilanReservation from './screens/_bilan_reservation';
+import RdvClient from './screens/rdv_client';
 
 
 const Stack = createNativeStackNavigator();
@@ -447,6 +451,22 @@ export default function App(): JSX.Element {
           }}
         />
 
+        {/* espace autre etablissement */}
+        <Stack.Screen
+          name="edit_client"
+          component={EditClientScreen}
+          options={{
+            title: 'Edition compte',
+            headerShadowVisible: false,
+            headerTitleStyle: {fontSize: 18, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
+            headerTintColor:couleurs.primary,
+            headerShown: true,
+            presentation: 'modal',
+            animationTypeForReplace: 'push',
+            animation: 'slide_from_right',
+          }}
+        />
+
         {/* Menu */}
         <Stack.Screen
           name="menu"
@@ -462,6 +482,56 @@ export default function App(): JSX.Element {
             animation: 'slide_from_left',
           }}
         />
+
+
+        {/* EditAdresse */}
+        <Stack.Screen
+          name="edit_adresse"
+          component={EditAdresse}
+          options={{
+            title: 'Selectionnez l\'addresse',
+            headerShadowVisible: false,
+            headerTitleStyle: {fontSize: 18, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
+            headerTintColor:couleurs.primary,
+            headerShown: false,
+            presentation: 'modal',
+            animationTypeForReplace: 'push',
+            animation: 'slide_from_left',
+          }}
+        />
+
+        {/* BilanReservation */}
+        <Stack.Screen
+          name="bilan_reservation"
+          component={BilanReservation}
+          options={{
+            title: 'Bilan reservation',
+            headerShadowVisible: false,
+            headerTitleStyle: {fontSize: 18, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
+            headerTintColor:couleurs.primary,
+            headerShown: false,
+            presentation: 'modal',
+            animationTypeForReplace: 'push',
+            animation: 'slide_from_left',
+          }}
+        />
+
+        {/* RdvClient */}
+        <Stack.Screen
+          name="rdv_client"
+          component={RdvClient}
+          options={{
+            title: 'rdv client',
+            headerShadowVisible: false,
+            headerTitleStyle: {fontSize: 18, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
+            headerTintColor:couleurs.primary,
+            headerShown: false,
+            presentation: 'modal',
+            animationTypeForReplace: 'push',
+            animation: 'slide_from_left',
+          }}
+        />
+
 
         {/* end */} 
       </Stack.Navigator>

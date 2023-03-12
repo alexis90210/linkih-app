@@ -24,6 +24,7 @@ import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import {AirbnbRating} from 'react-native-ratings';
 import {sous_categories} from '../components/api/categories';
 import {ImageSlider} from 'react-native-image-slider-banner';
+import GetLocation from 'react-native-get-location';
 // ResultatRechercheScreen
 export default function ResultatRechercheScreen({
   navigation,
@@ -32,7 +33,7 @@ export default function ResultatRechercheScreen({
   navigation: any;
   route: any;
 }) {
-  var title = 'Ma recherche';
+  var title = route.params.title;  
 
   const [etablissements, setEtablissements] = useState([]);
   const [isLoading, setLoading] = useState(false);
@@ -70,7 +71,132 @@ export default function ResultatRechercheScreen({
       });
   };
 
-  if (!isLoading) loadEtablissements();
+    // SEARCH SALON BY REGION + CATEGORIE
+
+    const searchByCategorie = () => {
+
+      console.log(route.params.currentCategorie);
+      
+
+      axios({
+        method: 'POST',
+        url: ApiService.API_URL_GET_VENDEURS,
+        data: JSON.stringify({
+          categorie: route.params.currentCategorie,
+        }),
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      })
+        .then(response => {
+          if (response.data.code == 'success') {
+            if (response.data.message.length > 0) {
+              setLoading(true);
+              setEtablissements( response.data.message )
+              console.log('loaded from search : by cat :' , response.data.message.length);
+            } else {
+              Alert.alert('Message', "Aucun resultat n'a ete trouve", [
+                {text: 'OK', onPress: () => null},
+              ]);
+            }
+          } else {
+            Alert.alert('', 'Erreur survenue', [
+              {text: 'OK', onPress: () => null},
+            ]);
+          }
+        })
+        .catch(error => {
+          Alert.alert('', 'Erreur Network', [{text: 'OK', onPress: () => null}]);
+        });
+    };
+  
+    // SEARCH BY ETAB
+    const searchByEtab = () => {
+
+      console.log(route.params.currentEtablissement);
+      
+      axios({
+        method: 'POST',
+        url: ApiService.API_URL_GET_VENDEURS,
+        data: JSON.stringify({
+          etablissement: route.params.currentEtablissement,
+        }),
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      })
+        .then(response => {
+          if (response.data.code == 'success') {
+            if (response.data.message.length > 0) {
+              setLoading(true);
+              setEtablissements( response.data.message )
+             console.log('loaded from search : by etab : ' , response.data.message.length);
+            } else {
+              Alert.alert('Message', "Aucun resultat n'a ete trouve", [
+                {text: 'OK', onPress: () => null},
+              ]);
+            }
+          } else {
+            Alert.alert('', 'Erreur survenue', [
+              {text: 'OK', onPress: () => null},
+            ]);
+          }
+        })
+        .catch(error => {
+          Alert.alert('', 'Erreur Network', [{text: 'OK', onPress: () => null}]);
+        });
+    };
+
+  
+    if (!isLoading) {
+      if ( route.params?.activateSearch ) {
+        if (route.params.currentCategorie != undefined) {
+          searchByCategorie()
+        }
+        if (route.params.currentEtablissement != undefined) {
+          searchByEtab()
+        }
+
+                
+      } else {
+       loadEtablissements();
+      }
+    }
+
+  
+    // user position
+    const [myPosition, SetMyPosition] = useState({
+      latitude: 0,
+      longitude: 0,
+    });
+    const getUserPosition = () => {
+      GetLocation.getCurrentPosition({
+        enableHighAccuracy: true,
+        timeout: 15000,
+      })
+        .then(location => {
+          console.log(location);
+  
+          SetMyPosition({
+            latitude: Number(location.latitude),
+            longitude: Number(location.longitude),
+          });
+  
+        })
+        .catch(error => {
+          const {code, message} = error;
+          console.warn(code, message);
+        });
+    };
+
+    if ( myPosition.longitude == 0 ) {
+      getUserPosition()
+    }
+  
+
+
 
   const distance = (lat1: any, lon1: any, lat2: any, lon2: any) => {
     const R = 6371; // rayon de la Terre en kilomètres
@@ -87,19 +213,26 @@ export default function ResultatRechercheScreen({
 
     const d = R * c; // distance en kilomètres
 
-    return d;
+    if ( d < 1) {
+      return (d * 1000).toFixed(0)  + ' m'
+    }
+
+    return d.toFixed(2) + ' km';
   };
 
-  const LoadDistance = (data: any) => {
+  const LoadDistance = (etab: any) => {
+
+
     let d = distance(
-      Number(data.data.latitude),
-      Number(data.data.longitude),
-      Number(route.params?.latitude),
-      Number(route.params?.longitude),
-    ).toFixed(2);
+      Number(etab.etab.latitude),
+      Number(etab.etab.longitude),
+      Number(myPosition.latitude),
+      Number(myPosition.longitude),
+    )
+
     return (
       <Text style={{fontWeight: '600', fontSize: 15, color: couleurs.primary}}>
-        {d} km
+        {d} 
       </Text>
     );
   };
@@ -111,9 +244,8 @@ export default function ResultatRechercheScreen({
     navigation: any;
     data: any;
   }) => {
-    const DATA = [sous_categories[0], sous_categories[1], sous_categories[2]];
-
-    const Item = ({title}: {title: any}) => (
+    
+    const Item = ({prestation}: {prestation: any}) => (
       <>
         <View
           style={{
@@ -124,7 +256,7 @@ export default function ResultatRechercheScreen({
           <Text
             style={{fontFamily: CustomFont.Poppins, fontSize: 15, width: 200}}
             numberOfLines={1}>
-            {title}
+            {prestation.nom}
           </Text>
           <Text
             style={{
@@ -132,7 +264,7 @@ export default function ResultatRechercheScreen({
               fontSize: 15,
               color: couleurs.primary,
             }}>
-            {Math.random().toFixed(3)}€
+            {prestation.prix}
           </Text>
         </View>
         <View style={{height: 1, overflow: 'hidden', paddingHorizontal: 10}}>
@@ -164,7 +296,6 @@ export default function ResultatRechercheScreen({
             justifyContent: 'flex-start',
             backgroundColor: '#fff',
             width: '100%',
-            height: 380,
             marginRight: 10,
           }}>
           <View
@@ -215,7 +346,10 @@ export default function ResultatRechercheScreen({
                     color: '#000',
                   }}>
                   Restaurant . $$ .{' '}
-                  <Text style={{color: couleurs.primary}}>5000m</Text>
+                  <Text style={{color: couleurs.primary}}>
+
+                    <LoadDistance etab={data}/>
+                  </Text>
                 </Text>
                 <Text
                   style={{
@@ -228,8 +362,8 @@ export default function ResultatRechercheScreen({
                   <Text style={{color: 'green'}}>Ouvert</Text> . Ferme a 01:00
                 </Text>
 
-                {DATA.map((row: any, key) => (
-                  <Item key={key} title={row} />
+                {data.prestations && data.prestations.map((row: any, key:any) => (
+                  <Item key={key} prestation={row} />
                 ))}
 
                 <View
@@ -299,7 +433,7 @@ export default function ResultatRechercheScreen({
                         alignItems: 'center',
                         flexDirection: 'row',
                       }}
-                      onPress={() => Linking.openURL('tel:2522334444')}>
+                      onPress={() => Linking.openURL(`tel:${data.mobile}`)}>
                       <Image
                         source={require('../assets/images/telephone.png')}
                         style={{width: 18, height: 18}}

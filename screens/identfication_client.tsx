@@ -3,11 +3,9 @@ import React from 'react';
 import {
   SafeAreaView,
   ScrollView,
-  StyleSheet,
   Text,
   View,
   TouchableOpacity,
-  PixelRatio,
   TextInput,
   Alert,
 } from 'react-native';
@@ -28,7 +26,7 @@ export default function IdentificationClientScreen({
     password: '',
   };
 
-  if( route.params?.login.length > 0 ) {
+  if( route.params?.login && route.params?.login.length > 0 ) {
     data.identifiant = route.params?.login
   }
 
@@ -105,17 +103,12 @@ export default function IdentificationClientScreen({
               },
             });
 
-            Alert.alert('Succes', "Authentification reussie", [        
-              {text: 'Mon compte', onPress: () => {
-                
+          
                 navigation.navigate('main', {
                   utilisateur_id: response.data.id,
                   isProprietaire:false
                 })
       
-              }},
-            ]);
-
             
           })
           .catch((error) => {
