@@ -2,9 +2,9 @@ export default class ApiService {
   
   // BASE API URL
   static API_URL = 'http://192.168.1.89:8000/api/v1/';     // IP HOME
-  // static API_URL = 'http://192.168.1.93:8000/api/v1/';     // IP WORK 
+  // static API_URL = 'http://192.168.1.93:8000/api/v1/';        // IP WORK 
   // static API_URL = 'http://192.168.127.179:8000/api/v1/';  // IP MY PHONE
-  // static API_URL = 'http://192.168.100.17:8000/api/v1/';      // IP MS HOUSE
+  // static API_URL = 'http://192.168.100.17:8000/api/v1/';   // IP MS HOUSE
     
   // OTHER CONFIG
   static GEOCODE_KEY = ""; 
@@ -12,6 +12,7 @@ export default class ApiService {
 
   // CREATION
   static API_URL_CREATE_UTILISATEUR = this.API_URL + 'add/utilisateur';
+  static API_URL_ADD_VENDEUR_PRESTATION = this.API_URL + 'add/vendeur/prestation';
 
   // UPDATE
   static API_URL_EDIT_UTILISATEUR = this.API_URL + 'edit/utilisateur';
@@ -31,5 +32,5 @@ export default class ApiService {
   static API_URL_GET_ABONNEMENT =   this.API_URL + 'abonnement/vendeur';
   static API_URL_ADD_ABONNEMENT_VENDEUR =   this.API_URL + 'add/abonnement/vendeur';
   static API_URL_CONFIRM_RDV =   this.API_URL + 'edit/rendez-vous';
-  static API_URL_GET_GALLERIE = this.API_URL + '' // en cours
+  static API_URL_GET_PRODUIT =   this.API_URL + 'get/vendeur/prestation';
 }

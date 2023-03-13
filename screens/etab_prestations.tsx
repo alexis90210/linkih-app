@@ -46,14 +46,13 @@ export default function MesPrestations({
  //   GET GALLERIE
  const [PrestationsVendeur, setPrestationsVendeur] = useState([]);
  const [isLoadedPrestationsVendeur, setLoadedPrestationsVendeur] = useState(false);
-
+ 
  const loadPrestationsVendeur = () => {
    axios({
      method: 'POST',
-     url: '', //ApiService.,
+     url: ApiService.API_URL_GET_PRODUIT,
      data:JSON.stringify({
-       vendeur_id: userConnected.id,
-        // date: date
+       vendeur_id: userConnected.id
      }),
      headers: {
        Accept: 'application/json',
@@ -64,14 +63,14 @@ export default function MesPrestations({
 
        var api = response.data;
        
+       console.log(api);
+       
        if (api.code == 'success') {
-        setLoading(false)
+         setLoading(false)
          setLoadedPrestationsVendeur(true)
          setPrestationsVendeur(api.message);
        }
-       if (api.code == 'error') {
-         Alert.alert('', 'Erreur survenue');
-       }
+
      })
      .catch((error: any) => {
        console.log(error);
@@ -79,9 +78,7 @@ export default function MesPrestations({
      });
  };
 
-//  if ( !isLoadedPrestationsVendeur ) loadPrestationsVendeur()
-
-
+  if ( !isLoadedPrestationsVendeur ) loadPrestationsVendeur()
 
   return (
     <View>
@@ -120,6 +117,43 @@ export default function MesPrestations({
             backgroundColor: '#f6f6f6f6',
           }}>
           <View style={{marginHorizontal: 12, marginVertical: 10}}>
+
+          {PrestationsVendeur.map( (row:any, key:any) => (
+            <View
+            key={key}
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'space-between',
+              paddingVertical: 16,
+              gap: 10,
+              width: '100%',
+              paddingHorizontal: 20,
+              borderRadius:10,
+              backgroundColor: '#eee',
+              marginBottom:10
+            }}>
+            <View
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'flex-start',
+                gap: 6,
+                flex: 1,
+                width:'100%'
+              }}>
+            
+              <Text style={{fontSize:18}}>{row.produit}</Text>
+              <Text style={{color: couleurs.dark, alignSelf:'flex-start', fontSize: 15}}>
+                Duree de la prestation : {row.duree}
+                </Text>
+
+                <Text style={{color: couleurs.primary, fontSize:15, alignSelf:'flex-end'}}>
+                Prix : {row.prix}
+                </Text>
+            </View>
+          </View>
+          ))}
 
             {isLoading && <View style={{width:'100%', height:200, marginTop:100, display:'flex', flexDirection:'row', justifyContent:'center'}}>
                 <ActivityIndicator size={'large'}></ActivityIndicator>

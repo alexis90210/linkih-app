@@ -315,7 +315,7 @@ export default function AutreEtablissement({
           {/* Banner Image */}
           <View style={{paddingHorizontal: 12, marginTop:5, width: '100%'}}>
             <Image
-              source={require('../assets/images/1.jpg')}
+              source={VendeurData.logo ? {uri:'data:image/png;base64,' + VendeurData.logo} : require('../assets/images/1.jpg')}
               style={{
                 height: 200,
                 width: '100%',

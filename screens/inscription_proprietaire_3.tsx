@@ -15,6 +15,8 @@ import ImagePicker from 'react-native-image-crop-picker';
 import ApiService from '../components/api/service';
 import axios from 'axios';
 import ArrowLeftIcon from '../components/ArrowLeft';
+import RNFS from 'react-native-fs';
+
 
 // InscriptionProprietaire3
 export default function InscriptionProprietaire3({
@@ -27,39 +29,54 @@ export default function InscriptionProprietaire3({
   var proprietaire = route.params;
 
   const [photoCover, setPhotoCover] = useState('');
-  const [photoCoverImage, setPhotoCoverImage] = useState('');
+  const [photOnBase64, setphotOnBase64] = useState('');
+  const [photoCoverImage, setPhotoCoverImage] = useState<any>({});
   const [isLoading, setLoading] = useState(false)
 
+  const [imageLink, setImageLink] = useState('')
+
+  // open picker
   const openImagePickerWithCrop = () => {
     ImagePicker.openPicker({
-      width: 900,
-      height: 400,
+      width: 600,
+      height: 200,
       cropping: true,
+      mediaType: 'photo'
     }).then(image => {
       console.log(image);
       setPhotoCover(image.path);
       setPhotoCoverImage(image as never);
+      return RNFS.readFile(image.path, 'base64');
+    }).then(imageBase64 => {
+      // Send the image to the server using axios
+      setphotOnBase64(imageBase64)
     });
   };
 
+
+  // Submit proprietaire
   const submitSaveProprietaire = () => {
 
-    setLoading(true)
+    setLoading(true)    
 
     axios({
       method: 'POST',
       url: ApiService.API_URL_CREATE_UTILISATEUR,
-      data: JSON.stringify(proprietaire),
+      data: JSON.stringify({
+        ...proprietaire,
+        photo:photOnBase64
+      }),
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
       })
       .then((response: {data: any}) => {
-        console.log(response.data);
-      
+
+        console.log(response.data);      
 
         var api = response.data;
+        
         console.log(api);
 
         setLoading(false)

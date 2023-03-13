@@ -396,7 +396,7 @@ export default function Map({
                     justifyContent: 'flex-start',
                   }}>
                   <Image
-                    source={require('../assets/images/cover.jpg')}
+                    source={marker.logo ? {uri:'data:image/png;base64,' + marker.logo} : require('../assets/images/cover.jpg')}
                     style={{width: '100%', height: 100}}
                   />
 

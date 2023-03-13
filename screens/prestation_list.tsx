@@ -16,6 +16,7 @@ import ArrowLeftIcon from '../components/ArrowLeft';
 import ArrowRightIcon from '../components/ArrowRight';
 import axios from 'axios';
 import ApiService from '../components/api/service';
+import storage from '../components/api/localstorage';
 
 // ConfigurationDefaultCategorie
 export default function ConfigurationDefaultCategorie({
@@ -28,8 +29,28 @@ export default function ConfigurationDefaultCategorie({
   // LOAD CATEGORIES
   const [sous_categories, setCategories] = useState([]);
   const [selectedPrestation, setSelectedPrestation] = useState<any>({});
+  const [sessionEtab, setessionEtab] = useState<any>({});
   const [selectedPrestationPrix, setSelectedPrestationPrix] = useState('');
+  const [selectedDuree, setSelectedDuree] = useState('');
+  const [selectedProduit, setSelectedProduit] = useState('');
   const [isLoadedCategorie, setLoadedCategorie] = useState(false);
+
+
+  storage
+    .load({
+      key: 'userconnected', // Note: Do not use underscore("_") in key!
+      id: 'userconnected', // Note: Do not use underscore("_") in id!
+    })
+    .then(data => {
+
+      if ( data.role != 'ROLE_VENDEUR') {
+        navigation.navigate('identification_proprietaire')
+      }
+      
+      setessionEtab(data.etablissement[0]);
+    })
+    .catch(error => console.log(error));
+
 
   const loadCategories = () => {
     axios({
@@ -61,6 +82,45 @@ export default function ConfigurationDefaultCategorie({
 
   if (!isLoadedCategorie) loadCategories();
   // get and save configuration
+
+
+  const savePrestation = () => {
+    var json = JSON.stringify({
+      produit: selectedProduit,
+      prix: selectedPrestationPrix,
+      duree:selectedDuree,
+      sous_categorie_id: selectedPrestation.sous_categorie_id,
+      vendeur_id: sessionEtab.id
+    })
+
+    console.log(json);
+    
+    axios({
+      method: 'POST',
+      url: ApiService.API_URL_ADD_VENDEUR_PRESTATION,
+      data: json,
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response: {data: any}) => {
+        var api = response.data;
+
+        console.log(api);
+        
+        if (api.code == 'success') {
+          navigation.navigate('mes_prestations')
+        }
+        if (api.code == 'error') {
+          Alert.alert('', 'Erreur survenue');
+        }
+      })
+      .catch((error: any) => {
+        console.log(error);
+        Alert.alert('', 'Erreur Network');
+      });
+  }
 
   return (
     <>
@@ -169,6 +229,44 @@ export default function ConfigurationDefaultCategorie({
                 width: '100%',
                 marginTop: 20,
               }}>
+
+              <View
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'flex-start',
+                  alignItems: 'flex-start',
+                }}>
+                <Text
+                  style={{
+                    textAlign: 'center',
+                    color: '#000',
+                    fontSize: 15,
+                    height: 30,
+                    opacity: 0.85,
+                    marginTop:14,
+                    fontFamily: CustomFont.Poppins,
+                  }}>
+                  Produit
+                </Text>
+                <TextInput
+                  defaultValue={selectedProduit}
+                  onChangeText={input => setSelectedProduit(input) }
+                  placeholder='Entrez un produit'
+                  style={{
+                    backgroundColor: 'transparent',
+                    borderBottomWidth: 1,
+                    borderBottomColor: '#E2C6BB',
+                    color: couleurs.primary,
+                    width: '100%',
+                    fontWeight: '600',
+                    padding: 0,
+                    height:40,
+                    fontFamily: CustomFont.Poppins,
+                  }}></TextInput>
+              </View>
+              
+              
               <View
                 style={{
                   display: 'flex',
@@ -207,6 +305,42 @@ export default function ConfigurationDefaultCategorie({
 
               <View
                 style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'flex-start',
+                  alignItems: 'flex-start',
+                }}>
+                <Text
+                  style={{
+                    textAlign: 'center',
+                    color: '#000',
+                    fontSize: 15,
+                    height: 30,
+                    opacity: 0.85,
+                    marginTop:14,
+                    fontFamily: CustomFont.Poppins,
+                  }}>
+                  Duree
+                </Text>
+                <TextInput
+                  defaultValue={selectedDuree}
+                  onChangeText={input => setSelectedDuree(input) }
+                  placeholder='Entrez la duree'
+                  style={{
+                    backgroundColor: 'transparent',
+                    borderBottomWidth: 1,
+                    borderBottomColor: '#E2C6BB',
+                    color: couleurs.primary,
+                    width: '100%',
+                    fontWeight: '600',
+                    padding: 0,
+                    height:40,
+                    fontFamily: CustomFont.Poppins,
+                  }}></TextInput>
+              </View>
+
+              <View
+                style={{
                   alignItems: 'center',
                   backgroundColor: couleurs.primary,
                   borderRadius: 30,
@@ -219,7 +353,7 @@ export default function ConfigurationDefaultCategorie({
                     paddingHorizontal: 10,
                     width: '70%',
                   }}
-                  onPress={() => null}>
+                  onPress={() => savePrestation()}>
                   <Text
                     style={{
                       textAlign: 'center',

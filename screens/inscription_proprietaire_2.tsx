@@ -42,7 +42,7 @@ export default function InscriptionProprietaireScreen2({
   console.log(route.params);
 
   const [stepper, setStepper] = useState(0);
-  const [selectedCategorie, setSelectedCategorie] = useState([]);
+  const [selectedCategorie, setSelectedCategorie] = useState<any>({});
 
   // Horaire debut
   const [selectedHoraireOuvertureLundi, setSelectedHoraireOuvertureLundi] =
@@ -99,19 +99,38 @@ export default function InscriptionProprietaireScreen2({
     tiktok:''
   };
 
-  var mesCategories: {
-    key?: any;
-    value?: any;
-  }[] = [];
+    // LOAD CATEGORIES
+    const [sous_categories, setCategories] = useState([]);
+    const [isLoadedCategorie, setLoadedCategorie] = useState(false);
+  
+    const loadCategories = () => {
+      axios({
+        method: 'POST',
+        url: ApiService.API_URL_GET_CATEGORIES,
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      })
+        .then((response: {data: any}) => {
+          var api = response.data;
+          if (api.code == 'success') {
+            setLoadedCategorie(true)
+            setCategories(api.message);
+          }
+          if (api.code == 'error') {
+            Alert.alert('', 'Erreur survenue');
+          }
+        })
+        .catch((error: any) => {
+          console.log(error);
+          Alert.alert('', 'Erreur Network');
+        });
+    };
+  
+    if ( !isLoadedCategorie ) 
+      loadCategories()
 
-  categories.map((categorie, key) => {
-    categorie.sous_categorie.map((sous, index) => {
-      mesCategories.push({
-        key: index,
-        value: sous,
-      });
-    });
-  });
 
   var etablissement = route.params?.etablissement;
   etablissement.postcode = '';
@@ -136,7 +155,7 @@ export default function InscriptionProprietaireScreen2({
   const nextPage = () => {
     console.log(stepper);
 
-    if (stepper == 4) {
+    if (stepper == 3) {
       // formating horaire
 
       var horaires = [];
@@ -183,24 +202,17 @@ export default function InscriptionProprietaireScreen2({
         fermeture: selectedHoraireFermetureDimanche,
       });
 
-      console.log({
-        etablissement: etablissement,
-        categorie: selectedCategorie,
-        horaires: horaires,
-        social: social,
-      });
-
       // redirect to new route
       navigation.navigate('inscription_proprietaire_3', {
         etablissement: etablissement,
-        categorie: selectedCategorie,
+        categorie: selectedCategorie.sous_categorie_id,
         horaires: horaires,
         social: social,
       });
     } else {
       if (stepper == 0) {
         if (etablissement.sciem.length < 4) {
-          Alert.alert('', "Le SCIEM de l'entreprise est trop court", [
+          Alert.alert('', "Le SIRET de l'entreprise est trop court", [
             {text: 'OK', onPress: () => null},
           ]);
           return;
@@ -304,9 +316,8 @@ export default function InscriptionProprietaireScreen2({
                 fontFamily: CustomFont.Poppins,
               }}>
               {stepper == 0 && 'Information privees'}
-              {stepper == 2 && 'Categories'}
-              {stepper == 3 && "Heure d'ouverture"}
-              {stepper == 4 && 'Lien reseaux sociaux'}
+              {stepper == 2 && 'Choisir une categorie'}
+              {stepper == 3 && 'Lien reseaux sociaux'}
             </Text>
           </View>
         )}
@@ -444,6 +455,7 @@ export default function InscriptionProprietaireScreen2({
               </View>
             </View>
           )}
+
           {/* Adresse de l'etablissement */}
           {stepper == 1 && (
             <View style={{flex: 1}}>
@@ -623,28 +635,7 @@ export default function InscriptionProprietaireScreen2({
           {stepper == 2 && (
             <View>
               <View style={{marginHorizontal: 10}}>
-                <SelectList
-                  setSelected={(val: String) => {
-                    !selectedCategorie.includes(val as never)
-                      ? setSelectedCategorie(
-                          selectedCategorie.concat(val as never),
-                        )
-                      : null;
-                  }}
-                  data={mesCategories}
-                  save="value"
-                  onSelect={() => console.log(selectedCategorie)}
-                  fontFamily={CustomFont.Poppins}
-                  searchPlaceholder={'Liste des categories'}
-                  placeholder={'Selectionnez la categorie de votre etab...'}
-                  boxStyles={{
-                    borderColor: couleurs.primary,
-                    borderRadius: 20,
-                  }}
-                  dropdownTextStyles={{color: couleurs.dark}}
-                  dropdownStyles={{borderColor: couleurs.primary}}
-                />
-
+                
                 <View
                   style={{
                     display: 'flex',
@@ -652,172 +643,55 @@ export default function InscriptionProprietaireScreen2({
                     flexWrap: 'wrap',
                     gap: 10,
                     paddingHorizontal: 5,
-                    marginTop: 40,
+                    marginTop: 40
                   }}>
-                  {selectedCategorie.map((row, key) => (
-                    <View
-                      key={key}
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        gap: 4,
-                        backgroundColor: '#fff',
-                        padding: 5,
-                        paddingHorizontal: 15,
-                        borderRadius: 50,
-                        alignItems: 'center',
-                        width: 'auto',
-                        justifyContent: 'space-between',
-                      }}>
-                      <View
-                        style={{
-                          display: 'flex',
-                          flexDirection: 'column',
-                          gap: 3,
-                          backgroundColor: '#fff',
-                          padding: 6,
-                          borderRadius: 50,
-                        }}>
-                        <Text
-                          style={{
-                            color: '#000',
-                            fontFamily: CustomFont.Poppins,
-                          }}>
-                          {row}
-                        </Text>
-                      </View>
-                    </View>
-                  ))}
+                  
+                   {sous_categories.map( ( row:any , index:any) => (
+                     <TouchableOpacity key={index} onPress={() =>  {
+                      setSelectedCategorie( row ),
+                      setStepper(3)
+                     } }>
+                     <View
+                       style={{
+                         display: 'flex',
+                         flexDirection: 'row',
+                         gap: 4,
+                         backgroundColor: '#fff',
+                         padding: 5,
+                         paddingHorizontal: 15,
+                         borderRadius: 50,
+                         alignItems: 'center',
+                         width: 'auto',
+                         justifyContent: 'space-between',
+                       }}>
+                       <View
+                         style={{
+                           display: 'flex',
+                           flexDirection: 'column',
+                           gap: 3,
+                           backgroundColor: '#fff',
+                           padding: 6,
+                           borderRadius: 50,
+                         }}>
+                         <Text
+                           style={{
+                             color: '#000',
+                             fontFamily: CustomFont.Poppins,
+                           }}>
+                           {row.nom}
+                         </Text>
+                       </View>
+                     </View>
+                     </TouchableOpacity>
+                   ))}
+              
                 </View>
               </View>
             </View>
-          )}
-
-          {/* Heure d'ouverture */}
-          {stepper == 3 && (
-            <View>
-              <View
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  flexWrap: 'wrap',
-                  gap: 10,
-                  paddingHorizontal: 10,
-                  marginBottom: 10,
-                }}>
-                {planning.map((row, i) => (
-                  <>
-                    <View
-                      key={ i }
-                      style={{
-                        display: 'flex',
-                        justifyContent: 'flex-start',
-                        flexDirection: 'column',
-                      }}>
-                      <Text
-                        style={{
-                          fontFamily: CustomFont.Poppins,
-                          fontSize: 15,
-                          color: couleurs.dark,
-                        }}>
-                        {row}
-                      </Text>
-                      <View
-                        style={{
-                          display: 'flex',
-                          justifyContent: 'flex-start',
-                          gap: 60,
-                          flexDirection: 'row',
-                        }}>
-                        <View
-                          style={{
-                            display: 'flex',
-                            justifyContent: 'flex-start',
-                            gap: 2,
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                          }}>
-                          <BouncyCheckbox
-                            size={20}
-                            fillColor={couleurs.primary}
-                            unfillColor={couleurs.white}
-                            iconStyle={{borderColor: couleurs.primary}}
-                            innerIconStyle={{borderWidth: 2}}
-                            textStyle={{fontFamily: CustomFont.Poppins}}
-                            onPress={(isChecked: boolean) => {}}
-                          />
-                          <Text>Ouvert</Text>
-                        </View>
-
-                        <View
-                          style={{
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                            gap: 10,
-                            flexDirection: 'row',
-                          }}>
-                          <TouchableOpacity onPress={() => setVisible(true)}>
-                            <View
-                              style={{
-                                borderWidth: 1,
-                                borderRadius: 10,
-                                width: 120,
-                                height: 40,
-                                display: 'flex',
-                                justifyContent: 'center',
-                                gap: 5,
-                                flexDirection: 'row',
-                                borderColor: couleurs.primary,
-                              }}>
-                              <Text style={{position: 'relative', top: 9}}>
-                                00:00
-                              </Text>
-                            </View>
-                          </TouchableOpacity>
-
-                          <TouchableOpacity onPress={() => setVisible(true)}>
-                            <View
-                              style={{
-                                borderWidth: 1,
-                                borderRadius: 10,
-                                width: 120,
-                                height: 40,
-                                display: 'flex',
-                                justifyContent: 'center',
-                                gap: 5,
-                                flexDirection: 'row',
-                                borderColor: couleurs.primary,
-                              }}>
-                              <Text style={{position: 'relative', top: 9}}>
-                                00:00
-                              </Text>
-                            </View>
-                          </TouchableOpacity>
-                        </View>
-                      </View>
-                    </View>
-                    <View
-                      style={{
-                        height: 1,
-                        overflow: 'hidden',
-                        paddingHorizontal: 10,
-                      }}>
-                      <View
-                        style={{
-                          height: 1,
-                          borderWidth: 1,
-                          borderColor: couleurs.primary,
-                          borderStyle: 'dashed',
-                        }}></View>
-                    </View>
-                  </>
-                ))}
-              </View>
-            </View>
-          )}
+          )}       
 
           {/*  Lien reseaux sociaux */}
-          {stepper == 4 && (
+          {stepper == 3 && (
             <View>
               <View style={{padding: 10}}>
                 <View
@@ -938,8 +812,9 @@ export default function InscriptionProprietaireScreen2({
                     marginBottom: 10,
                     display: 'flex',
                     flexDirection: 'row',
+                    gap:10
                   }}>
-                  <Image source={require('../assets/social/tik-tok.png')} />
+                  <Image source={require('../assets/social/tik-tok.png')} style={{width:40, height:40}} />
                   <TextInput
                     style={{
                       color: couleurs.primary,
@@ -966,7 +841,7 @@ export default function InscriptionProprietaireScreen2({
               paddingHorizontal: 10,
               marginTop: 20,
             }}>
-            {stepper != 1 && (
+            {stepper != 1 && stepper != 2 && (
               <View
                 style={{
                   alignItems: 'center',
@@ -1020,28 +895,19 @@ export default function InscriptionProprietaireScreen2({
               </View>
 
               {/* IMAGE SVG GOES HERE */}
-              {stepper == 2 && (
+              {/* {stepper == 2 && (
                 <Image
                   source={require('../assets/images/success.png')}
-                  style={{height: 250, width: '100%'}}
+                  style={{height: 180, width: '60%', alignSelf:'center', borderRadius:50, marginTop:30}}
                 />
-              )}
+              )} */}
             </>
           )}
 
           {stepper != 1 && <View style={{marginVertical: 20}}></View>}
         </ScrollView>
 
-        {/* MODAL TIME PICKER */}
-        <TimePickerModal
-          visible={visible}
-          onDismiss={onDismiss}
-          onConfirm={onConfirm}
-          hours={12}
-          minutes={14}
-          inputFontSize={16}
-        />
-      </SafeAreaView>
+        </SafeAreaView>
     </>
   );
 }

@@ -57,6 +57,8 @@ export default function MonEtablissement({
         navigation.navigate('identification_proprietaire')
       }
 
+
+
       
       setEtablissement(data.etablissement[0]);
       setProprietaire(data.utilisateur[0]);
@@ -162,9 +164,9 @@ export default function MonEtablissement({
             backgroundColor: '#f6f6f6f6',
           }}>
           {/* Banner Image */}
-          <View style={{paddingHorizontal: 12, marginTop: 15, width: '100%'}}>
+          <View style={{width: '100%'}}>
             <Image
-              source={require('../assets/images/cover.jpg')}
+              source={etablissement.logo ? {uri:'data:image/png;base64,' + etablissement.logo} : require('../assets/images/cover.jpg')}
               style={{
                 height: 200,
                 width: '100%',
@@ -181,7 +183,7 @@ export default function MonEtablissement({
               borderRadius: 15,
               width: '100%',
               position: 'absolute',
-              top: 145,
+              top: 130,
               left: 0,
               paddingHorizontal: 24,
               zIndex: 10,
@@ -427,7 +429,7 @@ export default function MonEtablissement({
                   flexWrap: 'wrap',
                   gap: 10,
                 }}>
-                {[1, 2, , 5, 3].map((row, key) => (
+                {[].map((row, key) => (
                   <ImageModal
                     key={key}
                     swipeToDismiss={true}

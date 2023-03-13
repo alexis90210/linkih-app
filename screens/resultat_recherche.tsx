@@ -308,7 +308,7 @@ export default function ResultatRechercheScreen({
               justifyContent: 'flex-start',
             }}>
             <Image
-              source={require('../assets/images/cover.jpg')}
+              source={data.logo ? {uri:'data:image/png;base64,' + data.logo} :require('../assets/images/cover.jpg')}
               style={{width: '100%', height: 100}}
             />
             <View
@@ -338,8 +338,18 @@ export default function ResultatRechercheScreen({
                     fontFamily: CustomFont.Poppins,
                     fontSize: 13,
                     color: couleurs.dark,
+                    alignContent:'center'
                   }}>
-                  3,6 ( 250 )
+                   <AirbnbRating
+                          reviewSize={4}
+                          reviewColor={couleurs.primary}
+                          showRating={false}
+                          count={4}
+                          reviews={['Terrible', 'Bad', 'Good', 'Very Good']}
+                          onFinishRating={(rate:any) => console.log(rate)}
+                          defaultRating={data.note}
+                          size={14}
+                        /> ({data.note})
                 </Text>
                 <Text
                   style={{
