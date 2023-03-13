@@ -9,6 +9,8 @@ import {
   Image,
   Linking,
   Modal,
+  Alert,
+  Pressable,
 } from 'react-native';
 import EditIcon from '../components/Edit';
 import RdvIcon from '../components/rdv';
@@ -21,6 +23,8 @@ import MapIcon from '../components/map';
 import ImageModal from 'react-native-image-modal';
 import EyeIcon from '../components/eye';
 import AddIcon from '../components/add';
+import ApiService from '../components/api/service';
+import axios from 'axios';
 
 export default function MonEtablissement({
   route,
@@ -49,12 +53,11 @@ export default function MonEtablissement({
     })
     .then(data => {
 
-      console.log( data.role);
-      
       if ( data.role != 'ROLE_VENDEUR') {
         navigation.navigate('identification_proprietaire')
       }
 
+      
       setEtablissement(data.etablissement[0]);
       setProprietaire(data.utilisateur[0]);
       setLien_reseaux_sociaux(data.lien_reseaux_sociaux);
@@ -62,6 +65,64 @@ export default function MonEtablissement({
       setRendez_vous(data.rendez_vous);
     })
     .catch(error => console.log(error));
+
+
+    // LOAD ABONNEMENT
+  const [abonnement, setAbonnements] = useState<any>([]);
+  const [isLoadedAbonnement, setLoadedAbonnement] = useState(false);
+
+  const loadAbonnements = () => {
+    axios({
+      method: 'POST',
+      url: ApiService.API_URL_GET_ABONNEMENT,
+      data: JSON.stringify({
+        vendeur_id: etablissement.id
+      }),
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response: {data: any}) => {
+        var api = response.data;
+
+        console.log(api);
+        
+        if (api.code == 'success') {
+          setLoadedAbonnement(true)
+          setAbonnements(api.message);
+
+          if ( api.message.abonnement == '' ) {
+            setVisibleModalAbonnement(true)
+          }
+
+        }
+      })
+      .catch((error: any) => {
+        console.log(error);
+        Alert.alert('', 'Erreur Network');
+      });
+  };
+
+  if ( !isLoadedAbonnement ) loadAbonnements();
+
+
+  var les_abonnements:any = [
+    {
+      id:1,
+      title:'Abonnement mensuel',
+      type:'Mensuel',
+      prix:'€69.99/mo',
+      color: couleurs.primary
+    },
+    {
+      id:2,
+      title:'Abonnement Annuel',
+      type:'Annuel',
+      prix:'€839.88/an',
+      color: 'rgba(0,100,0,1)'
+    },
+  ]
 
   return (
     <View>
@@ -255,85 +316,7 @@ export default function MonEtablissement({
               </Text>
             </View>
 
-            {/* ABONNEMENT */}
-            <View
-              style={{
-                borderRadius: 15,
-                backgroundColor: couleurs.white,
-                borderWidth:1,
-                borderColor: couleurs.primary,
-                padding: 14,
-                width: '100%',
-                alignSelf: 'center',
-                shadowColor: 'gray',
-                marginTop: 10,
-              }}>
-              
-
-              <View style={{display: 'flex', justifyContent:'space-between', flexDirection:'row'}}>
-             <Text
-                style={{
-                  fontFamily: CustomFont.Poppins,
-                  fontSize: 15,
-                  paddingBottom: 12,
-                  color: '#000',
-                }}>
-                Mon abonnement
-              </Text>
-              <TouchableOpacity onPress={() => null}>
-                <EyeIcon color={couleurs.primary}/>
-              </TouchableOpacity>
-             </View>
-
-
-              
-
-              <View
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                }}>
-                <View
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'flex-start',
-                    flexDirection: 'row',
-                    gap: 10,
-                  }}>
-                  <Text
-                    style={{
-                      color: '#000',
-                      paddingVertical: 3,
-                      fontSize: 15,
-                      fontFamily: CustomFont.Poppins,
-                    }}>
-                    expire le
-                  </Text>
-                  <Text
-                    style={{
-                      color: couleurs.primary,
-                      paddingVertical: 3,
-                      fontSize: 15,
-                      fontFamily: CustomFont.Poppins,
-                    }}>
-                    xx-xx-xxxx
-                  </Text>
-                </View>
-              </View>
-              <Text
-                style={{
-                  color: '#000',
-                  paddingVertical: 3,
-                  opacity: 0.7,
-                  fontSize: 15,
-                  fontWeight: '600',
-                }}>
-                20 € TTC / mois
-              </Text>
-            </View>
-
+            
             {/* HORAIRE OUVERTURE */}
             <View
               style={{
@@ -545,33 +528,17 @@ export default function MonEtablissement({
             width:'100%',
             paddingVertical:7,
             gap: 30,
+            zIndex:100
           }}>
-          <TouchableOpacity
-            style={{
-              padding: 8,
-              backgroundColor: couleurs.primary,
-              borderRadius: 30,
-            }}
-            onPress={() => Linking.openURL('tel:2522334444')}>
-            <View
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                flexDirection: 'row',
-                justifyContent: 'flex-start',
-                gap: 5,
-              }}>
-              <EditIcon />
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity
+         
+          <Pressable
             style={{
               paddingHorizontal: 30,
               width: 230,
               backgroundColor: couleurs.primary,
               borderRadius: 30,
             }}
-            onPress={() => navigation.navigate('rdv', {rdvs: rendez_vous})}>
+            onPress={() => navigation.navigate('rdv')  }>
             <View
               style={{
                 display: 'flex',
@@ -593,7 +560,7 @@ export default function MonEtablissement({
                 Mes Rendez-vous
               </Text>
             </View>
-          </TouchableOpacity>
+          </Pressable>
         </View>
       </SafeAreaView>
 
@@ -624,22 +591,25 @@ export default function MonEtablissement({
             Achetez votre abonnement maintenant
           </Text>
 
-          <View
+          {
+            les_abonnements.map( (row:any,i:any) => (
+              <View
+              key={i}
             style={{
               borderWidth: 2,
               marginTop: 30,
-              borderColor: couleurs.primary,
+              borderColor: row.color,
               borderRadius: 20,
             }}>
             <View
               style={{
-                backgroundColor: couleurs.primary,
+                backgroundColor: row.color,
                 borderTopLeftRadius: 20,
                 borderTopRightRadius: 20,
                 paddingVertical: 10,
               }}>
               <Text style={{color: couleurs.white, alignSelf: 'center'}}>
-                Abonnement mensuel
+                {row.title}
               </Text>
             </View>
 
@@ -656,7 +626,7 @@ export default function MonEtablissement({
                   fontSize: 18,
                   fontWeight: '700',
                 }}>
-                Mensuel
+                {row.type}
               </Text>
               <View>
                 <Text
@@ -665,19 +635,7 @@ export default function MonEtablissement({
                     fontSize: 18,
                     fontWeight: '700',
                   }}>
-                  €69.99/mo
-                </Text>
-                <Text
-                  style={{
-                    color: couleurs.white,
-                    fontSize: 15,
-                    fontWeight: '400',
-                    textDecorationLine: 'line-through',
-                    textDecorationColor: couleurs.primary,
-                    textDecorationStyle:'solid',
-                    alignSelf:'flex-end'
-                  }}>
-                  €99.99/mo
+                  {row.prix}
                 </Text>
               </View>
             </View>
@@ -688,7 +646,7 @@ export default function MonEtablissement({
                 display: 'flex',
                 flexDirection: 'row',
                 justifyContent: 'center',
-                backgroundColor: couleurs.primary,
+                backgroundColor: row.color,
                 borderRadius: 30,
                 marginHorizontal:40
               }}>
@@ -697,7 +655,10 @@ export default function MonEtablissement({
                   paddingHorizontal: 10,
                   width: '80%',
                 }}
-                onPress={() => null}>
+                onPress={() => navigation.navigate('abonnement_activation', {
+                  ...row,
+                  vendeur_id: etablissement.id
+                })}>
                 <Text
                   style={{
                     textAlign: 'center',
@@ -715,98 +676,8 @@ export default function MonEtablissement({
             </View>
             
           </View>
-
-          <View
-            style={{
-              borderWidth: 2,
-              marginTop: 30,
-              borderColor: couleurs.primaryLight,
-              borderRadius: 20,
-            }}>
-            <View
-              style={{
-                backgroundColor: couleurs.primaryLight,
-                borderTopLeftRadius: 20,
-                borderTopRightRadius: 20,
-                paddingVertical: 10,
-              }}>
-              <Text style={{color: couleurs.dark, alignSelf: 'center'}}>
-                Abonnement Annuel
-              </Text>
-            </View>
-
-            <View
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                padding: 30,
-              }}>
-              <Text
-                style={{
-                  color: couleurs.primaryLight,
-                  fontSize: 18,
-                  fontWeight: '700',
-                }}>
-                Annuel
-              </Text>
-              <View>
-                <Text
-                  style={{
-                    color: couleurs.primaryLight,
-                    fontSize: 18,
-                    fontWeight: '700',
-                  }}>
-                  €839.88/an
-                </Text>
-                <Text
-                  style={{
-                    color: couleurs.primaryLight,
-                    fontSize: 15,
-                    fontWeight: '400',
-                    textDecorationLine: 'line-through',
-                    textDecorationColor: couleurs.primaryLight,
-                    textDecorationStyle:'solid',
-                    alignSelf:'flex-end'
-                  }}>
-                  €1199.88/an
-                </Text>
-              </View>
-            </View>
-
-            <View
-              style={{
-                marginBottom:20,
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'center',
-                backgroundColor: couleurs.primaryLight,
-                borderRadius: 30,
-                marginHorizontal:40
-              }}>
-              <TouchableOpacity
-                style={{
-                  paddingHorizontal: 10,
-                  width: '80%',
-                }}
-                onPress={() => null}>
-                <Text
-                  style={{
-                    textAlign: 'center',
-                    alignSelf: 'center',
-                    fontWeight: '500',
-                    color: couleurs.dark,
-                    padding: 10,
-                    paddingHorizontal: 20,
-                    fontSize: 14,
-                  }}>                   
-                    Commencez !
-                  
-                </Text>
-              </TouchableOpacity>              
-            </View>
-            
-          </View>
+            ))
+          }
 
         </View>
       </Modal>

@@ -115,14 +115,14 @@ function MenuScreen({navigation}: {navigation: any}) {
                 paddingHorizontal: 10,
               }}
               onPress={() => {
-               
+                navigation.navigate('mes_prestations')
               }}>
               <BillIcon color={couleurs.primary} />
               <Text style={{fontSize: 16, marginVertical: 10, color: '#000',fontFamily: CustomFont.Poppins}}>
                 Mes prestations
               </Text>
             </TouchableOpacity>)}
-
+{/* 
             {isVendeur && (<TouchableOpacity
               style={{
                 display: 'flex',
@@ -137,13 +137,13 @@ function MenuScreen({navigation}: {navigation: any}) {
                 paddingHorizontal: 10,
               }}
               onPress={() => {
-               
+               navigation.navigate('mes_categories')
               }}>
               <BillIcon color={couleurs.primary} />
               <Text style={{fontSize: 16, marginVertical: 10, color: '#000',fontFamily: CustomFont.Poppins}}>
-                Categorie
+                Mes Categories
               </Text>
-            </TouchableOpacity>)}
+            </TouchableOpacity>)} */}
 
             {isVendeur && (<TouchableOpacity
               style={{
@@ -159,7 +159,7 @@ function MenuScreen({navigation}: {navigation: any}) {
                 paddingHorizontal: 10,
               }}
               onPress={() => {
-               
+               navigation.navigate('mes_horaires')
               }}>
               <BillIcon color={couleurs.primary} />
               <Text style={{fontSize: 16, marginVertical: 10, color: '#000',fontFamily: CustomFont.Poppins}}>
@@ -167,7 +167,7 @@ function MenuScreen({navigation}: {navigation: any}) {
               </Text>
             </TouchableOpacity>)}
 
-            {isVendeur && (<TouchableOpacity
+            {/* {isVendeur && (<TouchableOpacity
               style={{
                 display: 'flex',
                 flexDirection: 'row',
@@ -181,15 +181,15 @@ function MenuScreen({navigation}: {navigation: any}) {
                 paddingHorizontal: 10,
               }}
               onPress={() => {
-               
+                navigation.navigate('ma_gallerie')
               }}>
               <BillIcon color={couleurs.primary} />
               <Text style={{fontSize: 16, marginVertical: 10, color: '#000',fontFamily: CustomFont.Poppins}}>
                 Gallerie
               </Text>
-            </TouchableOpacity>)}
+            </TouchableOpacity>)} */}
           
-            {isVendeur && (<TouchableOpacity
+            {/* {isVendeur && (<TouchableOpacity
               style={{
                 display: 'flex',
                 flexDirection: 'row',
@@ -209,7 +209,7 @@ function MenuScreen({navigation}: {navigation: any}) {
               <Text style={{fontSize: 16, marginVertical: 10, color: '#000',fontFamily: CustomFont.Poppins}}>
                 Reabonnement
               </Text>
-            </TouchableOpacity>)}
+            </TouchableOpacity>)} */}
 
            { isVendeur && ( <TouchableOpacity
               style={{

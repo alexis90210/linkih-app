@@ -39,6 +39,12 @@ import EditAdresse from './screens/_edit_adresse';
 import BilanReservation from './screens/_bilan_reservation';
 import RdvClient from './screens/rdv_client';
 import SimpleRdv from './screens/simple_rdv';
+import AbonnementActivation from './screens/abonnement';
+import Gallerie from './screens/etab_gallery';
+import MesHoraires from './screens/etab_horair';
+import MaCategorie from './screens/etab_categorie';
+import MesPrestations from './screens/etab_prestations';
+import ConfigurationDefaultCategorie from './screens/prestation_list';
 
 
 const Stack = createNativeStackNavigator();
@@ -549,6 +555,107 @@ export default function App(): JSX.Element {
             animation: 'slide_from_left',
           }}
         />
+
+          {/* AbonnementActivation */}
+          <Stack.Screen
+          name="abonnement_activation"
+          component={AbonnementActivation}
+          options={{
+            title: 'rdv client',
+            headerShadowVisible: false,
+            headerTitleStyle: {fontSize: 18, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
+            headerTintColor:couleurs.primary,
+            headerShown: false,
+            presentation: 'modal',
+            animationTypeForReplace: 'push',
+            animation: 'slide_from_left',
+          }}
+        />
+
+         {/* Gallerie */}
+         <Stack.Screen
+          name="ma_gallerie"
+          component={Gallerie}
+          options={{
+            title: 'Gallerie',
+            headerShadowVisible: false,
+            headerTitleStyle: {fontSize: 18, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
+            headerTintColor:couleurs.primary,
+            headerShown: false,
+            presentation: 'modal',
+            animationTypeForReplace: 'push',
+            animation: 'slide_from_left',
+          }}
+        />
+
+        {/* MesHoraires */}
+        <Stack.Screen
+          name="mes_horaires"
+          component={MesHoraires}
+          options={{
+            title: 'Mes Horaires',
+            headerShadowVisible: false,
+            headerTitleStyle: {fontSize: 18, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
+            headerTintColor:couleurs.primary,
+            headerShown: false,
+            presentation: 'modal',
+            animationTypeForReplace: 'push',
+            animation: 'slide_from_left',
+          }}
+        />
+
+
+        {/* MaCategorie */}
+        <Stack.Screen
+          name="mes_categories"
+          component={MaCategorie}
+          options={{
+            title: 'Mes Horaires',
+            headerShadowVisible: false,
+            headerTitleStyle: {fontSize: 18, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
+            headerTintColor:couleurs.primary,
+            headerShown: false,
+            presentation: 'modal',
+            animationTypeForReplace: 'push',
+            animation: 'slide_from_left',
+          }}
+        />
+
+        {/* MesPrestations */}
+        <Stack.Screen
+          name="mes_prestations"
+          component={MesPrestations}
+          options={{
+            title: 'Mes Horaires',
+            headerShadowVisible: false,
+            headerTitleStyle: {fontSize: 18, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
+            headerTintColor:couleurs.primary,
+            headerShown: false,
+            presentation: 'modal',
+            animationTypeForReplace: 'push',
+            animation: 'slide_from_left',
+          }}
+        />
+
+        {/* ConfigurationDefaultCategorie */}
+        <Stack.Screen
+          name="conf_default_categorie"
+          component={ConfigurationDefaultCategorie}
+          options={{
+            title: 'Choisir une prestation',
+            headerShadowVisible: false,
+            headerTitleStyle: {fontSize: 18, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
+            headerTintColor:couleurs.primary,
+            headerShown: false,
+            presentation: 'modal',
+            animationTypeForReplace: 'push',
+            animation: 'slide_from_left',
+          }}
+        />
+
+
+
+
 
 
         {/* end */} 

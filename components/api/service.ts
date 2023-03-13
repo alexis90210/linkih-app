@@ -28,4 +28,8 @@ export default class ApiService {
   static API_URL_GET_VENDEURS_HORAIRES =   this.API_URL + 'horaire/ouverture';
   static API_URL_GET_VENDEURS_SOUS_PRESTATIONS =   this.API_URL + 'sous/prestation';
   static API_URL_SAVE_RDV =   this.API_URL + 'add/rendez-vous';
+  static API_URL_GET_ABONNEMENT =   this.API_URL + 'abonnement/vendeur';
+  static API_URL_ADD_ABONNEMENT_VENDEUR =   this.API_URL + 'add/abonnement/vendeur';
+  static API_URL_CONFIRM_RDV =   this.API_URL + 'edit/rendez-vous';
+  static API_URL_GET_GALLERIE = this.API_URL + '' // en cours
 }
