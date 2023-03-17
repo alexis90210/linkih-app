@@ -17,6 +17,7 @@ import ArrowRightIcon from '../components/ArrowRight';
 import axios from 'axios';
 import ApiService from '../components/api/service';
 import storage from '../components/api/localstorage';
+import { Picker } from '@react-native-picker/picker';
 
 // ConfigurationDefaultCategorie
 export default function ConfigurationDefaultCategorie({
@@ -83,11 +84,14 @@ export default function ConfigurationDefaultCategorie({
   if (!isLoadedCategorie) loadCategories();
   // get and save configuration
 
+  // Select Devise
+  const [SelectedDevise, setSelectedDevise] = useState('$')
 
   const savePrestation = () => {
     var json = JSON.stringify({
       produit: selectedProduit,
       prix: selectedPrestationPrix,
+      devise: SelectedDevise,
       duree:selectedDuree,
       sous_categorie_id: selectedPrestation.sous_categorie_id,
       vendeur_id: sessionEtab.id
@@ -265,8 +269,7 @@ export default function ConfigurationDefaultCategorie({
                     fontFamily: CustomFont.Poppins,
                   }}></TextInput>
               </View>
-              
-              
+                            
               <View
                 style={{
                   display: 'flex',
@@ -301,6 +304,39 @@ export default function ConfigurationDefaultCategorie({
                     height:40,
                     fontFamily: CustomFont.Poppins,
                   }}></TextInput>
+
+                <Text
+                  style={{
+                    textAlign: 'center',
+                    color: '#000',
+                    fontSize: 15,
+                    height: 30,
+                    opacity: 0.85,
+                    marginTop:14,
+                    fontFamily: CustomFont.Poppins,
+                  }}>
+                  Device
+                </Text>
+
+                  <View
+                    style={{
+                      borderBottomWidth: 1,
+                      width: '100%',
+                      height: 40,
+                      borderBottomColor: '#E2C6BB',
+                      marginTop:10
+                    }}>
+                    <Picker
+                      style={{position: 'relative', bottom: 8,
+                      fontFamily: CustomFont.Poppins,}}
+                      selectedValue={SelectedDevise}
+                      onValueChange={(itemValue: any, itemIndex: any) =>
+                        setSelectedDevise(itemValue)
+                      }>
+                        <Picker.Item label={'Dollar ($)'} value={'$'} style={{ fontFamily: CustomFont.Poppins,fontSize: 15, color:couleurs.primary}} />
+                        <Picker.Item label={'Euro (€)'} value={'€'}  style={{ fontFamily: CustomFont.Poppins,fontSize: 15, color:couleurs.primary}} />
+                    </Picker>
+                  </View>
               </View>
 
               <View

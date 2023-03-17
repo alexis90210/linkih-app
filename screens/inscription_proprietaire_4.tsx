@@ -146,6 +146,19 @@ export default function InscriptionProprietaire4({navigation, route}: {navigatio
                 color: '#00000090',
                 opacity: 0.85,
                 fontFamily:CustomFont.Poppins,
+                fontSize: 15,
+                marginVertical: 13,
+                width:'80%',
+              }}>
+             Votre login est :  { route.params.api.login}
+            </Text>
+
+            <Text
+              style={{
+                textAlign: 'center',
+                color: '#00000090',
+                opacity: 0.85,
+                fontFamily:CustomFont.Poppins,
                 fontSize: 14,
                 marginVertical: 13,
                 width:'80%'

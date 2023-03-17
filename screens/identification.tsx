@@ -12,6 +12,7 @@ import {
   ImageBackground,
   Image,
   Pressable,
+  Dimensions,
 } from 'react-native';
 import ShopIcon from '../components/shop';
 import AccountIcon from '../components/account';
@@ -28,22 +29,23 @@ export default function IdentificationScreen({navigation}: {navigation: any}) {
       route: 'identification_client',
       props: 'ROLE_CLIENT',
       color: couleurs.primary,
-      bgColor: couleurs.primary
+      bgColor: couleurs.primary,
     },
     {
       icon: <ShopIcon color={couleurs.dark} />,
       title: 'Societe',
       route: 'identification_proprietaire',
-      props:'ROLE_SOCIETE',
+      props: 'ROLE_SOCIETE',
       color: couleurs.dark,
-      bgColor: couleurs.primaryLight
-    },{
+      bgColor: couleurs.primaryLight,
+    },
+    {
       icon: <ShopIcon color={couleurs.dark} />,
       title: 'Auto\nEntrepreuneur',
       route: 'identification_proprietaire',
-      props:'ROLE_AUTO_ENTREPREUNEUR',
+      props: 'ROLE_AUTO_ENTREPREUNEUR',
       color: couleurs.dark,
-      bgColor: couleurs.primaryLight
+      bgColor: couleurs.primaryLight,
     },
   ];
   return (
@@ -53,54 +55,56 @@ export default function IdentificationScreen({navigation}: {navigation: any}) {
           flex: 1,
           justifyContent: 'center',
           alignContent: 'center',
+          backgroundColor: '#f6f6f6',
         }}>
         <ScrollView>
           <Image
             source={require('../assets/images/1.jpg')}
             style={{
-              height: 200,
+              height: 260,
               width: '100%',
             }}
           />
 
-<View
-        style={{
-          borderRadius: 100,
-          backgroundColor: couleurs.primary,
-          padding: 10,
-          margin: 4,
-          position: 'absolute',
-          top: 10,
-          left: 10,
-        }}>
-        <Pressable
-          onPress={() =>
-            navigation.goBack()
-          }>
-          <ArrowLeftIcon color={'#fff'} />
-        </Pressable>
-      </View>
-      
+          <View
+            style={{
+              borderRadius: 100,
+              backgroundColor: couleurs.primary,
+              padding: 10,
+              margin: 4,
+              position: 'absolute',
+              top: 10,
+              left: 10,
+            }}>
+            <Pressable onPress={() => navigation.goBack()}>
+              <ArrowLeftIcon color={'#fff'} />
+            </Pressable>
+          </View>
+
           <View
             style={{
               flex: 1,
               padding: 10,
-              width: '100%',
-              height: '100%',
               display: 'flex',
               justifyContent: 'center',
-              backgroundColor: couleurs.white,
-              position:'relative',
-              marginTop:-20,
-              borderRadius:20,
+              backgroundColor: '#f6f6f6',
+              position: 'relative',
+              marginTop: 5,
+              borderRadius: 20,
             }}>
-            <View>
+            <View
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                marginVertical: 20,
+              }}>
               <View
                 style={{
                   display: 'flex',
                   flexDirection: 'row',
                   justifyContent: 'center',
-                  marginVertical:20,
+                  marginVertical: 20,
                 }}>
                 <Text
                   style={{
@@ -112,87 +116,83 @@ export default function IdentificationScreen({navigation}: {navigation: any}) {
                 </Text>
               </View>
 
-              <ScrollView horizontal={true}>
+              <ScrollView horizontal={true} style={{width: '100%'}}>
                 <View
                   style={{
                     display: 'flex',
                     flexDirection: 'row',
                     justifyContent: 'center',
                     alignItems: 'center',
-                    flexWrap: 'nowrap',
                     gap: 10,
                     padding: 10,
-                    // borderTopWidth:1,
-                    // borderBottomWidth:1,
-                    // borderStyle:'dashed',
-                    // borderColor:couleurs.primary
+                    alignSelf: 'center',
+                    width: Dimensions.get('window').width,
                   }}>
-                  {pack.map((row, key) =>(<TouchableOpacity
-                   key={key}
-                    style={{
-                      borderRadius: 15,
-                      paddingHorizontal: 10,
-                      backgroundColor: row.bgColor,
-                    
-                      padding: 18,
-                      width: 120,
-                      height: 140,
-                      display: 'flex',
-                      flexDirection: 'column',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}
-                    onPress={() =>
-                      navigation.navigate(row.route, {is:row.props})
-                    }>
-                    <View
+                  {pack.map((row, key) => (
+                    <TouchableOpacity
+                      key={key}
                       style={{
+                        borderRadius: 15,
+                        paddingHorizontal: 10,
+                        backgroundColor: row.bgColor,
+                        padding: 18,
+                        width: 120,
+                        height: 140,
                         display: 'flex',
                         flexDirection: 'column',
                         justifyContent: 'center',
                         alignItems: 'center',
-                        // padding:15,
-                        gap: 10,
-                      }}>
-                      {row.icon}
-                      <Text
+                      }}
+                      onPress={() =>
+                        navigation.navigate(row.route, {is: row.props})
+                      }>
+                      <View
                         style={{
-                          textAlign: 'center',
-                          color: key == 0 ? couleurs.white :couleurs.dark,
-                          fontWeight: 'normal',
-                          fontSize: 13,
-                          opacity: 0.85,
-                          fontFamily:CustomFont.Poppins
+                          display: 'flex',
+                          flexDirection: 'column',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          // padding:15,
+                          gap: 10,
                         }}>
-                        {row.title}
-                      </Text>
-                    </View>
-                  </TouchableOpacity>))}
+                        {row.icon}
+                        <Text
+                          style={{
+                            textAlign: 'center',
+                            color: key == 0 ? couleurs.white : couleurs.dark,
+                            fontWeight: 'normal',
+                            fontSize: 13,
+                            opacity: 0.85,
+                            fontFamily: CustomFont.Poppins,
+                          }}>
+                          {row.title}
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+                  ))}
                 </View>
               </ScrollView>
 
-              
-            </View>
-            
-          </View>
-
-          <View
+              <View
                 style={{
                   display: 'flex',
                   flexDirection: 'row',
                   justifyContent: 'center',
                   marginVertical: 30,
+                  paddingHorizontal:30
                 }}>
                 <Text
                   style={{
                     color: couleurs.dark,
-                    fontSize: 13,
-                    textAlign:'center',
+                    fontSize: 12,
+                    textAlign: 'center',
                     fontFamily: CustomFont.Poppins,
                   }}>
-                  {"Je veux plus d'informations par \n rapport a l'identification"}
+                  Je veux plus d'informations par rapport a l'identification
                 </Text>
               </View>
+            </View>
+          </View>
         </ScrollView>
       </SafeAreaView>
     </>

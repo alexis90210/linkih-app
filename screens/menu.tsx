@@ -122,28 +122,6 @@ function MenuScreen({navigation}: {navigation: any}) {
                 Mes prestations
               </Text>
             </TouchableOpacity>)}
-{/* 
-            {isVendeur && (<TouchableOpacity
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-                borderTopWidth:1,
-                borderColor: '#9c702b20',
-                borderStyle:'solid',
-                justifyContent: 'flex-start',
-                gap: 10,
-                alignItems: 'center',
-                backgroundColor: '#fff',
-                paddingHorizontal: 10,
-              }}
-              onPress={() => {
-               navigation.navigate('mes_categories')
-              }}>
-              <BillIcon color={couleurs.primary} />
-              <Text style={{fontSize: 16, marginVertical: 10, color: '#000',fontFamily: CustomFont.Poppins}}>
-                Mes Categories
-              </Text>
-            </TouchableOpacity>)} */}
 
             {isVendeur && (<TouchableOpacity
               style={{
@@ -189,7 +167,7 @@ function MenuScreen({navigation}: {navigation: any}) {
               </Text>
             </TouchableOpacity>)} */}
           
-            {/* {isVendeur && (<TouchableOpacity
+            {isVendeur && (<TouchableOpacity
               style={{
                 display: 'flex',
                 flexDirection: 'row',
@@ -209,7 +187,7 @@ function MenuScreen({navigation}: {navigation: any}) {
               <Text style={{fontSize: 16, marginVertical: 10, color: '#000',fontFamily: CustomFont.Poppins}}>
                 Reabonnement
               </Text>
-            </TouchableOpacity>)} */}
+            </TouchableOpacity>)}
 
            { isVendeur && ( <TouchableOpacity
               style={{

@@ -10,6 +10,7 @@ import {
   Alert,
   TouchableOpacity,
   ActivityIndicator,
+  Image,
 } from 'react-native';
 
 import ArrowLeftIcon from '../components/ArrowLeft';
@@ -17,7 +18,7 @@ import {CustomFont, couleurs} from '../components/color';
 import ApiService from '../components/api/service';
 import axios from 'axios';
 import storage from '../components/api/localstorage';
-import { Image } from 'react-native-svg';
+
 
 export default function MesPrestations({
   navigation,
@@ -91,11 +92,12 @@ export default function MesPrestations({
           style={{
             display: 'flex',
             flexDirection: 'row',
-            justifyContent: 'flex-start',
+            justifyContent: 'space-between',
             gap: 30,
             paddingVertical: 10,
             paddingHorizontal: 10,
             backgroundColor: couleurs.primary,
+            alignItems:'center'
           }}>
           <Pressable onPress={() => navigation.goBack()}>
             <ArrowLeftIcon color={couleurs.white} />
@@ -108,6 +110,13 @@ export default function MesPrestations({
             }}>
             Mes Prestations
           </Text>
+          <Pressable onPress={() => loadPrestationsVendeur()}>
+            <Text style={{
+              color:'#fff',
+              fontSize: 15,
+              fontFamily: CustomFont.Poppins
+            }}>Actualiser</Text>
+          </Pressable>
         </View>
 
         {/* main */}
@@ -130,7 +139,7 @@ export default function MesPrestations({
               width: '100%',
               paddingHorizontal: 20,
               borderRadius:10,
-              backgroundColor: '#eee',
+              backgroundColor: '#fff',
               marginBottom:10
             }}>
             <View
@@ -144,16 +153,24 @@ export default function MesPrestations({
               }}>
             
               <Text style={{fontSize:18}}>{row.produit}</Text>
-              <Text style={{color: couleurs.dark, alignSelf:'flex-start', fontSize: 15}}>
+              <Text style={{color: couleurs.dark, fontSize: 15}}>
                 Duree de la prestation : {row.duree}
                 </Text>
 
-                <Text style={{color: couleurs.primary, fontSize:15, alignSelf:'flex-end'}}>
+                <Text style={{color: couleurs.primary, fontSize:15}}>
                 Prix : {row.prix}
                 </Text>
             </View>
           </View>
           ))}
+                         
+            { PrestationsVendeur.length == 0 && 
+              <>
+                <Image source={require('../assets/images/vide.png')} style={{marginTop:150, width:150, height:150, alignSelf:'center'}} />
+                <Text style={{alignSelf:'center', fontFamily:CustomFont.Poppins, fontSize:15}}>Aucunes prestations</Text>
+              </>
+            }
+
 
             {isLoading && <View style={{width:'100%', height:200, marginTop:100, display:'flex', flexDirection:'row', justifyContent:'center'}}>
                 <ActivityIndicator size={'large'}></ActivityIndicator>

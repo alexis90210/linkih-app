@@ -1784,6 +1784,11 @@
   dependencies:
     "@sinonjs/commons" "^2.0.0"
 
+"@stripe/stripe-react-native@^0.25.0":
+  "integrity" "sha512-ZyOUzm1++cZqMWlkR4TKAgfWQ8gaxs1MOHd12fHTXufIUWCdGqSn5HLmZLsPof45O7wdwGROU06Od6D2ryspaQ=="
+  "resolved" "https://registry.npmjs.org/@stripe/stripe-react-native/-/stripe-react-native-0.25.0.tgz"
+  "version" "0.25.0"
+
 "@stripe/stripe-terminal-react-native@^0.0.1-beta.11":
   "integrity" "sha512-/8iHvqfmC/iffh9vgfeZLbLl+qSNb7u0dM2hsWQG7O7Wd63DtY4eiOIoXan+bPl3mHOoLN6opHLF+qFNBOn2OQ=="
   "resolved" "https://registry.npmjs.org/@stripe/stripe-terminal-react-native/-/stripe-terminal-react-native-0.0.1-beta.11.tgz"
@@ -3479,6 +3484,11 @@
   "resolved" "https://registry.npmjs.org/escape-string-regexp/-/escape-string-regexp-4.0.0.tgz"
   "version" "4.0.0"
 
+"escape-string-regexp@2.0.0":
+  "integrity" "sha512-UpzcLCXolUWcNu5HtVMHYdXJjArjsF9C0aNnquZYY4uW/Vu0miy5YoWvbV345HauVvcAUnpRuhMMcqTcGOY2+w=="
+  "resolved" "https://registry.npmjs.org/escape-string-regexp/-/escape-string-regexp-2.0.0.tgz"
+  "version" "2.0.0"
+
 "eslint-config-prettier@^8.5.0":
   "integrity" "sha512-bAF0eLpLVqP5oEVUFKpMA+NnRFICwn9X8B5jrR9FcqnYBuPbqWEjTEspPWMj5ye6czoSLDweCzSo3Ko7gGrZaA=="
   "resolved" "https://registry.npmjs.org/eslint-config-prettier/-/eslint-config-prettier-8.6.0.tgz"
@@ -4372,7 +4382,7 @@
     "has" "^1.0.3"
     "side-channel" "^1.0.4"
 
-"invariant@*", "invariant@^2.2.4":
+"invariant@*", "invariant@^2.2.4", "invariant@2.2.4":
   "integrity" "sha512-phJfQVBuaJM5raOpJjSfkiD6BpbCE4Ns//LaXl6wGYtUBY83nWS6Rf9tXm2e8VaK60JEjYldbPif/A2B1C2gNA=="
   "resolved" "https://registry.npmjs.org/invariant/-/invariant-2.2.4.tgz"
   "version" "2.2.4"
@@ -6771,6 +6781,14 @@
     "lodash.template" "^4.5.0"
     "prop-types" "^15.7.2"
     "yargs" "^16.1.1"
+
+"react-native-webview@^11.26.1":
+  "integrity" "sha512-hC7BkxOpf+z0UKhxFSFTPAM4shQzYmZHoELa6/8a/MspcjEP7ukYKpuSUTLDywQditT8yI9idfcKvfZDKQExGw=="
+  "resolved" "https://registry.npmjs.org/react-native-webview/-/react-native-webview-11.26.1.tgz"
+  "version" "11.26.1"
+  dependencies:
+    "escape-string-regexp" "2.0.0"
+    "invariant" "2.2.4"
 
 "react-native@*", "react-native@^0.0.0-0 || 0.60 - 0.71 || 1000.0.0", "react-native@>= 0.30.0", "react-native@>= 0.55.x", "react-native@>= 0.62", "react-native@>= 0.64.3", "react-native@>=0.40.0", "react-native@>=0.57", "react-native@>=0.59.9", "react-native@>=0.60", "react-native@>=0.60.0", "react-native@>=0.63.x", "react-native@>=0.64.3", "react-native@>=0.65.0", "react-native@0.71.2":
   "integrity" "sha512-ZSianM+j+09LoEdVIhrAP/uP8sQhT7dH6olCqM2xlpxmfCgA5NubsK6NABIuZiBlmmqjigyijm5Y/GhBIHDvEg=="

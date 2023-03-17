@@ -86,40 +86,6 @@ export default function MesHoraires({
     })
     .catch(error => console.log(error));
 
-  //   GET GALLERIE
-  const [gallerie, setGallerie] = useState([]);
-  const [isLoadedGallerie, setLoadedGallerie] = useState(false);
-
-  const loadGallerie = () => {
-    axios({
-      method: 'POST',
-      url: ApiService.API_URL_GET_GALLERIE,
-      data: JSON.stringify({
-        vendeur_id: userConnected.id,
-        // date: date
-      }),
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((response: {data: any}) => {
-        var api = response.data;
-
-        if (api.code == 'success') {
-          setLoading(false);
-          setLoadedGallerie(true);
-          setGallerie(api.message);
-        }
-        if (api.code == 'error') {
-          Alert.alert('', 'Erreur survenue');
-        }
-      })
-      .catch((error: any) => {
-        console.log(error);
-        Alert.alert('', 'Erreur Network');
-      });
-  };
 
   var hours_matin = [
     {
@@ -247,8 +213,6 @@ export default function MesHoraires({
     },
   ];
 
-  //  if ( !isLoadedGallerie ) loadGallerie()
-
   // Horaire debut
   const [selectedHoraireOuvertureLundi, setSelectedHoraireOuvertureLundi] =
     useState<any>(null);
@@ -345,9 +309,110 @@ export default function MesHoraires({
   };
 
   // SAVE HORAIRE
+
+  // console.log('........./////////', Horaires);
+  
    
   const saveHoraire = () => {
+    var final: { id: any; jour: any; heure_fermeture: any; heure_ouverture: any; }[] = []
+    Horaires.map( (row:any, key:any) => {
+      if (row.jour == 'Lundi') {
+        let jour = {
+          id: row.id,
+          jour: row.jour,
+          heure_fermeture: selectedHoraireFermetureLundi,
+          heure_ouverture: selectedHoraireOuvertureLundi
+        }
 
+        final.push(jour)
+      }
+
+      if (row.jour == 'Mardi') {
+        let jour = {
+          id: row.id,
+          jour: row.jour,
+          heure_fermeture: selectedHoraireFermetureMardi,
+          heure_ouverture: selectedHoraireOuvertureMardi
+        }
+
+        final.push(jour)
+      }
+
+      if (row.jour == 'Mercredi') {
+        let jour = {
+          id: row.id,
+          jour: row.jour,
+          heure_fermeture: selectedHoraireFermetureMercredi,
+          heure_ouverture: selectedHoraireOuvertureMercredi
+        }
+
+        final.push(jour)
+      }
+
+      if (row.jour == 'Jeudi') {
+        let jour = {
+          id: row.id,
+          jour: row.jour,
+          heure_fermeture: selectedHoraireFermetureJeudi,
+          heure_ouverture: selectedHoraireOuvertureJeudi
+        }
+
+        final.push(jour)
+      }
+
+      if (row.jour == 'Vendredi') {
+        let jour = {
+          id: row.id,
+          jour: row.jour,
+          heure_fermeture: selectedHoraireFermetureVendredi,
+          heure_ouverture: selectedHoraireOuvertureVendredi
+        }
+
+        final.push(jour)
+      }
+
+      if (row.jour == 'Samedi') {
+        let jour = {
+          id: row.id,
+          jour: row.jour,
+          heure_fermeture: selectedHoraireFermetureSamedi,
+          heure_ouverture: selectedHoraireOuvertureSamedi
+        }
+
+        final.push(jour)
+      }
+
+    })
+
+
+    // SEND TO SERVER
+    axios({
+      method: 'POST',
+      url: ApiService.API_URL_EDIT_HORAIRE,
+      data:JSON.stringify({
+        vendeur_id: userConnected.id,
+        horaire: final
+      }),
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response: {data: any}) => {
+ 
+        var api = response.data;
+        
+        console.log(api);
+        
+        if (api.code == 'success') {
+          setLoading(false)
+        }
+ 
+      })
+      .catch((error: any) => {
+        console.log(error);
+        Alert.alert('', 'Erreur Network');
+      });
   }
   
   

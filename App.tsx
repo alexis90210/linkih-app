@@ -45,6 +45,7 @@ import MesHoraires from './screens/etab_horair';
 import MaCategorie from './screens/etab_categorie';
 import MesPrestations from './screens/etab_prestations';
 import ConfigurationDefaultCategorie from './screens/prestation_list';
+import PaiementScreen from './screens/paiement_screen_stripe';
 
 
 const Stack = createNativeStackNavigator();
@@ -212,11 +213,11 @@ export default function App(): JSX.Element {
           name="reabonnement"
           component={Reabonnement}
           options={{
-            title: 'Reabonnement',
+            title: 'Re/Abonnement',
             headerShadowVisible: false,
             headerTitleStyle: {fontSize: 18, color:couleurs.white, fontFamily: CustomFont.Poppins,},
             headerTintColor:couleurs.white,
-            headerShown: false,
+            headerShown: true,
             headerStyle: {
       backgroundColor: couleurs.primary,
     },
@@ -647,6 +648,23 @@ export default function App(): JSX.Element {
             headerTitleStyle: {fontSize: 18, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
             headerTintColor:couleurs.primary,
             headerShown: false,
+            presentation: 'modal',
+            animationTypeForReplace: 'push',
+            animation: 'slide_from_left',
+          }}
+        />
+
+
+         {/* PaiementScreen */}
+         <Stack.Screen
+          name="paiement_screen"
+          component={PaiementScreen}
+          options={{
+            title: 'Portail de paiement',
+            headerShadowVisible: false,
+            headerTitleStyle: {fontSize: 18, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
+            headerTintColor:couleurs.primary,
+            headerShown: true,
             presentation: 'modal',
             animationTypeForReplace: 'push',
             animation: 'slide_from_left',

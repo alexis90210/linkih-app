@@ -59,13 +59,18 @@ export default function InscriptionProprietaire3({
 
     setLoading(true)    
 
+    var json = JSON.stringify({
+      ...proprietaire,
+      photo:photOnBase64
+    })
+
+    console.log(json);
+    
+
     axios({
       method: 'POST',
       url: ApiService.API_URL_CREATE_UTILISATEUR,
-      data: JSON.stringify({
-        ...proprietaire,
-        photo:photOnBase64
-      }),
+      data: json,
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',

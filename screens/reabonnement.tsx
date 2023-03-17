@@ -1,54 +1,28 @@
-import React, {useRef, useState} from 'react';
+import React from 'react';
 import {
   Text,
   StyleSheet,
   View,
-  Pressable,
   SafeAreaView,
   ScrollView,
-  Image,
   TouchableOpacity,
-  Dimensions,
-  Modal,
-  ActivityIndicator,
 } from 'react-native';
 
-import ArrowLeftIcon from '../components/ArrowLeft';
 import { CustomFont, couleurs } from '../components/color';
-import CloseIcon from '../components/close';
 
 export default function Reabonnement({navigation, route}: {navigation: any, route:any}) {
 
-  const [isVisibleModalAbonnement , setVisibleModalAbonnement ] = useState(true)
   return (
     <View>
       <SafeAreaView>  
-
-        <ActivityIndicator size="large" color={couleurs.primary} />
-         {/* MODAL ABONNEMENT */}
-      <Modal visible={isVisibleModalAbonnement}>
-        <View style={{flex: 1, backgroundColor: couleurs.dark, paddingHorizontal: 20, paddingVertical:20}}>
-          <View
-            style={{
-              display: 'flex',
-              marginBottom: 30,
-              flexDirection: 'row',
-              justifyContent: 'flex-end',
-              width: '100%',
-            }}>
-            
-            <TouchableOpacity onPress={ () => navigation.goBack()}>
-            <CloseIcon color={couleurs.white} />
-            </TouchableOpacity>
-          </View>
-
-          <ScrollView>
+      <View style={{flex: 1, paddingHorizontal: 20, paddingVertical:20}}>
+        <ScrollView>
           <Text
             style={{
               fontFamily: CustomFont.Poppins,
               fontSize: 17,
               width: '70%',
-              color: couleurs.white,
+              color: couleurs.primary,
             }}>
             Votre abonnement expire bientot, re-abonnez vous maintenant
           </Text>
@@ -81,7 +55,7 @@ export default function Reabonnement({navigation, route}: {navigation: any, rout
               }}>
               <Text
                 style={{
-                  color: couleurs.white,
+                  color: couleurs.primary,
                   fontSize: 18,
                   fontWeight: '700',
                 }}>
@@ -90,7 +64,7 @@ export default function Reabonnement({navigation, route}: {navigation: any, rout
               <View>
                 <Text
                   style={{
-                    color: couleurs.white,
+                    color: couleurs.primary,
                     fontSize: 18,
                     fontWeight: '700',
                   }}>
@@ -98,7 +72,7 @@ export default function Reabonnement({navigation, route}: {navigation: any, rout
                 </Text>
                 <Text
                   style={{
-                    color: couleurs.white,
+                    color: couleurs.primary,
                     fontSize: 15,
                     fontWeight: '400',
                     textDecorationLine: 'line-through',
@@ -243,9 +217,10 @@ export default function Reabonnement({navigation, route}: {navigation: any, rout
             
           </View>
 
+          
+
           </ScrollView>
         </View>
-      </Modal> 
       </SafeAreaView>
     </View>
   );

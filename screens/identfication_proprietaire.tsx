@@ -85,9 +85,9 @@ export default function IdentificationProprietaireScreen({
     })
       .then((response: {data: any}) => {   
         
-         var api = response.data;
+        var api = response.data;
 
-         
+        console.log(api);
 
          if ( api.code == "success") {
 

@@ -29,6 +29,10 @@ export default function AbonnementActivation({
   console.log(abonnement);
 
   const saveAbonnement = () => {
+
+    navigation.navigate('paiement_screen')
+    return
+    
     axios({
       method: 'POST',
       url: ApiService.API_URL_ADD_ABONNEMENT_VENDEUR,

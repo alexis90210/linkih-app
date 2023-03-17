@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useState} from 'react';
 import {
   Text,
   StyleSheet,
@@ -7,24 +7,16 @@ import {
   SafeAreaView,
   ScrollView,
   Image,
-  Linking,
-  Modal,
-  Alert,
   Pressable,
 } from 'react-native';
-import EditIcon from '../components/Edit';
 import RdvIcon from '../components/rdv';
 import {AirbnbRating} from 'react-native-ratings';
-import CloseIcon from '../components/close';
 import {CustomFont, couleurs} from '../components/color';
 import HomeIcon from '../components/home';
 import storage from '../components/api/localstorage';
 import MapIcon from '../components/map';
 import ImageModal from 'react-native-image-modal';
-import EyeIcon from '../components/eye';
-import AddIcon from '../components/add';
-import ApiService from '../components/api/service';
-import axios from 'axios';
+import ArrowRightIcon from '../components/ArrowRight';
 
 export default function MonEtablissement({
   route,
@@ -36,15 +28,10 @@ export default function MonEtablissement({
   const propsTitle = route.params?.nomEtab;
   var title = 'Mon Etablissement';
 
-  const [isVisibleModal, setVisibleModal] = useState(false);
-  const [isVisibleModalAbonnement,setVisibleModalAbonnement ] = useState(true)
-  const activeModal = () => setVisibleModal(true);
-  const desactiveModal = () => setVisibleModal(false);
   const [etablissement, setEtablissement] = useState<any>({});
   const [proprietaire, setProprietaire] = useState<any>({});
   const [lien_reseaux_sociaux, setLien_reseaux_sociaux] = useState<any[]>([]);
   const [horaire_ouverture, setHoraire_ouverture] = useState<any[]>([]);
-  const [rendez_vous, setRendez_vous] = useState<any[]>([]);
 
   storage
     .load({
@@ -57,74 +44,13 @@ export default function MonEtablissement({
         navigation.navigate('identification_proprietaire')
       }
 
-
-
-      
       setEtablissement(data.etablissement[0]);
       setProprietaire(data.utilisateur[0]);
       setLien_reseaux_sociaux(data.lien_reseaux_sociaux);
       setHoraire_ouverture(data.horaire_ouverture);
-      setRendez_vous(data.rendez_vous);
+
     })
-    .catch(error => console.log(error));
-
-
-    // LOAD ABONNEMENT
-  const [abonnement, setAbonnements] = useState<any>([]);
-  const [isLoadedAbonnement, setLoadedAbonnement] = useState(false);
-
-  const loadAbonnements = () => {
-    axios({
-      method: 'POST',
-      url: ApiService.API_URL_GET_ABONNEMENT,
-      data: JSON.stringify({
-        vendeur_id: etablissement.id
-      }),
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((response: {data: any}) => {
-        var api = response.data;
-
-        console.log(api);
-        
-        if (api.code == 'success') {
-          setLoadedAbonnement(true)
-          setAbonnements(api.message);
-
-          if ( api.message.abonnement == '' ) {
-            setVisibleModalAbonnement(true)
-          }
-
-        }
-      })
-      .catch((error: any) => {
-        console.log(error);
-        Alert.alert('', 'Erreur Network');
-      });
-  };
-
-  if ( !isLoadedAbonnement ) loadAbonnements();
-
-
-  var les_abonnements:any = [
-    {
-      id:1,
-      title:'Abonnement mensuel',
-      type:'Mensuel',
-      prix:'€69.99/mo',
-      color: couleurs.primary
-    },
-    {
-      id:2,
-      title:'Abonnement Annuel',
-      type:'Annuel',
-      prix:'€839.88/an',
-      color: 'rgba(0,100,0,1)'
-    },
-  ]
+    .catch(error => console.log('ERREUR RECUP DATA', error));
 
   return (
     <View>
@@ -234,7 +160,7 @@ export default function MonEtablissement({
                   count={5}
                   reviews={['Terrible', 'Bad', 'Good', 'Very Good']}
                   onFinishRating={rate => console.log(rate)}
-                  defaultRating={3}
+                  defaultRating={etablissement.note}
                   size={14}
                 />
               </View>
@@ -342,14 +268,10 @@ export default function MonEtablissement({
                 }}>
                 Heure d'ouverture
               </Text>
-              <TouchableOpacity onPress={() => null}>
-                <AddIcon color={couleurs.primary}/>
+              <TouchableOpacity onPress={() => navigation.navigate('mes_horaires')}>
+                <ArrowRightIcon color={couleurs.primary}/>
               </TouchableOpacity>
              </View>
-
-
-
-              
 
               {horaire_ouverture.map((row, key) => (
                 <View
@@ -359,11 +281,12 @@ export default function MonEtablissement({
                     flexDirection: 'row',
                     gap: 4,
                     backgroundColor: '#fff',
-                    padding: 5,
-                    borderRadius: 20,
+                    padding: 8,
                     alignItems: 'center',
                     width: '100%',
                     justifyContent: 'space-between',
+                    borderBottomColor:couleurs.primaryLight,
+                    borderBottomWidth: (key+1) != horaire_ouverture.length ? 1 : 0 ,
                   }}>
                   <View
                     style={{
@@ -377,13 +300,13 @@ export default function MonEtablissement({
                       justifyContent: 'space-between',
                     }}>
                     <Text
-                      style={{color: '#000', fontFamily: CustomFont.Poppins}}>
+                      style={{color: '#000',fontSize: 14, fontFamily: CustomFont.Poppins}}>
                       {row.jour}
                     </Text>
                     <Text
                       style={{
                         color: couleurs.primary,
-                        fontSize: 11,
+                        fontSize: 14,
                         fontFamily: CustomFont.Poppins,
                       }}>
                       {row.heure_ouverture}-{row.heure_fermeture}
@@ -418,7 +341,7 @@ export default function MonEtablissement({
                 Gallerie
               </Text>
               <TouchableOpacity onPress={() => null}>
-                <AddIcon color={couleurs.primary}/>
+                <ArrowRightIcon color={couleurs.primary}/>
               </TouchableOpacity>
              </View>
 
@@ -467,7 +390,7 @@ export default function MonEtablissement({
                 Lien reseaux sociaux
               </Text>
               <TouchableOpacity onPress={() => null}>
-                <AddIcon color={couleurs.primary}/>
+                <ArrowRightIcon color={couleurs.primary}/>
               </TouchableOpacity>
              </View>
 
@@ -566,123 +489,7 @@ export default function MonEtablissement({
         </View>
       </SafeAreaView>
 
-      {/* MODAL ABONNEMENT */}
-      <Modal visible={isVisibleModalAbonnement}>
-        <View style={{flex: 1, backgroundColor: couleurs.dark, padding: 20}}>
-          <View
-            style={{
-              display: 'flex',
-              marginBottom: 50,
-              flexDirection: 'row',
-              justifyContent: 'flex-end',
-              width: '100%',
-            }}>
-            
-            <TouchableOpacity onPress={ () => setVisibleModalAbonnement(false)}>
-            <CloseIcon color={couleurs.white} />
-            </TouchableOpacity>
-          </View>
 
-          <Text
-            style={{
-              fontFamily: CustomFont.Poppins,
-              fontSize: 17,
-              width: '70%',
-              color: couleurs.white,
-            }}>
-            Achetez votre abonnement maintenant
-          </Text>
-
-          {
-            les_abonnements.map( (row:any,i:any) => (
-              <View
-              key={i}
-            style={{
-              borderWidth: 2,
-              marginTop: 30,
-              borderColor: row.color,
-              borderRadius: 20,
-            }}>
-            <View
-              style={{
-                backgroundColor: row.color,
-                borderTopLeftRadius: 20,
-                borderTopRightRadius: 20,
-                paddingVertical: 10,
-              }}>
-              <Text style={{color: couleurs.white, alignSelf: 'center'}}>
-                {row.title}
-              </Text>
-            </View>
-
-            <View
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                padding: 30,
-              }}>
-              <Text
-                style={{
-                  color: couleurs.white,
-                  fontSize: 18,
-                  fontWeight: '700',
-                }}>
-                {row.type}
-              </Text>
-              <View>
-                <Text
-                  style={{
-                    color: couleurs.white,
-                    fontSize: 18,
-                    fontWeight: '700',
-                  }}>
-                  {row.prix}
-                </Text>
-              </View>
-            </View>
-
-            <View
-              style={{
-                marginBottom:20,
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'center',
-                backgroundColor: row.color,
-                borderRadius: 30,
-                marginHorizontal:40
-              }}>
-              <TouchableOpacity
-                style={{
-                  paddingHorizontal: 10,
-                  width: '80%',
-                }}
-                onPress={() => navigation.navigate('abonnement_activation', {
-                  ...row,
-                  vendeur_id: etablissement.id
-                })}>
-                <Text
-                  style={{
-                    textAlign: 'center',
-                    alignSelf: 'center',
-                    fontWeight: '500',
-                    color: couleurs.white,
-                    padding: 10,
-                    paddingHorizontal: 20,
-                    fontSize: 14,
-                  }}>                   
-                    Commencez !
-                  
-                </Text>
-              </TouchableOpacity>              
-            </View>
-            
-          </View>
-            ))
-          }
-
-        </View>
-      </Modal>
     </View>
   );
 }

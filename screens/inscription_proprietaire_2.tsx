@@ -275,7 +275,7 @@ export default function InscriptionProprietaireScreen2({
   };
 
   ///////////////////////////////////////////////////
-  const [visible, setVisible] = React.useState(false);
+  const [visible, setVisible] = useState(false);
 
   const onDismiss = () => {
     setVisible(false);
@@ -563,12 +563,14 @@ export default function InscriptionProprietaireScreen2({
                   position: 'absolute',
                   borderTopLeftRadius: 20,
                   borderTopRightRadius: 20,
-                  backgroundColor: '#eee',
+                  backgroundColor: couleurs.primary,
                   bottom: 0,
                   display: 'flex',
                   flexDirection: 'column',
                   width: '100%',
                   padding: 20,
+                  zIndex:100,
+                  flex:1
                 }}>
                 <TextInput
                   defaultValue={adresse}
@@ -578,9 +580,10 @@ export default function InscriptionProprietaireScreen2({
                     backgroundColor: 'transparent',
                     borderBottomWidth: 1,
                     borderBottomColor: '#E2C6BB',
-                    color: couleurs.primary,
+                    color: couleurs.white,
                     width: '100%',
                     padding: 0,
+                    fontSize:14,
                     marginTop: 10,
                     fontFamily: CustomFont.Poppins,
                   }}></TextInput>
@@ -588,24 +591,25 @@ export default function InscriptionProprietaireScreen2({
                 <TextInput
                   defaultValue={postcode}
                   onChangeText={input => (etablissement.postcode = input)}
-                  placeholder="Entrez votre ZIP/ code postal"
+                  placeholder="Entrez votre code postal"
                   style={{
                     backgroundColor: 'transparent',
                     borderBottomWidth: 1,
                     borderBottomColor: '#E2C6BB',
-                    color: couleurs.primary,
+                    color: couleurs.white,
                     width: '100%',
                     padding: 0,
-                    marginTop: 30,
+                    marginTop: 10,
+                    fontSize:14,
                     fontFamily: CustomFont.Poppins,
                   }}></TextInput>
 
                 <View
                   style={{
                     alignItems: 'center',
-                    backgroundColor: couleurs.primary,
+                    backgroundColor: couleurs.white,
                     borderRadius: 30,
-                    marginTop: 30,
+                    marginTop: 20
                   }}>
                   <TouchableOpacity
                     style={{
@@ -620,7 +624,7 @@ export default function InscriptionProprietaireScreen2({
                         paddingHorizontal: 20,
                         fontSize: 15,
                         fontWeight: '500',
-                        color: couleurs.white,
+                        color: couleurs.primary,
                         fontFamily: CustomFont.Poppins,
                       }}>
                       Confirmez l'adressse
