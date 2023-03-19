@@ -466,7 +466,11 @@ export default function MesHoraires({
                             borderBottomColor: couleurs.primary,
                             borderBottomWidth:1,
                             borderStyle:'solid',
-                            padding:20
+                            padding:20,
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            gap: 15,
+                            flexDirection: 'row',
 
                           }}>
                             <Text
@@ -494,7 +498,7 @@ export default function MesHoraires({
                                 }}>
                                 <Picker
                                   style={{
-                                    width: 170,
+                                    width: 125,
                                     height: 30,
                                     alignSelf: 'center',
                                     position: 'relative',
@@ -550,7 +554,7 @@ export default function MesHoraires({
                                 }}>
                                 <Picker
                                   style={{
-                                    width: 170,
+                                    width: 125,
                                     height: 30,
                                     alignSelf: 'center',
                                     position: 'relative',
@@ -604,7 +608,11 @@ export default function MesHoraires({
                           <View style={{borderBottomColor: couleurs.primary,
                             borderBottomWidth:1,
                             borderStyle:'solid',
-                            padding:20}}>
+                            padding:20,
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            gap: 15,
+                            flexDirection: 'row',}}>
                             <Text
                               style={{
                                 fontFamily: CustomFont.Poppins,
@@ -630,7 +638,7 @@ export default function MesHoraires({
                                 }}>
                                 <Picker
                                   style={{
-                                    width: 170,
+                                    width: 125,
                                     height: 30,
                                     alignSelf: 'center',
                                     position: 'relative',
@@ -686,7 +694,7 @@ export default function MesHoraires({
                                 }}>
                                 <Picker
                                   style={{
-                                    width: 170,
+                                    width: 125,
                                     height: 30,
                                     alignSelf: 'center',
                                     position: 'relative',
@@ -739,7 +747,11 @@ export default function MesHoraires({
                           <View style={{borderBottomColor: couleurs.primary,
                             borderBottomWidth:1,
                             borderStyle:'solid',
-                            padding:20}}>
+                            padding:20,
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            gap: 15,
+                            flexDirection: 'row',}}>
                             <Text
                               style={{
                                 fontFamily: CustomFont.Poppins,
@@ -765,7 +777,7 @@ export default function MesHoraires({
                                 }}>
                                 <Picker
                                   style={{
-                                    width: 170,
+                                    width: 125,
                                     height: 30,
                                     alignSelf: 'center',
                                     position: 'relative',
@@ -825,7 +837,7 @@ export default function MesHoraires({
                                 }}>
                                 <Picker
                                   style={{
-                                    width: 170,
+                                    width: 125,
                                     height: 30,
                                     alignSelf: 'center',
                                     position: 'relative',
@@ -882,7 +894,12 @@ export default function MesHoraires({
                           <View style={{borderBottomColor: couleurs.primary,
                             borderBottomWidth:1,
                             borderStyle:'solid',
-                            padding:20}}>
+                            padding:20,
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            gap: 15,
+                            flexDirection: 'row',
+                            }}>
                             <Text
                               style={{
                                 fontFamily: CustomFont.Poppins,
@@ -908,7 +925,7 @@ export default function MesHoraires({
                                 }}>
                                 <Picker
                                   style={{
-                                    width: 170,
+                                    width: 125,
                                     height: 30,
                                     alignSelf: 'center',
                                     position: 'relative',
@@ -964,7 +981,7 @@ export default function MesHoraires({
                                 }}>
                                 <Picker
                                   style={{
-                                    width: 170,
+                                    width: 125,
                                     height: 30,
                                     alignSelf: 'center',
                                     position: 'relative',
@@ -1017,7 +1034,11 @@ export default function MesHoraires({
                           <View style={{borderBottomColor: couleurs.primary,
                             borderBottomWidth:1,
                             borderStyle:'solid',
-                            padding:20}}>
+                            padding:20,
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            gap: 15,
+                            flexDirection: 'row',}}>
                             <Text
                               style={{
                                 fontFamily: CustomFont.Poppins,
@@ -1043,7 +1064,7 @@ export default function MesHoraires({
                                 }}>
                                 <Picker
                                   style={{
-                                    width: 170,
+                                    width: 125,
                                     height: 30,
                                     alignSelf: 'center',
                                     position: 'relative',
@@ -1103,7 +1124,7 @@ export default function MesHoraires({
                                 }}>
                                 <Picker
                                   style={{
-                                    width: 170,
+                                    width: 125,
                                     height: 30,
                                     alignSelf: 'center',
                                     position: 'relative',
@@ -1160,7 +1181,11 @@ export default function MesHoraires({
                           <View style={{borderBottomColor: couleurs.primary,
                             borderBottomWidth:1,
                             borderStyle:'solid',
-                            padding:20}}>
+                            padding:20,
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            gap: 15,
+                            flexDirection: 'row',}}>
                             <Text
                               style={{
                                 fontFamily: CustomFont.Poppins,
@@ -1186,7 +1211,7 @@ export default function MesHoraires({
                                 }}>
                                 <Picker
                                   style={{
-                                    width: 170,
+                                    width: 125,
                                     height: 30,
                                     alignSelf: 'center',
                                     position: 'relative',
@@ -1242,7 +1267,7 @@ export default function MesHoraires({
                                 }}>
                                 <Picker
                                   style={{
-                                    width: 170,
+                                    width: 125,
                                     height: 30,
                                     alignSelf: 'center',
                                     position: 'relative',

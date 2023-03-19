@@ -14,15 +14,19 @@ export default function Reabonnement({navigation, route}: {navigation: any, rout
 
   return (
     <View>
-      <SafeAreaView>  
+      <SafeAreaView
+        style={{
+          width: '100%',
+          height: '100%',
+          backgroundColor:couleurs.dark
+        }}>  
       <View style={{flex: 1, paddingHorizontal: 20, paddingVertical:20}}>
         <ScrollView>
           <Text
             style={{
               fontFamily: CustomFont.Poppins,
-              fontSize: 17,
-              width: '70%',
-              color: couleurs.primary,
+              fontSize: 16,
+              color: couleurs.white,
             }}>
             Votre abonnement expire bientot, re-abonnez vous maintenant
           </Text>
@@ -37,11 +41,11 @@ export default function Reabonnement({navigation, route}: {navigation: any, rout
             <View
               style={{
                 backgroundColor: couleurs.primary,
-                borderTopLeftRadius: 20,
-                borderTopRightRadius: 20,
+                borderTopLeftRadius: 10,
+                borderTopRightRadius: 10,
                 paddingVertical: 10,
               }}>
-              <Text style={{color: couleurs.dark, alignSelf: 'center'}}>
+              <Text style={{color: couleurs.white, alignSelf: 'center'}}>
                 Abonnement starter
               </Text>
             </View>
@@ -70,18 +74,7 @@ export default function Reabonnement({navigation, route}: {navigation: any, rout
                   }}>
                   $10.99/mo
                 </Text>
-                <Text
-                  style={{
-                    color: couleurs.primary,
-                    fontSize: 15,
-                    fontWeight: '400',
-                    textDecorationLine: 'line-through',
-                    textDecorationColor: couleurs.primary,
-                    textDecorationStyle:'solid',
-                    alignSelf:'flex-end'
-                  }}>
-                  $39.99/mo
-                </Text>
+                
               </View>
             </View>
 
@@ -100,13 +93,13 @@ export default function Reabonnement({navigation, route}: {navigation: any, rout
                   paddingHorizontal: 10,
                   width: '80%',
                 }}
-                onPress={() => null}>
+                onPress={() => navigation.navigate('paiement_screen')}>
                 <Text
                   style={{
                     textAlign: 'center',
                     alignSelf: 'center',
                     fontWeight: '500',
-                    color: couleurs.dark,
+                    color: couleurs.white,
                     padding: 10,
                     paddingHorizontal: 20,
                     fontSize: 14,
@@ -135,8 +128,8 @@ export default function Reabonnement({navigation, route}: {navigation: any, rout
             <View
               style={{
                 backgroundColor: couleurs.primaryLight,
-                borderTopLeftRadius: 20,
-                borderTopRightRadius: 20,
+                borderTopLeftRadius: 10,
+                borderTopRightRadius: 10,
                 paddingVertical: 10,
               }}>
               <Text style={{color: couleurs.dark, alignSelf: 'center'}}>
@@ -168,18 +161,6 @@ export default function Reabonnement({navigation, route}: {navigation: any, rout
                   }}>
                   $10.99/mo
                 </Text>
-                <Text
-                  style={{
-                    color: couleurs.primaryLight,
-                    fontSize: 15,
-                    fontWeight: '400',
-                    textDecorationLine: 'line-through',
-                    textDecorationColor: couleurs.primaryLight,
-                    textDecorationStyle:'solid',
-                    alignSelf:'flex-end'
-                  }}>
-                  $39.99/mo
-                </Text>
               </View>
             </View>
 
@@ -198,7 +179,7 @@ export default function Reabonnement({navigation, route}: {navigation: any, rout
                   paddingHorizontal: 10,
                   width: '80%',
                 }}
-                onPress={() => null}>
+                onPress={() => navigation.navigate('paiement_screen')}>
                 <Text
                   style={{
                     textAlign: 'center',

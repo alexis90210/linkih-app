@@ -42,7 +42,7 @@ export default function AutreEtablissement({
     title = propsTitle;
     isConsulting = true;
   }
- 
+
   // LOAD VENDEUR DATA
   const [VendeurData, setVendeurData] = useState<any>([]);
   const [VendeurDataLoaded, setSetVendeurDataLoaded] = useState(false);
@@ -51,8 +51,8 @@ export default function AutreEtablissement({
     axios({
       method: 'POST',
       url: ApiService.API_URL_GET_VENDEURS,
-      data:JSON.stringify({
-        vendeur_id: route.params?.vendeur_data?.id
+      data: JSON.stringify({
+        vendeur_id: route.params?.vendeur_data?.id,
       }),
       headers: {
         Accept: 'application/json',
@@ -74,14 +74,13 @@ export default function AutreEtablissement({
       })
       .catch((error: any) => {
         console.log(error);
-        Alert.alert('', error );
+        Alert.alert('', error);
       });
   };
   // CHECK LOAD OF HORAIRES
   if (!VendeurDataLoaded) loadVendeurData();
 
   /// END
-
 
   const [isVisibleModal, setVisibleModal] = useState(false);
 
@@ -116,9 +115,9 @@ export default function AutreEtablissement({
   const loadPrestations = () => {
     axios({
       method: 'POST',
-      url: ApiService.API_URL_GET_VENDEURS_PRESTATIONS,
-      data:JSON.stringify({
-        vendeur_id: route.params?.vendeur_data?.id
+      url: ApiService.API_URL_GET_PRODUIT,
+      data: JSON.stringify({
+        vendeur_id: route.params?.vendeur_data?.id,
       }),
       headers: {
         Accept: 'application/json',
@@ -126,9 +125,11 @@ export default function AutreEtablissement({
       },
     })
       .then((response: {data: any}) => {
-        console.log(response.data);
-
         var api = response.data;
+
+        console.log("=============", api.message);
+        
+
         if (api.code == 'success') {
           setSections(api.message);
           setSetSectionsLoaded(true);
@@ -140,12 +141,12 @@ export default function AutreEtablissement({
       })
       .catch((error: any) => {
         console.log(error);
-        Alert.alert('', error );
+        Alert.alert('', error);
       });
   };
+
   // CHECK LOAD OF PRESTATIONS
   if (!sectionsLoaded) loadPrestations();
-
 
   // LOAD HORAIRE
   const [horaires, sethoraires] = useState<any>([]);
@@ -155,8 +156,8 @@ export default function AutreEtablissement({
     axios({
       method: 'POST',
       url: ApiService.API_URL_GET_VENDEURS_HORAIRES,
-      data:JSON.stringify({
-        vendeur_id: route.params?.vendeur_data?.id
+      data: JSON.stringify({
+        vendeur_id: route.params?.vendeur_data?.id,
       }),
       headers: {
         Accept: 'application/json',
@@ -178,19 +179,16 @@ export default function AutreEtablissement({
       })
       .catch((error: any) => {
         console.log(error);
-        Alert.alert('', error );
+        Alert.alert('', error);
       });
   };
   // CHECK LOAD OF HORAIRES
   if (!horairesLoaded) loadHoraires();
 
-
-
-
   // HANDLING COLLAPSE
   const toggleCollapse = (id: any) => {
-    setSections((prevState:any) =>
-      prevState.map((section:any) =>
+    setSections((prevState: any) =>
+      prevState.map((section: any) =>
         section.id === id
           ? {...section, isCollapsed: !section.isCollapsed}
           : section,
@@ -224,7 +222,16 @@ export default function AutreEtablissement({
             width: '100%',
             shadowColor: 'gray',
           }}>
-          <Text  numberOfLines={1} style={{fontFamily:CustomFont.Poppins, textTransform:'uppercase', fontSize:15, color: !item.isCollapsed ? couleurs.primary : couleurs.dark}}>{item.title}</Text>
+          <Text
+            numberOfLines={1}
+            style={{
+              fontFamily: CustomFont.Poppins,
+              textTransform: 'uppercase',
+              fontSize: 15,
+              color: !item.isCollapsed ? couleurs.primary : couleurs.dark,
+            }}>
+            {item.title}
+          </Text>
           {!item.isCollapsed ? (
             <MinusIcon color={couleurs.primary} />
           ) : (
@@ -245,32 +252,59 @@ export default function AutreEtablissement({
             borderTopColor: 'rgba(0,0,0,.1)',
             borderTopWidth: 1,
           }}>
-            {/* redirect to personnalisation */}
+          {/* redirect to personnalisation */}
           {item.data.map((row: any, i: any) => (
-            <TouchableOpacity onPress={ () => navigation.navigate('personnalisation_reservation', {
-              props:row
-            })}>
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate('personnalisation_reservation', {
+                  props: row,
+                })
+              }>
               <View
-              key={i}
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                flexDirection: 'row',
-                borderBottomColor: 'rgba(0,0,0,.1)',
-            borderBottomWidth: item.data.length != (i+1) ?  1 : 0,
-            paddingVertical:6
-              }}>
-              <View
+                key={i}
                 style={{
                   display: 'flex',
-                  justifyContent: 'flex-start',
-                  flexDirection: 'column',
+                  justifyContent: 'space-between',
+                  flexDirection: 'row',
+                  borderBottomColor: 'rgba(0,0,0,.1)',
+                  borderBottomWidth: item.data.length != i + 1 ? 1 : 0,
+                  paddingVertical: 6,
                 }}>
-                <Text style={{fontFamily:CustomFont.Poppins, fontSize: 15, color: couleurs.primary}} numberOfLines={1}>{row.title}</Text>
-                <Text style={{fontFamily:CustomFont.Poppins,fontSize: 13,  color: couleurs.dark, opacity:.6}} numberOfLines={1}>{row.content}</Text>
+                <View
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'flex-start',
+                    flexDirection: 'column',
+                  }}>
+                  <Text
+                    style={{
+                      fontFamily: CustomFont.Poppins,
+                      fontSize: 15,
+                      color: couleurs.primary,
+                    }}
+                    numberOfLines={1}>
+                    {row.title}
+                  </Text>
+                  <Text
+                    style={{
+                      fontFamily: CustomFont.Poppins,
+                      fontSize: 13,
+                      color: couleurs.dark,
+                      opacity: 0.6,
+                    }}
+                    numberOfLines={1}>
+                    {row.content}
+                  </Text>
+                </View>
+                <Text
+                  style={{
+                    fontFamily: CustomFont.Poppins,
+                    color: couleurs.primary,
+                  }}
+                  numberOfLines={1}>
+                  {row.price}
+                </Text>
               </View>
-              <Text style={{fontFamily:CustomFont.Poppins, color: couleurs.primary}} numberOfLines={1}>{row.price}</Text>
-            </View>
             </TouchableOpacity>
           ))}
         </View>
@@ -293,7 +327,7 @@ export default function AutreEtablissement({
             gap: 30,
             paddingVertical: 15,
             paddingHorizontal: 10,
-            backgroundColor:couleurs.primary
+            backgroundColor: couleurs.primary,
           }}>
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <ArrowLeftIcon color={couleurs.white} />
@@ -313,9 +347,13 @@ export default function AutreEtablissement({
             backgroundColor: '#f6f6f6f6',
           }}>
           {/* Banner Image */}
-          <View style={{paddingHorizontal: 12, marginTop:5, width: '100%'}}>
+          <View style={{paddingHorizontal: 12, marginTop: 5, width: '100%'}}>
             <Image
-              source={VendeurData.logo ? {uri:'data:image/png;base64,' + VendeurData.logo} : require('../assets/images/1.jpg')}
+              source={
+                VendeurData.logo
+                  ? {uri: 'data:image/png;base64,' + VendeurData.logo}
+                  : require('../assets/images/1.jpg')
+              }
               style={{
                 height: 200,
                 width: '100%',
@@ -360,7 +398,8 @@ export default function AutreEtablissement({
                   opacity: 0.7,
                   fontSize: 15,
                   fontFamily: CustomFont.Poppins,
-                }}>{VendeurData.email}
+                }}>
+                {VendeurData.email}
               </Text>
               <Text
                 style={{
@@ -410,66 +449,183 @@ export default function AutreEtablissement({
           <View
             style={{marginHorizontal: 12, marginBottom: 10, marginTop: 100}}>
             {/* SALON OVERVIEW */}
-            
-              {sections.length > 0 && <Text
+
+            {sections.length > 0 && (
+              <Text
                 style={{
                   color: '#000',
                   paddingVertical: 15,
                   fontSize: 15,
                   fontFamily: CustomFont.Poppins,
-                  width:'100%',
-                  textAlign:'center'
+                  width: '100%',
+                  textAlign: 'center',
                 }}>
-               Choisir une prestation a reserver
-              </Text>}
-            {sections.length > 0 && <FlatList
-              data={sections}
-              renderItem={renderItem}
-              keyExtractor={item => item.id.toString()}
-              getItemLayout={getItemLayout}
-              nestedScrollEnabled={true}
-            />}
+                Choisir une prestation a reserver
+              </Text>
+            )}
 
-              {sections.length == 0 && <View>
-
+            <View style={{
+              display: 'flex',
+              justifyContent: 'flex-start',
+              flexDirection: 'row',
+              gap: 10,
+              borderRadius: 15,
+              backgroundColor: '#fff',
+              padding: 14,
+              width: '100%',
+              alignSelf: 'center',
+              shadowColor: 'gray'
+            }}>
+            {sections.map((row: any, i: any) => (
+              <TouchableOpacity
+                key={i}
+                onPress={() =>
+                  navigation.navigate('personnalisation_reservation_creneau', {
+                    props: row,
+                  })
+                }>
                 <View
+                  key={i}
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    flexDirection: 'row',
+                    borderBottomColor: 'rgba(0,0,0,.1)',
+                    borderBottomWidth: sections.length != i + 1 ? 1 : 0,
+                    paddingVertical: 6                    
+                  }}>
+                  <View
                     style={{
-                      alignItems: 'center',
-                      backgroundColor: couleurs.primary,
-                      paddingHorizontal:30,
-                      borderRadius:10,
-                      width: '100%',
-                      height: 40,
+                      display: 'flex',
+                      justifyContent: 'flex-start',
+                      flexDirection: 'column',
+                      width:'100%'
 
                     }}>
-                    <TouchableOpacity
+                    <View style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      flexDirection: 'row',
+                      width:'100%'
+                    }}>
+                    <Text
                       style={{
-                        paddingHorizontal: 10,
-                        position: 'relative',
-                        bottom: -3,
-                        display: 'flex',
-                        justifyContent: 'flex-start',
-                        alignItems: 'center',
-                        flexDirection: 'row',
-                        flexWrap:'nowrap'
+                        fontFamily: CustomFont.Poppins,
+                        fontSize: 15,
+                        color: couleurs.dark,
                       }}
-                      onPress={() => navigation.navigate('simple_rdv', {
-                        id: VendeurData.id
-                      })}>
-                      <Text
-                        style={{
-                          textAlign: 'center',
-                          padding: 5,
-                          fontSize: 15,
-                          color: couleurs.white,
-                          fontFamily: CustomFont.Poppins,
-                        }}>
-                        Prendre un rendez-vous
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
+                      numberOfLines={1}>
+                      Produit
+                    </Text>
+                    <Text
+                      style={{
+                        fontFamily: CustomFont.Poppins,
+                        fontSize: 15,
+                        color: couleurs.primary,
+                      }}
+                      numberOfLines={2}>
+                      {row.produit}
+                    </Text>
+                    </View>
 
-                </View>}
+                    <View style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      flexDirection: 'row',
+                      width:'100%'
+                    }}>
+                    <Text
+                      style={{
+                        fontFamily: CustomFont.Poppins,
+                        fontSize: 15,
+                        color: couleurs.dark,
+                      }}
+                      numberOfLines={1}>
+                      Duree de la prestation
+                    </Text>
+                    <Text
+                      style={{
+                        fontFamily: CustomFont.Poppins,
+                        fontSize: 13,
+                        color: couleurs.primary,
+                      }}
+                      numberOfLines={1}>
+                      {row.duree}
+                    </Text>
+                    </View>
+
+                    <View style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      flexDirection: 'row',
+                      width:'100%'
+                    }}>
+                    <Text
+                      style={{
+                        fontFamily: CustomFont.Poppins,
+                        fontSize: 15,
+                        color: couleurs.dark,
+                      }}
+                      numberOfLines={1}>
+                      Montant de la prestation
+                    </Text>
+                    <Text
+                      style={{
+                        fontFamily: CustomFont.Poppins,
+                        fontSize: 13,
+                        color: couleurs.primary,
+                      }}
+                      numberOfLines={1}>
+                      {row.prix}
+                    </Text>
+                    </View>
+                  </View>
+                </View>
+              </TouchableOpacity>
+            ))}
+            </View>
+
+            {sections.length == 0 && (
+              <View>
+                <View
+                  style={{
+                    alignItems: 'center',
+                    backgroundColor: couleurs.primary,
+                    paddingHorizontal: 30,
+                    borderRadius: 10,
+                    width: '100%',
+                    height: 40,
+                  }}>
+                  <TouchableOpacity
+                    style={{
+                      paddingHorizontal: 10,
+                      position: 'relative',
+                      bottom: -3,
+                      display: 'flex',
+                      justifyContent: 'flex-start',
+                      alignItems: 'center',
+                      flexDirection: 'row',
+                      flexWrap: 'nowrap',
+                    }}
+                    onPress={() =>
+                      navigation.navigate('simple_rdv', {
+                        id: VendeurData.id,
+                      })
+                    }>
+                    <Text
+                      style={{
+                        textAlign: 'center',
+                        padding: 5,
+                        fontSize: 15,
+                        color: couleurs.white,
+                        fontFamily: CustomFont.Poppins,
+                      }}>
+                      Prendre un rendez-vous
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            )}
 
             <View
               style={{
@@ -577,7 +733,7 @@ export default function AutreEtablissement({
                   marginTop: 10,
                   gap: 5,
                 }}>
-                {horaires.map((row:any, key:any) => (
+                {horaires.map((row: any, key: any) => (
                   <View
                     key={key}
                     style={{
@@ -625,7 +781,7 @@ export default function AutreEtablissement({
             <View
               style={{
                 marginTop: 20,
-                marginBottom:100,
+                marginBottom: 100,
                 borderRadius: 15,
                 backgroundColor: '#fff',
                 padding: 14,
@@ -716,43 +872,42 @@ export default function AutreEtablissement({
               </View>
             </TouchableOpacity>
             <View
-                    style={{
-                      alignItems: 'center',
-                      backgroundColor: couleurs.primary,
-                      borderRadius: 30,
-                      paddingHorizontal:30,
-                      width: 220,
-                      height: 40,
-
-                    }}>
-                    <TouchableOpacity
-                      style={{
-                        paddingHorizontal: 10,
-                        position: 'relative',
-                        bottom: -3,
-                        display: 'flex',
-                        justifyContent: 'flex-start',
-                        alignItems: 'center',
-                        flexDirection: 'row',
-                        flexWrap:'nowrap'
-                      }}
-                      onPress={() => null}>
-                      <Image
-                        source={require('../assets/images/itinary.png')}
-                        style={{width: 15, height: 15}}
-                      />
-                      <Text
-                        style={{
-                          textAlign: 'center',
-                          padding: 5,
-                          fontSize: 15,
-                          color: couleurs.white,
-                          fontFamily: CustomFont.Poppins,
-                        }}>
-                        Itineraire
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
+              style={{
+                alignItems: 'center',
+                backgroundColor: couleurs.primary,
+                borderRadius: 30,
+                paddingHorizontal: 30,
+                width: 220,
+                height: 40,
+              }}>
+              <TouchableOpacity
+                style={{
+                  paddingHorizontal: 10,
+                  position: 'relative',
+                  bottom: -3,
+                  display: 'flex',
+                  justifyContent: 'flex-start',
+                  alignItems: 'center',
+                  flexDirection: 'row',
+                  flexWrap: 'nowrap',
+                }}
+                onPress={() => null}>
+                <Image
+                  source={require('../assets/images/itinary.png')}
+                  style={{width: 15, height: 15}}
+                />
+                <Text
+                  style={{
+                    textAlign: 'center',
+                    padding: 5,
+                    fontSize: 15,
+                    color: couleurs.white,
+                    fontFamily: CustomFont.Poppins,
+                  }}>
+                  Itineraire
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
         )}
 

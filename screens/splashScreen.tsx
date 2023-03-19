@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import {
   SafeAreaView,
@@ -10,12 +10,15 @@ import {
   PixelRatio,
   TextInput,
   Image,
+  ActivityIndicator,
 } from 'react-native';
 import ShopIcon from '../components/shop';
 import { CustomFont, couleurs } from '../components/color';
 
 // SplashScreen
 export default function SplashScreen({navigation}: {navigation: any}) {
+
+  const [isLoading, SetLoading] = useState(false)
   return (
 
         <ScrollView contentInsetAdjustmentBehavior="automatic" style={{backgroundColor:couleurs.dark}}>
@@ -69,7 +72,10 @@ export default function SplashScreen({navigation}: {navigation: any}) {
                 style={{
                   paddingHorizontal: 10,
                 }}
-                onPress={() => navigation.navigate('configuration')}>
+                onPress={() => {
+                  SetLoading(true);
+                  navigation.navigate('configuration')
+                }}>
                 <Text
                   style={{
                     textAlign: 'center',                    
@@ -85,6 +91,8 @@ export default function SplashScreen({navigation}: {navigation: any}) {
                 </Text>
               </TouchableOpacity>
             </View>
+
+            {isLoading && <ActivityIndicator style={{alignSelf:'center'}} size={'large'}></ActivityIndicator>}
           </View>
         </ScrollView>
 

@@ -52,6 +52,7 @@ export default function ResultatRechercheScreen({
     })
       .then((response: {data: any}) => {
         var api = response.data;
+        
         if (api.code == 'success') {
           setLoading(true);
           setEtablissements(api.message);
@@ -144,7 +145,6 @@ export default function ResultatRechercheScreen({
           Alert.alert('', 'Erreur Network', [{text: 'OK', onPress: () => null}]);
         });
     };
-
   
     if (!isLoading) {
       if ( route.params?.activateSearch ) {

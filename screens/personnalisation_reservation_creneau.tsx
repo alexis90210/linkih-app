@@ -151,9 +151,9 @@ export default function PersonnalisationReservationCreneau({
 
   // handler
   const _setDate = (date: any) => {
-    console.log( date.toLocalString() );
+    console.log( date );
     
-    setDate( date.toLocalString() );
+    setDate( date );
   };
 
   return (
@@ -229,6 +229,7 @@ export default function PersonnalisationReservationCreneau({
                 }}>
                 {hours_matin.map((h, i) => (
                   <TouchableOpacity
+                  key={i}
                     onPress={() =>
                       navigation.navigate('bilan_reservation', {
                         props: route.params.props,
@@ -239,7 +240,6 @@ export default function PersonnalisationReservationCreneau({
                       })
                     }>
                     <Text
-                      key={i}
                       style={{
                         borderWidth: 1,
                         borderColor: '#ddd',
@@ -277,6 +277,7 @@ export default function PersonnalisationReservationCreneau({
                 }}>
                 {hours_apresmidi.map((h, i) => (
                   <TouchableOpacity
+                  key={i}
                     onPress={() =>
                       navigation.navigate('bilan_reservation', {
                         props: route.params.props,

@@ -19,9 +19,9 @@ export default function BilanReservation({
   navigation: any;
   route: any;
 }) {
+  
     var data = route.params
-
-  console.log(data);
+    console.log(data);
 
   return (
     <View>
@@ -78,7 +78,7 @@ export default function BilanReservation({
                     color: couleurs.primary,
                   }}
                   numberOfLines={1}>
-                  Type de prestation
+                  Detail de prestation
                 </Text>
                 <Text
                   style={{
@@ -87,7 +87,7 @@ export default function BilanReservation({
                     color: couleurs.dark,
                     opacity: 0.6,
                   }}>
-                  {data.props.prestation.content} 
+                  {data.props.produit} 
                 </Text>
                 <Text
                   style={{
@@ -96,59 +96,19 @@ export default function BilanReservation({
                     color: couleurs.dark,
                     opacity: 0.6,
                   }}>
-                  {data.props.prestation.title}
+                  {data.props.duree}
                 </Text>
-              </View>
 
-              <View
-                style={{
-                  display: 'flex',
-                  justifyContent: 'flex-start',
-                  flexDirection: 'column',
-                  borderBottomWidth:1,
-                  paddingVertical:20,
-                  borderStyle:'solid',
-                  borderColor:'#ddd'
-                }}>
-                <Text
-                  style={{
-                    fontFamily: CustomFont.Poppins,
-                    fontSize: 15,
-                    color: couleurs.primary,
-                  }}
-                  numberOfLines={1}>
-                  detail de prestation
-                </Text>
                 <Text
                   style={{
                     fontFamily: CustomFont.Poppins,
                     fontSize: 13,
                     color: couleurs.dark,
                     opacity: 0.6,
-                  }}
-                  numberOfLines={1}>
-                  {data.props.detail_prestation.title}
-                </Text>
-                <Text
-                  style={{
-                    fontFamily: CustomFont.Poppins,
-                    fontSize: 13,
-                    color: couleurs.dark,
-                    opacity: 0.6,
-                  }}
-                  numberOfLines={1}>
-                  {data.props.detail_prestation.subtitle}
+                  }}>
+                  {data.props.prix}
                 </Text>
 
-                <Text
-                  style={{
-                    fontFamily: CustomFont.Poppins,
-                    fontSize: 15,
-                    color: couleurs.primary,
-                  }}
-                  numberOfLines={1}>
-                  {data.props.detail_prestation.price}
-                </Text>
               </View>
 
               <View

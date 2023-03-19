@@ -209,6 +209,7 @@ export default function InscriptionProprietaireScreen2({
         horaires: horaires,
         social: social,
       });
+
     } else {
       if (stepper == 0) {
         if (etablissement.sciem.length < 4) {
