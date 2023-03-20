@@ -554,7 +554,7 @@ export default function AutreEtablissement({
                         color: couleurs.primary,
                       }}
                       numberOfLines={1}>
-                      {row.duree}
+                      {row.duree} h
                     </Text>
                     </View>
 

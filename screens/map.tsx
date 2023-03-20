@@ -29,7 +29,6 @@ import ArrowLeftIcon from '../components/ArrowLeft';
 import {AirbnbRating} from 'react-native-ratings';
 
 MapboxGL.setAccessToken(ApiService.MAPBOX_GL_TOKEN);
-MapboxGL.setTelemetryEnabled(false);
 
 export default function Map({
   navigation,
@@ -38,6 +37,10 @@ export default function Map({
   navigation: any;
   route: any;
 }) {
+
+  MapboxGL.setTelemetryEnabled(false);
+
+
   const [modalVisible, SetModalVisible] = useState(false);
   const [isLoadedEtab, setLoadedEtab] = useState(false);
   const [isPreccessing, setPreccessing] = useState(false);
@@ -51,7 +54,7 @@ export default function Map({
   const [UserPosition, setUserPosition] = useState<any>({});
 
   const _myPosition = () => {
-    setPreccessing(true)
+    // setPreccessing(true)
     Geolocation.getCurrentPosition(info => {
       let lon = Number(info.coords.longitude);
       let lat = Number(info.coords.latitude);
@@ -62,12 +65,12 @@ export default function Map({
       });
 
       setstartCords([lon, lat]);
-      setPreccessing(false)
+      // setPreccessing(false)
     });
   };
 
   const loadEtablissements = () => {
-      setPreccessing(true)
+      // setPreccessing(true)
       axios({
         method: 'POST',
         url: ApiService.API_URL_GET_VENDEURS,
@@ -82,18 +85,18 @@ export default function Map({
           
           setEtablissements( api.message.reverse() );
           setLoadedEtab(true);
-          setPreccessing(false)
+          // setPreccessing(false)
         }
 
         if (api.code == 'error') {
-          setPreccessing(false)
+          // setPreccessing(false)
           Alert.alert('Erreur', api.message, [
             {text: 'OK', onPress: () => null},
           ]);
         }
       })
       .catch((error: any) => {
-        setPreccessing(false)
+        // setPreccessing(false)
         console.log(error);
         Alert.alert('Erreur', error, [{text: 'OK', onPress: () => null}]);
       });
@@ -139,7 +142,7 @@ export default function Map({
 
   return (
     <SafeAreaView style={{flex: 1}}>
-       <Modal transparent={true} visible={isPreccessing}>
+       {/* <Modal transparent={true} visible={isPreccessing}>
           <View
             style={{
               flex: 1,
@@ -154,7 +157,7 @@ export default function Map({
               style={{alignSelf: 'center'}}
               size={'large'}></ActivityIndicator>
           </View>
-        </Modal>
+        </Modal> */}
 
       <View style={styles.page}>
         <View style={styles.container}>

@@ -19,16 +19,14 @@ export default function ConfirmationCompteScreen({navigation, route}: {navigatio
   
   const [isLoading, setLoading] = useState(false)
   const [isLoadingScreen, setLoadingScreen] = useState(false)
+  const [codeVal, setCodeVal] = useState('')
 
-
-  var code = ''
- 
 
  const verifCompte = () => {
 
-  if ( code.length < 4 ) {
+  if ( codeVal.length < 4 ) {
  
-      Alert.alert('', "Code invalide", [
+      Alert.alert('', "Veuillez renseignez le code recu par mail", [
         {text: 'Ressayez', onPress: () => null},
       ]);
       return;
@@ -40,7 +38,7 @@ export default function ConfirmationCompteScreen({navigation, route}: {navigatio
     url: ApiService.API_SEND_COMPTE_VERIFICATION,
     data: JSON.stringify({
       vendeur_id: route.params.vendeur_id,
-      code:code
+      code:codeVal
     }),
       headers: {
         Accept: 'application/json',
@@ -54,8 +52,7 @@ export default function ConfirmationCompteScreen({navigation, route}: {navigatio
       console.log(response.data);
 
       if( response.data.code == 'success') {
-        navigation.navigate('identification_proprietaire'      
-        )
+        navigation.navigate('identification_proprietaire')
       } else {
         Alert.alert('', response.data.message, [
           {text: 'Ok', onPress: () => null},
@@ -66,7 +63,10 @@ export default function ConfirmationCompteScreen({navigation, route}: {navigatio
     
     })
     .catch(error => {
+
+      setLoading(false);
       console.log(error);
+
     });
  }
 
@@ -88,6 +88,7 @@ export default function ConfirmationCompteScreen({navigation, route}: {navigatio
     .then(response => {
 
       setLoading(false);
+      setLoadingScreen(false)
 
       console.log(response.data);
       
@@ -95,7 +96,7 @@ export default function ConfirmationCompteScreen({navigation, route}: {navigatio
     })
     .catch(error => {
       console.log(error);
-
+      setLoadingScreen(false)
       setLoading(false);
 
       Alert.alert('', "Erreur serveur", [
@@ -158,8 +159,8 @@ export default function ConfirmationCompteScreen({navigation, route}: {navigatio
             <TextInput
                   placeholderTextColor={'rgba(100,100,100,.7)'}
                   placeholder="Entrez le code"
-                  defaultValue={code}
-                  onChangeText={input => code =input}
+                  defaultValue={codeVal}
+                  onChangeText={input => setCodeVal(input)}
                   style={{
                     backgroundColor: 'transparent',
                     borderBottomWidth: 1,

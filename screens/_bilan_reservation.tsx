@@ -239,7 +239,7 @@ export default function BilanReservation({
                       fontSize: 13,
                       color: couleurs.primary,
                     }}>
-                    {data.props.duree}
+                    {data.props.duree} h
                   </Text>
                 </View>
 
@@ -265,7 +265,7 @@ export default function BilanReservation({
                       color: couleurs.dark,
                       opacity: 0.6,
                     }}>
-                    {data.props.prix},00 {data.props.devise}
+                    {data.props.prix} {data.props.devise}
                   </Text>
                 </View>
               </View>
@@ -319,7 +319,7 @@ export default function BilanReservation({
                       color: couleurs.secondary,
                       fontFamily: CustomFont.Poppins,
                     }}>
-                    Je valide ma commande - {data.props.prix},00 {data.props.devise}
+                    Je valide ma commande - {data.props.prix} {data.props.devise}
                   </Text>
                 </TouchableOpacity>
               </View>

@@ -14,6 +14,7 @@ import {
   Alert,
   Pressable,
   ActivityIndicator,
+  StatusBar,
 } from 'react-native';
 
 import SearchIcon from '../components/search';
@@ -90,6 +91,7 @@ export default function ConfigurationScreen({navigation}: {navigation: any}) {
           height: '100%',
           backgroundColor: '#fff',
         }}>
+          <StatusBar backgroundColor={'#9c702b'}></StatusBar>
         <View
           style={{
             display: 'flex',
@@ -126,7 +128,7 @@ export default function ConfigurationScreen({navigation}: {navigation: any}) {
               alignItems: 'center',
             }}>
 
-             {!_isLoadedcountries && <View style={{marginTop:100}}>
+             {!_isLoadedcountries && <View style={{marginTop:300}}>
               <ActivityIndicator  color={couleurs.primary} style={{alignSelf:'center'}} size={'large'}></ActivityIndicator>
              </View>}
             {Stepper == 0 && (

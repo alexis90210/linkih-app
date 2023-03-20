@@ -9,6 +9,7 @@ import {
   Image,
   Alert,
   ActivityIndicator,
+  Modal,
 } from 'react-native';
 import {CustomFont, couleurs} from '../components/color';
 import ImagePicker from 'react-native-image-crop-picker';
@@ -38,8 +39,8 @@ export default function InscriptionProprietaire3({
   // open picker
   const openImagePickerWithCrop = () => {
     ImagePicker.openPicker({
-      width: 600,
-      height: 200,
+      width: 800,
+      height: 500,
       cropping: true,
       mediaType: 'photo'
     }).then(image => {
@@ -64,7 +65,7 @@ export default function InscriptionProprietaire3({
       photo:photOnBase64
     })
 
-    console.log(json);
+    console.log('/================/',json);
     
 
     axios({
@@ -99,7 +100,7 @@ export default function InscriptionProprietaire3({
       })
       .catch(error => {
         setLoading(false)
-        console.log(error);
+        console.log('/////////////////////////////',error);
         Alert.alert(
           'Erreur',
           'Erreur survenue, il se pourrait que les informations fournis soit incorrects ou deja utilise pour un autre compte',
@@ -147,6 +148,10 @@ export default function InscriptionProprietaire3({
               alignItems: 'center',
               padding: 10,
             }}>
+              <Text style={{color: couleurs.dark, fontFamily:CustomFont.Poppins, marginVertical:40, paddingHorizontal:30, textAlign:'center'}}>
+                  {"Cliquez pour selectionner la photo de couverture \nde votre etablissement"}
+                </Text>
+
             <TouchableOpacity
               onPress={() => openImagePickerWithCrop()}
               style={{width: '100%'}}>
@@ -154,24 +159,25 @@ export default function InscriptionProprietaire3({
                 style={{
                   borderWidth: 1,
                   borderStyle: 'dashed',
-                  // padding: 10,
+                  
+                  alignSelf:'center',
                   display: 'flex',
                   flexDirection: 'column',
                   justifyContent: 'center',
                   marginTop: 10,
                   backgroundColor: 'rgba(200,200, 200, .3)',
                   borderColor: couleurs.primary,
-                  height: 180,
-                  width: '100%',
-                  borderRadius:20
+                  height: 230,
+                  width: 230,
+                  borderRadius:200
                 }}>
                 {photoCover && (
                   <Image
                     source={{uri: photoCover}}
                     style={{
-                      height: 180,
-                      width: '100%',
-                      borderRadius:20
+                      height: 230,
+                      width: 230,                      
+                      borderRadius:200
                     }}
                   />
                 )}
@@ -180,12 +186,12 @@ export default function InscriptionProprietaire3({
                     style={{
                       color: couleurs.dark,
                       textAlign: 'center',
-                      width: 300,
                       flexWrap: 'wrap',
                       alignSelf: 'center',
+                      paddingHorizontal:30
                     }}>
                     {' '}
-                    Tapez pour selectionner une image depuis votre gallerie
+                    Tapez pour prendre une photo
                   </Text>
                 )}
               </View>
@@ -195,10 +201,12 @@ export default function InscriptionProprietaire3({
                   marginVertical: 50,
                   textAlign: 'center',
                   fontFamily: CustomFont.Poppins,
+                  color:couleurs.dark,
+                  paddingHorizontal:40
                 }}>
                 En cliquant sur{' '}
                 <Text style={{color: couleurs.primary}}>
-                  je valide mainteant
+                  je valide maintenant
                 </Text>
                 , vous acceptez les termes et les conditions d'utilisations ,
                 ainsi que la politique de confidentialites de{' '}
@@ -239,8 +247,26 @@ export default function InscriptionProprietaire3({
               </TouchableOpacity>              
             </View>
 
-            {isLoading && <ActivityIndicator size="large" color={couleurs.primary} />}
+                  {/* LOADING MODAL */}
 
+        <Modal transparent={true} visible={isLoading}>
+          <View
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+              flexDirection: 'column',
+              backgroundColor: 'rgba(200,200,200,.5)',
+              alignItems: 'center',
+              alignContent: 'center',
+            }}>
+            <ActivityIndicator
+              color={couleurs.primary}
+              style={{alignSelf: 'center'}}
+              size={'large'}></ActivityIndicator>
+          </View>
+        </Modal>
+
+        {/* END LOADING */}
             
           </View>
         </ScrollView>

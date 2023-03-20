@@ -27,6 +27,7 @@ export default class ApiService {
   static API_URL_EDIT_UTILISATEUR = this.API_URL + 'edit/utilisateur';
 
   // GET
+  static API_URL_STRIPE_GENERATE_LINK = this.API_URL + 'stripe/vendeur/generate-url';
   static API_URL_GET_VENDEURS = this.API_URL + 'vendeurs';
   static API_URL_GET_CATEGORIES = this.API_URL + 'sous-categories';
   static API_URL_LOGIN = this.API_URL + 'login';

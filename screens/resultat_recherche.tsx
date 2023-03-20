@@ -237,9 +237,10 @@ export default function ResultatRechercheScreen({
             display: 'flex',
             flexDirection: 'row',
             justifyContent: 'space-between',
+            paddingVertical:10
           }}>
           <Text
-            style={{fontFamily: CustomFont.Poppins, fontSize: 15, width: 200}}
+            style={{fontFamily: CustomFont.Poppins, fontSize: 15, width: 200, color: couleurs.dark}}
             numberOfLines={1}>
             {prestation.nom}
           </Text>
@@ -249,7 +250,7 @@ export default function ResultatRechercheScreen({
               fontSize: 15,
               color: couleurs.primary,
             }}>
-            {prestation.prix}
+            {prestation.prix} {prestation.devise}
           </Text>
         </View>
         <View style={{height: 1, overflow: 'hidden', paddingHorizontal: 10}}>

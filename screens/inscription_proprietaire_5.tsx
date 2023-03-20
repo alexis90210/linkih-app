@@ -57,7 +57,8 @@ export default function InscriptionProprietaire5({navigation, route}: {navigatio
                 fontWeight: '600',
                 textTransform: 'uppercase',
                 fontSize: 17,
-                width:'80%'
+                width:'80%',
+                marginTop:20
               }}>
               Felicitations,
               votre compte a ete cree avec succes

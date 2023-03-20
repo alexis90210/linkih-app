@@ -37,6 +37,9 @@ function Main({navigation}: {navigation: any}) {
     id: 'userconnected', // Note: Do not use underscore("_") in id!
   }).then( data => {
 
+    console.log('role=======',data.role);
+    
+
     SetUserRole(data.role)
         
 

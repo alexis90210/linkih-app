@@ -179,7 +179,7 @@ export default function SimpleRdv({
 
   // reservation data
   const [Heure, SetHeure] = useState('');
-  const [Prestation, SetPrestation] = useState('');
+  const [Prestation, SetPrestation] = useState('Je suis interesse par...cd');
 
   // LOAD CATEGORIES
   const [sous_categories, setCategories] = useState([]);
@@ -327,7 +327,7 @@ export default function SimpleRdv({
                         backgroundColor: couleurs.white,
                         padding: 10,
                         marginVertical: 0,
-                        textAlign: 'center',
+                        textAlign: 'center', color:couleurs.dark
                       }}>
                       MATIN
                     </Text>
@@ -354,7 +354,7 @@ export default function SimpleRdv({
                               borderColor: '#ddd',
                               borderRadius: 30,
                               padding: 10,
-                              paddingHorizontal: 20,
+                              paddingHorizontal: 20, color:couleurs.dark
                             }}>
                             {h.hour}
                           </Text>
@@ -370,7 +370,7 @@ export default function SimpleRdv({
                         backgroundColor: couleurs.white,
                         padding: 10,
                         marginVertical: 20,
-                        textAlign: 'center',
+                        textAlign: 'center', color:couleurs.dark
                       }}>
                       MIDI + APRES MIDI
                     </Text>
@@ -397,7 +397,7 @@ export default function SimpleRdv({
                               borderColor: '#ddd',
                               borderRadius: 30,
                               padding: 10,
-                              paddingHorizontal: 20,
+                              paddingHorizontal: 20, color:couleurs.dark
                             }}>
                             {h.hour}
                           </Text>
@@ -417,7 +417,7 @@ export default function SimpleRdv({
                       width: '100%',
                       marginTop: 200,
                     }}>
-                    <Text style={{fontSize: 15, textAlign: 'center'}}>
+                    <Text style={{fontSize: 15, textAlign: 'center', color:couleurs.dark}}>
                       {'Veuillez selectionner une date \npour continuer'}
                     </Text>
                   </View>
@@ -453,16 +453,14 @@ export default function SimpleRdv({
                       underlineColorAndroid="transparent"
                       style={{
                         backgroundColor: 'transparent',
-
                         borderBottomWidth: 1,
                         borderBottomColor: couleurs.primary,
-                        color: couleurs.primary,
                         width: '100%',
                         height: 200,
                         justifyContent: 'flex-start',
                         textAlignVertical: 'top',
                         fontFamily: CustomFont.Poppins,
-                        fontSize: 15,
+                        fontSize: 15, color:couleurs.dark
                       }}></TextInput>
                   </View>
 

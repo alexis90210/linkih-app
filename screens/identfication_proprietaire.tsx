@@ -25,20 +25,17 @@ export default function IdentificationProprietaireScreen({
   navigation: any;
   route: any;
 }) {
-  var [isVisible, setVisible] = useState(false);
 
-  const _setVisible = () => {
-    if (isVisible) setVisible(false);
-    if (!isVisible) setVisible(true);
-  };
 
-  const [isProccessing, setIsProccessing] = useState(false);
-  const [password, setPassword] = useState('');
-  const [identifiant, setIdentifiant] = useState('');
+    const [isProccessing, setIsProccessing] = useState(false);
+    const [password, setPassword] = useState('');
+    const [identifiant, setIdentifiant] = useState('');
 
-  if (route.params?.login && route.params?.login.length > 0) {
-    setIdentifiant(route.params?.login);
-  }
+    if (route.params?.login && route.params?.login.length > 0) {
+      if (!identifiant) {
+        setIdentifiant(route.params?.login);
+      }
+    }
 
   const logUser = async () => {
     if (!identifiant) {
@@ -56,6 +53,7 @@ export default function IdentificationProprietaireScreen({
     }
 
     setIsProccessing(true);
+
 
     axios({
       method: 'POST',
@@ -131,13 +129,14 @@ export default function IdentificationProprietaireScreen({
 
         if (api.code == 'error') {
           setIsProccessing(false);
-          // Alert.alert('', api.message, [
-          //   {text: 'Confirmer maintenant', onPress: () => navigation.navigate('confirmation_screen',{
-          //     vendeur_id : api.vendeur_id
-          //   })},
-          // ]);
+    
+            Alert.alert('', api.message, [
+              {text: 'Confirmer maintenant', onPress: () => navigation.navigate('confirmation_screen',{
+                vendeur_id : api.vendeur_id
+              })},
+            ]);
 
-          Alert.alert('', api.message);
+
         }
       })
       .catch((error: any) => {

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {Text, View, TouchableOpacity, SafeAreaView, ScrollView, Linking} from 'react-native';
+import {Text, View, TouchableOpacity, SafeAreaView, ScrollView, Linking, Alert} from 'react-native';
 
 import ShopIcon from '../components/shop';
 import LogoutIcon from '../components/logout';
@@ -12,11 +12,14 @@ import Law3Icon from '../components/Law3';
 import CallIcon from '../components/call';
 import { CustomFont, couleurs } from '../components/color';
 import storage from '../components/api/localstorage';
+import axios from 'axios';
+import ApiService from '../components/api/service';
 
 function MenuScreen({navigation}: {navigation: any}) {
 
-  const [isVendeur, SetVendeur] = useState( false)
-  const [isClient, SetClient] = useState( false)
+  const [isVendeur, SetVendeur] = useState( false )
+  const [isClient, SetClient] = useState( false )
+  const [vendeur, SetVendeurData] = useState<any>( {} )
 
   storage
   .load({
@@ -30,6 +33,7 @@ function MenuScreen({navigation}: {navigation: any}) {
 
     if ( data.role == 'ROLE_VENDEUR' ) {
       SetVendeur(true)
+      SetVendeurData( data.etablissement )
     }
 
     else if ( data.role == 'ROLE_CLIENT' ) {
@@ -43,6 +47,42 @@ function MenuScreen({navigation}: {navigation: any}) {
   })
   .catch(error => console.log(error));
   
+
+  // FILL VENDEUR STRIKE
+  const [isGettingPath, SetGotPath] = useState(false);
+
+  const fillInformation = () => {
+    axios({
+      method: 'POST',
+      url: ApiService.API_URL_STRIPE_GENERATE_LINK,
+      data: JSON.stringify({
+        stripe_id: vendeur[0].stripe_account_id
+      }),
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response: {data: any}) => {
+        console.log('==>', response.data.message);
+        SetGotPath(true)
+        var api = response.data;
+        if (api.code == 'success') {
+          navigation.navigate('paiement_screen', {
+            route: response.data.message
+          })
+        }
+
+        if (api.code == 'error') {
+          Alert.alert('', api.message);
+        }
+      })
+      .catch((error: any) => {
+        console.log(error);
+        Alert.alert('', error);
+      });
+  }
+
   return (
     <SafeAreaView
       style={{
@@ -181,6 +221,29 @@ function MenuScreen({navigation}: {navigation: any}) {
                 paddingHorizontal: 10,
               }}
               onPress={() => {
+                fillInformation()
+              }}>
+              <BillIcon color={couleurs.primary} />
+              <Text style={{fontSize: 16, marginVertical: 10, color: '#000',fontFamily: CustomFont.Poppins}}>
+                Configuration de paiement
+              </Text>
+            </TouchableOpacity>)}
+
+
+            {isVendeur && (<TouchableOpacity
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                borderTopWidth:1,
+                borderColor: '#9c702b20',
+                borderStyle:'solid',
+                justifyContent: 'flex-start',
+                gap: 10,
+                alignItems: 'center',
+                backgroundColor: '#fff',
+                paddingHorizontal: 10,
+              }}
+              onPress={() => {
                 navigation.navigate('reabonnement')
               }}>
               <BillIcon color={couleurs.primary} />
@@ -188,7 +251,6 @@ function MenuScreen({navigation}: {navigation: any}) {
                 Reabonnement
               </Text>
             </TouchableOpacity>)}
-
            { isVendeur && ( <TouchableOpacity
               style={{
                 display: 'flex',

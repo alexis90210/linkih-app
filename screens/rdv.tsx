@@ -28,6 +28,7 @@ export default function Rdv({
 
    // LOADER
  const [isLoading, setLoading] = useState(false)
+ const [isLoadingEtab, setLoadingEtab] = useState(true)
 
  // CURRENT DATE
  const [date , setDate] = useState('');
@@ -42,12 +43,13 @@ export default function Rdv({
   // GET USER CONNECTED
   const [userConnected, SetUserConnected] = useState<any>({})
 
-  storage.load({
+  if(!isLoadingEtab ) storage.load({
     key: 'userconnected', // Note: Do not use underscore("_") in key!
     id: 'userconnected', // Note: Do not use underscore("_") in id!
   }).then( data => {
 
     SetUserConnected(data.etablissement[0])
+    setLoadingEtab(false)
   })
   .catch(error => console.log(error)
   );

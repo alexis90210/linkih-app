@@ -210,7 +210,7 @@ export default function PersonnalisationReservationCreneau({
                   borderTopWidth: 1,
                   borderBottomWidth: 1,
                   borderColor: '#ddd',
-                  backgroundColor: 'couleurs.white',
+                  backgroundColor: couleurs.white, color:couleurs.dark,
                   padding: 10,
                   marginVertical: 0,
                   textAlign: 'center',
@@ -245,7 +245,7 @@ export default function PersonnalisationReservationCreneau({
                         borderColor: '#ddd',
                         borderRadius: 30,
                         padding: 10,
-                        paddingHorizontal: 20,
+                        paddingHorizontal: 20, color:couleurs.dark
                       }}>
                       {h.hour}
                     </Text>
@@ -258,10 +258,10 @@ export default function PersonnalisationReservationCreneau({
                   borderTopWidth: 1,
                   borderBottomWidth: 1,
                   borderColor: '#ddd',
-                  backgroundColor: 'couleurs.white',
+                  backgroundColor: couleurs.white,
                   padding: 10,
                   marginVertical: 20,
-                  textAlign: 'center',
+                  textAlign: 'center', color:couleurs.dark
                 }}>
                 MIDI + APRES MIDI
               </Text>
@@ -293,7 +293,7 @@ export default function PersonnalisationReservationCreneau({
                         borderColor: '#ddd',
                         borderRadius: 30,
                         padding: 10,
-                        paddingHorizontal: 20,
+                        paddingHorizontal: 20, color:couleurs.dark
                       }}>
                       {h.hour}
                     </Text>
@@ -313,7 +313,7 @@ export default function PersonnalisationReservationCreneau({
                 width: '100%',
                 marginTop: 200,
               }}>
-              <Text style={{fontSize: 15, textAlign: 'center'}}>
+              <Text style={{fontSize: 15, textAlign: 'center', color:couleurs.dark}}>
                 {'Veuillez selectionner une date \npour continuer'}
               </Text>
             </View>
