@@ -288,7 +288,6 @@ export default function PersonnalisationReservationCreneau({
                       })
                     }>
                     <Text
-                      key={i}
                       style={{
                         borderWidth: 1,
                         borderColor: '#ddd',

@@ -76,7 +76,7 @@ export default function Rdv({
        if (api.code == 'success') {
         setLoading(false)
          setLoadedRendezVous(true)
-         setRendezvous(api.message);
+         setRendezvous(api.message.reverse());
        }
        if (api.code == 'error') {
          Alert.alert('', 'Erreur survenue');

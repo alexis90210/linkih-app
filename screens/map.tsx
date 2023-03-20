@@ -12,6 +12,7 @@ import {
   Pressable,
   TouchableOpacity,
   Linking,
+  ActivityIndicator,
 } from 'react-native';
 
 import SearchIcon from '../components/search';
@@ -28,6 +29,7 @@ import ArrowLeftIcon from '../components/ArrowLeft';
 import {AirbnbRating} from 'react-native-ratings';
 
 MapboxGL.setAccessToken(ApiService.MAPBOX_GL_TOKEN);
+MapboxGL.setTelemetryEnabled(false);
 
 export default function Map({
   navigation,
@@ -38,6 +40,7 @@ export default function Map({
 }) {
   const [modalVisible, SetModalVisible] = useState(false);
   const [isLoadedEtab, setLoadedEtab] = useState(false);
+  const [isPreccessing, setPreccessing] = useState(false);
 
   const openModal = () => {
     SetModalVisible(!modalVisible);
@@ -48,6 +51,7 @@ export default function Map({
   const [UserPosition, setUserPosition] = useState<any>({});
 
   const _myPosition = () => {
+    setPreccessing(true)
     Geolocation.getCurrentPosition(info => {
       let lon = Number(info.coords.longitude);
       let lat = Number(info.coords.latitude);
@@ -58,12 +62,12 @@ export default function Map({
       });
 
       setstartCords([lon, lat]);
+      setPreccessing(false)
     });
   };
 
-  MapboxGL.setTelemetryEnabled(false);
-
   const loadEtablissements = () => {
+    setPreccessing(true)
     axios({
       method: 'POST',
       url: ApiService.API_URL_GET_VENDEURS,
@@ -74,22 +78,23 @@ export default function Map({
     })
       .then((response: {data: any}) => {
 
-        console.log(response.data.message);
-
         var api = response.data;
         if (api.code == 'success') {
           
-          setEtablissements( api.message );
+          setEtablissements( api.message.reverse() );
           setLoadedEtab(true);
+          setPreccessing(false)
         }
 
         if (api.code == 'error') {
+          setPreccessing(false)
           Alert.alert('Erreur', api.message, [
             {text: 'OK', onPress: () => null},
           ]);
         }
       })
       .catch((error: any) => {
+        setPreccessing(false)
         console.log(error);
         Alert.alert('Erreur', error, [{text: 'OK', onPress: () => null}]);
       });
@@ -97,7 +102,7 @@ export default function Map({
 
   if (route.params?.recherche) {
     if (!isLoadedEtab) {
-      setEtablissements(route.params?.recherche);
+      setEtablissements(route.params?.recherche.reverse());
       setLoadedEtab(true);
     }
   } else {
@@ -132,25 +137,26 @@ export default function Map({
     return d.toFixed(2) + ' km';
   };
 
-  const LoadDistance = (etab: any) => {
-
- 
-    let d = distance(
-      Number(etab.etab.latitude),
-      Number(etab.etab.longitude),
-      Number(UserPosition.latitude),
-      Number(UserPosition.longitude),
-    )
-
-    return (
-      <Text style={{fontWeight: '600', fontSize: 15, color: couleurs.primary}}>
-        {d} 
-      </Text>
-    );
-  };
 
   return (
     <SafeAreaView style={{flex: 1}}>
+       <Modal transparent={true} visible={isPreccessing}>
+          <View
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+              flexDirection: 'column',
+              backgroundColor: 'rgba(200,200,200,.5)',
+              alignItems: 'center',
+              alignContent: 'center',
+            }}>
+            <ActivityIndicator
+              color={couleurs.primary}
+              style={{alignSelf: 'center'}}
+              size={'large'}></ActivityIndicator>
+          </View>
+        </Modal>
+
       <View style={styles.page}>
         <View style={styles.container}>
           <MapboxGL.MapView
@@ -397,7 +403,7 @@ export default function Map({
                   }}>
                   <Image
                     source={marker.logo ? {uri:'data:image/png;base64,' + marker.logo} : require('../assets/images/cover.jpg')}
-                    style={{width: '100%', height: 100}}
+                    style={{width: '100%', height: 100, borderRadius:20}}
                   />
 
                   <View
@@ -467,9 +473,14 @@ export default function Map({
                           fontSize: 13,
                           color: '#000',
                         }}>
-                        Entrepreneur . Societe . $$ .{' '}
+                        {marker.categorie}  . 
                         <Text style={{color: couleurs.primary}}>
-                          <LoadDistance etab={marker} />
+                          { distance(
+                        Number(marker.latitude),
+                        Number(marker.longitude),
+                        Number(UserPosition.latitude),
+                        Number(UserPosition.longitude),
+                      )}
                         </Text>
                       </Text>
                       <Text

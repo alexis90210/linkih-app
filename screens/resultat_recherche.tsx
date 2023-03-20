@@ -11,6 +11,7 @@ import {
   TouchableOpacity,
   Linking,
   Modal,
+  ActivityIndicator,
 } from 'react-native';
 import ArrowLeftIcon from '../components/ArrowLeft';
 import SearchIcon from '../components/search';
@@ -55,7 +56,7 @@ export default function ResultatRechercheScreen({
         
         if (api.code == 'success') {
           setLoading(true);
-          setEtablissements(api.message);
+          setEtablissements(api.message.reverse());
         }
 
         if (api.code == 'error') {
@@ -219,23 +220,6 @@ export default function ResultatRechercheScreen({
     return d.toFixed(2) + ' km';
   };
 
-  const LoadDistance = (etab: any) => {
-
-
-    let d = distance(
-      Number(etab.etab.latitude),
-      Number(etab.etab.longitude),
-      Number(myPosition.latitude),
-      Number(myPosition.longitude),
-    )
-
-    return (
-      <Text style={{fontWeight: '600', fontSize: 15, color: couleurs.primary}}>
-        {d} 
-      </Text>
-    );
-  };
-
   // LOAD RESULT DATA
 
   var LoadResultatRecherche = ({
@@ -360,7 +344,12 @@ export default function ResultatRechercheScreen({
                   Entrepreuneur - Societe . $$ .{' '}
                   <Text style={{color: couleurs.primary}}>
 
-                    <LoadDistance etab={data}/>
+                    { distance(
+                        Number(data.latitude),
+                        Number(data.longitude),
+                        Number(myPosition.latitude),
+                        Number(myPosition.longitude),
+                      )}
                   </Text>
                 </Text>
                 <Text
@@ -551,6 +540,10 @@ export default function ResultatRechercheScreen({
               marginTop: 15,
               marginBottom: 40,
             }}>
+
+            {!isLoading && <View style={{marginTop:100}}>
+              <ActivityIndicator  color={couleurs.primary} style={{alignSelf:'center'}} size={'large'}></ActivityIndicator>
+             </View>}
             {etablissements.map((prop, key) => {
               return (
                 <LoadResultatRecherche

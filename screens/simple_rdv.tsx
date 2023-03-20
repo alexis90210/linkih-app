@@ -218,8 +218,7 @@ export default function SimpleRdv({
   // SAVE RDV
   const [loadingActivity, SetActivityActive] = useState(false);
   const saveRdv = () => {
-
-    
+   
     axios({
       method: 'POST',
       url: ApiService.API_URL_SAVE_RDV,

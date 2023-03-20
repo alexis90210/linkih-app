@@ -312,6 +312,10 @@ export default function AutreEtablissement({
     </View>
   );
 
+
+  // console.log(sections);
+  
+
   return (
     <View>
       <SafeAreaView
@@ -371,12 +375,12 @@ export default function AutreEtablissement({
               top: 145,
               left: 0,
               paddingHorizontal: 24,
-              zIndex: 10,
+              zIndex: 10
             }}>
             <View
               style={{
                 borderRadius: 15,
-                backgroundColor: '#fff',
+                backgroundColor: couleurs.primary,
                 padding: 14,
                 width: '100%',
                 shadowColor: 'gray',
@@ -384,26 +388,26 @@ export default function AutreEtablissement({
               }}>
               <Text
                 style={{
-                  color: '#000',
+                  color: couleurs.white,
                   paddingVertical: 3,
-                  fontSize: 17,
+                  fontSize: 15,
                   fontFamily: CustomFont.Poppins,
                 }}>
                 {VendeurData.nom}
               </Text>
               <Text
                 style={{
-                  color: '#000',
+                  color: couleurs.white,
                   paddingVertical: 3,
                   opacity: 0.7,
-                  fontSize: 15,
+                  fontSize: 14,
                   fontFamily: CustomFont.Poppins,
                 }}>
                 {VendeurData.email}
               </Text>
               <Text
                 style={{
-                  color: '#000',
+                  color: couleurs.white,
                   paddingVertical: 3,
                   fontSize: 16,
                   fontFamily: CustomFont.Poppins,
@@ -428,9 +432,9 @@ export default function AutreEtablissement({
 
               <View
                 style={{
-                  backgroundColor: couleurs.primary,
+                  backgroundColor: couleurs.white,
                   padding: 10,
-                  borderRadius: 15,
+                  borderRadius: 14,
                   position: 'absolute',
                   bottom: 20,
                   right: 20,
@@ -438,8 +442,8 @@ export default function AutreEtablissement({
                 {!isConsulting && <EditIcon />}
                 {isConsulting && (
                   <TouchableOpacity
-                    onPress={() => Linking.openURL(`tel:242069500886`)}>
-                    <CallIcon color={'#fff'} />
+                    onPress={() => Linking.openURL(`tel:${VendeurData.mobile}`)}>
+                    <CallIcon color={couleurs.primary} />
                   </TouchableOpacity>
                 )}
               </View>
@@ -467,7 +471,7 @@ export default function AutreEtablissement({
             <View style={{
               display: 'flex',
               justifyContent: 'flex-start',
-              flexDirection: 'row',
+              flexDirection: 'column',
               gap: 10,
               borderRadius: 15,
               backgroundColor: '#fff',
@@ -481,7 +485,7 @@ export default function AutreEtablissement({
                 key={i}
                 onPress={() =>
                   navigation.navigate('personnalisation_reservation_creneau', {
-                    props: row,
+                    props: {...row, vendeur_id:route.params?.vendeur_data?.id,},
                   })
                 }>
                 <View
@@ -576,7 +580,7 @@ export default function AutreEtablissement({
                         color: couleurs.primary,
                       }}
                       numberOfLines={1}>
-                      {row.prix}
+                      {row.prix} {row.devise}
                     </Text>
                     </View>
                   </View>
@@ -673,7 +677,7 @@ export default function AutreEtablissement({
               }}>
               <Text
                 style={{
-                  color: '#000',
+                  color: couleurs.primary,
                   paddingVertical: 3,
                   fontSize: 17,
                   fontFamily: CustomFont.Poppins,
@@ -685,10 +689,9 @@ export default function AutreEtablissement({
                 style={{
                   color: '#000',
                   paddingVertical: 3,
-                  fontSize: 16,
+                  fontSize: 14,
                   fontFamily: CustomFont.Poppins,
                   opacity: 0.8,
-                  marginTop: 10,
                 }}>
                 {VendeurData.pays}
               </Text>
@@ -697,7 +700,7 @@ export default function AutreEtablissement({
                   color: '#000',
                   paddingVertical: 3,
                   opacity: 0.7,
-                  fontSize: 15,
+                  fontSize: 14,
                   fontFamily: CustomFont.Poppins,
                 }}>
                 {VendeurData.adresse}
@@ -716,9 +719,9 @@ export default function AutreEtablissement({
               }}>
               <Text
                 style={{
-                  color: '#000',
+                  color: couleurs.primary,
                   paddingVertical: 3,
-                  fontSize: 17,
+                  fontSize: 16,
                   fontFamily: CustomFont.Poppins,
                 }}>
                 Heure d'ouverture
@@ -772,7 +775,6 @@ export default function AutreEtablissement({
                         {row.ouverture}-{row.fermeture}
                       </Text>
                     </View>
-                    {/* <CloseIcon color={couleurs.primary} /> */}
                   </View>
                 ))}
               </View>
@@ -791,10 +793,9 @@ export default function AutreEtablissement({
               }}>
               <Text
                 style={{
-                  color: '#000',
+                  color: couleurs.primary,
                   paddingVertical: 3,
-                  fontSize: 17,
-                  fontWeight: '700',
+                  fontSize: 15,
                   fontFamily: CustomFont.Poppins,
                 }}>
                 Lien reseaux sociaux
@@ -832,6 +833,7 @@ export default function AutreEtablissement({
                   source={require('../assets/social/youtube.png')}
                   style={{width: 35, height: 35}}
                 />
+                
               </View>
             </View>
           </View>
@@ -846,13 +848,50 @@ export default function AutreEtablissement({
               display: 'flex',
               flexDirection: 'row',
               justifyContent: 'center',
-              gap: 30,
+              gap: 10,
               position: 'absolute',
               backgroundColor: couleurs.white,
               paddingVertical: 7,
               width: '100%',
               bottom: -10,
             }}>
+
+            <View
+                  style={{
+                    alignItems: 'center',
+                    backgroundColor: couleurs.primary,
+                    paddingHorizontal: 10,
+                    borderRadius: 30,
+                    height: 40,
+                  }}>
+                  <TouchableOpacity
+                    style={{
+                      paddingHorizontal: 10,
+                      position: 'relative',
+                      bottom: -3,
+                      display: 'flex',
+                      justifyContent: 'flex-start',
+                      alignItems: 'center',
+                      flexDirection: 'row',
+                      flexWrap: 'nowrap',
+                    }}
+                    onPress={() =>
+                      navigation.navigate('simple_rdv', {
+                        id: VendeurData.id,
+                      })
+                    }>
+                    <Text
+                      style={{
+                        textAlign: 'center',
+                        padding: 5,
+                        fontSize: 14,
+                        color: couleurs.white,
+                        fontFamily: CustomFont.Poppins,
+                      }}>
+                      Prendre un RDV
+                    </Text>
+                  </TouchableOpacity>
+                </View>
             <TouchableOpacity
               style={{
                 padding: 8,
@@ -876,8 +915,7 @@ export default function AutreEtablissement({
                 alignItems: 'center',
                 backgroundColor: couleurs.primary,
                 borderRadius: 30,
-                paddingHorizontal: 30,
-                width: 220,
+                paddingHorizontal: 15,
                 height: 40,
               }}>
               <TouchableOpacity

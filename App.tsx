@@ -93,7 +93,7 @@ export default function App(): JSX.Element {
           component={ConfigurationScreen}
           options={{
             title:'Configuration',
-            headerTitleStyle: {fontSize: 18, color:couleurs.white, fontFamily: CustomFont.Poppins,},
+            headerTitleStyle: {fontSize: 16, color:couleurs.white, fontFamily: CustomFont.Poppins,},
             headerTintColor:couleurs.white,
             headerShown: false,
             headerStyle: {
@@ -141,7 +141,7 @@ export default function App(): JSX.Element {
             title: 'Connexion client',
             
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 18, color:couleurs.white, fontFamily: CustomFont.Poppins,},
+            headerTitleStyle: {fontSize: 16, color:couleurs.white, fontFamily: CustomFont.Poppins,},
             headerTintColor:couleurs.white,
             headerShown: true,
             headerStyle: {
@@ -159,7 +159,7 @@ export default function App(): JSX.Element {
           component={PersonnalisationReservation}
           options={{
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 18, color:couleurs.white, fontFamily: CustomFont.Poppins,},
+            headerTitleStyle: {fontSize: 16, color:couleurs.white, fontFamily: CustomFont.Poppins,},
             headerTintColor:couleurs.white,
             headerShown: false,
             headerStyle: {
@@ -177,7 +177,7 @@ export default function App(): JSX.Element {
           component={PersonnalisationReservationCreneau}
           options={{
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 18, color:couleurs.white, fontFamily: CustomFont.Poppins,},
+            headerTitleStyle: {fontSize: 16, color:couleurs.white, fontFamily: CustomFont.Poppins,},
             headerTintColor:couleurs.white,
             headerShown: false,
             headerStyle: {
@@ -196,7 +196,7 @@ export default function App(): JSX.Element {
           options={{
             title: 'Inscription client',
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 18, color:couleurs.white, fontFamily: CustomFont.Poppins,},
+            headerTitleStyle: {fontSize: 16, color:couleurs.white, fontFamily: CustomFont.Poppins,},
             headerTintColor:couleurs.white,
             headerShown: true,
             headerStyle: {
@@ -215,7 +215,7 @@ export default function App(): JSX.Element {
           options={{
             title: 'Re/Abonnement',
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 18, color:couleurs.white, fontFamily: CustomFont.Poppins,},
+            headerTitleStyle: {fontSize: 16, color:couleurs.white, fontFamily: CustomFont.Poppins,},
             headerTintColor:couleurs.white,
             headerShown: true,
             headerStyle: {
@@ -237,7 +237,7 @@ export default function App(): JSX.Element {
           options={{
             title: 'Connexion proprietaire',
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 18, color:couleurs.white, fontFamily: CustomFont.Poppins,},
+            headerTitleStyle: {fontSize: 16, color:couleurs.white, fontFamily: CustomFont.Poppins,},
             headerTintColor:couleurs.white,
             headerShown: true,
             headerStyle: {
@@ -256,7 +256,7 @@ export default function App(): JSX.Element {
           options={{
             title: 'Creation du compte proprietaire',
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 18, color:couleurs.white, fontFamily: CustomFont.Poppins,},
+            headerTitleStyle: {fontSize: 16, color:couleurs.white, fontFamily: CustomFont.Poppins,},
             headerTintColor:couleurs.white,
             headerShown: true,
             headerStyle: {
@@ -275,7 +275,7 @@ export default function App(): JSX.Element {
           options={{
             title: 'Creation du compte proprietaire',
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 18, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
+            headerTitleStyle: {fontSize: 16, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
             headerTintColor:couleurs.primary,
             headerShown: false,
             presentation: 'modal',
@@ -291,7 +291,7 @@ export default function App(): JSX.Element {
           options={{
             title: 'Image de couverture',
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 18, color:couleurs.primary, fontFamily: CustomFont.Poppins},
+            headerTitleStyle: {fontSize: 16, color:couleurs.primary, fontFamily: CustomFont.Poppins},
             headerTintColor:couleurs.primary,
             headerShown: false,
             presentation: 'modal',
@@ -307,7 +307,7 @@ export default function App(): JSX.Element {
           options={{
             title: '',
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 18, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
+            headerTitleStyle: {fontSize: 16, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
             headerTintColor:couleurs.primary,
             headerShown: false,
             presentation: 'modal',
@@ -323,7 +323,7 @@ export default function App(): JSX.Element {
           options={{
             title: '',
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 18, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
+            headerTitleStyle: {fontSize: 16, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
             headerTintColor:couleurs.primary,
             headerShown: false,
             presentation: 'modal',
@@ -338,7 +338,7 @@ export default function App(): JSX.Element {
           component={Main}
           options={{
             headerShadowVisible: true,
-            headerTitleStyle: {fontSize: 18, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
+            headerTitleStyle: {fontSize: 16, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
             headerTintColor:couleurs.primary,
             headerShown: false,
             presentation: 'modal',
@@ -354,7 +354,7 @@ export default function App(): JSX.Element {
           options={{
             title: 'Mon compte',
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 18, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
+            headerTitleStyle: {fontSize: 16, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
             headerTintColor:couleurs.primary,
             headerShown: false,
             presentation: 'modal',
@@ -370,7 +370,7 @@ export default function App(): JSX.Element {
           options={{
             title: 'Mon rdv',
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 18, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
+            headerTitleStyle: {fontSize: 16, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
             headerTintColor:couleurs.primary,
             headerShown: false,
             presentation: 'modal',
@@ -386,7 +386,7 @@ export default function App(): JSX.Element {
           options={{
             title: 'La carte',
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 18, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
+            headerTitleStyle: {fontSize: 16, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
             headerTintColor:couleurs.primary,
             headerShown: false,
             presentation: 'modal',
@@ -402,7 +402,7 @@ export default function App(): JSX.Element {
           options={{
             title: 'Resultat de la recherche',
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 18, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
+            headerTitleStyle: {fontSize: 16, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
             headerTintColor:couleurs.primary,
             headerShown: false,
             presentation: 'modal',
@@ -418,7 +418,7 @@ export default function App(): JSX.Element {
           options={{
             title: 'Resultat de la recherche',
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 18, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
+            headerTitleStyle: {fontSize: 16, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
             headerTintColor:couleurs.primary,
             headerShown: false,
             presentation: 'modal',
@@ -434,7 +434,7 @@ export default function App(): JSX.Element {
           options={{
             title: 'Espace etablissement',
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 18, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
+            headerTitleStyle: {fontSize: 16, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
             headerTintColor:couleurs.primary,
             headerShown: false,
             presentation: 'modal',
@@ -450,7 +450,7 @@ export default function App(): JSX.Element {
           options={{
             title: 'Espace etablissement',
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 18, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
+            headerTitleStyle: {fontSize: 16, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
             headerTintColor:couleurs.primary,
             headerShown: false,
             presentation: 'modal',
@@ -466,7 +466,7 @@ export default function App(): JSX.Element {
           options={{
             title: 'Edition compte',
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 18, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
+            headerTitleStyle: {fontSize: 16, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
             headerTintColor:couleurs.primary,
             headerShown: true,
             presentation: 'modal',
@@ -482,7 +482,7 @@ export default function App(): JSX.Element {
           options={{
             title: 'Menu screen',
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 18, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
+            headerTitleStyle: {fontSize: 16, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
             headerTintColor:couleurs.primary,
             headerShown: false,
             presentation: 'modal',
@@ -499,7 +499,7 @@ export default function App(): JSX.Element {
           options={{
             title: 'Selectionnez l\'addresse',
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 18, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
+            headerTitleStyle: {fontSize: 16, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
             headerTintColor:couleurs.primary,
             headerShown: false,
             presentation: 'modal',
@@ -515,7 +515,7 @@ export default function App(): JSX.Element {
           options={{
             title: 'Bilan reservation',
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 18, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
+            headerTitleStyle: {fontSize: 16, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
             headerTintColor:couleurs.primary,
             headerShown: false,
             presentation: 'modal',
@@ -531,7 +531,7 @@ export default function App(): JSX.Element {
           options={{
             title: 'rdv client',
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 18, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
+            headerTitleStyle: {fontSize: 16, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
             headerTintColor:couleurs.primary,
             headerShown: false,
             presentation: 'modal',
@@ -548,7 +548,7 @@ export default function App(): JSX.Element {
           options={{
             title: 'rdv client',
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 18, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
+            headerTitleStyle: {fontSize: 16, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
             headerTintColor:couleurs.primary,
             headerShown: false,
             presentation: 'modal',
@@ -564,7 +564,7 @@ export default function App(): JSX.Element {
           options={{
             title: 'rdv client',
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 18, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
+            headerTitleStyle: {fontSize: 16, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
             headerTintColor:couleurs.primary,
             headerShown: false,
             presentation: 'modal',
@@ -580,7 +580,7 @@ export default function App(): JSX.Element {
           options={{
             title: 'Gallerie',
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 18, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
+            headerTitleStyle: {fontSize: 16, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
             headerTintColor:couleurs.primary,
             headerShown: false,
             presentation: 'modal',
@@ -596,7 +596,7 @@ export default function App(): JSX.Element {
           options={{
             title: 'Mes Horaires',
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 18, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
+            headerTitleStyle: {fontSize: 16, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
             headerTintColor:couleurs.primary,
             headerShown: false,
             presentation: 'modal',
@@ -613,7 +613,7 @@ export default function App(): JSX.Element {
           options={{
             title: 'Mes Horaires',
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 18, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
+            headerTitleStyle: {fontSize: 16, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
             headerTintColor:couleurs.primary,
             headerShown: false,
             presentation: 'modal',
@@ -629,7 +629,7 @@ export default function App(): JSX.Element {
           options={{
             title: 'Mes Horaires',
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 18, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
+            headerTitleStyle: {fontSize: 16, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
             headerTintColor:couleurs.primary,
             headerShown: false,
             presentation: 'modal',
@@ -640,12 +640,12 @@ export default function App(): JSX.Element {
 
         {/* ConfigurationDefaultCategorie */}
         <Stack.Screen
-          name="conf_default_categorie"
+          name="prestations_list"
           component={ConfigurationDefaultCategorie}
           options={{
             title: 'Choisir une prestation',
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 18, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
+            headerTitleStyle: {fontSize: 16, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
             headerTintColor:couleurs.primary,
             headerShown: false,
             presentation: 'modal',
@@ -662,7 +662,7 @@ export default function App(): JSX.Element {
           options={{
             title: 'Portail de paiement',
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 18, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
+            headerTitleStyle: {fontSize: 16, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
             headerTintColor:couleurs.primary,
             headerShown: true,
             presentation: 'modal',

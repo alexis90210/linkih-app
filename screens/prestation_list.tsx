@@ -356,7 +356,7 @@ export default function ConfigurationDefaultCategorie({
                     marginTop:14,
                     fontFamily: CustomFont.Poppins,
                   }}>
-                  Duree
+                  Duree (En heure )
                 </Text>
                 <TextInput
                   defaultValue={selectedDuree}

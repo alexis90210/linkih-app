@@ -214,9 +214,9 @@ export default function MonEtablissement({
               }}>
               <Text
                 style={{
-                  color: '#000',
+                  color: couleurs.primary,
                   paddingVertical: 3,
-                  fontSize: 17,
+                  fontSize: 15,
                   fontFamily: CustomFont.Poppins,
                 }}>
                 Pays et region de l'etablissement
@@ -226,7 +226,7 @@ export default function MonEtablissement({
                 style={{
                   color: '#000',
                   paddingVertical: 3,
-                  fontSize: 16,
+                  fontSize: 14,
                   fontWeight: '600',
                   opacity: 0.8,
                 }}>
@@ -237,7 +237,7 @@ export default function MonEtablissement({
                   color: '#000',
                   paddingVertical: 3,
                   opacity: 0.7,
-                  fontSize: 15,
+                  fontSize: 14,
                   fontWeight: '600',
                 }}>
                 {etablissement.adresse}
@@ -264,7 +264,7 @@ export default function MonEtablissement({
                   fontFamily: CustomFont.Poppins,
                   fontSize: 15,
                   paddingBottom: 12,
-                  color: '#000',
+                  color: couleurs.primary,
                 }}>
                 Heure d'ouverture
               </Text>
@@ -285,8 +285,9 @@ export default function MonEtablissement({
                     alignItems: 'center',
                     width: '100%',
                     justifyContent: 'space-between',
-                    borderBottomColor:couleurs.primaryLight,
+                    borderBottomColor: '#ddd',
                     borderBottomWidth: (key+1) != horaire_ouverture.length ? 1 : 0 ,
+                    marginBottom:2
                   }}>
                   <View
                     style={{
@@ -320,7 +321,7 @@ export default function MonEtablissement({
 
             {/*GALLERIE */}
 
-            <View
+            {/* <View
               style={{
                 borderRadius: 15,
                 backgroundColor: '#fff',
@@ -364,7 +365,7 @@ export default function MonEtablissement({
                   />
                 ))}
               </View>
-            </View>
+            </View> */}
 
               {/* LIEN RESEAUX SOCIAUX */}
 
@@ -385,7 +386,7 @@ export default function MonEtablissement({
                   fontFamily: CustomFont.Poppins,
                   fontSize: 15,
                   paddingBottom: 12,
-                  color: '#000',
+                  color: couleurs.primary,
                 }}>
                 Lien reseaux sociaux
               </Text>

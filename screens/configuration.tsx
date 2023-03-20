@@ -13,6 +13,7 @@ import {
   FlatList,
   Alert,
   Pressable,
+  ActivityIndicator,
 } from 'react-native';
 
 import SearchIcon from '../components/search';
@@ -35,6 +36,17 @@ export default function ConfigurationScreen({navigation}: {navigation: any}) {
     setCurrentCountry(item);
     setStepper(1)
   };
+
+  const [_countries, setCountries] = useState<any>([]);
+  const [_isLoadedcountries, setLoadedCountries] = useState(false);
+
+  if ( !_isLoadedcountries) {
+    setTimeout(() => {
+      setCountries( countries );
+      setLoadedCountries(true)
+    }, 400);
+
+  }
 
 
   // Languages
@@ -97,8 +109,8 @@ export default function ConfigurationScreen({navigation}: {navigation: any}) {
               fontSize: 16,
               fontFamily: CustomFont.Poppins,
             }}>
-            {Stepper == 0 && 'Choisir un pays'}
-            {Stepper == 1 && 'Choisir une langue'}
+            {Stepper == 0 && 'Quel est votre pays ?'}
+            {Stepper == 1 && 'Vous parlez quelle langue ?'}
           </Text>
         </View>
 
@@ -113,10 +125,14 @@ export default function ConfigurationScreen({navigation}: {navigation: any}) {
               justifyContent: 'center',
               alignItems: 'center',
             }}>
+
+             {!_isLoadedcountries && <View style={{marginTop:100}}>
+              <ActivityIndicator  color={couleurs.primary} style={{alignSelf:'center'}} size={'large'}></ActivityIndicator>
+             </View>}
             {Stepper == 0 && (
               <View style={{width: '100%',
               marginTop:2,}}>
-                {countries.map((item: any, index: any) => (
+                {_countries.map((item: any, index: any) => (
                   <View key={index}>
                     <TouchableOpacity onPress={() => selectCountry(item)}>
                       <View style={{

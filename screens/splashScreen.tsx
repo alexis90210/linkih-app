@@ -1,27 +1,24 @@
 import React, { useState } from 'react';
 
 import {
-  SafeAreaView,
   ScrollView,
-  StyleSheet,
   Text,
   View,
   TouchableOpacity,
-  PixelRatio,
-  TextInput,
   Image,
   ActivityIndicator,
+  Modal,
+  StatusBar,
 } from 'react-native';
-import ShopIcon from '../components/shop';
 import { CustomFont, couleurs } from '../components/color';
 
 // SplashScreen
 export default function SplashScreen({navigation}: {navigation: any}) {
 
-  const [isLoading, SetLoading] = useState(false)
-  return (
+  return (   
 
         <ScrollView contentInsetAdjustmentBehavior="automatic" style={{backgroundColor:couleurs.dark}}>
+          <StatusBar backgroundColor={couleurs.dark}></StatusBar>
           <View
             style={{
               flex:1,
@@ -32,33 +29,28 @@ export default function SplashScreen({navigation}: {navigation: any}) {
             }}>
 
 
-              <Image source={require('../assets/images/logo.png')} style={{height:70, width:180}} />
+              <Image source={require('../assets/images/logo.png')} style={{height:65, width:160, marginBottom:20}} />
           
             <Text
               style={{
-                marginTop:30,
+                marginVertical:20,
                 textAlign: 'center',
                 color: couleurs.white,
-                fontWeight: '800',
                 textTransform: 'uppercase',
-                fontSize: 24,
+                fontSize: 20,
                 fontFamily:CustomFont.Poppins
               }}>
-              Welcome on Linkih
+              Bienvenu sur Linkih
             </Text>
             <Text
               style={{
                 textAlign: 'center',
                 color: couleurs.secondary,
-                opacity: 0.85,
-                fontWeight: '600',
                 fontSize: 14,
-                marginVertical: 13,
                 width:'80%',
                 fontFamily:CustomFont.Poppins
               }}>
-              Gérer votre fiche d'établissement directement sur l'application
-              mobile
+              {"Gérer votre fiche d'établissement directement\nsur l'application mobile"}
             </Text>
             <View
               style={{
@@ -73,7 +65,6 @@ export default function SplashScreen({navigation}: {navigation: any}) {
                   paddingHorizontal: 10,
                 }}
                 onPress={() => {
-                  SetLoading(true);
                   navigation.navigate('configuration')
                 }}>
                 <Text
@@ -92,7 +83,6 @@ export default function SplashScreen({navigation}: {navigation: any}) {
               </TouchableOpacity>
             </View>
 
-            {isLoading && <ActivityIndicator style={{alignSelf:'center'}} size={'large'}></ActivityIndicator>}
           </View>
         </ScrollView>
 

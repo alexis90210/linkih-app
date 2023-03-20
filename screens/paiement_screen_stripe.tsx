@@ -1,13 +1,12 @@
 import { View } from 'react-native';
 import {WebView} from 'react-native-webview';
-import ApiService from '../components/api/service';
 
-export default function PaiementScreen() {
+export default function PaiementScreen({navigation, route}:{navigation:any, route:any}) {
 
   return (
     <View style={{flex: 1}}>
       <WebView 
-        source={{uri: ApiService.API_URL_STRIPE_PAIEMENT_PORTAIL}} 
+        source={{uri: route.params.route}} 
         javaScriptEnabled={true}
         style={{flex: 1}} 
         timeout={20000}
