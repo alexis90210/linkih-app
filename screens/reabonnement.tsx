@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   Text,
   StyleSheet,
@@ -8,9 +8,48 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-import { CustomFont, couleurs } from '../components/color';
+import {CustomFont, couleurs} from '../components/color';
 
-export default function Reabonnement({navigation, route}: {navigation: any, route:any}) {
+export default function Reabonnement({
+  navigation,
+  route,
+}: {
+  navigation: any;
+  route: any;
+}) {
+  const [abonnements, setAbonnements] = useState<any>([
+    {
+      id: '1',
+      nom: 'Abonnement starter',
+      code: 'Mensuel',
+      montant: '100',
+      devise: '$',
+      description: '',
+    },
+    {
+      id: '2',
+      nom: 'Abonnement pro',
+      code: 'Annuel',
+      montant: '2500',
+      devise: '$',
+      description: '',
+    },
+  ]);
+
+  const [mon_abonnement, setMonAbonnement] = useState({
+    id: '3',
+    nom: 'Abonnement pro',
+    activation: '12/03/2023',
+    expiration: '20/03/2023',
+    montant: '2400',
+    devise: '$',
+  });
+
+  const sabonnerMaintenant = () => {
+    navigation.navigate('paiement_screen', {
+      route: 'google.com',
+    })
+  }
 
   return (
     <View>
@@ -18,188 +57,206 @@ export default function Reabonnement({navigation, route}: {navigation: any, rout
         style={{
           width: '100%',
           height: '100%',
-          backgroundColor:couleurs.dark
-        }}>  
-      <View style={{flex: 1, paddingHorizontal: 20, paddingVertical:20}}>
-        <ScrollView>
-          <Text
-            style={{
-              fontFamily: CustomFont.Poppins,
-              fontSize: 16,
-              color: couleurs.white,
-            }}>
-            Votre abonnement expire bientot, re-abonnez vous maintenant
-          </Text>
-
-          <View
-            style={{
-              borderWidth: 2,
-              marginTop: 30,
-              borderColor: couleurs.primary,
-              borderRadius: 20,
-            }}>
+          backgroundColor: '#f6f6f6',
+        }}>
+        <View style={{flex: 1, paddingHorizontal: 20, paddingVertical: 20}}>
+          <ScrollView>
             <View
               style={{
-                backgroundColor: couleurs.primary,
-                borderTopLeftRadius: 10,
-                borderTopRightRadius: 10,
-                paddingVertical: 10,
+                borderRadius: 20,
+                backgroundColor: '#fff',
+                padding: 20,
               }}>
-              <Text style={{color: couleurs.white, alignSelf: 'center'}}>
-                Abonnement starter
-              </Text>
-            </View>
-
-            <View
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                padding: 30,
-              }}>
-              <Text
+              <View
                 style={{
-                  color: couleurs.primary,
-                  fontSize: 18,
-                  fontWeight: '700',
+                  display: 'flex',
+                  justifyContent: 'flex-start',
+                  flexDirection: 'column',
                 }}>
-                Mensuel
-              </Text>
-              <View>
                 <Text
                   style={{
+                    fontFamily: CustomFont.Poppins,
+                    fontSize: 15,
                     color: couleurs.primary,
-                    fontSize: 18,
-                    fontWeight: '700',
-                  }}>
-                  $10.99/mo
+                    borderBottomWidth: 1,
+                    borderStyle: 'solid',
+                    borderColor: '#ddd',
+                  }}
+                  numberOfLines={1}>
+                  Detail de prestation
                 </Text>
-                
+
+                <View
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    flexDirection: 'row',
+                    marginTop: 10,
+                  }}>
+                  <Text
+                    style={{
+                      fontFamily: CustomFont.Poppins,
+                      fontSize: 14,
+                      color: couleurs.dark,
+                    }}>
+                    Abonnement
+                  </Text>
+
+                  <Text
+                    style={{
+                      fontFamily: CustomFont.Poppins,
+                      fontSize: 14,
+                      color: couleurs.primary,
+                    }}>
+                    {mon_abonnement.nom}
+                  </Text>
+                </View>
+
+                <View
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    flexDirection: 'row',
+                  }}>
+                  <Text
+                    style={{
+                      fontFamily: CustomFont.Poppins,
+                      fontSize: 14,
+                      color: couleurs.dark,
+                    }}>
+                    Debut d'activation
+                  </Text>
+
+                  <Text
+                    style={{
+                      fontFamily: CustomFont.Poppins,
+                      fontSize: 14,
+                      color: couleurs.dark,
+                      opacity: 0.6,
+                    }}>
+                    {mon_abonnement.activation}
+                  </Text>
+                </View>
+
+                <View
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    flexDirection: 'row',
+                  }}>
+                  <Text
+                    style={{
+                      fontFamily: CustomFont.Poppins,
+                      fontSize: 14,
+                      color: couleurs.dark,
+                    }}>
+                    Date d'expiration
+                  </Text>
+
+                  <Text
+                    style={{
+                      fontFamily: CustomFont.Poppins,
+                      fontSize: 14,
+                      color: couleurs.dark,
+                      opacity: 0.6,
+                    }}>
+                    {mon_abonnement.expiration}
+                  </Text>
+                </View>
               </View>
             </View>
 
-            <View
+            <Text
               style={{
-                marginBottom:20,
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'center',
-                backgroundColor: couleurs.primary,
-                borderRadius: 30,
-                marginHorizontal:40
+                fontFamily: CustomFont.Poppins,
+                fontSize: 15,
+                color: couleurs.primary,
+                marginVertical: 20,
+                paddingHorizontal: 15,
               }}>
-              <TouchableOpacity
+              Tous les abonnements
+            </Text>
+
+            {abonnements.map((row: any, key: any) => (
+              <View
+                key={key}
                 style={{
-                  paddingHorizontal: 10,
-                  width: '80%',
-                }}
-                onPress={() => navigation.navigate('paiement_screen')}>
-                <Text
-                  style={{
-                    textAlign: 'center',
-                    alignSelf: 'center',
-                    fontWeight: '500',
-                    color: couleurs.white,
-                    padding: 10,
-                    paddingHorizontal: 20,
-                    fontSize: 14,
-                  }}>                   
-                    Se re-abonner maintenant
-                  
-                </Text>
-              </TouchableOpacity>              
-            </View>
-
-
-            {/* BADGE CURRENT ABONNEMENT */}
-            <View style={{backgroundColor: 'transparent', borderWidth:1, borderColor:couleurs.primary, borderBottomLeftRadius:20, borderTopRightRadius:20, width:100}}>
-                <Text style={{color:couleurs.primary , padding:5, alignSelf:'center'}}>En cours</Text>
-            </View>
-            
-          </View>
-
-          <View
-            style={{
-              borderWidth: 2,
-              marginTop: 30,
-              borderColor: couleurs.primaryLight,
-              borderRadius: 20,
-            }}>
-            <View
-              style={{
-                backgroundColor: couleurs.primaryLight,
-                borderTopLeftRadius: 10,
-                borderTopRightRadius: 10,
-                paddingVertical: 10,
-              }}>
-              <Text style={{color: couleurs.dark, alignSelf: 'center'}}>
-                Abonnement Flex
-              </Text>
-            </View>
-
-            <View
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                padding: 30,
-              }}>
-              <Text
-                style={{
-                  color: couleurs.primaryLight,
-                  fontSize: 18,
-                  fontWeight: '700',
+                  borderWidth: 1,
+                  borderColor: couleurs.primary,
+                  borderRadius: 10,
+                  marginBottom: 10,
                 }}>
-                Mensuel
-              </Text>
-              <View>
-                <Text
+                <View
                   style={{
-                    color: couleurs.primaryLight,
-                    fontSize: 18,
-                    fontWeight: '700',
+                    backgroundColor: couleurs.primary,
+                    borderTopLeftRadius: 10,
+                    borderTopRightRadius: 10,
+                    paddingVertical: 10,
                   }}>
-                  $10.99/mo
-                </Text>
-              </View>
-            </View>
+                  <Text style={{color: couleurs.white, alignSelf: 'center'}}>
+                    {row.nom}
+                  </Text>
+                </View>
 
-            <View
-              style={{
-                marginBottom:20,
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'center',
-                backgroundColor: couleurs.primaryLight,
-                borderRadius: 30,
-                marginHorizontal:40
-              }}>
-              <TouchableOpacity
-                style={{
-                  paddingHorizontal: 10,
-                  width: '80%',
-                }}
-                onPress={() => navigation.navigate('paiement_screen')}>
-                <Text
+                <View
                   style={{
-                    textAlign: 'center',
-                    alignSelf: 'center',
-                    fontWeight: '500',
-                    color: couleurs.dark,
-                    padding: 10,
-                    paddingHorizontal: 20,
-                    fontSize: 14,
-                  }}>                   
-                    Commencez !
-                  
-                </Text>
-              </TouchableOpacity>              
-            </View>
-            
-          </View>
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    paddingHorizontal: 30,
+                    paddingVertical: 10,
+                  }}>
+                  <Text
+                    style={{
+                      color: couleurs.primary,
+                      fontSize: 15,
+                    }}>
+                    {row.code}
+                  </Text>
+                  <View>
+                    <Text
+                      style={{
+                        color: couleurs.primary,
+                        fontSize: 16,
+                      }}>
+                      {row.devise} {row.montant}
+                    </Text>
+                  </View>
+                </View>
 
-          
-
+                <View
+                  style={{
+                    marginBottom: 20,
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    backgroundColor: couleurs.primary,
+                    borderRadius: 30,
+                    marginHorizontal: 40,
+                  }}>
+                  <TouchableOpacity
+                    style={{
+                      paddingHorizontal: 10,
+                      width: '80%',
+                    }}
+                    onPress={() =>
+                     sabonnerMaintenant()
+                    }>
+                    <Text
+                      style={{
+                        textAlign: 'center',
+                        alignSelf: 'center',
+                        color: couleurs.white,
+                        padding: 10,
+                        paddingHorizontal: 20,
+                        fontSize: 14,
+                      }}>
+                      S'abonner maintenant
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            ))}
           </ScrollView>
         </View>
       </SafeAreaView>

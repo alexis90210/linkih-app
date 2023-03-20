@@ -11,6 +11,7 @@ import {
   FlatList,
   Modal,
   Alert,
+  Dimensions,
 } from 'react-native';
 
 import GetLocation from 'react-native-get-location';
@@ -180,6 +181,8 @@ function Main({navigation}: {navigation: any}) {
   const [modalVisibleEtablissement, setModalVisibleEtablissement] = useState(false);
   const [currentEtablissement, setCurrentEtablissement] = useState({nom: ''});
   const [etablissements, setEtablissements] = useState([]);
+  const [etablissementsTmp, setEtablissementsTmp] = useState([]);
+  const [searchVal, setSearchVal] = useState('');
 
 
   const loadEtablissements = () => {
@@ -384,7 +387,7 @@ function Main({navigation}: {navigation: any}) {
                     {fontFamily: CustomFont.Poppins},
                     activeTab === 'Tab 1' && styles.colorActive,
                   ]}>
-                  Filtrez
+                  Categorie
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
@@ -479,6 +482,7 @@ function Main({navigation}: {navigation: any}) {
                       }}>
                       Etablissement
                     </Text>
+                    
                     <TextInput
                       onPressIn={handleOpenModalEtablissement}
                       value={currentEtablissement.nom}
@@ -648,89 +652,45 @@ function Main({navigation}: {navigation: any}) {
       </Modal>
 
       {/* MODAL ETABLISSEMENT */}
-      <Modal visible={modalVisibleEtablissement} transparent={true}>
-        <View
-          style={{
-            flex: 1,
-            backgroundColor: 'rgba(0, 0, 0, 0.3)',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <View
+      <Modal visible={modalVisibleEtablissement} transparent={false}>
+      <View
             style={{
               display: 'flex',
               flexDirection: 'column',
               backgroundColor: '#fff',
-              width: '90%',
+              width: '100%',
               borderRadius: 15,
+            }}>
+            <View
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent:'space-between',
+              backgroundColor: couleurs.primary,
+              width: '100%',
               padding: 10,
+              height:50
             }}>
             <Text
               style={{
-                padding: 15,
                 fontSize: 15,
-                color: 'rgba(0,0,0,.6)',
+                color: couleurs.white,
                 fontFamily: CustomFont.Poppins,
               }}>
               Selectionnez un etablissement
             </Text>
+              <TouchableOpacity onPress={handleCloseModalEtablissement} >
+                <CloseIcon color={couleurs.white} />
+              </TouchableOpacity>
+            </View>
             <View style={{width: '100%', paddingHorizontal: 10}}>
-              <View
-                style={[
-                  {
-                    width: '100%',
-                    height: 45,
-                    paddingHorizontal: 20,
-                    backgroundColor: couleurs.primaryLight,
-                    borderRadius: 50,
-                    display: 'flex',
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    gap: 10,
-                    marginBottom: 20,
-                  },
-                ]}>
-                <SearchIcon color={couleurs.dark} />
-                <TextInput
-                  placeholderTextColor={'rgba(100,100,100,.7)'}
-                  placeholder="Recherchez un salon"
-                  style={{
-                    backgroundColor: 'transparent',
-                    borderRadius: 50,
-                    fontSize: 15,
-                    fontFamily: CustomFont.Poppins,
-                    color: couleurs.primary,
-                    flex: 1,
-                  }}></TextInput>
-              </View>
-
-              <View style={{height: 200}}>
+                         <View style={{height: Dimensions.get('screen').height-50}}>
                 <EtablissementList />
               </View>
 
-              <View style={{padding: 15, paddingVertical: 30}}>
-                <TouchableOpacity
-                  onPress={handleCloseModalEtablissement}
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    gap: 10,
-                    justifyContent: 'flex-start',
-                  }}>
-                  <CloseIcon color={couleurs.primary} />
-                  <Text
-                    style={{
-                      color: 'rgba(100,100,100,.8)',
-                      fontFamily: CustomFont.Poppins,
-                    }}>
-                    Quitter
-                  </Text>
-                </TouchableOpacity>
-              </View>
+              
             </View>
           </View>
-        </View>
       </Modal>
     </SafeAreaView>
   );

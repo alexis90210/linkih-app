@@ -27,8 +27,6 @@ export default function SplashScreen({navigation}: {navigation: any}) {
               alignItems: 'center',
               marginTop: '40%',
             }}>
-
-
               <Image source={require('../assets/images/logo.png')} style={{height:65, width:160, marginBottom:20}} />
           
             <Text

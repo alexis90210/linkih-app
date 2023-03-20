@@ -78,10 +78,6 @@ export default function MaCategorie({
      });
  };
 
-//  if ( !isLoadedCategorieVendeur ) loadCategorieVendeur()
-
-
-
   return (
     <View>
       <SafeAreaView
@@ -121,12 +117,10 @@ export default function MaCategorie({
             backgroundColor: '#f6f6f6f6',
           }}>
           <View style={{marginHorizontal: 12, marginVertical: 10}}>
-
-
-            {isLoading && <View style={{width:'100%', height:200, marginTop:100, display:'flex', flexDirection:'row', justifyContent:'center'}}>
-                <ActivityIndicator size={'large'}></ActivityIndicator>
-                </View>}
-
+              {isLoading && 
+                  <View style={{width:'100%', height:200, marginTop:100, display:'flex', flexDirection:'row', justifyContent:'center'}}>
+                    <ActivityIndicator size={'large'}></ActivityIndicator>
+                  </View>}
           </View>
 
           {/* Welcome text */}

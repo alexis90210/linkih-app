@@ -341,7 +341,7 @@ export default function ResultatRechercheScreen({
                     fontSize: 13,
                     color: '#000',
                   }}>
-                  Entrepreuneur - Societe . $$ .{' '}
+                  {data.categorie}  {' '} . {' '}
                   <Text style={{color: couleurs.primary}}>
 
                     { distance(
@@ -360,7 +360,7 @@ export default function ResultatRechercheScreen({
                     marginBottom: 3
                   }}>
                   {/* {marker.adresse} */}
-                  <Text style={{color: 'green'}}>Ouvert</Text> . Ferme a 81:00
+                  <Text style={{color: 'green'}}>Ouvert</Text>{' '} . {' '}Ferme a 18:00
                 </Text>
 
                 {data.prestations && data.prestations.map((row: any, key:any) => (

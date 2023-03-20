@@ -1,6 +1,6 @@
 export default class ApiService {
   // BASE API URL
-  static API_BASE_URL = 'http://192.168.1.89:8000/';
+  static API_BASE_URL = 'http://192.168.1.90:8000/';
   static API_URL = this.API_BASE_URL + 'api/v1/'; // IP HOME
 
   // OTHER CONFIG

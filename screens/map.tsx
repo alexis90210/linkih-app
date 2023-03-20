@@ -67,17 +67,16 @@ export default function Map({
   };
 
   const loadEtablissements = () => {
-    setPreccessing(true)
-    axios({
-      method: 'POST',
-      url: ApiService.API_URL_GET_VENDEURS,
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-    })
+      setPreccessing(true)
+      axios({
+        method: 'POST',
+        url: ApiService.API_URL_GET_VENDEURS,
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      })
       .then((response: {data: any}) => {
-
         var api = response.data;
         if (api.code == 'success') {
           
