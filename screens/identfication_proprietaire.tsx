@@ -25,8 +25,17 @@ export default function IdentificationProprietaireScreen({
   navigation: any;
   route: any;
 }) {
+  console.log( route.params.is );
 
-
+  storage.save({
+    key: 'typeuser', // Note: Do not use underscore("_") in key!
+    id: 'typeuser', // Note: Do not use underscore("_") in id!
+    data: {
+      type: route.params.is
+    },
+  });
+  
+ 
     const [isProccessing, setIsProccessing] = useState(false);
     const [password, setPassword] = useState('');
     const [identifiant, setIdentifiant] = useState('');

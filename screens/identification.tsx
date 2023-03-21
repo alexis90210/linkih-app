@@ -30,6 +30,7 @@ export default function IdentificationScreen({navigation}: {navigation: any}) {
       props: 'ROLE_CLIENT',
       color: couleurs.primary,
       bgColor: couleurs.primary,
+      type:0, // ROLE_CLIENT
     },
     {
       icon: <ShopIcon color={couleurs.dark} />,
@@ -38,6 +39,7 @@ export default function IdentificationScreen({navigation}: {navigation: any}) {
       props: 'ROLE_SOCIETE',
       color: couleurs.dark,
       bgColor: couleurs.primaryLight,
+      type:1, // SOCIETE
     },
     {
       icon: <ShopIcon color={couleurs.dark} />,
@@ -46,6 +48,7 @@ export default function IdentificationScreen({navigation}: {navigation: any}) {
       props: 'ROLE_AUTO_ENTREPREUNEUR',
       color: couleurs.dark,
       bgColor: couleurs.primaryLight,
+      type:2 // AUTO_ENTREPREUNEUR
     },
   ];
   return (
@@ -144,7 +147,9 @@ export default function IdentificationScreen({navigation}: {navigation: any}) {
                         alignItems: 'center',
                       }}
                       onPress={() =>
-                        navigation.navigate(row.route, {is: row.props})
+                        navigation.navigate(row.route, {
+                          is: row.type
+                        })
                       }>
                       <View
                         style={{

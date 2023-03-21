@@ -99,12 +99,15 @@ export default function ResultatRechercheScreen({
               ]);
             }
           } else {
-            Alert.alert('', 'Erreur survenue', [
+            Alert.alert('', response.data.message, [
               {text: 'OK', onPress: () => null},
             ]);
           }
         })
         .catch(error => {
+
+          console.log(error);
+          
           Alert.alert('', 'Erreur Network', [{text: 'OK', onPress: () => null}]);
         });
     };
@@ -294,7 +297,7 @@ export default function ResultatRechercheScreen({
             }}>
             <Image
               source={data.logo ? {uri:'data:image/png;base64,' + data.logo} :require('../assets/images/cover.jpg')}
-              style={{width: '100%', height: 100}}
+              style={{width: '100%', height: 100, borderRadius:20}}
             />
             <View
               style={{

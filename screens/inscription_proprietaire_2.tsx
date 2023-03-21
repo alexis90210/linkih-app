@@ -640,11 +640,12 @@ export default function InscriptionProprietaireScreen2({
           {stepper == 2 && (
             <View>
               <View style={{marginHorizontal: 10}}>
-                
+                <Text style={{fontFamily:CustomFont.Poppins, alignSelf:'center', textAlign:'center', fontSize:14, paddingVertical:20, color:couleurs.dark, paddingHorizontal:30}}>Veuillez selectionner la categorie, qui decrit le mieux votre etablissement</Text>
                 <View
                   style={{
                     display: 'flex',
                     flexDirection: 'row',
+                    justifyContent:'center',
                     flexWrap: 'wrap',
                     gap: 10,
                     paddingHorizontal: 5,
@@ -945,7 +946,7 @@ export default function InscriptionProprietaireScreen2({
               paddingHorizontal: 10,
               marginTop: 20,
             }}>
-            {stepper > 1 && (
+            {stepper > 2 && (
               <View style={{padding: 10}}>
                 <TouchableOpacity onPress={() => setStepper(stepper - 1)}>
                   <Text

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import {
   SafeAreaView,
@@ -8,6 +8,8 @@ import {
   TouchableOpacity,
   TextInput,
   Alert,
+  Modal,
+  ActivityIndicator,
 } from 'react-native';
 import {CustomFont, couleurs} from '../components/color';
 import ApiService from '../components/api/service';
@@ -25,6 +27,8 @@ export default function IdentificationClientScreen({
     identifiant: '',
     password: '',
   };
+
+  const [isProccessing,  setProcessing] = useState(false)
 
   if( route.params?.login && route.params?.login.length > 0 ) {
     data.identifiant = route.params?.login
@@ -47,6 +51,8 @@ export default function IdentificationClientScreen({
       return;
     }
 
+
+    setProcessing(true);
     axios({
       method: 'POST',
       url: ApiService.API_URL_LOGIN,
@@ -63,6 +69,7 @@ export default function IdentificationClientScreen({
       .then((response: {data: any}) => {
         
          var api = response.data;
+         
 
          if ( api.code == "success") {
           storage.save({
@@ -94,6 +101,9 @@ export default function IdentificationClientScreen({
            }
           })
           .then((response: {data: any}) => {
+
+            setProcessing(false);
+
             storage.save({
               key: 'userconnected', // Note: Do not use underscore("_") in key!
               id: 'userconnected', // Note: Do not use underscore("_") in id!
@@ -103,7 +113,6 @@ export default function IdentificationClientScreen({
               },
             });
 
-          
                 navigation.navigate('main', {
                   utilisateur_id: response.data.id,
                   isProprietaire:false
@@ -112,6 +121,7 @@ export default function IdentificationClientScreen({
             
           })
           .catch((error) => {
+            setProcessing(false);
             Alert.alert('Erreur', "Nous n'avons pas pu recuper vos informations", [        
               {text: 'OK', onPress: () => null},
             ]);
@@ -120,13 +130,13 @@ export default function IdentificationClientScreen({
          }
 
          if ( api.code == "error") Alert.alert('Erreur', api.message, [  {text: 'OK', onPress: () => null}, ]);
-         
 
+         setProcessing(false);
 
-         
       })
       .catch((error: any) => {
        console.log(error);
+       setProcessing(false);
        Alert.alert('Erreur', error, [        
         {text: 'OK', onPress: () => null},
       ]);
@@ -143,6 +153,28 @@ export default function IdentificationClientScreen({
           height: '100%',
           backgroundColor: '#f6f6f6f6',
         }}>
+
+          {/* LOADING MODAL */}
+
+        <Modal transparent={true} visible={isProccessing}>
+          <View
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+              flexDirection: 'column',
+              backgroundColor: 'rgba(200,200,200,.5)',
+              alignItems: 'center',
+              alignContent: 'center',
+            }}>
+            <ActivityIndicator
+              color={couleurs.primary}
+              style={{alignSelf: 'center'}}
+              size={'large'}></ActivityIndicator>
+          </View>
+        </Modal>
+
+        {/* END LOADING */}
+
         <ScrollView
           contentInsetAdjustmentBehavior="automatic"
           style={{

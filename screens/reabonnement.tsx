@@ -6,9 +6,15 @@ import {
   SafeAreaView,
   ScrollView,
   TouchableOpacity,
+  Alert,
+  Modal,
+  ActivityIndicator,
 } from 'react-native';
 
 import {CustomFont, couleurs} from '../components/color';
+import axios from 'axios';
+import ApiService from '../components/api/service';
+import storage from '../components/api/localstorage';
 
 export default function Reabonnement({
   navigation,
@@ -17,38 +23,133 @@ export default function Reabonnement({
   navigation: any;
   route: any;
 }) {
-  const [abonnements, setAbonnements] = useState<any>([
-    {
-      id: '1',
-      nom: 'Abonnement starter',
-      code: 'Mensuel',
-      montant: '100',
-      devise: '$',
-      description: '',
-    },
-    {
-      id: '2',
-      nom: 'Abonnement pro',
-      code: 'Annuel',
-      montant: '2500',
-      devise: '$',
-      description: '',
-    },
-  ]);
 
-  const [mon_abonnement, setMonAbonnement] = useState({
-    id: '3',
-    nom: 'Abonnement pro',
-    activation: '12/03/2023',
-    expiration: '20/03/2023',
-    montant: '2400',
-    devise: '$',
-  });
+  // GET USER CONNECTED
+  const [userConnected, SetUserConnected] = useState<any>({})
+  const [isProccessing, setIsProccessing] = useState(false);
 
-  const sabonnerMaintenant = () => {
-    navigation.navigate('paiement_screen', {
-      route: 'google.com',
+  storage.load({
+    key: 'userconnected', // Note: Do not use underscore("_") in key!
+    id: 'userconnected', // Note: Do not use underscore("_") in id!
+  }).then( data => {
+    SetUserConnected(data.etablissement[0])
+   })
+  .catch(error => console.log(error)
+  );
+
+  // S'ABONNER
+  const sabonnerMaintenant = (abonnement:any) => {
+    setIsProccessing(true)
+    console.log({
+      vendeur_id: userConnected.id,
+      abonnement_id: abonnement.id
+    });    
+
+    axios({
+      method: 'POST',
+      url: ApiService.API_URL_ADD_ABONNEMENT_VENDEUR,
+      data:JSON.stringify({
+        vendeur_id: userConnected.id,
+        abonnement_id: abonnement.id
+      }),
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
     })
+      .then((response: {data: any}) => {
+        setIsProccessing(false)
+        var api = response.data;
+
+        console.log(api);
+              
+
+        if (api.code == 'success') {
+
+          navigation.navigate('paiement_screen', {
+            route: ApiService.API_BASE_URL + `stripe/${abonnement.montant}/${abonnement.devise}`
+          })
+          // Alert.alert('Nouvel Abonnement', api.message);
+          loadMonAbonnement()
+        }
+      })
+      .catch((error: any) => {
+        console.log(error);
+        setIsProccessing(false)
+        Alert.alert('Nouvel Abonnement', 'Erreur Network');
+      });
+
+  }
+
+
+  const [abonnements, setAbonnements] = useState<any>([]);
+  const [isLoadingAbonnement, setIsLoadingAbonnement] = useState(false);
+
+  const [mon_abonnement, setMonAbonnement] = useState<{
+    expiration?:any,
+    activation?:any,
+    nom?:any,
+    code?:any}>({});
+  
+
+  const loadMonAbonnement = () => {
+    axios({
+      method: 'POST',
+      url: ApiService.API_URL_GET_ABONNEMENT,
+      data:JSON.stringify({
+        vendeur_id: userConnected.id
+      }),
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response: {data: any}) => {
+        var api = response.data;
+
+        if (api.code == 'success') {
+          setMonAbonnement(api.message)
+        }
+      })
+      .catch((error: any) => {
+        console.log(error);
+        Alert.alert('Mon Abonnement', 'Erreur Network');
+      });
+      
+  }
+
+  const loadAbonnementList = () => {
+    axios({
+      method: 'POST',
+      url: ApiService.API_URL_LISTE_ABONNEMENTS,
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response: {data: any}) => {
+  
+        var api = response.data;
+        setIsLoadingAbonnement( true )
+
+        if (api.code == 'success') {
+          setAbonnements(api.message)
+          loadMonAbonnement()
+        }
+        if (api.code == 'error') {
+          Alert.alert('Liste des Abonnements',api.message);
+        }
+      })
+      .catch((error: any) => {
+        console.log(error);
+        setIsLoadingAbonnement( true );
+        Alert.alert('Liste des Abonnements', 'Erreur Network');
+      });
+  }
+
+  if ( userConnected ) {
+    if (!isLoadingAbonnement) loadAbonnementList();
+
   }
 
   return (
@@ -59,9 +160,30 @@ export default function Reabonnement({
           height: '100%',
           backgroundColor: '#f6f6f6',
         }}>
-        <View style={{flex: 1, paddingHorizontal: 20, paddingVertical: 20}}>
+{/* LOADING MODAL */}
+
+<Modal transparent={true} visible={isProccessing}>
+          <View
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+              flexDirection: 'column',
+              backgroundColor: 'rgba(200,200,200,.5)',
+              alignItems: 'center',
+              alignContent: 'center',
+            }}>
+            <ActivityIndicator
+              color={couleurs.primary}
+              style={{alignSelf: 'center'}}
+              size={'large'}></ActivityIndicator>
+          </View>
+        </Modal>
+
+        {/* END LOADING */}
+        <View style={{flex: 1, paddingHorizontal:10, paddingVertical: 20}}>
           <ScrollView>
-            <View
+
+            {mon_abonnement.nom && <View
               style={{
                 borderRadius: 20,
                 backgroundColor: '#fff',
@@ -83,7 +205,7 @@ export default function Reabonnement({
                     borderColor: '#ddd',
                   }}
                   numberOfLines={1}>
-                  Detail de prestation
+                  Detail de l'abonnement
                 </Text>
 
                 <View
@@ -109,6 +231,31 @@ export default function Reabonnement({
                       color: couleurs.primary,
                     }}>
                     {mon_abonnement.nom}
+                  </Text>
+                </View>
+
+                <View
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    flexDirection: 'row',
+                  }}>
+                  <Text
+                    style={{
+                      fontFamily: CustomFont.Poppins,
+                      fontSize: 14,
+                      color: couleurs.dark,
+                    }}>
+                    Type Abonnement
+                  </Text>
+
+                  <Text
+                    style={{
+                      fontFamily: CustomFont.Poppins,
+                      fontSize: 14,
+                      color: couleurs.primary,
+                    }}>
+                    {mon_abonnement.code}
                   </Text>
                 </View>
 
@@ -164,13 +311,27 @@ export default function Reabonnement({
                   </Text>
                 </View>
               </View>
-            </View>
+            </View>}
+            
+
+            {!mon_abonnement.nom && <View
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'center',
+                backgroundColor: couleurs.primaryLight,
+                borderRadius: 10,
+                paddingVertical:20
+              }}>
+             <Text style={{fontFamily:CustomFont.Poppins, fontSize:13, padding:10}}> Vous n'avez aucun abonnement actif, Veuillez-vous abonner pour profiter de l'application</Text>
+            </View>}
+            
 
             <Text
               style={{
                 fontFamily: CustomFont.Poppins,
                 fontSize: 15,
-                color: couleurs.primary,
+                color: couleurs.dark,
                 marginVertical: 20,
                 paddingHorizontal: 15,
               }}>
@@ -240,7 +401,7 @@ export default function Reabonnement({
                       width: '80%',
                     }}
                     onPress={() =>
-                     sabonnerMaintenant()
+                     sabonnerMaintenant( row )
                     }>
                     <Text
                       style={{
@@ -258,6 +419,7 @@ export default function Reabonnement({
               </View>
             ))}
           </ScrollView>
+
         </View>
       </SafeAreaView>
     </View>

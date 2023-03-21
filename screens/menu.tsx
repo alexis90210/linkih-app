@@ -185,7 +185,7 @@ function MenuScreen({navigation}: {navigation: any}) {
               </Text>
             </TouchableOpacity>)}
 
-            {/* {isVendeur && (<TouchableOpacity
+            {isVendeur && (<TouchableOpacity
               style={{
                 display: 'flex',
                 flexDirection: 'row',
@@ -199,13 +199,15 @@ function MenuScreen({navigation}: {navigation: any}) {
                 paddingHorizontal: 10,
               }}
               onPress={() => {
-                navigation.navigate('ma_gallerie')
+                navigation.navigate('ma_gallerie', {
+                  vendeur_id: vendeur[0].id
+                })
               }}>
               <BillIcon color={couleurs.primary} />
               <Text style={{fontSize: 16, marginVertical: 10, color: '#000',fontFamily: CustomFont.Poppins}}>
                 Gallerie
               </Text>
-            </TouchableOpacity>)} */}
+            </TouchableOpacity>)}
           
             {isVendeur && (<TouchableOpacity
               style={{

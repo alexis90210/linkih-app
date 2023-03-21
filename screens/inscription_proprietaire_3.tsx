@@ -17,6 +17,7 @@ import ApiService from '../components/api/service';
 import axios from 'axios';
 import ArrowLeftIcon from '../components/ArrowLeft';
 import RNFS from 'react-native-fs';
+import storage from '../components/api/localstorage';
 
 
 // InscriptionProprietaire3
@@ -28,6 +29,15 @@ export default function InscriptionProprietaire3({
   route: any;
 }) {
   var proprietaire = route.params;
+
+  storage.load({
+    key: 'typeuser', // Note: Do not use underscore("_") in key!
+    id: 'typeuser', // Note: Do not use underscore("_") in id!
+  }).then( data => {
+    proprietaire.type = data.type
+  }).catch( error => {
+    console.log(error); 
+  });
 
   const [photoCover, setPhotoCover] = useState('');
   const [photOnBase64, setphotOnBase64] = useState('');
@@ -61,12 +71,9 @@ export default function InscriptionProprietaire3({
     setLoading(true)    
 
     var json = JSON.stringify({
+      photo:photOnBase64,
       ...proprietaire,
-      photo:photOnBase64
     })
-
-    console.log('/================/',json);
-    
 
     axios({
       method: 'POST',
@@ -148,7 +155,8 @@ export default function InscriptionProprietaire3({
               alignItems: 'center',
               padding: 10,
             }}>
-              <Text style={{color: couleurs.dark, fontFamily:CustomFont.Poppins, marginVertical:40, paddingHorizontal:30, textAlign:'center'}}>
+              <Text style={{color: couleurs.dark, fontFamily:CustomFont.Poppins, marginVertical:40, 
+                paddingHorizontal:30, textAlign:'center', fontSize:12}}>
                   {"Cliquez pour selectionner la photo de couverture \nde votre etablissement"}
                 </Text>
 
@@ -164,19 +172,18 @@ export default function InscriptionProprietaire3({
                   display: 'flex',
                   flexDirection: 'column',
                   justifyContent: 'center',
-                  marginTop: 10,
                   backgroundColor: 'rgba(200,200, 200, .3)',
                   borderColor: couleurs.primary,
-                  height: 230,
-                  width: 230,
+                  height: 130,
+                  width: 130,
                   borderRadius:200
                 }}>
                 {photoCover && (
                   <Image
                     source={{uri: photoCover}}
                     style={{
-                      height: 230,
-                      width: 230,                      
+                      height: 130,
+                      width: 130,                      
                       borderRadius:200
                     }}
                   />
@@ -188,7 +195,8 @@ export default function InscriptionProprietaire3({
                       textAlign: 'center',
                       flexWrap: 'wrap',
                       alignSelf: 'center',
-                      paddingHorizontal:30
+                      paddingHorizontal:30,
+                      fontSize:12
                     }}>
                     {' '}
                     Tapez pour prendre une photo
@@ -202,7 +210,8 @@ export default function InscriptionProprietaire3({
                   textAlign: 'center',
                   fontFamily: CustomFont.Poppins,
                   color:couleurs.dark,
-                  paddingHorizontal:40
+                  paddingHorizontal:20,
+                  fontSize:12
                 }}>
                 En cliquant sur{' '}
                 <Text style={{color: couleurs.primary}}>

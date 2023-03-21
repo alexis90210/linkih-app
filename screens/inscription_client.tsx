@@ -1,4 +1,4 @@
-import React from 'react';
+
 
 import {
   SafeAreaView,
@@ -10,6 +10,8 @@ import {
   PixelRatio,
   TextInput,
   Alert,
+  Modal,
+  ActivityIndicator,
 } from 'react-native';
 import { CustomFont, couleurs } from '../components/color';
 import storage from '../components/api/localstorage';
@@ -17,6 +19,7 @@ import ApiService from '../components/api/service';
 import axios from 'axios';
 import UserPosition from '../components/api/user_position';
 import Geolocation from '@react-native-community/geolocation';
+import { useState } from 'react';
 
 // InscriptionClientScreen
 export default function InscriptionClientScreen({
@@ -44,6 +47,9 @@ export default function InscriptionClientScreen({
       client.latitude = info.coords.latitude      
     }
   );
+
+  const [isProccessing,  setProcessing] = useState(false)
+
 
   storage.load({
     key: 'configuration', // Note: Do not use underscore("_") in key!
@@ -73,7 +79,7 @@ export default function InscriptionClientScreen({
       ]);
       return;
     }
-    
+    setProcessing(true)
     axios({
       method: 'POST',
       url: ApiService.API_URL_CREATE_UTILISATEUR,
@@ -86,6 +92,7 @@ export default function InscriptionClientScreen({
       .then((response: {data: any}) => {        
          var api = response.data;
          console.log( api );
+         setProcessing(false)
          
          if ( api.code == "success") {
           Alert.alert('SUCCES', `Votre compte a bien ete cree, veuillez vous connecter . \nVotre login est : ${api.login}`, [   
@@ -99,6 +106,7 @@ export default function InscriptionClientScreen({
          }         
       })
       .catch((error: any) => {
+        setProcessing(false)
         console.log(error);
         Alert.alert('Erreur', "Erreur survenue, il se pourrait que les informations fournis soit incorrects ou deja utilise pour un autre compte", [        
           {text: 'OK', onPress: () => null},
@@ -114,6 +122,29 @@ export default function InscriptionClientScreen({
           height: '100%',
           backgroundColor: '#f6f6f6f6',
         }}>
+
+
+          {/* LOADING MODAL */}
+
+        <Modal transparent={true} visible={isProccessing}>
+          <View
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+              flexDirection: 'column',
+              backgroundColor: 'rgba(200,200,200,.5)',
+              alignItems: 'center',
+              alignContent: 'center',
+            }}>
+            <ActivityIndicator
+              color={couleurs.primary}
+              style={{alignSelf: 'center'}}
+              size={'large'}></ActivityIndicator>
+          </View>
+        </Modal>
+
+        {/* END LOADING */}
+
         <ScrollView
           contentInsetAdjustmentBehavior="automatic"
           style={{
