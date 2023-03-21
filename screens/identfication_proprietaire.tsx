@@ -316,7 +316,7 @@ export default function IdentificationProprietaireScreen({
                   justifyContent: 'flex-end',
                   marginVertical: 10,
                 }}>
-                <TouchableOpacity style={{}} onPress={() => null}>
+                <TouchableOpacity style={{}} onPress={() => navigation.navigate('recup_pass_screen')}>
                   <Text
                     style={{
                       textAlign: 'center',

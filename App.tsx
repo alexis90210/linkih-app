@@ -46,6 +46,7 @@ import MaCategorie from './screens/etab_categorie';
 import MesPrestations from './screens/etab_prestations';
 import ConfigurationDefaultCategorie from './screens/prestation_list';
 import PaiementScreen from './screens/paiement_screen_stripe';
+import RecuperationPassword from './screens/_recuperation_password';
 
 
 const Stack = createNativeStackNavigator();
@@ -661,6 +662,22 @@ export default function App(): JSX.Element {
           component={PaiementScreen}
           options={{
             title: 'Portail de paiement',
+            headerShadowVisible: false,
+            headerTitleStyle: {fontSize: 16, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
+            headerTintColor:couleurs.primary,
+            headerShown: true,
+            presentation: 'modal',
+            animationTypeForReplace: 'push',
+            animation: 'slide_from_left',
+          }}
+        />
+
+        {/* RecuperationPassword */}
+        <Stack.Screen
+          name="recup_pass_screen"
+          component={RecuperationPassword}
+          options={{
+            title: 'Recuperation Mot de passe',
             headerShadowVisible: false,
             headerTitleStyle: {fontSize: 16, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
             headerTintColor:couleurs.primary,

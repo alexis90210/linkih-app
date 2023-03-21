@@ -315,7 +315,7 @@ export default function IdentificationClientScreen({
                   style={{
                     
                   }}
-                  onPress={() => null}>
+                  onPress={() => navigation.navigate('recup_pass_screen')}>
                   <Text
                     style={{
                       textAlign: 'center',
