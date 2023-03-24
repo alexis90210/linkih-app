@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import {
   SafeAreaView,
@@ -15,10 +15,31 @@ import {
 import { couleurs } from '../components/color';
 import axios from 'axios';
 import ApiService from '../components/api/service';
+import translations from '../translations/translations';
+import storage from '../components/api/localstorage';
 
 // InscriptionProprietaire5
 export default function InscriptionProprietaire5({navigation, route}: {navigation: any, route:any}) {
   
+  /////////////////////////////////// LANGUAGE HANDLER ///////////////////////////////////////
+
+  const [preferredLangage, setPreferredLangage] = useState('fr');
+
+  const t = (key: any, langage: any) => {
+    return translations[langage][key] || key;
+  };
+
+  storage
+    .load({
+      key: 'defaultlang', // Note: Do not use underscore("_") in key!
+      id: 'defaultlang', // Note: Do not use underscore("_") in id!
+    })
+    .then((data: any) => {
+      setPreferredLangage(data);
+    });
+
+  //////////////////////////////////////////////////////////////////////////////////////
+
   
  const loginNow = () => {
   console.log(route.params.api);
@@ -60,8 +81,7 @@ export default function InscriptionProprietaire5({navigation, route}: {navigatio
                 width:'80%',
                 marginTop:20
               }}>
-              Felicitations,
-              votre compte a ete cree avec succes
+              {t('Felicitations_votre_compte', preferredLangage)}
             </Text>
             <Text
               style={{
@@ -73,7 +93,7 @@ export default function InscriptionProprietaire5({navigation, route}: {navigatio
                 marginVertical: 13,
                 width:'80%'
               }}>
-              Veuillez completer vos Informations dans votre profile
+              {t('Veuillez_completer_vos_Informations_dans_votre_profile', preferredLangage)}
             </Text>
             <View
               style={{
@@ -100,7 +120,7 @@ export default function InscriptionProprietaire5({navigation, route}: {navigatio
                     fontSize: 14,
                     width: 250,
                   }}>
-                  Se connecter
+                  {t('se_connecter', preferredLangage)}
                 </Text>
               </Pressable>
             </View>

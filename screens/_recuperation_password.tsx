@@ -20,6 +20,7 @@ import {
   import UserPosition from '../components/api/user_position';
   import Geolocation from '@react-native-community/geolocation';
   import { useState } from 'react';
+import translations from '../translations/translations';
   
   // RecuperationPassword
   export default function RecuperationPassword({
@@ -27,6 +28,25 @@ import {
   }: {
     navigation: any;
   }) {
+
+
+  /////////////////////////////////// LANGUAGE HANDLER //////////////////////////////////
+  const [preferredLangage , setPreferredLangage] = useState('fr');
+
+  const t = (key:any , langage:any) => {
+    return translations[langage][key] || key
+  }
+
+  storage.load({
+    key: 'defaultlang', // Note: Do not use underscore("_") in key!
+    id: 'defaultlang' // Note: Do not use underscore("_") in id!
+  }).then( ( data:any) => {
+    setPreferredLangage(data)
+  })
+
+  //////////////////////////////////////////////////////////////////////////////////////
+
+
   
     var client:any = {
       login:'',
@@ -41,7 +61,7 @@ import {
   
       if(client.password.length < 4)
       {
-        Alert.alert('', "Mot de passe trop court", [        
+        Alert.alert('', t('mot_de_passe_court', preferredLangage), [        
           {text: 'OK', onPress: () => null},
         ]);
         return;
@@ -62,12 +82,12 @@ import {
            setProcessing(false)
            
            if ( api.code == "success") {
-            Alert.alert('SUCCES', `Mot de passe change avec success`, [   
-              {text: 'Se connecter', onPress: () => navigation.goBack()},
+            Alert.alert('SUCCES', t('mot_de_passe_change', preferredLangage), [   
+              {text: t('se_connecter', preferredLangage), onPress: () => navigation.goBack()},
             ]);        
            }
            if ( api.code == "error") {
-            Alert.alert('Erreur', api.message, [        
+            Alert.alert( t('erreur', preferredLangage) , api.message, [        
               {text: 'OK', onPress: () => null},
             ]);
            }         
@@ -75,7 +95,7 @@ import {
         .catch((error: any) => {
           setProcessing(false)
           console.log(error);
-          Alert.alert('Erreur', "Erreur survenue", [        
+          Alert.alert( t('erreur', preferredLangage), t('erreur_survenue', preferredLangage), [        
             {text: 'OK', onPress: () => null},
           ]);       
         });
@@ -153,11 +173,11 @@ import {
                       opacity: 0.85,
                       fontFamily:CustomFont.Poppins
                     }}>
-                    Login
+                    {t('login', preferredLangage)}
                   </Text>
                   <TextInput
                   onChangeText={ (input) => client.login = input}
-                  placeholder='Entrez votre identifiant'
+                  placeholder={t('entrez_votre_identifiant', preferredLangage)}
                     style={{
                       backgroundColor: 'transparent',
                       borderBottomWidth: 1,
@@ -187,13 +207,13 @@ import {
                       opacity: 0.85,
                       fontFamily:CustomFont.Poppins
                     }}>
-                    Mot de passe
+                    {t('mot_de_passe', preferredLangage)}
                   </Text>
                   <TextInput
                   onChangeText={ (input) => client.password = input}
                   textContentType='password'
                   keyboardType='default'
-                  placeholder='Entrez votre mot de passe'
+                  placeholder={t('entrez_votre_mot_de_passe', preferredLangage)}
                   secureTextEntry={true} 
                     style={{
                       backgroundColor: 'transparent',
@@ -229,7 +249,7 @@ import {
                         fontFamily:CustomFont.Poppins,
                         color: couleurs.secondary,
                       }}>
-                      Modifier
+                      {t('modifier', preferredLangage)}
                     </Text>
                   </TouchableOpacity>
                 </View>   
@@ -260,7 +280,7 @@ import {
                       fontFamily:CustomFont.Poppins,
                       color: couleurs.primary,
                     }}>
-                    Besoin d'aide ?
+                    {t('besoin_d_aide', preferredLangage)}
                   </Text>
                 </TouchableOpacity>
               </View>

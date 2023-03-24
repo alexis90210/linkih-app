@@ -16,6 +16,7 @@ import {CustomFont, couleurs} from '../components/color';
 import axios from 'axios';
 import ApiService from '../components/api/service';
 import storage from '../components/api/localstorage';
+import translations from '../translations/translations';
 
 // IdentificationProprietaireScreen
 export default function IdentificationProprietaireScreen({
@@ -25,44 +26,63 @@ export default function IdentificationProprietaireScreen({
   navigation: any;
   route: any;
 }) {
-  console.log( route.params.is );
+  console.log(route.params?.is);
+
+  /////////////////////////////////// LANGUAGE HANDLER //////////////////////////////////
+
+  const [preferredLangage, setPreferredLangage] = useState('fr');
+
+  const t = (key: any, langage: any) => {
+    return translations[langage][key] || key;
+  };
+
+  storage
+    .load({
+      key: 'defaultlang', // Note: Do not use underscore("_") in key!
+      id: 'defaultlang', // Note: Do not use underscore("_") in id!
+    })
+    .then((data: any) => {
+      setPreferredLangage(data);
+    });
+
+  //////////////////////////////////////////////////////////////////////////////////////
 
   storage.save({
     key: 'typeuser', // Note: Do not use underscore("_") in key!
     id: 'typeuser', // Note: Do not use underscore("_") in id!
     data: {
-      type: route.params.is
+      type: route.params?.is,
     },
   });
-  
- 
-    const [isProccessing, setIsProccessing] = useState(false);
-    const [password, setPassword] = useState('');
-    const [identifiant, setIdentifiant] = useState('');
 
-    if (route.params?.login && route.params?.login.length > 0) {
-      if (!identifiant) {
-        setIdentifiant(route.params?.login);
-      }
+  const [isProccessing, setIsProccessing] = useState(false);
+  const [password, setPassword] = useState('');
+  const [identifiant, setIdentifiant] = useState('');
+
+  if (route.params?.login && route.params?.login.length > 0) {
+    if (!identifiant) {
+      setIdentifiant(route.params?.login);
     }
+  }
 
   const logUser = async () => {
     if (!identifiant) {
-      Alert.alert('', 'Veuillez entrer un identifiant', [
+      Alert.alert('', t('Veuillez_entrer_un_identifiant', preferredLangage), [
         {text: 'OK', onPress: () => null},
       ]);
       return;
     }
 
     if (!password) {
-      Alert.alert('', 'Veuillez entrer un mot de passe valide', [
-        {text: 'OK', onPress: () => null},
-      ]);
+      Alert.alert(
+        '',
+        t('Veuillez_entrer_un_mot_de_passe_valide', preferredLangage),
+        [{text: 'OK', onPress: () => null}],
+      );
       return;
     }
 
     setIsProccessing(true);
-
 
     axios({
       method: 'POST',
@@ -130,22 +150,29 @@ export default function IdentificationProprietaireScreen({
             })
             .catch(error => {
               setIsProccessing(false);
-              Alert.alert('', "Nous n'avons pas pu recuper vos informations", [
-                {text: 'OK', onPress: () => null},
-              ]);
+              Alert.alert(
+                '',
+                t(
+                  'Nous_n_avons_pas_pu_recuper_vos_informations',
+                  preferredLangage,
+                ),
+                [{text: 'OK', onPress: () => null}],
+              );
             });
         }
 
         if (api.code == 'error') {
           setIsProccessing(false);
-    
-            Alert.alert('', api.message, [
-              {text: 'Confirmer maintenant', onPress: () => navigation.navigate('confirmation_screen',{
-                vendeur_id : api.vendeur_id
-              })},
-            ]);
 
-
+          Alert.alert('', api.message, [
+            {
+              text: t('Confirmer_maintenant', preferredLangage),
+              onPress: () =>
+                navigation.navigate('confirmation_screen', {
+                  vendeur_id: api.vendeur_id,
+                }),
+            },
+          ]);
         }
       })
       .catch((error: any) => {
@@ -221,12 +248,15 @@ export default function IdentificationProprietaireScreen({
                     marginTop: 14,
                     fontFamily: CustomFont.Poppins,
                   }}>
-                  Identifiant
+                  {t('Identifiant', preferredLangage)}
                 </Text>
                 <TextInput
                   defaultValue={identifiant}
                   onChangeText={input => setIdentifiant(input)}
-                  placeholder="Entrez votre identifiant"
+                  placeholder={t(
+                    'Veuillez_entrer_un_identifiant',
+                    preferredLangage,
+                  )}
                   style={{
                     backgroundColor: 'transparent',
                     borderBottomWidth: 1,
@@ -257,7 +287,7 @@ export default function IdentificationProprietaireScreen({
                     opacity: 0.85,
                     fontFamily: CustomFont.Poppins,
                   }}>
-                  Mot de passe
+                  {t('Mot_de_passe', preferredLangage)}
                 </Text>
                 <TextInput
                   textContentType="password"
@@ -265,7 +295,10 @@ export default function IdentificationProprietaireScreen({
                   secureTextEntry={true}
                   defaultValue={password}
                   onChangeText={input => setPassword(input)}
-                  placeholder="Entrez votre mot de passe"
+                  placeholder={t(
+                    'Veuillez_entrer_un_mot_de_passe_valide',
+                    preferredLangage,
+                  )}
                   style={{
                     backgroundColor: 'transparent',
                     borderBottomWidth: 1,
@@ -301,7 +334,7 @@ export default function IdentificationProprietaireScreen({
                       color: couleurs.secondary,
                       fontFamily: CustomFont.Poppins,
                     }}>
-                    Se connecter
+                    {t('Se_connecter', preferredLangage)}
                   </Text>
                 </TouchableOpacity>
               </View>
@@ -316,7 +349,9 @@ export default function IdentificationProprietaireScreen({
                   justifyContent: 'flex-end',
                   marginVertical: 10,
                 }}>
-                <TouchableOpacity style={{}} onPress={() => navigation.navigate('recup_pass_screen')}>
+                <TouchableOpacity
+                  style={{}}
+                  onPress={() => navigation.navigate('recup_pass_screen')}>
                   <Text
                     style={{
                       textAlign: 'center',
@@ -325,7 +360,7 @@ export default function IdentificationProprietaireScreen({
                       color: '#000',
                       fontFamily: CustomFont.Poppins,
                     }}>
-                    Mot de passe oublie ?
+                    {t('Mot_de_passe_oublie', preferredLangage)}
                   </Text>
                 </TouchableOpacity>
               </View>
@@ -358,7 +393,7 @@ export default function IdentificationProprietaireScreen({
                       color: '#000',
                       fontFamily: CustomFont.Poppins,
                     }}>
-                    Je cree mon compte
+                    {t('Je_cree_mon_compte', preferredLangage)}
                   </Text>
                 </TouchableOpacity>
               </View>
@@ -389,7 +424,7 @@ export default function IdentificationProprietaireScreen({
                   color: couleurs.primary,
                   fontFamily: CustomFont.Poppins,
                 }}>
-                Avez-vous besoin d'aide ?
+                {t('Avez_vous_besoin_d_aide', preferredLangage)}
               </Text>
             </TouchableOpacity>
           </View>

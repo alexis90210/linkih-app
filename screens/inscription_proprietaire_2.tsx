@@ -28,6 +28,7 @@ import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import {TimePickerModal} from 'react-native-paper-dates';
 import planning from '../components/api/planning';
 import ArrowLeftIcon from '../components/ArrowLeft';
+import translations from '../translations/translations';
 
 MapboxGL.setAccessToken(ApiService.MAPBOX_GL_TOKEN);
 
@@ -40,6 +41,25 @@ export default function InscriptionProprietaireScreen2({
   route: any;
 }) {
   console.log(route.params);
+
+  /////////////////////////////////// LANGUAGE HANDLER ///////////////////////////////////////
+
+  const [preferredLangage, setPreferredLangage] = useState('fr');
+
+  const t = (key: any, langage: any) => {
+    return translations[langage][key] || key;
+  };
+
+  storage
+    .load({
+      key: 'defaultlang', // Note: Do not use underscore("_") in key!
+      id: 'defaultlang', // Note: Do not use underscore("_") in id!
+    })
+    .then((data: any) => {
+      setPreferredLangage(data);
+    });
+
+  //////////////////////////////////////////////////////////////////////////////////////
 
   const [stepper, setStepper] = useState(0);
   const [selectedCategorie, setSelectedCategorie] = useState<any>({});
@@ -96,41 +116,39 @@ export default function InscriptionProprietaireScreen2({
     linkedin: '',
     instagram: '',
     youtube: '',
-    tiktok:''
+    tiktok: '',
   };
 
-    // LOAD CATEGORIES
-    const [sous_categories, setCategories] = useState([]);
-    const [isLoadedCategorie, setLoadedCategorie] = useState(false);
-  
-    const loadCategories = () => {
-      axios({
-        method: 'POST',
-        url: ApiService.API_URL_GET_CATEGORIES,
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-      })
-        .then((response: {data: any}) => {
-          var api = response.data;
-          if (api.code == 'success') {
-            setLoadedCategorie(true)
-            setCategories(api.message);
-          }
-          if (api.code == 'error') {
-            Alert.alert('', 'Erreur survenue');
-          }
-        })
-        .catch((error: any) => {
-          console.log(error);
-          Alert.alert('', 'Erreur Network');
-        });
-    };
-  
-    if ( !isLoadedCategorie ) 
-      loadCategories()
+  // LOAD CATEGORIES
+  const [sous_categories, setCategories] = useState([]);
+  const [isLoadedCategorie, setLoadedCategorie] = useState(false);
 
+  const loadCategories = () => {
+    axios({
+      method: 'POST',
+      url: ApiService.API_URL_GET_CATEGORIES,
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response: {data: any}) => {
+        var api = response.data;
+        if (api.code == 'success') {
+          setLoadedCategorie(true);
+          setCategories(api.message);
+        }
+        if (api.code == 'error') {
+          Alert.alert('', t('erreur_survenue', preferredLangage));
+        }
+      })
+      .catch((error: any) => {
+        console.log(error);
+        Alert.alert('', t('erreur_survenue', preferredLangage));
+      });
+  };
+
+  if (!isLoadedCategorie) loadCategories();
 
   var etablissement = route.params?.etablissement;
   etablissement.postcode = '';
@@ -209,29 +227,32 @@ export default function InscriptionProprietaireScreen2({
         horaires: horaires,
         social: social,
       });
-
     } else {
       if (stepper == 0) {
         if (etablissement.sciem.length < 4) {
-          Alert.alert('', "Le SIRET de l'entreprise est trop court", [
-            {text: 'OK', onPress: () => null},
-          ]);
+          Alert.alert(
+            '',
+            t('Le_SIRET_de_l_entreprise_est_trop_court', preferredLangage),
+            [{text: 'OK', onPress: () => null}],
+          );
           return;
         }
 
         if (etablissement.nom_prenom_responsable.length < 4) {
           Alert.alert(
             '',
-            'Le champ nom et prenom du responsable est trop court',
+            t('Le_champ_poste_du_responsable_est_trop_court', preferredLangage),
             [{text: 'OK', onPress: () => null}],
           );
           return;
         }
 
         if (etablissement.poste_occupe.length < 4) {
-          Alert.alert('', 'Le champ poste du responsable est trop court', [
-            {text: 'OK', onPress: () => null},
-          ]);
+          Alert.alert(
+            '',
+            t('Le_champ_poste_du_responsable_est_trop_court', preferredLangage),
+            [{text: 'OK', onPress: () => null}],
+          );
           return;
         }
       }
@@ -307,7 +328,10 @@ export default function InscriptionProprietaireScreen2({
               backgroundColor: couleurs.primary,
               marginBottom: 15,
             }}>
-            <Pressable onPress={() => {stepper > 0 ? setStepper(stepper - 1) : navigation.goBack()}}>
+            <Pressable
+              onPress={() => {
+                stepper > 0 ? setStepper(stepper - 1) : navigation.goBack();
+              }}>
               <ArrowLeftIcon color={couleurs.white} />
             </Pressable>
             <Text
@@ -316,190 +340,191 @@ export default function InscriptionProprietaireScreen2({
                 fontSize: 16,
                 fontFamily: CustomFont.Poppins,
               }}>
-              {stepper == 0 && 'Information du responsable'}
-              {stepper == 2 && 'Choisir une categorie'}
-              {stepper == 3 && 'Lien reseaux sociaux'}
+              {stepper == 0 &&
+                t('Information_du_responsable', preferredLangage)}
+              {stepper == 2 && t('Choisir_une_categorie', preferredLangage)}
+              {stepper == 3 && t('Lien_reseaux_sociaux', preferredLangage)}
             </Text>
           </View>
         )}
         {/* Adresse de l'etablissement */}
         {stepper == 1 && (
-            <View style={{height: Dimensions.get('window').height}}>
-              <View
-                style={{
-                  height: Dimensions.get('window').height,
-                }}>
-                <MapboxGL.MapView
-                  style={styles.map}
-                  styleJSON={JSON.stringify(defaultStyle)}
-                  zoomEnabled={true}
-                  pitchEnabled={true}
-                  onPress={e => null}
-                  onRegionIsChanging={e => null}
-                  surfaceView={true}
-                  rotateEnabled={true}
-                  scrollEnabled={true}>
-                  {/* <MapboxGL.UserLocation /> */}
-                  <MapboxGL.Camera
-                    zoomLevel={11}
-                    centerCoordinate={startCords}
-                    followUserLocation={true}
-                  />
+          <View style={{height: Dimensions.get('window').height}}>
+            <View
+              style={{
+                height: Dimensions.get('window').height,
+              }}>
+              <MapboxGL.MapView
+                style={styles.map}
+                styleJSON={JSON.stringify(defaultStyle)}
+                zoomEnabled={true}
+                pitchEnabled={true}
+                onPress={e => null}
+                onRegionIsChanging={e => null}
+                surfaceView={true}
+                rotateEnabled={true}
+                scrollEnabled={true}>
+                {/* <MapboxGL.UserLocation /> */}
+                <MapboxGL.Camera
+                  zoomLevel={11}
+                  centerCoordinate={startCords}
+                  followUserLocation={true}
+                />
 
-                  <MapboxGL.PointAnnotation
-                    id={'marker'}
-                    coordinate={startCords}
-                    draggable
-                    onDragEnd={(e: any) => {
-                      _onDragGetAdresse(
-                        e.geometry.coordinates[0],
-                        e.geometry.coordinates[1],
-                      );
+                <MapboxGL.PointAnnotation
+                  id={'marker'}
+                  coordinate={startCords}
+                  draggable
+                  onDragEnd={(e: any) => {
+                    _onDragGetAdresse(
+                      e.geometry.coordinates[0],
+                      e.geometry.coordinates[1],
+                    );
+                  }}>
+                  <View
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'center',
+                      alignContent: 'center',
                     }}>
                     <View
                       style={{
+                        alignSelf: 'center',
                         display: 'flex',
                         flexDirection: 'column',
-                        justifyContent: 'center',
-                        alignContent: 'center',
+                        gap: 3,
                       }}>
                       <View
                         style={{
-                          alignSelf: 'center',
+                          backgroundColor: '#eee',
+                          borderRadius: 50,
+                          width: 60,
+                          height: 60,
                           display: 'flex',
                           flexDirection: 'column',
-                          gap: 3,
+                          justifyContent: 'center',
+                          alignContent: 'center',
+                          padding: 10,
+                          borderWidth: 2,
+                          borderColor: couleurs.primary,
                         }}>
-                        <View
+                        <Image
+                          source={require('../assets/images/salon-de-coiffure.png')}
                           style={{
-                            backgroundColor: '#eee',
-                            borderRadius: 50,
-                            width: 60,
-                            height: 60,
-                            display: 'flex',
-                            flexDirection: 'column',
-                            justifyContent: 'center',
-                            alignContent: 'center',
-                            padding: 10,
-                            borderWidth: 2,
-                            borderColor: couleurs.primary,
-                          }}>
-                          <Image
-                            source={require('../assets/images/salon-de-coiffure.png')}
-                            style={{
-                              width: 30,
-                              height: 30,
-                              marginLeft: 6,
-                            }}></Image>
-                        </View>
-                        <View
-                          style={{
-                            width: 8,
-                            height: 8,
-                            alignSelf: 'center',
-                            backgroundColor: '#eee',
-                            borderRadius: 50,
-                            borderWidth: 2,
-                            padding: 4,
-                            borderColor: couleurs.primary,
-                          }}></View>
+                            width: 30,
+                            height: 30,
+                            marginLeft: 6,
+                          }}></Image>
                       </View>
+                      <View
+                        style={{
+                          width: 8,
+                          height: 8,
+                          alignSelf: 'center',
+                          backgroundColor: '#eee',
+                          borderRadius: 50,
+                          borderWidth: 2,
+                          padding: 4,
+                          borderColor: couleurs.primary,
+                        }}></View>
                     </View>
-                  </MapboxGL.PointAnnotation>
-                </MapboxGL.MapView>
-              </View>
+                  </View>
+                </MapboxGL.PointAnnotation>
+              </MapboxGL.MapView>
+            </View>
 
-              <View
-                style={{
-                  borderRadius: 100,
-                  backgroundColor: couleurs.primary,
-                  padding: 10,
-                  margin: 4,
-                  position: 'absolute',
-                  top: 10,
-                  left: 10,
-                }}>
-                <Pressable onPress={() => setStepper(0)}>
-                  <ArrowLeftIcon color={'#fff'} />
-                </Pressable>
-              </View>
+            <View
+              style={{
+                borderRadius: 100,
+                backgroundColor: couleurs.primary,
+                padding: 10,
+                margin: 4,
+                position: 'absolute',
+                top: 10,
+                left: 10,
+              }}>
+              <Pressable onPress={() => setStepper(0)}>
+                <ArrowLeftIcon color={'#fff'} />
+              </Pressable>
+            </View>
 
-              <View
+            <View
+              style={{
+                position: 'absolute',
+                borderTopLeftRadius: 20,
+                borderTopRightRadius: 20,
+                backgroundColor: couleurs.primary,
+                bottom: 0,
+                display: 'flex',
+                flexDirection: 'column',
+                width: '100%',
+                padding: 20,
+                zIndex: 100,
+                height: 200,
+              }}>
+              <TextInput
+                defaultValue={adresse}
+                onChangeText={input => (etablissement.adresse = input)}
+                placeholder={t('entrez_votre_adresse', preferredLangage)}
                 style={{
-                  position: 'absolute',
-                  borderTopLeftRadius: 20,
-                  borderTopRightRadius: 20,
-                  backgroundColor: couleurs.primary,
-                  bottom: 0,
-                  display: 'flex',
-                  flexDirection: 'column',
+                  backgroundColor: 'transparent',
+                  borderBottomWidth: 1,
+                  borderBottomColor: '#E2C6BB',
+                  color: couleurs.white,
                   width: '100%',
-                  padding: 20,
-                  zIndex:100,
-                  height:200
+                  padding: 0,
+                  fontSize: 14,
+                  marginTop: 10,
+                  fontFamily: CustomFont.Poppins,
+                }}></TextInput>
+
+              <TextInput
+                defaultValue={postcode}
+                onChangeText={input => (etablissement.postcode = input)}
+                placeholder={t('Entrez_votre_code_postal', preferredLangage)}
+                style={{
+                  backgroundColor: 'transparent',
+                  borderBottomWidth: 1,
+                  borderBottomColor: '#E2C6BB',
+                  color: couleurs.white,
+                  width: '100%',
+                  padding: 0,
+                  marginTop: 10,
+                  fontSize: 14,
+                  fontFamily: CustomFont.Poppins,
+                }}></TextInput>
+
+              <View
+                style={{
+                  alignItems: 'center',
+                  backgroundColor: couleurs.white,
+                  borderRadius: 30,
+                  marginTop: 20,
                 }}>
-                <TextInput
-                  defaultValue={adresse}
-                  onChangeText={input => (etablissement.adresse = input)}
-                  placeholder="Entrez votre adresse"
+                <TouchableOpacity
                   style={{
-                    backgroundColor: 'transparent',
-                    borderBottomWidth: 1,
-                    borderBottomColor: '#E2C6BB',
-                    color: couleurs.white,
-                    width: '100%',
-                    padding: 0,
-                    fontSize:14,
-                    marginTop: 10,
-                    fontFamily: CustomFont.Poppins,
-                  }}></TextInput>
-
-                <TextInput
-                  defaultValue={postcode}
-                  onChangeText={input => (etablissement.postcode = input)}
-                  placeholder="Entrez votre code postal"
-                  style={{
-                    backgroundColor: 'transparent',
-                    borderBottomWidth: 1,
-                    borderBottomColor: '#E2C6BB',
-                    color: couleurs.white,
-                    width: '100%',
-                    padding: 0,
-                    marginTop: 10,
-                    fontSize:14,
-                    fontFamily: CustomFont.Poppins,
-                  }}></TextInput>
-
-                <View
-                  style={{
-                    alignItems: 'center',
-                    backgroundColor: couleurs.white,
-                    borderRadius: 30,
-                    marginTop: 20
-                  }}>
-                  <TouchableOpacity
+                    paddingHorizontal: 10,
+                    width: '70%',
+                  }}
+                  onPress={() => nextPage()}>
+                  <Text
                     style={{
-                      paddingHorizontal: 10,
-                      width: '70%',
-                    }}
-                    onPress={() => nextPage()}>
-                    <Text
-                      style={{
-                        textAlign: 'center',
-                        padding: 10,
-                        paddingHorizontal: 20,
-                        fontSize: 15,
-                        fontWeight: '500',
-                        color: couleurs.primary,
-                        fontFamily: CustomFont.Poppins,
-                      }}>
-                      Confirmez l'adressse
-                    </Text>
-                  </TouchableOpacity>
-                </View>
+                      textAlign: 'center',
+                      padding: 10,
+                      paddingHorizontal: 20,
+                      fontSize: 15,
+                      fontWeight: '500',
+                      color: couleurs.primary,
+                      fontFamily: CustomFont.Poppins,
+                    }}>
+                    {t('Confirmez_l_adressse', preferredLangage)}
+                  </Text>
+                </TouchableOpacity>
               </View>
             </View>
-          )}
+          </View>
+        )}
 
         <ScrollView
           contentInsetAdjustmentBehavior="automatic"
@@ -541,15 +566,13 @@ export default function InscriptionProprietaireScreen2({
                       marginVertical: 8,
                       fontFamily: CustomFont.Poppins,
                     }}>
-                    SIRET 
+                    SIRET
                   </Text>
                   <TextInput
                     placeholderTextColor={'rgba(100,100,100,.7)'}
-                    placeholder="Entrez le SIRET"
+                    placeholder={t('Entrez_le_SIRET', preferredLangage)}
                     defaultValue={sciem}
-                    onChangeText={input => (
-                      (etablissement.sciem = input)
-                    )}
+                    onChangeText={input => (etablissement.sciem = input)}
                     style={{
                       backgroundColor: 'transparent',
                       borderBottomWidth: 1,
@@ -577,15 +600,15 @@ export default function InscriptionProprietaireScreen2({
                       marginVertical: 8,
                       fontFamily: CustomFont.Poppins,
                     }}>
-                    Noms & prenoms
+                    {t('Noms_Prenoms', preferredLangage)}
                   </Text>
                   <TextInput
                     placeholderTextColor={'rgba(100,100,100,.7)'}
-                    placeholder="Noms & prenoms"
+                    placeholder={t('Noms_Prenoms', preferredLangage)}
                     defaultValue={nom_prenom_responsable}
-                    onChangeText={input => (
+                    onChangeText={input =>
                       (etablissement.nom_prenom_responsable = input)
-                    )}
+                    }
                     style={{
                       backgroundColor: 'transparent',
                       borderBottomWidth: 1,
@@ -613,15 +636,13 @@ export default function InscriptionProprietaireScreen2({
                       marginVertical: 8,
                       fontFamily: CustomFont.Poppins,
                     }}>
-                    Poste du responsable
+                    {t('Poste_du_responsable', preferredLangage)}
                   </Text>
                   <TextInput
                     placeholderTextColor={'rgba(100,100,100,.7)'}
-                    placeholder="Poste du responsable"
+                    placeholder={t('Poste_du_responsable', preferredLangage)}
                     defaultValue={poste_occupe}
-                    onChangeText={input => (
-                      (etablissement.poste_occupe = input)
-                    )}
+                    onChangeText={input => (etablissement.poste_occupe = input)}
                     style={{
                       backgroundColor: 'transparent',
                       borderBottomWidth: 1,
@@ -636,300 +657,371 @@ export default function InscriptionProprietaireScreen2({
             </View>
           )}
 
-                    {/* Categories selectionnees */}
+          {/* Categories selectionnees */}
           {stepper == 2 && (
             <View>
               <View style={{marginHorizontal: 10}}>
-                <Text style={{fontFamily:CustomFont.Poppins, alignSelf:'center', textAlign:'center', fontSize:14, paddingVertical:20, color:couleurs.dark, paddingHorizontal:30}}>Veuillez selectionner la categorie, qui decrit le mieux votre etablissement</Text>
+                <Text
+                  style={{
+                    fontFamily: CustomFont.Poppins,
+                    alignSelf: 'center',
+                    textAlign: 'center',
+                    fontSize: 14,
+                    paddingVertical: 20,
+                    color: couleurs.dark,
+                    paddingHorizontal: 30,
+                  }}>
+                  Veuillez selectionner la categorie, qui decrit le mieux votre
+                  etablissement
+                </Text>
                 <View
                   style={{
                     display: 'flex',
                     flexDirection: 'row',
-                    justifyContent:'center',
+                    justifyContent: 'center',
                     flexWrap: 'wrap',
                     gap: 10,
                     paddingHorizontal: 5,
-                    marginTop: 40
+                    marginTop: 40,
                   }}>
-                  
-                   {sous_categories.map( ( row:any , index:any) => (
-                     <TouchableOpacity key={index} onPress={() =>  {
-                      setSelectedCategorie( row ),
-                      setStepper(3)
-                     } }>
-                     <View
-                       style={{
-                         display: 'flex',
-                         flexDirection: 'row',
-                         gap: 4,
-                         backgroundColor: '#fff',
-                         padding: 5,
-                         paddingHorizontal: 15,
-                         borderRadius: 50,
-                         alignItems: 'center',
-                         width: 'auto',
-                         justifyContent: 'space-between',
-                       }}>
-                       <View
-                         style={{
-                           display: 'flex',
-                           flexDirection: 'column',
-                           gap: 3,
-                           backgroundColor: '#fff',
-                           padding: 6,
-                           borderRadius: 50,
-                         }}>
-                         <Text
-                           style={{
-                             color: '#000',
-                             fontFamily: CustomFont.Poppins,
-                           }}>
-                           {row.nom}
-                         </Text>
-                       </View>
-                     </View>
-                     </TouchableOpacity>
-                   ))}
-              
+                  {sous_categories.map((row: any, index: any) => (
+                    <TouchableOpacity
+                      key={index}
+                      onPress={() => {
+                        setSelectedCategorie(row), setStepper(3);
+                      }}>
+                      <View
+                        style={{
+                          display: 'flex',
+                          flexDirection: 'row',
+                          gap: 4,
+                          backgroundColor: '#fff',
+                          padding: 5,
+                          paddingHorizontal: 15,
+                          borderRadius: 50,
+                          alignItems: 'center',
+                          width: 'auto',
+                          justifyContent: 'space-between',
+                        }}>
+                        <View
+                          style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: 3,
+                            backgroundColor: '#fff',
+                            padding: 6,
+                            borderRadius: 50,
+                          }}>
+                          <Text
+                            style={{
+                              color: '#000',
+                              fontFamily: CustomFont.Poppins,
+                            }}>
+                            {row.nom}
+                          </Text>
+                        </View>
+                      </View>
+                    </TouchableOpacity>
+                  ))}
                 </View>
               </View>
             </View>
-          )}       
+          )}
 
           {/*  Lien reseaux sociaux */}
           {stepper == 3 && (
             <View>
               <View style={{padding: 10}}>
                 {/* FACEBOOK */}
-                <View style={{
-                  backgroundColor: '#fff',
-                  borderRadius:20,
-                  marginBottom:10
-                }}>
-                <Text style={{paddingVertical:10, 
-                  marginHorizontal:23, 
-                  color: couleurs.primary, 
-                  borderBottomWidth:1,
-                  borderColor:'#ddd',
-                  fontSize:15}}>
-                  Facebook
-                </Text>
                 <View
                   style={{
                     backgroundColor: '#fff',
-                    paddingLeft: 20,
+                    borderRadius: 20,
                     marginBottom: 10,
-                    display: 'flex',
-                    flexDirection: 'row',
-                    alignItems:'center'
                   }}>
-                  <Image style={{width:30, height:30}} source={require('../assets/social/facebook.png')} />
-
-                  <TextInput
+                  <Text
                     style={{
+                      paddingVertical: 10,
+                      marginHorizontal: 23,
                       color: couleurs.primary,
-                      fontFamily: CustomFont.Poppins,
-                      flex: 1,
-                      fontSize: 14,
-                    }}
-                    defaultValue={social.facebook}
-                    onChangeText={input => (social.facebook = input)}
-                    placeholderTextColor={'rgba(100,100,100,.7)'}
-                    placeholder="Entrez le lien de votre page Facebook"></TextInput>
-                </View>
+                      borderBottomWidth: 1,
+                      borderColor: '#ddd',
+                      fontSize: 15,
+                    }}>
+                    Facebook
+                  </Text>
+                  <View
+                    style={{
+                      backgroundColor: '#fff',
+                      paddingLeft: 20,
+                      marginBottom: 10,
+                      display: 'flex',
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                    }}>
+                    <Image
+                      style={{width: 30, height: 30}}
+                      source={require('../assets/social/facebook.png')}
+                    />
+
+                    <TextInput
+                      style={{
+                        color: couleurs.primary,
+                        fontFamily: CustomFont.Poppins,
+                        flex: 1,
+                        fontSize: 14,
+                      }}
+                      defaultValue={social.facebook}
+                      onChangeText={input => (social.facebook = input)}
+                      placeholderTextColor={'rgba(100,100,100,.7)'}
+                      placeholder={t(
+                        'Entrez_le_lien_de_votre_page_Facebook',
+                        preferredLangage,
+                      )}></TextInput>
+                  </View>
                 </View>
 
                 {/* TWITTER */}
-                <View style={{
-                  backgroundColor: '#fff',
-                  borderRadius:20,
-                  marginBottom:10
-                }}>
-                  <Text style={{paddingVertical:10, 
-                  marginHorizontal:23, 
-                  color: couleurs.primary, 
-                  borderBottomWidth:1,
-                  borderColor:'#ddd',
-                  fontSize:15}}>
-                  Twitter
-                </Text>
                 <View
                   style={{
                     backgroundColor: '#fff',
-                    paddingLeft: 20,
+                    borderRadius: 20,
                     marginBottom: 10,
-                    display: 'flex',
-                    flexDirection: 'row',
-                    alignItems:'center'
                   }}>
-                  <Image style={{width:30, height:30}} source={require('../assets/social/twitter.png')} />
-                  <TextInput
+                  <Text
                     style={{
+                      paddingVertical: 10,
+                      marginHorizontal: 23,
                       color: couleurs.primary,
-                      fontFamily: CustomFont.Poppins,
-                      flex: 1,
-                      fontSize: 14,
-                    }}
-                    defaultValue={social.twitter}
-                    onChangeText={input => (social.twitter = input)}
-                    placeholderTextColor={'rgba(100,100,100,.7)'}
-                    placeholder="Entrez le lien de votre compte Twitter"></TextInput>
-                </View>
+                      borderBottomWidth: 1,
+                      borderColor: '#ddd',
+                      fontSize: 15,
+                    }}>
+                    Twitter
+                  </Text>
+                  <View
+                    style={{
+                      backgroundColor: '#fff',
+                      paddingLeft: 20,
+                      marginBottom: 10,
+                      display: 'flex',
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                    }}>
+                    <Image
+                      style={{width: 30, height: 30}}
+                      source={require('../assets/social/twitter.png')}
+                    />
+                    <TextInput
+                      style={{
+                        color: couleurs.primary,
+                        fontFamily: CustomFont.Poppins,
+                        flex: 1,
+                        fontSize: 14,
+                      }}
+                      defaultValue={social.twitter}
+                      onChangeText={input => (social.twitter = input)}
+                      placeholderTextColor={'rgba(100,100,100,.7)'}
+                      placeholder={t(
+                        'Entrez_le_lien_de_votre_compte_Twitter',
+                        preferredLangage,
+                      )}></TextInput>
+                  </View>
                 </View>
 
                 {/* LINKEDIN */}
-                <View style={{
-                  backgroundColor: '#fff',
-                  borderRadius:20,
-                  marginBottom:10
-                }}>
-                  <Text style={{paddingVertical:10, 
-                  marginHorizontal:23, 
-                  color: couleurs.primary, 
-                  borderBottomWidth:1,
-                  borderColor:'#ddd',
-                  fontSize:15}}>
-                  LinkedIn
-                </Text>
                 <View
                   style={{
-                    marginTop:3,
                     backgroundColor: '#fff',
-                    paddingLeft: 20,
+                    borderRadius: 20,
                     marginBottom: 10,
-                    display: 'flex',
-                    flexDirection: 'row',
-                    alignItems:'center'
                   }}>
-                  <Image style={{width:30, height:30}} source={require('../assets/social/linkedin.png')} />
-                  <TextInput
+                  <Text
                     style={{
+                      paddingVertical: 10,
+                      marginHorizontal: 23,
                       color: couleurs.primary,
-                      fontFamily: CustomFont.Poppins,
-                      flex: 1,
-                      fontSize: 14,
-                    }}
-                    defaultValue={social.linkedin}
-                    onChangeText={input => (social.linkedin = input)}
-                    placeholderTextColor={'rgba(100,100,100,.7)'}
-                    placeholder="Entrez le lien de votre compte LinkedIn"></TextInput>
-                </View>
+                      borderBottomWidth: 1,
+                      borderColor: '#ddd',
+                      fontSize: 15,
+                    }}>
+                    LinkedIn
+                  </Text>
+                  <View
+                    style={{
+                      marginTop: 3,
+                      backgroundColor: '#fff',
+                      paddingLeft: 20,
+                      marginBottom: 10,
+                      display: 'flex',
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                    }}>
+                    <Image
+                      style={{width: 30, height: 30}}
+                      source={require('../assets/social/linkedin.png')}
+                    />
+                    <TextInput
+                      style={{
+                        color: couleurs.primary,
+                        fontFamily: CustomFont.Poppins,
+                        flex: 1,
+                        fontSize: 14,
+                      }}
+                      defaultValue={social.linkedin}
+                      onChangeText={input => (social.linkedin = input)}
+                      placeholderTextColor={'rgba(100,100,100,.7)'}
+                      placeholder={t(
+                        'Entrez_le_lien_de_votre_compte_LinkedIn',
+                        preferredLangage,
+                      )}></TextInput>
+                  </View>
                 </View>
 
                 {/* INSTAGRAM */}
-                <View style={{
-                  backgroundColor: '#fff',
-                  borderRadius:20,
-                  marginBottom:10
-                }}>
-                  <Text style={{paddingVertical:10, 
-                  marginHorizontal:23, 
-                  color: couleurs.primary, 
-                  borderBottomWidth:1,
-                  borderColor:'#ddd',
-                  fontSize:15}}>
-                  Instagram
-                </Text>
                 <View
                   style={{
                     backgroundColor: '#fff',
-                    paddingLeft: 20,
+                    borderRadius: 20,
                     marginBottom: 10,
-                    display: 'flex',
-                    flexDirection: 'row',
-                    alignItems:'center'
                   }}>
-                  <Image style={{width:30, height:30}} source={require('../assets/social/instagram.png')} />
-                  <TextInput
+                  <Text
                     style={{
+                      paddingVertical: 10,
+                      marginHorizontal: 23,
                       color: couleurs.primary,
-                      fontFamily: CustomFont.Poppins,
-                      flex: 1,
-                      fontSize: 14,
-                    }}
-                    defaultValue={social.facebook}
-                    onChangeText={input => (social.facebook = input)}
-                    placeholderTextColor={'rgba(100,100,100,.7)'}
-                    placeholder="Entrez  le lien de votre compte instagram"></TextInput>
-                </View>
+                      borderBottomWidth: 1,
+                      borderColor: '#ddd',
+                      fontSize: 15,
+                    }}>
+                    Instagram
+                  </Text>
+                  <View
+                    style={{
+                      backgroundColor: '#fff',
+                      paddingLeft: 20,
+                      marginBottom: 10,
+                      display: 'flex',
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                    }}>
+                    <Image
+                      style={{width: 30, height: 30}}
+                      source={require('../assets/social/instagram.png')}
+                    />
+                    <TextInput
+                      style={{
+                        color: couleurs.primary,
+                        fontFamily: CustomFont.Poppins,
+                        flex: 1,
+                        fontSize: 14,
+                      }}
+                      defaultValue={social.facebook}
+                      onChangeText={input => (social.facebook = input)}
+                      placeholderTextColor={'rgba(100,100,100,.7)'}
+                      placeholder={t(
+                        'Entrez_le_lien_de_votre_compte_instagram',
+                        preferredLangage,
+                      )}></TextInput>
+                  </View>
                 </View>
 
                 {/* YOUTUBE */}
-                <View style={{
-                  backgroundColor: '#fff',
-                  borderRadius:20,
-                  marginBottom:10
-                }}>
-                  <Text style={{paddingVertical:10, 
-                  marginHorizontal:23, 
-                  color: couleurs.primary, 
-                  borderBottomWidth:1,
-                  borderColor:'#ddd',
-                  fontSize:15}}>
-                  Youtube
-                </Text>
                 <View
                   style={{
-                    marginTop:3,
                     backgroundColor: '#fff',
-                    paddingLeft: 20,
+                    borderRadius: 20,
                     marginBottom: 10,
-                    display: 'flex',
-                    flexDirection: 'row',
-                    alignItems:'center'
                   }}>
-                  <Image style={{width:30, height:30}}  source={require('../assets/social/youtube.png')} />
-                  <TextInput
+                  <Text
                     style={{
+                      paddingVertical: 10,
+                      marginHorizontal: 23,
                       color: couleurs.primary,
-                      fontFamily: CustomFont.Poppins,
-                      flex: 1,
-                      fontSize: 14,
-                    }}
-                    defaultValue={social.facebook}
-                    onChangeText={input => (social.facebook = input)}
-                    placeholderTextColor={'rgba(100,100,100,.7)'}
-                    placeholder="Entrez le lien de votre compte Youtube"></TextInput>
-                </View>
+                      borderBottomWidth: 1,
+                      borderColor: '#ddd',
+                      fontSize: 15,
+                    }}>
+                    Youtube
+                  </Text>
+                  <View
+                    style={{
+                      marginTop: 3,
+                      backgroundColor: '#fff',
+                      paddingLeft: 20,
+                      marginBottom: 10,
+                      display: 'flex',
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                    }}>
+                    <Image
+                      style={{width: 30, height: 30}}
+                      source={require('../assets/social/youtube.png')}
+                    />
+                    <TextInput
+                      style={{
+                        color: couleurs.primary,
+                        fontFamily: CustomFont.Poppins,
+                        flex: 1,
+                        fontSize: 14,
+                      }}
+                      defaultValue={social.facebook}
+                      onChangeText={input => (social.facebook = input)}
+                      placeholderTextColor={'rgba(100,100,100,.7)'}
+                      placeholder={t(
+                        'Entrez_le_lien_de_votre_compte_Youtube',
+                        preferredLangage,
+                      )}></TextInput>
+                  </View>
                 </View>
 
                 {/* TITKOK */}
-                <View style={{
-                  backgroundColor: '#fff',
-                  borderRadius:20,
-                  marginBottom:10
-                }}>
-                  <Text style={{paddingVertical:10, 
-                  marginHorizontal:23, 
-                  color: couleurs.primary, 
-                  borderBottomWidth:1,
-                  borderColor:'#ddd',
-                  fontSize:15}}>
-                  Tik-Tok
-                </Text>
                 <View
                   style={{
-                    marginTop:3,
                     backgroundColor: '#fff',
-                    paddingLeft: 20,
+                    borderRadius: 20,
                     marginBottom: 10,
-                    display: 'flex',
-                    flexDirection: 'row',
-                    alignItems:'center'
                   }}>
-                  <Image style={{width:30, height:30}}  source={require('../assets/social/tik-tok.png')} />
-                  <TextInput
+                  <Text
                     style={{
+                      paddingVertical: 10,
+                      marginHorizontal: 23,
                       color: couleurs.primary,
-                      fontFamily: CustomFont.Poppins,
-                      flex: 1,
-                      fontSize: 14,
-                    }}
-                    defaultValue={social.tiktok}
-                    onChangeText={input => (social.tiktok = input)}
-                    placeholderTextColor={'rgba(100,100,100,.7)'}
-                    placeholder="Entrez  le lien de votre compte tik-tok"></TextInput>
-                </View>
+                      borderBottomWidth: 1,
+                      borderColor: '#ddd',
+                      fontSize: 15,
+                    }}>
+                    Tik-Tok
+                  </Text>
+                  <View
+                    style={{
+                      marginTop: 3,
+                      backgroundColor: '#fff',
+                      paddingLeft: 20,
+                      marginBottom: 10,
+                      display: 'flex',
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                    }}>
+                    <Image
+                      style={{width: 30, height: 30}}
+                      source={require('../assets/social/tik-tok.png')}
+                    />
+                    <TextInput
+                      style={{
+                        color: couleurs.primary,
+                        fontFamily: CustomFont.Poppins,
+                        flex: 1,
+                        fontSize: 14,
+                      }}
+                      defaultValue={social.tiktok}
+                      onChangeText={input => (social.tiktok = input)}
+                      placeholderTextColor={'rgba(100,100,100,.7)'}
+                      placeholder={t(
+                        'Entrez_le_lien_de_votre_compte_tik_tok',
+                        preferredLangage,
+                      )}></TextInput>
+                  </View>
                 </View>
               </View>
             </View>
@@ -942,7 +1034,7 @@ export default function InscriptionProprietaireScreen2({
               flexDirection: 'row',
               width: '100%',
               justifyContent: 'center',
-              alignItems:'center',
+              alignItems: 'center',
               paddingHorizontal: 10,
               marginTop: 20,
             }}>
@@ -955,17 +1047,18 @@ export default function InscriptionProprietaireScreen2({
                       fontSize: 14,
                       padding: 7,
                       color: couleurs.primary,
-                      height:40,
+                      height: 40,
                       borderRadius: 30,
                       textAlign: 'center',
                       borderColor: couleurs.primary,
-                      paddingHorizontal:30
+                      paddingHorizontal: 30,
                     }}>
                     Retour
+                    {t('Retour', preferredLangage)}
                   </Text>
                 </TouchableOpacity>
               </View>
-          )}
+            )}
 
             {stepper != 1 && stepper != 2 && (
               <View
@@ -973,7 +1066,7 @@ export default function InscriptionProprietaireScreen2({
                   alignItems: 'center',
                   backgroundColor: couleurs.primary,
                   borderRadius: 30,
-                  paddingHorizontal:30
+                  paddingHorizontal: 30,
                 }}>
                 <TouchableOpacity
                   style={{
@@ -987,11 +1080,11 @@ export default function InscriptionProprietaireScreen2({
                       padding: 8,
                       paddingHorizontal: 10,
                       fontSize: 14,
-                      height:40,
+                      height: 40,
                       color: couleurs.secondary,
                       fontFamily: CustomFont.Poppins,
                     }}>
-                    Suivant
+                    {t('Suivant', preferredLangage)}
                   </Text>
                 </TouchableOpacity>
               </View>
@@ -1000,8 +1093,7 @@ export default function InscriptionProprietaireScreen2({
 
           {stepper != 1 && <View style={{marginVertical: 20}}></View>}
         </ScrollView>
-
-        </SafeAreaView>
+      </SafeAreaView>
     </>
   );
 }

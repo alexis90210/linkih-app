@@ -18,10 +18,29 @@ import Geolocation from '@react-native-community/geolocation';
 import axios from 'axios';
 import ArrowLeftIcon from '../components/ArrowLeft';
 import ApiService from '../components/api/service';
+import translations from '../translations/translations';
+import storage from '../components/api/localstorage';
 
 export default function EditAdresse({navigation, route}: {navigation: any, route:any}) {
 
   console.log(route.params);
+
+    /////////////////////////////////// LANGUAGE HANDLER ///////////////////////////////////////
+    const [preferredLangage , setPreferredLangage] = useState('fr');
+
+    const t = (key:any , langage:any) => {
+      return translations[langage][key] || key
+    }
+  
+    storage.load({
+      key: 'defaultlang', // Note: Do not use underscore("_") in key!
+      id: 'defaultlang' // Note: Do not use underscore("_") in id!
+    }).then( ( data:any) => {
+      setPreferredLangage(data)
+    })
+  
+    //////////////////////////////////////////////////////////////////////////////////////
+  
   
 
   const [startCords, setstartCords] = useState([0, 0]);
@@ -64,7 +83,7 @@ export default function EditAdresse({navigation, route}: {navigation: any, route
   const updateAdresse = () => {
 
     if (client.adresse.length < 4) {
-      Alert.alert('', 'adresse trop court');
+      Alert.alert('', t('adresse_court', preferredLangage));
       return;
     }
 
@@ -94,7 +113,7 @@ export default function EditAdresse({navigation, route}: {navigation: any, route
         console.log(error);
         Alert.alert(
           '',
-          'Erreur survenue'          
+          t('erreur_survenue', preferredLangage)         
         );
       });
   };
@@ -216,7 +235,7 @@ export default function EditAdresse({navigation, route}: {navigation: any, route
           <TextInput
             defaultValue={adresse}
             onChangeText={input => (client.adresse = input)}
-            placeholder="Entrez votre adresse"
+            placeholder={t('entrez_votre_adresse', preferredLangage)}
             style={{
               backgroundColor: 'transparent',
               borderBottomWidth: 1,
@@ -251,7 +270,7 @@ export default function EditAdresse({navigation, route}: {navigation: any, route
                   color: couleurs.white,
                   fontFamily: CustomFont.Poppins,
                 }}>
-                Confirmez l'adressse
+                {t('confirmer_adresse', preferredLangage)}
               </Text>
             </TouchableOpacity>
           </View>

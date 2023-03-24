@@ -15,6 +15,7 @@ import {CustomFont, couleurs} from '../components/color';
 import ApiService from '../components/api/service';
 import axios from 'axios';
 import storage from '../components/api/localstorage';
+import translations from '../translations/translations';
 
 // IdentificationClientScreen
 export default function IdentificationClientScreen({
@@ -23,6 +24,27 @@ export default function IdentificationClientScreen({
   navigation: any,
   route: any
 }) {
+
+   /////////////////////////////////// LANGUAGE HANDLER //////////////////////////////////
+
+   const [preferredLangage, setPreferredLangage] = useState('fr');
+
+   const t = (key: any, langage: any) => {
+     return translations[langage][key] || key;
+   };
+ 
+   storage
+     .load({
+       key: 'defaultlang', // Note: Do not use underscore("_") in key!
+       id: 'defaultlang', // Note: Do not use underscore("_") in id!
+     })
+     .then((data: any) => {
+       setPreferredLangage(data);
+     });
+ 
+   //////////////////////////////////////////////////////////////////////////////////////
+ 
+
   var data = {
     identifiant: '',
     password: '',
@@ -38,14 +60,14 @@ export default function IdentificationClientScreen({
     console.log(data);
 
     if (!data.identifiant) {
-      Alert.alert('Erreur', 'Veuillez entrer un identifiant', [        
+      Alert.alert( t('erreur', preferredLangage), t('Veuillez_entrer_un_identifiant', preferredLangage), [        
         {text: 'OK', onPress: () => null},
       ]);
       return;
     }
 
     if (!data.password) {
-      Alert.alert('Erreur', 'Veuillez entrer un mot de passe valide', [        
+      Alert.alert( t('erreur', preferredLangage), t('Veuillez_entrer_un_mot_de_passe_valide', preferredLangage), [        
         {text: 'OK', onPress: () => null},
       ]);
       return;
@@ -113,36 +135,32 @@ export default function IdentificationClientScreen({
               },
             });
 
-                navigation.navigate('main', {
-                  utilisateur_id: response.data.id,
-                  isProprietaire:false
-                })
-      
-            
+            navigation.navigate('main', {
+              utilisateur_id: response.data.id,
+              isProprietaire:false
+            })
+
           })
           .catch((error) => {
             setProcessing(false);
-            Alert.alert('Erreur', "Nous n'avons pas pu recuper vos informations", [        
+            Alert.alert(t('erreur', preferredLangage), t('Nous_n_avons_pas_pu_recuper_vos_informations', preferredLangage), [        
               {text: 'OK', onPress: () => null},
             ]);
            })
-          
          }
 
-         if ( api.code == "error") Alert.alert('Erreur', api.message, [  {text: 'OK', onPress: () => null}, ]);
+         if ( api.code == "error") Alert.alert(t('erreur', preferredLangage), api.message, [  {text: 'OK', onPress: () => null}, ]);
 
          setProcessing(false);
 
       })
       .catch((error: any) => {
-       console.log(error);
-       setProcessing(false);
-       Alert.alert('Erreur', error, [        
-        {text: 'OK', onPress: () => null},
-      ]);
-       
+          console.log(error);
+          setProcessing(false);
+          Alert.alert('Erreur', error, [        
+            {text: 'OK', onPress: () => null},
+          ]);
       });
-
   };
 
   return (
@@ -214,12 +232,12 @@ export default function IdentificationClientScreen({
                     marginTop:14,
                     fontFamily: CustomFont.Poppins,
                   }}>
-                  Identifiant
+                  {t('Identifiant', preferredLangage)}
                 </Text>
                 <TextInput
                   defaultValue={data.identifiant}
                   onChangeText={input => (data.identifiant = input)}
-                  placeholder='Entrez votre identifiant'
+                  placeholder={t('Entrez_votre_identifiant', preferredLangage)}
                   style={{
                     backgroundColor: 'transparent',
                     borderBottomWidth: 1,
@@ -250,7 +268,7 @@ export default function IdentificationClientScreen({
                     opacity: 0.85,
                     fontFamily: CustomFont.Poppins,
                   }}>
-                  Mot de passe
+                  {t('Mot_de_passe', preferredLangage)}
                 </Text>
                 <TextInput
                   textContentType="password"
@@ -258,7 +276,7 @@ export default function IdentificationClientScreen({
                   secureTextEntry={true}
                   defaultValue={data.password}
                   onChangeText={input => (data.password = input)}
-                  placeholder='Entrez votre mot de passe'
+                  placeholder={t('Entrez_votre_mot_de_passe', preferredLangage)}
                   style={{
                     backgroundColor: 'transparent',
                     borderBottomWidth: 1,
@@ -278,8 +296,7 @@ export default function IdentificationClientScreen({
                   borderRadius: 30,
                   marginBottom: 20,
                 }}>
-                <TouchableOpacity
-                  
+                <TouchableOpacity                  
                   style={{
                     paddingHorizontal: 10,
                     width: '70%',
@@ -295,7 +312,7 @@ export default function IdentificationClientScreen({
                       color: couleurs.white,
                       fontFamily: CustomFont.Poppins,
                     }}>
-                    Se connecter
+                    {t('Se_connecter', preferredLangage)}
                   </Text>
                 </TouchableOpacity>
               </View>
@@ -324,7 +341,7 @@ export default function IdentificationClientScreen({
                       color: '#000',
                       fontFamily: CustomFont.Poppins,
                     }}>
-                    Mot de passe oublie ?
+                    {t('Mot_de_passe_oublie', preferredLangage)}
                   </Text>
                 </TouchableOpacity>
               </View>
@@ -356,12 +373,10 @@ export default function IdentificationClientScreen({
                       color: '#000',                      
                     fontFamily: CustomFont.Poppins,
                     }}>
-                    Je cree mon compte
+                    {t('Je_cree_mon_compte', preferredLangage)}
                   </Text>
                 </TouchableOpacity>
-              </View>
-
-              
+              </View>              
             </View>
           </View>
 
@@ -390,7 +405,7 @@ export default function IdentificationClientScreen({
                   color: couleurs.primary,
                   fontFamily: CustomFont.Poppins,
                 }}>
-                Avez-vous besoin d'aide ?
+                {t('Avez_vous_besoin_d_aide', preferredLangage)}
               </Text>
             </TouchableOpacity>
           </View>

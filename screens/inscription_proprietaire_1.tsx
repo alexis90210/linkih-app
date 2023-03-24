@@ -15,7 +15,8 @@ import EyeIcon from '../components/eye';
 import {CustomFont, couleurs} from '../components/color';
 import UserPosition from '../components/api/user_position';
 import Geolocation from '@react-native-community/geolocation';
-import ArrowLeftIcon from '../components/ArrowLeft';
+import translations from '../translations/translations';
+import storage from '../components/api/localstorage';
 
 // InscriptionProprietaireScreen1
 export default function InscriptionProprietaireScreen1({
@@ -23,6 +24,27 @@ export default function InscriptionProprietaireScreen1({
 }: {
   navigation: any;
 }) {
+
+    /////////////////////////////////// LANGUAGE HANDLER ///////////////////////////////////////
+
+    const [preferredLangage, setPreferredLangage] = useState('fr');
+
+    const t = (key: any, langage: any) => {
+      return translations[langage][key] || key;
+    };
+  
+    storage
+      .load({
+        key: 'defaultlang', // Note: Do not use underscore("_") in key!
+        id: 'defaultlang', // Note: Do not use underscore("_") in id!
+      })
+      .then((data: any) => {
+        setPreferredLangage(data);
+      });
+  
+    //////////////////////////////////////////////////////////////////////////////////////
+  
+
   var [isVisible, setVisible] = useState(false);
   var [isVisibleModalInfoPrivee, setVisibleModalInfoPrivee] = useState(false);
 
@@ -52,14 +74,14 @@ export default function InscriptionProprietaireScreen1({
     console.log(etablissement);
 
     if (etablissement.nom.length < 2) {
-      Alert.alert('', "Le nom de l'entreprise est trop court", [
+      Alert.alert('', t('Le_nom_de_l_entreprise_est_trop_court', preferredLangage), [
         {text: 'OK', onPress: () => null},
       ]);
       return;
     }
 
     if (etablissement.mobile.length < 6) {
-      Alert.alert('', "Le mobile de l'entreprise est trop court", [
+      Alert.alert('', t('Le_mobile_de_l_entreprise_est_trop_court', preferredLangage), [
         {text: 'OK', onPress: () => null},
       ]);
       return;
@@ -67,18 +89,16 @@ export default function InscriptionProprietaireScreen1({
 
     var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     if (!etablissement.email.match(mailformat)) {
-      Alert.alert('', 'Email invalide', [{text: 'OK', onPress: () => null}]);
+      Alert.alert('', t('Email_invalide', preferredLangage), [{text: 'OK', onPress: () => null}]);
       return;
     }
 
     if (etablissement.password.length < 4) {
-      Alert.alert('', 'Mot de passe trop court', [
+      Alert.alert('', t('Mot_de_passe_trop_court', preferredLangage), [
         {text: 'OK', onPress: () => null},
       ]);
       return;
     }
-
-
 
     navigation.navigate('inscription_proprietaire_2', {
       etablissement: etablissement,
@@ -133,11 +153,11 @@ export default function InscriptionProprietaireScreen1({
                     opacity: 0.85,
                     fontFamily: CustomFont.Poppins,
                   }}>
-                  Nom entreprise
+                  {t('Nom_entreprise', preferredLangage)}
                 </Text>
                 <TextInput
                   placeholderTextColor={'rgba(100,100,100,.7)'}
-                  placeholder="Entrez le nom entreprise"
+                  placeholder={t('Entrez_le_nom_entreprise', preferredLangage)}
                   defaultValue={etablissement.nom}
                   onChangeText={input => (etablissement.nom = input)}
                   style={{
@@ -169,7 +189,7 @@ export default function InscriptionProprietaireScreen1({
                     opacity: 0.85,
                     fontFamily: CustomFont.Poppins,
                   }}>
-                  Email
+                  {t('email', preferredLangage)}
                 </Text>
                 <TextInput
                   placeholderTextColor={'rgba(100,100,100,.7)'}
@@ -203,7 +223,7 @@ export default function InscriptionProprietaireScreen1({
                     opacity: 0.85,
                     fontFamily: CustomFont.Poppins,
                   }}>
-                  Mobile
+                  {t('Mobile', preferredLangage)}
                 </Text>
                 <TextInput
                   placeholderTextColor={'rgba(100,100,100,.7)'}
@@ -238,7 +258,7 @@ export default function InscriptionProprietaireScreen1({
                     opacity: 0.85,
                     fontFamily: CustomFont.Poppins,
                   }}>
-                  Mot de passe
+                  {t('mot_de_passe', preferredLangage)}
                 </Text>
                 <View
                   style={{
@@ -256,7 +276,7 @@ export default function InscriptionProprietaireScreen1({
                     defaultValue={etablissement.password}
                     onChangeText={input => (etablissement.password = input)}
                     placeholderTextColor={'rgba(100,100,100,.7)'}
-                    placeholder="Entrer votre mot de Passe..."
+                    placeholder={t('entrez_votre_mot_de_passe', preferredLangage)}
                     style={{
                       backgroundColor: 'transparent',
                       borderBottomWidth: 1,
@@ -297,7 +317,7 @@ export default function InscriptionProprietaireScreen1({
                       fontFamily: CustomFont.Poppins,
                       color: couleurs.secondary,
                     }}>
-                    Suivant
+                    {t('Suivant', preferredLangage)}
                   </Text>
                 </TouchableOpacity>
               </View>
@@ -324,7 +344,7 @@ export default function InscriptionProprietaireScreen1({
                     fontFamily: CustomFont.Poppins,
                     color: couleurs.primary,
                   }}>
-                  Avez-vous besoin d'aide ?
+                  {t('Avez_vous_besoin_d_aide', preferredLangage)}
                 </Text>
               </TouchableOpacity>
             </View>

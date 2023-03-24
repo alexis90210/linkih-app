@@ -18,6 +18,7 @@ import ApiService from '../components/api/service';
 import axios from 'axios';
 import storage from '../components/api/localstorage';
 import {Picker} from '@react-native-picker/picker';
+import translations from '../translations/translations';
 
 export default function MesHoraires({
   navigation,
@@ -26,6 +27,25 @@ export default function MesHoraires({
   navigation: any;
   route: any;
 }) {
+  /////////////////////////////////// LANGUAGE HANDLER //////////////////////////////////
+
+  const [preferredLangage, setPreferredLangage] = useState('fr');
+
+  const t = (key: any, langage: any) => {
+    return translations[langage][key] || key;
+  };
+
+  storage
+    .load({
+      key: 'defaultlang', // Note: Do not use underscore("_") in key!
+      id: 'defaultlang', // Note: Do not use underscore("_") in id!
+    })
+    .then((data: any) => {
+      setPreferredLangage(data);
+    });
+
+  //////////////////////////////////////////////////////////////////////////////////////
+
   // LOADER
   const [isLoading, setLoading] = useState(false);
   const [isLoadingHoraire, setLoadingHoraire] = useState(false);
@@ -42,50 +62,46 @@ export default function MesHoraires({
       id: 'userconnected', // Note: Do not use underscore("_") in id!
     })
     .then(data => {
+      SetHoraires(data.horaire_ouverture);
 
-      SetHoraires( data.horaire_ouverture );
-      
       SetUserConnected(data.etablissement[0]);
 
       if (!isLoadingHoraire) {
-        data.horaire_ouverture.map( (row:any, index:any) => {
-          if ( row.jour == 'Lundi') {
-            setSelectedHoraireOuvertureLundi( row.heure_ouverture)
-            setSelectedHoraireFermetureLundi( row.heure_fermeture)
+        data.horaire_ouverture.map((row: any, index: any) => {
+          if (row.jour == 'Lundi') {
+            setSelectedHoraireOuvertureLundi(row.heure_ouverture);
+            setSelectedHoraireFermetureLundi(row.heure_fermeture);
           }
-          if ( row.jour == 'Mardi') {
-            setSelectedHoraireOuvertureMardi( row.heure_ouverture)
-            setSelectedHoraireFermetureMardi( row.heure_fermeture)
+          if (row.jour == 'Mardi') {
+            setSelectedHoraireOuvertureMardi(row.heure_ouverture);
+            setSelectedHoraireFermetureMardi(row.heure_fermeture);
           }
-  
-          if ( row.jour == 'Mercredi') {
-            setSelectedHoraireOuvertureMercredi( row.heure_ouverture)
-            setSelectedHoraireFermetureMercredi( row.heure_fermeture)
-          }
-  
-          if ( row.jour == 'Jeudi') {
-            setSelectedHoraireOuvertureJeudi( row.heure_ouverture)
-            setSelectedHoraireFermetureJeudi( row.heure_fermeture)
-          }
-  
-          if ( row.jour == 'Vendredi') {
-            setSelectedHoraireOuvertureVendredi( row.heure_ouverture)
-            setSelectedHoraireFermetureVendredi( row.heure_fermeture)
-          }
-  
-          if ( row.jour == 'Samedi') {
-            setSelectedHoraireOuvertureSamedi( row.heure_ouverture)
-            setSelectedHoraireFermetureSamedi( row.heure_fermeture)
-          }
-        })
 
-        setLoadingHoraire(true)
+          if (row.jour == 'Mercredi') {
+            setSelectedHoraireOuvertureMercredi(row.heure_ouverture);
+            setSelectedHoraireFermetureMercredi(row.heure_fermeture);
+          }
 
+          if (row.jour == 'Jeudi') {
+            setSelectedHoraireOuvertureJeudi(row.heure_ouverture);
+            setSelectedHoraireFermetureJeudi(row.heure_fermeture);
+          }
+
+          if (row.jour == 'Vendredi') {
+            setSelectedHoraireOuvertureVendredi(row.heure_ouverture);
+            setSelectedHoraireFermetureVendredi(row.heure_fermeture);
+          }
+
+          if (row.jour == 'Samedi') {
+            setSelectedHoraireOuvertureSamedi(row.heure_ouverture);
+            setSelectedHoraireFermetureSamedi(row.heure_fermeture);
+          }
+        });
+
+        setLoadingHoraire(true);
       }
-            
     })
     .catch(error => console.log(error));
-
 
   var hours_matin = [
     {
@@ -311,20 +327,24 @@ export default function MesHoraires({
   // SAVE HORAIRE
 
   // console.log('........./////////', Horaires);
-  
-   
+
   const saveHoraire = () => {
-    var final: { id: any; jour: any; heure_fermeture: any; heure_ouverture: any; }[] = []
-    Horaires.map( (row:any, key:any) => {
+    var final: {
+      id: any;
+      jour: any;
+      heure_fermeture: any;
+      heure_ouverture: any;
+    }[] = [];
+    Horaires.map((row: any, key: any) => {
       if (row.jour == 'Lundi') {
         let jour = {
           id: row.id,
           jour: row.jour,
           heure_fermeture: selectedHoraireFermetureLundi,
-          heure_ouverture: selectedHoraireOuvertureLundi
-        }
+          heure_ouverture: selectedHoraireOuvertureLundi,
+        };
 
-        final.push(jour)
+        final.push(jour);
       }
 
       if (row.jour == 'Mardi') {
@@ -332,10 +352,10 @@ export default function MesHoraires({
           id: row.id,
           jour: row.jour,
           heure_fermeture: selectedHoraireFermetureMardi,
-          heure_ouverture: selectedHoraireOuvertureMardi
-        }
+          heure_ouverture: selectedHoraireOuvertureMardi,
+        };
 
-        final.push(jour)
+        final.push(jour);
       }
 
       if (row.jour == 'Mercredi') {
@@ -343,10 +363,10 @@ export default function MesHoraires({
           id: row.id,
           jour: row.jour,
           heure_fermeture: selectedHoraireFermetureMercredi,
-          heure_ouverture: selectedHoraireOuvertureMercredi
-        }
+          heure_ouverture: selectedHoraireOuvertureMercredi,
+        };
 
-        final.push(jour)
+        final.push(jour);
       }
 
       if (row.jour == 'Jeudi') {
@@ -354,10 +374,10 @@ export default function MesHoraires({
           id: row.id,
           jour: row.jour,
           heure_fermeture: selectedHoraireFermetureJeudi,
-          heure_ouverture: selectedHoraireOuvertureJeudi
-        }
+          heure_ouverture: selectedHoraireOuvertureJeudi,
+        };
 
-        final.push(jour)
+        final.push(jour);
       }
 
       if (row.jour == 'Vendredi') {
@@ -365,10 +385,10 @@ export default function MesHoraires({
           id: row.id,
           jour: row.jour,
           heure_fermeture: selectedHoraireFermetureVendredi,
-          heure_ouverture: selectedHoraireOuvertureVendredi
-        }
+          heure_ouverture: selectedHoraireOuvertureVendredi,
+        };
 
-        final.push(jour)
+        final.push(jour);
       }
 
       if (row.jour == 'Samedi') {
@@ -376,22 +396,20 @@ export default function MesHoraires({
           id: row.id,
           jour: row.jour,
           heure_fermeture: selectedHoraireFermetureSamedi,
-          heure_ouverture: selectedHoraireOuvertureSamedi
-        }
+          heure_ouverture: selectedHoraireOuvertureSamedi,
+        };
 
-        final.push(jour)
+        final.push(jour);
       }
-
-    })
-
+    });
 
     // SEND TO SERVER
     axios({
       method: 'POST',
       url: ApiService.API_URL_EDIT_HORAIRE,
-      data:JSON.stringify({
+      data: JSON.stringify({
         vendeur_id: userConnected.id,
-        horaire: final
+        horaire: final,
       }),
       headers: {
         Accept: 'application/json',
@@ -399,23 +417,20 @@ export default function MesHoraires({
       },
     })
       .then((response: {data: any}) => {
- 
         var api = response.data;
-        
+
         console.log(api);
-        
+
         if (api.code == 'success') {
-          setLoading(false)
+          setLoading(false);
         }
- 
       })
       .catch((error: any) => {
         console.log(error);
-        Alert.alert('', 'Erreur Network');
+
+        Alert.alert('', t('erreur_survenue', preferredLangage));
       });
-  }
-  
-  
+  };
 
   return (
     <View>
@@ -443,7 +458,7 @@ export default function MesHoraires({
               fontSize: 16,
               fontFamily: CustomFont.Poppins,
             }}>
-            Mes Horaires
+            {t('Mes_Horaires', preferredLangage)}
           </Text>
         </View>
 
@@ -454,899 +469,847 @@ export default function MesHoraires({
             backgroundColor: '#f6f6f6f6',
           }}>
           <View style={{paddingHorizontal: 12, marginVertical: 10}}>
-          <View
-                          style={{
-                            display: 'flex',
-                            justifyContent: 'center',
-                            gap: 5,
-                            flexDirection: 'column',
-                          }}>
-                          {/* LUNDI */}
-                          <View style={{
-                            borderBottomColor: couleurs.primary,
-                            borderBottomWidth:1,
-                            borderStyle:'solid',
-                            padding:20,
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                            gap: 15,
-                            flexDirection: 'row',
+            <View
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                gap: 5,
+                flexDirection: 'column',
+              }}>
+              {/* LUNDI */}
+              <View
+                style={{
+                  borderBottomColor: couleurs.primary,
+                  borderBottomWidth: 1,
+                  borderStyle: 'solid',
+                  padding: 20,
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  gap: 15,
+                  flexDirection: 'row',
+                }}>
+                <Text
+                  style={{
+                    fontFamily: CustomFont.Poppins,
+                    fontSize: 15,
+                    color: couleurs.dark,
+                    alignSelf: 'center',
+                  }}>
+                  {t('Lundi', preferredLangage)}
+                </Text>
+                <View
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    gap: 10,
+                    flexDirection: 'row',
+                  }}>
+                  <View
+                    style={{
+                      borderStyle: 'solid',
+                      borderColor: couleurs.primary,
+                      borderWidth: 1,
+                      borderRadius: 10,
+                    }}>
+                    <Picker
+                      style={{
+                        width: 125,
+                        height: 30,
+                        alignSelf: 'center',
+                        position: 'relative',
+                        bottom: 10,
+                      }}
+                      selectedValue={selectedHoraireOuvertureLundi}
+                      onValueChange={(itemValue: any, itemIndex: any) =>
+                        setSelectedHoraireOuvertureLundi(itemValue)
+                      }>
+                      <Picker.Item
+                        label={t('Selectionner_une_heure', preferredLangage)}
+                        value={''}
+                        enabled={false}
+                      />
+                      <Picker.Item
+                        label={t('MATIN', preferredLangage)}
+                        value={'-1'}
+                        enabled={false}
+                      />
+                      {hours_matin.map((row, index) => (
+                        <Picker.Item
+                          key={index}
+                          label={row.hour}
+                          value={row.hour}
+                        />
+                      ))}
 
-                          }}>
-                            <Text
-                              style={{
-                                fontFamily: CustomFont.Poppins,
-                                fontSize: 15,
-                                color: couleurs.dark,
-                                alignSelf:'center'
-                              }}>
-                              Lundi
-                            </Text>
-                            <View
-                              style={{
-                                display: 'flex',
-                                justifyContent: 'space-between',
-                                gap: 10,
-                                flexDirection: 'row',
-                              }}>
-                              <View
-                                style={{
-                                  borderStyle: 'solid',
-                                  borderColor: couleurs.primary,
-                                  borderWidth: 1,
-                                  borderRadius: 10,
-                                }}>
-                                <Picker
-                                  style={{
-                                    width: 125,
-                                    height: 30,
-                                    alignSelf: 'center',
-                                    position: 'relative',
-                                    bottom: 10,
-                                  }}
-                                  selectedValue={selectedHoraireOuvertureLundi}
-                                  onValueChange={(
-                                    itemValue: any,
-                                    itemIndex: any,
-                                  ) =>
-                                    setSelectedHoraireOuvertureLundi(itemValue)
-                                  }>
-                                  
-                                  <Picker.Item
-                                    label={'Selectionner une heure'}
-                                    value={''}
-                                    enabled={false}
-                                  />
-                                  <Picker.Item
-                                    label={'MATIN'}
-                                    value={'-1'}
-                                    enabled={false}
-                                  />
-                                  {hours_matin.map((row, index) => (
-                                    <Picker.Item
-                                      key={index}
-                                      label={row.hour}
-                                      value={row.hour}
-                                    />
-                                  ))}
+                      <Picker.Item
+                        label={t('SOIR', preferredLangage)}
+                        value={'-1'}
+                        enabled={false}
+                      />
+                      {hours_apresmidi.map((row, index) => (
+                        <Picker.Item
+                          key={index}
+                          label={row.hour}
+                          value={row.hour}
+                        />
+                      ))}
+                    </Picker>
+                  </View>
 
-                                  <Picker.Item
-                                    label={'SOIR'}
-                                    value={'-1'}
-                                    enabled={false}
-                                  />
-                                  {hours_apresmidi.map((row, index) => (
-                                    <Picker.Item
-                                      key={index}
-                                      label={row.hour}
-                                      value={row.hour}
-                                    />
-                                  ))}
-                                </Picker>
-                              </View>
+                  <View
+                    style={{
+                      borderStyle: 'solid',
+                      borderColor: couleurs.primary,
+                      borderWidth: 1,
+                      borderRadius: 10,
+                    }}>
+                    <Picker
+                      style={{
+                        width: 125,
+                        height: 30,
+                        alignSelf: 'center',
+                        position: 'relative',
+                        bottom: 10,
+                      }}
+                      selectedValue={selectedHoraireFermetureLundi}
+                      onValueChange={(itemValue: any, itemIndex: any) =>
+                        setSelectedHoraireFermetureLundi(itemValue)
+                      }>
+                      <Picker.Item
+                        label={t('Selectionner_une_heure', preferredLangage)}
+                        value={''}
+                        enabled={false}
+                      />
+                      <Picker.Item
+                        label={t('MATIN', preferredLangage)}
+                        value={'-1'}
+                        enabled={false}
+                      />
+                      {hours_matin.map((row, index) => (
+                        <Picker.Item
+                          key={index}
+                          label={row.hour}
+                          value={row.hour}
+                        />
+                      ))}
 
-                              <View
-                                style={{
-                                  borderStyle: 'solid',
-                                  borderColor: couleurs.primary,
-                                  borderWidth: 1,
-                                  borderRadius: 10,
-                                }}>
-                                <Picker
-                                  style={{
-                                    width: 125,
-                                    height: 30,
-                                    alignSelf: 'center',
-                                    position: 'relative',
-                                    bottom: 10,
-                                  }}
-                                  selectedValue={selectedHoraireFermetureLundi}
-                                  onValueChange={(
-                                    itemValue: any,
-                                    itemIndex: any,
-                                  ) =>
-                                    setSelectedHoraireFermetureLundi(itemValue)
-                                  }>
-                                  
-                                  <Picker.Item
-                                    label={'Selectionner une heure'}
-                                    value={''}
-                                    enabled={false}
-                                  />
-                                  <Picker.Item
-                                    label={'MATIN'}
-                                    value={'-1'}
-                                    enabled={false}
-                                  />
-                                  {hours_matin.map((row, index) => (
-                                    <Picker.Item
-                                      key={index}
-                                      label={row.hour}
-                                      value={row.hour}
-                                    />
-                                  ))}
+                      <Picker.Item
+                        label={t('SOIR', preferredLangage)}
+                        value={'-1'}
+                        enabled={false}
+                      />
+                      {hours_apresmidi.map((row, index) => (
+                        <Picker.Item
+                          key={index}
+                          label={row.hour}
+                          value={row.hour}
+                        />
+                      ))}
+                    </Picker>
+                  </View>
+                </View>
+              </View>
 
-                                  <Picker.Item
-                                    label={'SOIR'}
-                                    value={'-1'}
-                                    enabled={false}
-                                  />
-                                  {hours_apresmidi.map((row, index) => (
-                                    <Picker.Item
-                                      key={index}
-                                      label={row.hour}
-                                      value={row.hour}
-                                    />
-                                  ))}
-                                </Picker>
-                              </View>
-                            </View>
-                          </View>
+              {/* MARDI */}
 
-                          {/* MARDI */}
+              <View
+                style={{
+                  borderBottomColor: couleurs.primary,
+                  borderBottomWidth: 1,
+                  borderStyle: 'solid',
+                  padding: 20,
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  gap: 15,
+                  flexDirection: 'row',
+                }}>
+                <Text
+                  style={{
+                    fontFamily: CustomFont.Poppins,
+                    fontSize: 15,
+                    color: couleurs.dark,
+                    alignSelf: 'center',
+                  }}>
+                  {t('Mardi', preferredLangage)}
+                </Text>
+                <View
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    gap: 10,
+                    flexDirection: 'row',
+                  }}>
+                  <View
+                    style={{
+                      borderStyle: 'solid',
+                      borderColor: couleurs.primary,
+                      borderWidth: 1,
+                      borderRadius: 10,
+                    }}>
+                    <Picker
+                      style={{
+                        width: 125,
+                        height: 30,
+                        alignSelf: 'center',
+                        position: 'relative',
+                        bottom: 10,
+                      }}
+                      selectedValue={selectedHoraireOuvertureMardi}
+                      onValueChange={(itemValue: any, itemIndex: any) =>
+                        setSelectedHoraireOuvertureMardi(itemValue)
+                      }>
+                      <Picker.Item
+                        label={t('Selectionner_une_heure', preferredLangage)}
+                        value={''}
+                        enabled={false}
+                      />
+                      <Picker.Item
+                        label={t('MATIN', preferredLangage)}
+                        value={'-1'}
+                        enabled={false}
+                      />
+                      {hours_matin.map((row, index) => (
+                        <Picker.Item
+                          key={index}
+                          label={row.hour}
+                          value={row.hour}
+                        />
+                      ))}
 
-                          <View style={{borderBottomColor: couleurs.primary,
-                            borderBottomWidth:1,
-                            borderStyle:'solid',
-                            padding:20,
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                            gap: 15,
-                            flexDirection: 'row',}}>
-                            <Text
-                              style={{
-                                fontFamily: CustomFont.Poppins,
-                                fontSize: 15,
-                                color: couleurs.dark,
-                                alignSelf:'center'
-                              }}>
-                              Mardi
-                            </Text>
-                            <View
-                              style={{
-                                display: 'flex',
-                                justifyContent: 'space-between',
-                                gap: 10,
-                                flexDirection: 'row',
-                              }}>
-                              <View
-                                style={{
-                                  borderStyle: 'solid',
-                                  borderColor: couleurs.primary,
-                                  borderWidth: 1,
-                                  borderRadius: 10,
-                                }}>
-                                <Picker
-                                  style={{
-                                    width: 125,
-                                    height: 30,
-                                    alignSelf: 'center',
-                                    position: 'relative',
-                                    bottom: 10,
-                                  }}
-                                  selectedValue={selectedHoraireOuvertureMardi}
-                                  onValueChange={(
-                                    itemValue: any,
-                                    itemIndex: any,
-                                  ) =>
-                                    setSelectedHoraireOuvertureMardi(itemValue)
-                                  }>
-                                  
-                                  <Picker.Item
-                                    label={'Selectionner une heure'}
-                                    value={''}
-                                    enabled={false}
-                                  />
-                                  <Picker.Item
-                                    label={'MATIN'}
-                                    value={'-1'}
-                                    enabled={false}
-                                  />
-                                  {hours_matin.map((row, index) => (
-                                    <Picker.Item
-                                      key={index}
-                                      label={row.hour}
-                                      value={row.hour}
-                                    />
-                                  ))}
+                      <Picker.Item
+                        label={t('SOIR', preferredLangage)}
+                        value={'-1'}
+                        enabled={false}
+                      />
+                      {hours_apresmidi.map((row, index) => (
+                        <Picker.Item
+                          key={index}
+                          label={row.hour}
+                          value={row.hour}
+                        />
+                      ))}
+                    </Picker>
+                  </View>
 
-                                  <Picker.Item
-                                    label={'SOIR'}
-                                    value={'-1'}
-                                    enabled={false}
-                                  />
-                                  {hours_apresmidi.map((row, index) => (
-                                    <Picker.Item
-                                      key={index}
-                                      label={row.hour}
-                                      value={row.hour}
-                                    />
-                                  ))}
-                                </Picker>
-                              </View>
+                  <View
+                    style={{
+                      borderStyle: 'solid',
+                      borderColor: couleurs.primary,
+                      borderWidth: 1,
+                      borderRadius: 10,
+                    }}>
+                    <Picker
+                      style={{
+                        width: 125,
+                        height: 30,
+                        alignSelf: 'center',
+                        position: 'relative',
+                        bottom: 10,
+                      }}
+                      selectedValue={selectedHoraireFermetureMardi}
+                      onValueChange={(itemValue: any, itemIndex: any) =>
+                        setSelectedHoraireFermetureMardi(itemValue)
+                      }>
+                      <Picker.Item
+                        label={t('Selectionner_une_heure', preferredLangage)}
+                        value={''}
+                        enabled={false}
+                      />
+                      <Picker.Item
+                        label={t('MATIN', preferredLangage)}
+                        value={'-1'}
+                        enabled={false}
+                      />
+                      {hours_matin.map((row, index) => (
+                        <Picker.Item
+                          key={index}
+                          label={row.hour}
+                          value={row.hour}
+                        />
+                      ))}
 
-                              <View
-                                style={{
-                                  borderStyle: 'solid',
-                                  borderColor: couleurs.primary,
-                                  borderWidth: 1,
-                                  borderRadius: 10,
-                                }}>
-                                <Picker
-                                  style={{
-                                    width: 125,
-                                    height: 30,
-                                    alignSelf: 'center',
-                                    position: 'relative',
-                                    bottom: 10,
-                                  }}
-                                  selectedValue={selectedHoraireFermetureMardi}
-                                  onValueChange={(
-                                    itemValue: any,
-                                    itemIndex: any,
-                                  ) =>
-                                    setSelectedHoraireFermetureMardi(itemValue)
-                                  }>
-                                  
-                                  <Picker.Item
-                                    label={'Selectionner une heure'}
-                                    value={''}
-                                    enabled={false}
-                                  />
-                                  <Picker.Item
-                                    label={'MATIN'}
-                                    value={'-1'}
-                                    enabled={false}
-                                  />
-                                  {hours_matin.map((row, index) => (
-                                    <Picker.Item
-                                      key={index}
-                                      label={row.hour}
-                                      value={row.hour}
-                                    />
-                                  ))}
+                      <Picker.Item
+                        label={t('SOIR', preferredLangage)}
+                        value={'-1'}
+                        enabled={false}
+                      />
+                      {hours_apresmidi.map((row, index) => (
+                        <Picker.Item
+                          key={index}
+                          label={row.hour}
+                          value={row.hour}
+                        />
+                      ))}
+                    </Picker>
+                  </View>
+                </View>
+              </View>
 
-                                  <Picker.Item
-                                    label={'SOIR'}
-                                    value={'-1'}
-                                    enabled={false}
-                                  />
-                                  {hours_apresmidi.map((row, index) => (
-                                    <Picker.Item
-                                      key={index}
-                                      label={row.hour}
-                                      value={row.hour}
-                                    />
-                                  ))}
-                                </Picker>
-                              </View>
-                            </View>
-                          </View>
+              {/* MERCREDI */}
+              <View
+                style={{
+                  borderBottomColor: couleurs.primary,
+                  borderBottomWidth: 1,
+                  borderStyle: 'solid',
+                  padding: 20,
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  gap: 15,
+                  flexDirection: 'row',
+                }}>
+                <Text
+                  style={{
+                    fontFamily: CustomFont.Poppins,
+                    fontSize: 15,
+                    color: couleurs.dark,
+                    alignSelf: 'center',
+                  }}>
+                  {t('Mercredi', preferredLangage)}
+                </Text>
+                <View
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    gap: 10,
+                    flexDirection: 'row',
+                  }}>
+                  <View
+                    style={{
+                      borderStyle: 'solid',
+                      borderColor: couleurs.primary,
+                      borderWidth: 1,
+                      borderRadius: 10,
+                    }}>
+                    <Picker
+                      style={{
+                        width: 125,
+                        height: 30,
+                        alignSelf: 'center',
+                        position: 'relative',
+                        bottom: 10,
+                      }}
+                      selectedValue={selectedHoraireOuvertureMercredi}
+                      onValueChange={(itemValue: any, itemIndex: any) =>
+                        setSelectedHoraireOuvertureMercredi(itemValue)
+                      }>
+                      <Picker.Item
+                        label={t('Selectionner_une_heure', preferredLangage)}
+                        value={''}
+                        enabled={false}
+                      />
+                      <Picker.Item
+                        label={t('MATIN', preferredLangage)}
+                        value={'-1'}
+                        enabled={false}
+                      />
+                      {hours_matin.map((row, index) => (
+                        <Picker.Item
+                          key={index}
+                          label={row.hour}
+                          value={row.hour}
+                        />
+                      ))}
 
-                          {/* MERCREDI */}
-                          <View style={{borderBottomColor: couleurs.primary,
-                            borderBottomWidth:1,
-                            borderStyle:'solid',
-                            padding:20,
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                            gap: 15,
-                            flexDirection: 'row',}}>
-                            <Text
-                              style={{
-                                fontFamily: CustomFont.Poppins,
-                                fontSize: 15,
-                                color: couleurs.dark,
-                                alignSelf:'center'
-                              }}>
-                              Mercredi
-                            </Text>
-                            <View
-                              style={{
-                                display: 'flex',
-                                justifyContent: 'space-between',
-                                gap: 10,
-                                flexDirection: 'row',
-                              }}>
-                              <View
-                                style={{
-                                  borderStyle: 'solid',
-                                  borderColor: couleurs.primary,
-                                  borderWidth: 1,
-                                  borderRadius: 10,
-                                }}>
-                                <Picker
-                                  style={{
-                                    width: 125,
-                                    height: 30,
-                                    alignSelf: 'center',
-                                    position: 'relative',
-                                    bottom: 10,
-                                  }}
-                                  selectedValue={
-                                    selectedHoraireOuvertureMercredi
-                                  }
-                                  onValueChange={(
-                                    itemValue: any,
-                                    itemIndex: any,
-                                  ) =>
-                                    setSelectedHoraireOuvertureMercredi(
-                                      itemValue,
-                                    )
-                                  }>
-                                  
-                                  <Picker.Item
-                                    label={'Selectionner une heure'}
-                                    value={''}
-                                    enabled={false}
-                                  />
-                                  <Picker.Item
-                                    label={'MATIN'}
-                                    value={'-1'}
-                                    enabled={false}
-                                  />
-                                  {hours_matin.map((row, index) => (
-                                    <Picker.Item
-                                      key={index}
-                                      label={row.hour}
-                                      value={row.hour}
-                                    />
-                                  ))}
+                      <Picker.Item
+                        label={t('SOIR', preferredLangage)}
+                        value={'-1'}
+                        enabled={false}
+                      />
+                      {hours_apresmidi.map((row, index) => (
+                        <Picker.Item
+                          key={index}
+                          label={row.hour}
+                          value={row.hour}
+                        />
+                      ))}
+                    </Picker>
+                  </View>
 
-                                  <Picker.Item
-                                    label={'SOIR'}
-                                    value={'-1'}
-                                    enabled={false}
-                                  />
-                                  {hours_apresmidi.map((row, index) => (
-                                    <Picker.Item
-                                      key={index}
-                                      label={row.hour}
-                                      value={row.hour}
-                                    />
-                                  ))}
-                                </Picker>
-                              </View>
+                  <View
+                    style={{
+                      borderStyle: 'solid',
+                      borderColor: couleurs.primary,
+                      borderWidth: 1,
+                      borderRadius: 10,
+                    }}>
+                    <Picker
+                      style={{
+                        width: 125,
+                        height: 30,
+                        alignSelf: 'center',
+                        position: 'relative',
+                        bottom: 10,
+                      }}
+                      selectedValue={selectedHoraireFermetureMercredi}
+                      onValueChange={(itemValue: any, itemIndex: any) =>
+                        setSelectedHoraireFermetureMercredi(itemValue)
+                      }>
+                      <Picker.Item
+                        label={t('Selectionner_une_heure', preferredLangage)}
+                        value={''}
+                        enabled={false}
+                      />
+                      <Picker.Item
+                        label={t('MATIN', preferredLangage)}
+                        value={'-1'}
+                        enabled={false}
+                      />
+                      {hours_matin.map((row, index) => (
+                        <Picker.Item
+                          key={index}
+                          label={row.hour}
+                          value={row.hour}
+                        />
+                      ))}
 
-                              <View
-                                style={{
-                                  borderStyle: 'solid',
-                                  borderColor: couleurs.primary,
-                                  borderWidth: 1,
-                                  borderRadius: 10,
-                                }}>
-                                <Picker
-                                  style={{
-                                    width: 125,
-                                    height: 30,
-                                    alignSelf: 'center',
-                                    position: 'relative',
-                                    bottom: 10,
-                                  }}
-                                  selectedValue={
-                                    selectedHoraireFermetureMercredi
-                                  }
-                                  onValueChange={(
-                                    itemValue: any,
-                                    itemIndex: any,
-                                  ) =>
-                                    setSelectedHoraireFermetureMercredi(
-                                      itemValue,
-                                    )
-                                  }>
-                                  
-                                  <Picker.Item
-                                    label={'Selectionner une heure'}
-                                    value={''}
-                                    enabled={false}
-                                  />
-                                  <Picker.Item
-                                    label={'MATIN'}
-                                    value={'-1'}
-                                    enabled={false}
-                                  />
-                                  {hours_matin.map((row, index) => (
-                                    <Picker.Item
-                                      key={index}
-                                      label={row.hour}
-                                      value={row.hour}
-                                    />
-                                  ))}
+                      <Picker.Item
+                        label={t('SOIR', preferredLangage)}
+                        value={'-1'}
+                        enabled={false}
+                      />
+                      {hours_apresmidi.map((row, index) => (
+                        <Picker.Item
+                          key={index}
+                          label={row.hour}
+                          value={row.hour}
+                        />
+                      ))}
+                    </Picker>
+                  </View>
+                </View>
+              </View>
 
-                                  <Picker.Item
-                                    label={'SOIR'}
-                                    value={'-1'}
-                                    enabled={false}
-                                  />
-                                  {hours_apresmidi.map((row, index) => (
-                                    <Picker.Item
-                                      key={index}
-                                      label={row.hour}
-                                      value={row.hour}
-                                    />
-                                  ))}
-                                </Picker>
-                              </View>
-                            </View>
-                          </View>
+              {/* JEUDDI */}
+              <View
+                style={{
+                  borderBottomColor: couleurs.primary,
+                  borderBottomWidth: 1,
+                  borderStyle: 'solid',
+                  padding: 20,
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  gap: 15,
+                  flexDirection: 'row',
+                }}>
+                <Text
+                  style={{
+                    fontFamily: CustomFont.Poppins,
+                    fontSize: 15,
+                    color: couleurs.dark,
+                    alignSelf: 'center',
+                  }}>
+                  {t('Jeudi', preferredLangage)}
+                </Text>
+                <View
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    gap: 10,
+                    flexDirection: 'row',
+                  }}>
+                  <View
+                    style={{
+                      borderStyle: 'solid',
+                      borderColor: couleurs.primary,
+                      borderWidth: 1,
+                      borderRadius: 10,
+                    }}>
+                    <Picker
+                      style={{
+                        width: 125,
+                        height: 30,
+                        alignSelf: 'center',
+                        position: 'relative',
+                        bottom: 10,
+                      }}
+                      selectedValue={selectedHoraireOuvertureJeudi}
+                      onValueChange={(itemValue: any, itemIndex: any) =>
+                        setSelectedHoraireOuvertureJeudi(itemValue)
+                      }>
+                      <Picker.Item
+                        label={t('Selectionner_une_heure', preferredLangage)}
+                        value={''}
+                        enabled={false}
+                      />
+                      <Picker.Item
+                        label={t('MATIN', preferredLangage)}
+                        value={'-1'}
+                        enabled={false}
+                      />
+                      {hours_matin.map((row, index) => (
+                        <Picker.Item
+                          key={index}
+                          label={row.hour}
+                          value={row.hour}
+                        />
+                      ))}
 
-                          {/* JEUDDI */}
-                          <View style={{borderBottomColor: couleurs.primary,
-                            borderBottomWidth:1,
-                            borderStyle:'solid',
-                            padding:20,
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                            gap: 15,
-                            flexDirection: 'row',
-                            }}>
-                            <Text
-                              style={{
-                                fontFamily: CustomFont.Poppins,
-                                fontSize: 15,
-                                color: couleurs.dark,
-                                alignSelf:'center'
-                              }}>
-                              Jeudi
-                            </Text>
-                            <View
-                              style={{
-                                display: 'flex',
-                                justifyContent: 'space-between',
-                                gap: 10,
-                                flexDirection: 'row',
-                              }}>
-                              <View
-                                style={{
-                                  borderStyle: 'solid',
-                                  borderColor: couleurs.primary,
-                                  borderWidth: 1,
-                                  borderRadius: 10,
-                                }}>
-                                <Picker
-                                  style={{
-                                    width: 125,
-                                    height: 30,
-                                    alignSelf: 'center',
-                                    position: 'relative',
-                                    bottom: 10,
-                                  }}
-                                  selectedValue={selectedHoraireOuvertureJeudi}
-                                  onValueChange={(
-                                    itemValue: any,
-                                    itemIndex: any,
-                                  ) =>
-                                    setSelectedHoraireOuvertureJeudi(itemValue)
-                                  }>
-                                  
-                                  <Picker.Item
-                                    label={'Selectionner une heure'}
-                                    value={''}
-                                    enabled={false}
-                                  />
-                                  <Picker.Item
-                                    label={'MATIN'}
-                                    value={'-1'}
-                                    enabled={false}
-                                  />
-                                  {hours_matin.map((row, index) => (
-                                    <Picker.Item
-                                      key={index}
-                                      label={row.hour}
-                                      value={row.hour}
-                                    />
-                                  ))}
+                      <Picker.Item
+                        label={t('SOIR', preferredLangage)}
+                        value={'-1'}
+                        enabled={false}
+                      />
+                      {hours_apresmidi.map((row, index) => (
+                        <Picker.Item
+                          key={index}
+                          label={row.hour}
+                          value={row.hour}
+                        />
+                      ))}
+                    </Picker>
+                  </View>
 
-                                  <Picker.Item
-                                    label={'SOIR'}
-                                    value={'-1'}
-                                    enabled={false}
-                                  />
-                                  {hours_apresmidi.map((row, index) => (
-                                    <Picker.Item
-                                      key={index}
-                                      label={row.hour}
-                                      value={row.hour}
-                                    />
-                                  ))}
-                                </Picker>
-                              </View>
+                  <View
+                    style={{
+                      borderStyle: 'solid',
+                      borderColor: couleurs.primary,
+                      borderWidth: 1,
+                      borderRadius: 10,
+                    }}>
+                    <Picker
+                      style={{
+                        width: 125,
+                        height: 30,
+                        alignSelf: 'center',
+                        position: 'relative',
+                        bottom: 10,
+                      }}
+                      selectedValue={selectedHoraireFermetureJeudi}
+                      onValueChange={(itemValue: any, itemIndex: any) =>
+                        setSelectedHoraireFermetureJeudi(itemValue)
+                      }>
+                      <Picker.Item
+                        label={t('Selectionner_une_heure', preferredLangage)}
+                        value={''}
+                        enabled={false}
+                      />
+                      <Picker.Item
+                        label={t('MATIN', preferredLangage)}
+                        value={'-1'}
+                        enabled={false}
+                      />
+                      {hours_matin.map((row, index) => (
+                        <Picker.Item
+                          key={index}
+                          label={row.hour}
+                          value={row.hour}
+                        />
+                      ))}
 
-                              <View
-                                style={{
-                                  borderStyle: 'solid',
-                                  borderColor: couleurs.primary,
-                                  borderWidth: 1,
-                                  borderRadius: 10,
-                                }}>
-                                <Picker
-                                  style={{
-                                    width: 125,
-                                    height: 30,
-                                    alignSelf: 'center',
-                                    position: 'relative',
-                                    bottom: 10,
-                                  }}
-                                  selectedValue={selectedHoraireFermetureJeudi}
-                                  onValueChange={(
-                                    itemValue: any,
-                                    itemIndex: any,
-                                  ) =>
-                                    setSelectedHoraireFermetureJeudi(itemValue)
-                                  }>
-                                  
-                                  <Picker.Item
-                                    label={'Selectionner une heure'}
-                                    value={''}
-                                    enabled={false}
-                                  />
-                                  <Picker.Item
-                                    label={'MATIN'}
-                                    value={'-1'}
-                                    enabled={false}
-                                  />
-                                  {hours_matin.map((row, index) => (
-                                    <Picker.Item
-                                      key={index}
-                                      label={row.hour}
-                                      value={row.hour}
-                                    />
-                                  ))}
+                      <Picker.Item
+                        label={t('SOIR', preferredLangage)}
+                        value={'-1'}
+                        enabled={false}
+                      />
+                      {hours_apresmidi.map((row, index) => (
+                        <Picker.Item
+                          key={index}
+                          label={row.hour}
+                          value={row.hour}
+                        />
+                      ))}
+                    </Picker>
+                  </View>
+                </View>
+              </View>
 
-                                  <Picker.Item
-                                    label={'SOIR'}
-                                    value={'-1'}
-                                    enabled={false}
-                                  />
-                                  {hours_apresmidi.map((row, index) => (
-                                    <Picker.Item
-                                      key={index}
-                                      label={row.hour}
-                                      value={row.hour}
-                                    />
-                                  ))}
-                                </Picker>
-                              </View>
-                            </View>
-                          </View>
+              {/* VENDREDI */}
+              <View
+                style={{
+                  borderBottomColor: couleurs.primary,
+                  borderBottomWidth: 1,
+                  borderStyle: 'solid',
+                  padding: 20,
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  gap: 15,
+                  flexDirection: 'row',
+                }}>
+                <Text
+                  style={{
+                    fontFamily: CustomFont.Poppins,
+                    fontSize: 15,
+                    color: couleurs.dark,
+                    alignSelf: 'center',
+                  }}>
+                  {t('Vendredi', preferredLangage)}
+                </Text>
+                <View
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    gap: 10,
+                    flexDirection: 'row',
+                  }}>
+                  <View
+                    style={{
+                      borderStyle: 'solid',
+                      borderColor: couleurs.primary,
+                      borderWidth: 1,
+                      borderRadius: 10,
+                    }}>
+                    <Picker
+                      style={{
+                        width: 125,
+                        height: 30,
+                        alignSelf: 'center',
+                        position: 'relative',
+                        bottom: 10,
+                      }}
+                      selectedValue={selectedHoraireOuvertureVendredi}
+                      onValueChange={(itemValue: any, itemIndex: any) =>
+                        setSelectedHoraireOuvertureVendredi(itemValue)
+                      }>
+                      <Picker.Item
+                        label={t('Selectionner_une_heure', preferredLangage)}
+                        value={''}
+                        enabled={false}
+                      />
+                      <Picker.Item
+                        label={t('MATIN', preferredLangage)}
+                        value={'-1'}
+                        enabled={false}
+                      />
+                      {hours_matin.map((row, index) => (
+                        <Picker.Item
+                          key={index}
+                          label={row.hour}
+                          value={row.hour}
+                        />
+                      ))}
 
-                          {/* VENDREDI */}
-                          <View style={{borderBottomColor: couleurs.primary,
-                            borderBottomWidth:1,
-                            borderStyle:'solid',
-                            padding:20,
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                            gap: 15,
-                            flexDirection: 'row',}}>
-                            <Text
-                              style={{
-                                fontFamily: CustomFont.Poppins,
-                                fontSize: 15,
-                                color: couleurs.dark,
-                                alignSelf:'center'
-                              }}>
-                              Vendredi
-                            </Text>
-                            <View
-                              style={{
-                                display: 'flex',
-                                justifyContent: 'space-between',
-                                gap: 10,
-                                flexDirection: 'row',
-                              }}>
-                              <View
-                                style={{
-                                  borderStyle: 'solid',
-                                  borderColor: couleurs.primary,
-                                  borderWidth: 1,
-                                  borderRadius: 10,
-                                }}>
-                                <Picker
-                                  style={{
-                                    width: 125,
-                                    height: 30,
-                                    alignSelf: 'center',
-                                    position: 'relative',
-                                    bottom: 10,
-                                  }}
-                                  selectedValue={
-                                    selectedHoraireOuvertureVendredi
-                                  }
-                                  onValueChange={(
-                                    itemValue: any,
-                                    itemIndex: any,
-                                  ) =>
-                                    setSelectedHoraireOuvertureVendredi(
-                                      itemValue,
-                                    )
-                                  }>
-                                  
-                                  <Picker.Item
-                                    label={'Selectionner une heure'}
-                                    value={''}
-                                    enabled={false}
-                                  />
-                                  <Picker.Item
-                                    label={'MATIN'}
-                                    value={'-1'}
-                                    enabled={false}
-                                  />
-                                  {hours_matin.map((row, index) => (
-                                    <Picker.Item
-                                      key={index}
-                                      label={row.hour}
-                                      value={row.hour}
-                                    />
-                                  ))}
+                      <Picker.Item
+                        label={t('SOIR', preferredLangage)}
+                        value={'-1'}
+                        enabled={false}
+                      />
+                      {hours_apresmidi.map((row, index) => (
+                        <Picker.Item
+                          key={index}
+                          label={row.hour}
+                          value={row.hour}
+                        />
+                      ))}
+                    </Picker>
+                  </View>
 
-                                  <Picker.Item
-                                    label={'SOIR'}
-                                    value={'-1'}
-                                    enabled={false}
-                                  />
-                                  {hours_apresmidi.map((row, index) => (
-                                    <Picker.Item
-                                      key={index}
-                                      label={row.hour}
-                                      value={row.hour}
-                                    />
-                                  ))}
-                                </Picker>
-                              </View>
+                  <View
+                    style={{
+                      borderStyle: 'solid',
+                      borderColor: couleurs.primary,
+                      borderWidth: 1,
+                      borderRadius: 10,
+                    }}>
+                    <Picker
+                      style={{
+                        width: 125,
+                        height: 30,
+                        alignSelf: 'center',
+                        position: 'relative',
+                        bottom: 10,
+                      }}
+                      selectedValue={selectedHoraireFermetureVendredi}
+                      onValueChange={(itemValue: any, itemIndex: any) =>
+                        setSelectedHoraireFermetureVendredi(itemValue)
+                      }>
+                      <Picker.Item
+                        label={t('Selectionner_une_heure', preferredLangage)}
+                        value={''}
+                        enabled={false}
+                      />
+                      <Picker.Item
+                        label={t('MATIN', preferredLangage)}
+                        value={'-1'}
+                        enabled={false}
+                      />
+                      {hours_matin.map((row, index) => (
+                        <Picker.Item
+                          key={index}
+                          label={row.hour}
+                          value={row.hour}
+                        />
+                      ))}
 
-                              <View
-                                style={{
-                                  borderStyle: 'solid',
-                                  borderColor: couleurs.primary,
-                                  borderWidth: 1,
-                                  borderRadius: 10,
-                                }}>
-                                <Picker
-                                  style={{
-                                    width: 125,
-                                    height: 30,
-                                    alignSelf: 'center',
-                                    position: 'relative',
-                                    bottom: 10,
-                                  }}
-                                  selectedValue={
-                                    selectedHoraireFermetureVendredi
-                                  }
-                                  onValueChange={(
-                                    itemValue: any,
-                                    itemIndex: any,
-                                  ) =>
-                                    setSelectedHoraireFermetureVendredi(
-                                      itemValue,
-                                    )
-                                  }>
-                                  
-                                  <Picker.Item
-                                    label={'Selectionner une heure'}
-                                    value={''}
-                                    enabled={false}
-                                  />
-                                  <Picker.Item
-                                    label={'MATIN'}
-                                    value={'-1'}
-                                    enabled={false}
-                                  />
-                                  {hours_matin.map((row, index) => (
-                                    <Picker.Item
-                                      key={index}
-                                      label={row.hour}
-                                      value={row.hour}
-                                    />
-                                  ))}
+                      <Picker.Item
+                        label={t('SOIR', preferredLangage)}
+                        value={'-1'}
+                        enabled={false}
+                      />
+                      {hours_apresmidi.map((row, index) => (
+                        <Picker.Item
+                          key={index}
+                          label={row.hour}
+                          value={row.hour}
+                        />
+                      ))}
+                    </Picker>
+                  </View>
+                </View>
+              </View>
 
-                                  <Picker.Item
-                                    label={'SOIR'}
-                                    value={'-1'}
-                                    enabled={false}
-                                  />
-                                  {hours_apresmidi.map((row, index) => (
-                                    <Picker.Item
-                                      key={index}
-                                      label={row.hour}
-                                      value={row.hour}
-                                    />
-                                  ))}
-                                </Picker>
-                              </View>
-                            </View>
-                          </View>
+              {/* SAMEDI */}
+              <View
+                style={{
+                  borderBottomColor: couleurs.primary,
+                  borderBottomWidth: 1,
+                  borderStyle: 'solid',
+                  padding: 20,
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  gap: 15,
+                  flexDirection: 'row',
+                }}>
+                <Text
+                  style={{
+                    fontFamily: CustomFont.Poppins,
+                    fontSize: 15,
+                    color: couleurs.dark,
+                    alignSelf: 'center',
+                  }}>
+                  {t('Samedi', preferredLangage)}
+                </Text>
+                <View
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    gap: 10,
+                    flexDirection: 'row',
+                  }}>
+                  <View
+                    style={{
+                      borderStyle: 'solid',
+                      borderColor: couleurs.primary,
+                      borderWidth: 1,
+                      borderRadius: 10,
+                    }}>
+                    <Picker
+                      style={{
+                        width: 125,
+                        height: 30,
+                        alignSelf: 'center',
+                        position: 'relative',
+                        bottom: 10,
+                      }}
+                      selectedValue={selectedHoraireOuvertureSamedi}
+                      onValueChange={(itemValue: any, itemIndex: any) =>
+                        setSelectedHoraireOuvertureSamedi(itemValue)
+                      }>
+                      <Picker.Item
+                        label={t('Selectionner_une_heure', preferredLangage)}
+                        value={''}
+                        enabled={false}
+                      />
+                      <Picker.Item
+                        label={t('MATIN', preferredLangage)}
+                        value={'-1'}
+                        enabled={false}
+                      />
+                      {hours_matin.map((row, index) => (
+                        <Picker.Item
+                          key={index}
+                          label={row.hour}
+                          value={row.hour}
+                        />
+                      ))}
 
-                          {/* SAMEDI */}
-                          <View style={{borderBottomColor: couleurs.primary,
-                            borderBottomWidth:1,
-                            borderStyle:'solid',
-                            padding:20,
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                            gap: 15,
-                            flexDirection: 'row',}}>
-                            <Text
-                              style={{
-                                fontFamily: CustomFont.Poppins,
-                                fontSize: 15,
-                                color: couleurs.dark,
-                                alignSelf:'center'
-                              }}>
-                              Samedi
-                            </Text>
-                            <View
-                              style={{
-                                display: 'flex',
-                                justifyContent: 'space-between',
-                                gap: 10,
-                                flexDirection: 'row',
-                              }}>
-                              <View
-                                style={{
-                                  borderStyle: 'solid',
-                                  borderColor: couleurs.primary,
-                                  borderWidth: 1,
-                                  borderRadius: 10,
-                                }}>
-                                <Picker
-                                  style={{
-                                    width: 125,
-                                    height: 30,
-                                    alignSelf: 'center',
-                                    position: 'relative',
-                                    bottom: 10,
-                                  }}
-                                  selectedValue={selectedHoraireOuvertureSamedi}
-                                  onValueChange={(
-                                    itemValue: any,
-                                    itemIndex: any,
-                                  ) =>
-                                    setSelectedHoraireOuvertureSamedi(itemValue)
-                                  }>
-                                  
-                                  <Picker.Item
-                                    label={'Selectionner une heure'}
-                                    value={''}
-                                    enabled={false}
-                                  />
-                                  <Picker.Item
-                                    label={'MATIN'}
-                                    value={'-1'}
-                                    enabled={false}
-                                  />
-                                  {hours_matin.map((row, index) => (
-                                    <Picker.Item
-                                      key={index}
-                                      label={row.hour}
-                                      value={row.hour}
-                                    />
-                                  ))}
+                      <Picker.Item
+                        label={t('SOIR', preferredLangage)}
+                        value={'-1'}
+                        enabled={false}
+                      />
+                      {hours_apresmidi.map((row, index) => (
+                        <Picker.Item
+                          key={index}
+                          label={row.hour}
+                          value={row.hour}
+                        />
+                      ))}
+                    </Picker>
+                  </View>
 
-                                  <Picker.Item
-                                    label={'SOIR'}
-                                    value={'-1'}
-                                    enabled={false}
-                                  />
-                                  {hours_apresmidi.map((row, index) => (
-                                    <Picker.Item
-                                      key={index}
-                                      label={row.hour}
-                                      value={row.hour}
-                                    />
-                                  ))}
-                                </Picker>
-                              </View>
+                  <View
+                    style={{
+                      borderStyle: 'solid',
+                      borderColor: couleurs.primary,
+                      borderWidth: 1,
+                      borderRadius: 10,
+                    }}>
+                    <Picker
+                      style={{
+                        width: 125,
+                        height: 30,
+                        alignSelf: 'center',
+                        position: 'relative',
+                        bottom: 10,
+                      }}
+                      selectedValue={selectedHoraireFermetureSamedi}
+                      onValueChange={(itemValue: any, itemIndex: any) =>
+                        setSelectedHoraireFermetureSamedi(itemValue)
+                      }>
+                      <Picker.Item
+                        label={t('Selectionner_une_heure', preferredLangage)}
+                        value={''}
+                        enabled={false}
+                      />
+                      <Picker.Item
+                        label={t('MATIN', preferredLangage)}
+                        value={'-1'}
+                        enabled={false}
+                      />
+                      {hours_matin.map((row, index) => (
+                        <Picker.Item
+                          key={index}
+                          label={row.hour}
+                          value={row.hour}
+                        />
+                      ))}
 
-                              <View
-                                style={{
-                                  borderStyle: 'solid',
-                                  borderColor: couleurs.primary,
-                                  borderWidth: 1,
-                                  borderRadius: 10,
-                                }}>
-                                <Picker
-                                  style={{
-                                    width: 125,
-                                    height: 30,
-                                    alignSelf: 'center',
-                                    position: 'relative',
-                                    bottom: 10,
-                                  }}
-                                  selectedValue={selectedHoraireFermetureSamedi}
-                                  onValueChange={(
-                                    itemValue: any,
-                                    itemIndex: any,
-                                  ) =>
-                                    setSelectedHoraireFermetureSamedi(itemValue)
-                                  }>
-                                  
-                                  <Picker.Item
-                                    label={'Selectionner une heure'}
-                                    value={''}
-                                    enabled={false}
-                                  />
-                                  <Picker.Item
-                                    label={'MATIN'}
-                                    value={'-1'}
-                                    enabled={false}
-                                  />
-                                  {hours_matin.map((row, index) => (
-                                    <Picker.Item
-                                      key={index}
-                                      label={row.hour}
-                                      value={row.hour}
-                                    />
-                                  ))}
-
-                                  <Picker.Item
-                                    label={'SOIR'}
-                                    value={'-1'}
-                                    enabled={false}
-                                  />
-                                  {hours_apresmidi.map((row, index) => (
-                                    <Picker.Item
-                                      key={index}
-                                      label={row.hour}
-                                      value={row.hour}
-                                    />
-                                  ))}
-                                </Picker>
-                              </View>
-                            </View>
-                          </View>
-                        </View>
+                      <Picker.Item
+                        label={t('SOIR', preferredLangage)}
+                        value={'-1'}
+                        enabled={false}
+                      />
+                      {hours_apresmidi.map((row, index) => (
+                        <Picker.Item
+                          key={index}
+                          label={row.hour}
+                          value={row.hour}
+                        />
+                      ))}
+                    </Picker>
+                  </View>
+                </View>
+              </View>
+            </View>
           </View>
-
         </ScrollView>
 
-        <View style={{padding:10}}>
-        <TouchableOpacity
-                style={{
-                  paddingHorizontal: 15,
-                  display: 'flex',
-                  justifyContent: 'center',
-                  flexDirection: 'row',
-                  backgroundColor: couleurs.primary,
-                  borderRadius: 30,
-                  width: '100%',
-                }}
-                onPress={() => saveHoraire()   }>
-                <Text
-                    style={{
-                      textAlign: 'center',
-                      padding: 10,
-                      paddingHorizontal: 20,
-                      fontSize: 15,
-                      fontWeight: '500',
-                      color: couleurs.secondary,
-                      fontFamily: CustomFont.Poppins,
-                    }}>
-                    Enregistrer
-                  </Text>
-              </TouchableOpacity>
+        <View style={{padding: 10}}>
+          <TouchableOpacity
+            style={{
+              paddingHorizontal: 15,
+              display: 'flex',
+              justifyContent: 'center',
+              flexDirection: 'row',
+              backgroundColor: couleurs.primary,
+              borderRadius: 30,
+              width: '100%',
+            }}
+            onPress={() => saveHoraire()}>
+            <Text
+              style={{
+                textAlign: 'center',
+                padding: 10,
+                paddingHorizontal: 20,
+                fontSize: 15,
+                fontWeight: '500',
+                color: couleurs.secondary,
+                fontFamily: CustomFont.Poppins,
+              }}>
+              {t('Enregistrer', preferredLangage)}
+            </Text>
+          </TouchableOpacity>
         </View>
-
       </SafeAreaView>
     </View>
   );

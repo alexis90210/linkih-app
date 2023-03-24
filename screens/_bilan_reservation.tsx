@@ -18,6 +18,7 @@ import {CustomFont, couleurs} from '../components/color';
 import axios from 'axios';
 import ApiService from '../components/api/service';
 import storage from '../components/api/localstorage';
+import translations from '../translations/translations';
 
 export default function BilanReservation({
   navigation,
@@ -26,6 +27,25 @@ export default function BilanReservation({
   navigation: any;
   route: any;
 }) {
+
+
+  /////////////////////////////////// LANGUAGE HANDLER ///////////////////////////////////////
+  const [preferredLangage , setPreferredLangage] = useState('fr');
+
+  const t = (key:any , langage:any) => {
+    return translations[langage][key] || key
+  }
+
+  storage.load({
+    key: 'defaultlang', // Note: Do not use underscore("_") in key!
+    id: 'defaultlang' // Note: Do not use underscore("_") in id!
+  }).then( ( data:any) => {
+    setPreferredLangage(data)
+  })
+
+  //////////////////////////////////////////////////////////////////////////////////////
+
+
   var data = route.params;
   console.log(data);
 
@@ -86,9 +106,9 @@ export default function BilanReservation({
 
           var paiement = `${ApiService.API_BASE_URL}stripe/paiement/${data.props.prix}/${devise}/${data.props.vendeur_id}`;
           
-          Alert.alert('', 'Votre commande a ete enregistre avec succes', [
+          Alert.alert('', t('succes_commande_enregistree', preferredLangage), [
             {
-              text: 'Je procede au paiement',
+              text: t('je_procede_au_paiement', preferredLangage),
               onPress: () =>
                 navigation.navigate('paiement_screen', {
                   route: paiement
@@ -103,7 +123,7 @@ export default function BilanReservation({
       .catch((error: any) => {
         console.log(error);
         setIsProccessing(false);
-        Alert.alert('', 'Erreur Network');
+        Alert.alert('', t('Erreur_serveur', preferredLangage));
       });
   };
 
@@ -154,7 +174,7 @@ export default function BilanReservation({
               fontSize: 16,
               fontFamily: CustomFont.Poppins,
             }}>
-            Recapitulatif de la reservation
+           {t('recaptulatif_reservation', preferredLangage)}
           </Text>
         </View>
 
@@ -190,7 +210,7 @@ export default function BilanReservation({
                     color: couleurs.primary,
                   }}
                   numberOfLines={1}>
-                  Detail de prestation
+                  {t('detail_prestation', preferredLangage)}
                 </Text>
 
                 <View
@@ -205,7 +225,7 @@ export default function BilanReservation({
                       fontSize: 13,
                       color: couleurs.dark,
                     }}>
-                    Prestation
+                    {t('Prestation', preferredLangage)}
                   </Text>
 
                   <Text
@@ -230,7 +250,7 @@ export default function BilanReservation({
                       fontSize: 13,
                       color: couleurs.dark,
                     }}>
-                    Duree de la prestation
+                    {t('duree_prestation', preferredLangage)}
                   </Text>
 
                   <Text
@@ -255,7 +275,7 @@ export default function BilanReservation({
                       fontSize: 13,
                       color: couleurs.dark,
                     }}>
-                    Montant de la prestation
+                    {t('montant_prestation', preferredLangage)}
                   </Text>
 
                   <Text
@@ -284,7 +304,7 @@ export default function BilanReservation({
                     color: couleurs.primary,
                   }}
                   numberOfLines={1}>
-                  creneau de la prestation
+                  {t('creneau_prestation', preferredLangage)}
                 </Text>
                 <Text
                   style={{
@@ -319,7 +339,7 @@ export default function BilanReservation({
                       color: couleurs.secondary,
                       fontFamily: CustomFont.Poppins,
                     }}>
-                    Je valide ma commande - {data.props.prix} {data.props.devise}
+                     {t('je_valide_ma_commande', preferredLangage)} - {data.props.prix} {data.props.devise}
                   </Text>
                 </TouchableOpacity>
               </View>
@@ -341,7 +361,7 @@ export default function BilanReservation({
                 paddingHorizontal: 10,
               }}
               onPress={() => navigation.navigate('resultat_recherche', {
-                title: 'Les etablissements',
+                title: t('les_etabs', preferredLangage),
               })}>
               <Text
                 style={{
@@ -351,7 +371,7 @@ export default function BilanReservation({
                   color: couleurs.primary,
                   fontFamily: CustomFont.Poppins,
                 }}>
-                Revenir a la recherche
+                {t('revenir_a_la_recherche', preferredLangage)}
               </Text>
             </TouchableOpacity>
           </View>

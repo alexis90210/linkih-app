@@ -9,7 +9,6 @@ import {
   Image,
   Linking,
   Modal,
-  FlatList,
   Alert,
 } from 'react-native';
 
@@ -27,6 +26,8 @@ import AddIcon from '../components/add';
 import axios from 'axios';
 import ApiService from '../components/api/service';
 import CallIcon from '../components/call';
+import translations from '../translations/translations';
+import storage from '../components/api/localstorage';
 
 export default function AutreEtablissement({
   route,
@@ -35,8 +36,28 @@ export default function AutreEtablissement({
   route: any;
   navigation: any;
 }) {
+
+
+    /////////////////////////////////// LANGUAGE HANDLER //////////////////////////////////
+    
+    const [preferredLangage , setPreferredLangage] = useState('fr');
+
+    const t = (key:any , langage:any) => {
+      return translations[langage][key] || key
+    }
+  
+    storage.load({
+      key: 'defaultlang', // Note: Do not use underscore("_") in key!
+      id: 'defaultlang' // Note: Do not use underscore("_") in id!
+    }).then( ( data:any) => {
+      setPreferredLangage(data)
+    })
+  
+    //////////////////////////////////////////////////////////////////////////////////////
+
+    
   const propsTitle = route.params?.nomEtab;
-  var title = 'Mon Etablissement';
+  var title = t('mon_etablissement', preferredLangage);
   var isConsulting = false;
   if (propsTitle) {
     title = propsTitle;
@@ -464,7 +485,7 @@ export default function AutreEtablissement({
                   width: '100%',
                   textAlign: 'center',
                 }}>
-                Choisir une prestation a reserver
+                  {t('choisir_une_prestation_a_reserver', preferredLangage)}
               </Text>
             )}
 
@@ -519,7 +540,7 @@ export default function AutreEtablissement({
                         color: couleurs.dark,
                       }}
                       numberOfLines={1}>
-                      Produit
+                      {t('Produit', preferredLangage)}
                     </Text>
                     <Text
                       style={{
@@ -545,7 +566,7 @@ export default function AutreEtablissement({
                         color: couleurs.dark,
                       }}
                       numberOfLines={1}>
-                      Duree de la prestation
+                     {t('duree_de_la_prestation', preferredLangage)}
                     </Text>
                     <Text
                       style={{
@@ -571,7 +592,7 @@ export default function AutreEtablissement({
                         color: couleurs.dark,
                       }}
                       numberOfLines={1}>
-                      Montant de la prestation
+                      {t('montant_de_la_prestation', preferredLangage)}
                     </Text>
                     <Text
                       style={{
@@ -624,7 +645,7 @@ export default function AutreEtablissement({
                         color: couleurs.white,
                         fontFamily: CustomFont.Poppins,
                       }}>
-                      Prendre un rendez-vous
+                      {t('prendre_un_rendez_vous', preferredLangage)}
                     </Text>
                   </TouchableOpacity>
                 </View>
@@ -652,7 +673,7 @@ export default function AutreEtablissement({
                   fontSize: 15,
                   fontFamily: CustomFont.Poppins,
                 }}>
-                Membre depuis
+                {t('membre_depuis', preferredLangage)}
               </Text>
               <Text
                 style={{
@@ -682,7 +703,7 @@ export default function AutreEtablissement({
                   fontSize: 17,
                   fontFamily: CustomFont.Poppins,
                 }}>
-                Adresse
+                {t('adresse', preferredLangage)}
               </Text>
 
               <Text
@@ -724,7 +745,7 @@ export default function AutreEtablissement({
                   fontSize: 16,
                   fontFamily: CustomFont.Poppins,
                 }}>
-                Heure d'ouverture
+                {t('heure_d_ouverture', preferredLangage)}
               </Text>
 
               <View
@@ -798,7 +819,7 @@ export default function AutreEtablissement({
                   fontSize: 15,
                   fontFamily: CustomFont.Poppins,
                 }}>
-                Lien reseaux sociaux
+                {t('lien_reseaux_sociaux', preferredLangage)}
               </Text>
 
               <View
@@ -888,7 +909,7 @@ export default function AutreEtablissement({
                         color: couleurs.white,
                         fontFamily: CustomFont.Poppins,
                       }}>
-                      Prendre un RDV
+                      {t('Prendre_un_RDV', preferredLangage)}
                     </Text>
                   </TouchableOpacity>
                 </View>
@@ -942,7 +963,7 @@ export default function AutreEtablissement({
                     color: couleurs.white,
                     fontFamily: CustomFont.Poppins,
                   }}>
-                  Itineraire
+                  {t('Itineraire', preferredLangage)}
                 </Text>
               </TouchableOpacity>
             </View>
@@ -975,7 +996,7 @@ export default function AutreEtablissement({
                   color: 'rgba(0,0,0,.7)',
                   fontFamily: CustomFont.Poppins,
                 }}>
-                Prendre un rendez-vous
+                {t('prendre_un_rendez_vous', preferredLangage)}
               </Text>
               <View style={{width: '100%', paddingHorizontal: 10}}>
                 <View style={{height: 450}}>
@@ -992,7 +1013,7 @@ export default function AutreEtablissement({
                             color: '#000',
                             fontFamily: CustomFont.Poppins,
                           }}>
-                          Prestation selectionnee
+                          {t('Prestation_selectionnee', preferredLangage)}
                         </Text>
                       </View>
 
@@ -1029,7 +1050,7 @@ export default function AutreEtablissement({
                             color: '#000',
                             fontFamily: CustomFont.Poppins,
                           }}>
-                          Quel jour ?
+                          {t('Quel_jour', preferredLangage)}
                         </Text>
                       </View>
 
@@ -1066,7 +1087,7 @@ export default function AutreEtablissement({
                             color: '#000',
                             fontFamily: CustomFont.Poppins,
                           }}>
-                          A quelle heure ?
+                          {t('A_quelle_heure', preferredLangage)}
                         </Text>
                       </View>
 
@@ -1116,7 +1137,8 @@ export default function AutreEtablissement({
                         color: 'rgba(100,100,100,.8)',
                         fontFamily: CustomFont.Poppins,
                       }}>
-                      Quitter
+                      
+                      {t('Quitter', preferredLangage)}
                     </Text>
                   </TouchableOpacity>
 
@@ -1144,7 +1166,7 @@ export default function AutreEtablissement({
                           fontFamily: CustomFont.Poppins,
                           color: couleurs.secondary,
                         }}>
-                        valider le RDV
+                        {t('valider_le_RDV', preferredLangage)}
                       </Text>
                     </View>
                   </TouchableOpacity>

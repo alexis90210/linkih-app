@@ -19,6 +19,7 @@ import {CustomFont, couleurs} from '../components/color';
 import ApiService from '../components/api/service';
 import axios from 'axios';
 import storage from '../components/api/localstorage';
+import translations from '../translations/translations';
 
 export default function MesPrestations({
   navigation,
@@ -27,6 +28,28 @@ export default function MesPrestations({
   navigation: any;
   route: any;
 }) {
+
+  /////////////////////////////////// LANGUAGE HANDLER //////////////////////////////////
+
+  const [preferredLangage, setPreferredLangage] = useState('fr');
+
+  const t = (key: any, langage: any) => {
+    return translations[langage][key] || key;
+  };
+
+  storage
+    .load({
+      key: 'defaultlang', // Note: Do not use underscore("_") in key!
+      id: 'defaultlang', // Note: Do not use underscore("_") in id!
+    })
+    .then((data: any) => {
+      setPreferredLangage(data);
+    });
+
+  //////////////////////////////////////////////////////////////////////////////////////
+
+
+      
   // LOADER
   const [isLoading, setLoading] = useState(false);
 
@@ -73,7 +96,7 @@ export default function MesPrestations({
       })
       .catch((error: any) => {
         console.log(error);
-        Alert.alert('', 'Erreur Network');
+        Alert.alert('', t('erreur_survenue', preferredLangage));
       });
   };
 
@@ -106,7 +129,7 @@ export default function MesPrestations({
               fontSize: 16,
               fontFamily: CustomFont.Poppins,
             }}>
-            Mes Prestations
+            {t('Mes_Prestations', preferredLangage)}
           </Text>
           <Pressable onPress={() => loadPrestationsVendeur()}>
             <Text
@@ -115,7 +138,7 @@ export default function MesPrestations({
                 fontSize: 15,
                 fontFamily: CustomFont.Poppins,
               }}>
-                Actualiser
+                {t('Actualiser', preferredLangage)}
               </Text>
             </Pressable>
           </View>
@@ -174,7 +197,7 @@ export default function MesPrestations({
                     width: '100%',
                   }}>
                   <Text style={{fontSize: 15, color: couleurs.dark}}>
-                    Produit
+                    {t('Produit', preferredLangage)}
                   </Text>
                   <Text style={{color: couleurs.primary, fontSize: 15}}>
                     {row.produit}
@@ -189,7 +212,7 @@ export default function MesPrestations({
                     width: '100%',
                   }}>
                   <Text style={{fontSize: 15, color: couleurs.dark}}>
-                    Duree
+                    {t('Duree', preferredLangage)}
                   </Text>
                   <Text style={{color: couleurs.primary, fontSize: 15}}>
                     {row.duree}
@@ -228,7 +251,7 @@ export default function MesPrestations({
                     fontFamily: CustomFont.Poppins,
                     fontSize: 15,
                   }}>
-                  Aucunes prestations
+                  {t('Aucunes_prestations', preferredLangage)}
                 </Text>
               </>
             )}
@@ -258,7 +281,7 @@ export default function MesPrestations({
                 color: couleurs.secondary,
                 fontFamily: CustomFont.Poppins,
               }}>
-              Creer mes prestations
+              {t('Creer_mes_prestations', preferredLangage)}
             </Text>
           </TouchableOpacity>
         </View>

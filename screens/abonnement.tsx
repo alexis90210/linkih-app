@@ -16,6 +16,8 @@ import {CustomFont, couleurs} from '../components/color';
 import EyeIcon from '../components/eye';
 import axios from 'axios';
 import ApiService from '../components/api/service';
+import translations from '../translations/translations';
+import storage from '../components/api/localstorage';
 
 export default function AbonnementActivation({
   navigation,
@@ -24,14 +26,32 @@ export default function AbonnementActivation({
   navigation: any;
   route: any;
 }) {
+
+  /////////////////////////////////// LANGUAGE HANDLER //////////////////////////////////
+  const [preferredLangage , setPreferredLangage] = useState('fr');
+
+  const t = (key:any , langage:any) => {
+    return translations[langage][key] || key
+  }
+
+  storage.load({
+    key: 'defaultlang', // Note: Do not use underscore("_") in key!
+    id: 'defaultlang' // Note: Do not use underscore("_") in id!
+  }).then( ( data:any) => {
+    setPreferredLangage(data)
+  })
+
+  //////////////////////////////////////////////////////////////////////////////////////
+
+  
   var abonnement: any = route.params;
 
   console.log(abonnement);
 
   const saveAbonnement = () => {
 
-    navigation.navigate('paiement_screen')
-    return
+    // navigation.navigate('paiement_screen')
+    // return
     
     axios({
       method: 'POST',
@@ -52,7 +72,7 @@ export default function AbonnementActivation({
           Alert.alert('', api.message);
         }
         if (api.code == 'error') {
-          Alert.alert('', 'Erreur survenue');
+          Alert.alert('', t('erreur_survenue', preferredLangage));
         }
       })
       .catch((error: any) => {
@@ -86,7 +106,7 @@ export default function AbonnementActivation({
               fontSize: 16,
               fontFamily: CustomFont.Poppins,
             }}>
-            Abonnement
+            {t('abonnement', preferredLangage)}
           </Text>
         </View>
 
@@ -114,8 +134,7 @@ export default function AbonnementActivation({
                   paddingBottom: 12,
                   color: couleurs.dark,
                 }}>
-                Veuillez confirmer l'activation de l'abonnement suivant pour
-                activer votre compte
+                {t('confirmez_l_activation', preferredLangage)}
               </Text>
 
               <View
@@ -179,7 +198,7 @@ export default function AbonnementActivation({
                       color: couleurs.secondary,
                       fontFamily: CustomFont.Poppins,
                     }}>
-                    Valider
+                    {t('valider', preferredLangage)}
                   </Text>
                 </View>
               </TouchableOpacity>

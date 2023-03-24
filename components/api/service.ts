@@ -1,9 +1,10 @@
 export default class ApiService {
   // BASE API URL
-  static API_BASE_URL = 'http://192.168.1.90:8000/';
+  static API_BASE_URL = 'http://192.168.233.179'; // 'https://linkih.hlconception.com/';
   static API_URL = this.API_BASE_URL + 'api/v1/'; // IP HOME
   static MAPBOX_GL_TOKEN =
     'pk.eyJ1IjoiaGxjb25jZXB0aW9uIiwiYSI6ImNsY3lrM285YjA5angzbm5vZDE5NDhjNGMifQ.j6TPH1G7fM9IMI2SAtKswA';
+  static YANDEX_API_KEY="trnsl.1.1.20200111T205255Z.688491bbea68797d.001dd6b498ea98d36f6c9f27ca84e9a8084c1f1d";
   static STRIPE_API_KEY =
     'pk_live_51Lba4wDhG7cSefHLfJBm8jzRBSfEWvlvj47ykhmVhVpddF00op4lK1UvIVhdLkXJ820Ys8ywCISQhtfp1tEikq1T00iDvxTD1j';
   static STRIPE_SECRETE_KEY =

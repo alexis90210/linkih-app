@@ -14,6 +14,8 @@ import {CustomFont, couleurs} from '../components/color';
 import MinusIcon from '../components/minus';
 import AddIcon from '../components/add';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
+import translations from '../translations/translations';
+import storage from '../components/api/localstorage';
 // import RadioButton from "react-native-animated-radio-button";
 
 export default function PersonnalisationReservation({
@@ -23,6 +25,26 @@ export default function PersonnalisationReservation({
   navigation: any;
   route: any;
 }) {
+
+    /////////////////////////////////// LANGUAGE HANDLER ///////////////////////////////////
+
+    const [preferredLangage, setPreferredLangage] = useState('fr');
+
+    const t = (key: any, langage: any) => {
+      return translations[langage][key] || key;
+    };
+  
+    storage
+      .load({
+        key: 'defaultlang', // Note: Do not use underscore("_") in key!
+        id: 'defaultlang', // Note: Do not use underscore("_") in id!
+      })
+      .then((data: any) => {
+        setPreferredLangage(data);
+      });
+  
+    //////////////////////////////////////////////////////////////////////////////////////
+
   var data = route.params.props;
 
   console.log(data);

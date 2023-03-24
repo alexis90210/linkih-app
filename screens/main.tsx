@@ -21,32 +21,47 @@ import CloseIcon from '../components/close';
 import AccountIcon from '../components/account';
 import RdvIcon from '../components/rdv';
 import FilterIcon from '../components/filter';
-import { CustomFont, couleurs } from '../components/color';
+import {CustomFont, couleurs} from '../components/color';
 import MapIcon from '../components/map';
 import axios from 'axios';
 import ApiService from '../components/api/service';
 import storage from '../components/api/localstorage';
+import translations from '../translations/translations';
 
 function Main({navigation}: {navigation: any}) {
-  
+  /////////////////////////////////// LANGUAGE HANDLER ///////////////////////////////////////
+
+  const [preferredLangage, setPreferredLangage] = useState('fr');
+
+  const t = (key: any, langage: any) => {
+    return translations[langage][key] || key;
+  };
+
+  storage
+    .load({
+      key: 'defaultlang', // Note: Do not use underscore("_") in key!
+      id: 'defaultlang', // Note: Do not use underscore("_") in id!
+    })
+    .then((data: any) => {
+      setPreferredLangage(data);
+    });
+
+  //////////////////////////////////////////////////////////////////////////////////////
+
   // GET USER CONNECTED
-  const [userConnectedRole, SetUserRole] = useState('')
+  const [userConnectedRole, SetUserRole] = useState('');
 
-  storage.load({
-    key: 'userconnected', // Note: Do not use underscore("_") in key!
-    id: 'userconnected', // Note: Do not use underscore("_") in id!
-  }).then( data => {
+  storage
+    .load({
+      key: 'userconnected', // Note: Do not use underscore("_") in key!
+      id: 'userconnected', // Note: Do not use underscore("_") in id!
+    })
+    .then(data => {
+      console.log('role=======', data.role);
 
-    console.log('role=======',data.role);
-    
-
-    SetUserRole(data.role)
-        
-
-  })
-  .catch(error => console.log(error)
-  );
-
+      SetUserRole(data.role);
+    })
+    .catch(error => console.log(error));
 
   // LOAD CATEGORIES
   const [sous_categories, setCategories] = useState([]);
@@ -64,20 +79,16 @@ function Main({navigation}: {navigation: any}) {
       .then((response: {data: any}) => {
         var api = response.data;
         if (api.code == 'success') {
-          setLoadedCategorie(true)
+          setLoadedCategorie(true);
           setCategories(api.message);
-        }
-        if (api.code == 'error') {
-          Alert.alert('', 'Erreur survenue');
         }
       })
       .catch((error: any) => {
         console.log(error);
-        Alert.alert('', 'Erreur Network');
       });
   };
 
-  if ( !isLoadedCategorie ) loadCategories()
+  if (!isLoadedCategorie) loadCategories();
 
   // USER POSITION
   const [myPosition, SetMyPosition] = useState({
@@ -181,12 +192,12 @@ function Main({navigation}: {navigation: any}) {
 
   // LISTE DES ETABLISSEMENT
 
-  const [modalVisibleEtablissement, setModalVisibleEtablissement] = useState(false);
+  const [modalVisibleEtablissement, setModalVisibleEtablissement] =
+    useState(false);
   const [currentEtablissement, setCurrentEtablissement] = useState({nom: ''});
   const [etablissements, setEtablissements] = useState([]);
   const [etablissementsTmp, setEtablissementsTmp] = useState([]);
   const [searchVal, setSearchVal] = useState('');
-
 
   const loadEtablissements = () => {
     axios({
@@ -200,16 +211,13 @@ function Main({navigation}: {navigation: any}) {
       .then((response: {data: any}) => {
         var api = response.data;
         if (api.code == 'success') {
-          
           setEtablissements(api.message);
         }
         if (api.code == 'error') {
-          Alert.alert('Erreur', api.message);
         }
       })
       .catch((error: any) => {
         console.log(error);
-        Alert.alert('Erreur', error);
       });
   };
 
@@ -274,27 +282,21 @@ function Main({navigation}: {navigation: any}) {
   // SEARCH SALON BY REGION + CATEGORIE
 
   const searchSalon = () => {
-
     navigation.navigate('resultat_recherche', {
-      title: 'Resultat recherche',
+      title: t('Resultat_recherche', preferredLangage),
       currentCategorie: currentCategorie.nom,
-      activateSearch:true
-    })
-
+      activateSearch: true,
+    });
   };
 
   // SEARCH BY ETAB
   const searchOnlybYName = () => {
-
     navigation.navigate('resultat_recherche', {
-      title: 'Resultat recherche',
+      title: t('Resultat_recherche', preferredLangage),
       currentEtablissement: currentEtablissement.nom,
-      activateSearch:true
-    })
+      activateSearch: true,
+    });
   };
-
-
-  
 
   return (
     <SafeAreaView
@@ -334,10 +336,11 @@ function Main({navigation}: {navigation: any}) {
             paddingVertical: 10,
             paddingHorizontal: 10,
           }}
-          onPress={() => 
-            userConnectedRole != 'ROLE_CLIENT' ? 
-          navigation.navigate('rdv') : 
-          navigation.navigate('rdv_client')}>
+          onPress={() =>
+            userConnectedRole != 'ROLE_CLIENT'
+              ? navigation.navigate('rdv')
+              : navigation.navigate('rdv_client')
+          }>
           <RdvIcon color={couleurs.secondary} />
         </TouchableOpacity>
       </View>
@@ -390,7 +393,7 @@ function Main({navigation}: {navigation: any}) {
                     {fontFamily: CustomFont.Poppins},
                     activeTab === 'Tab 1' && styles.colorActive,
                   ]}>
-                  Categorie
+                  {t('Categorie', preferredLangage)}
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
@@ -405,7 +408,7 @@ function Main({navigation}: {navigation: any}) {
                     {fontFamily: CustomFont.Poppins},
                     activeTab === 'Tab 2' && styles.colorActive,
                   ]}>
-                  Etablissement
+                  {t('Etablissement', preferredLangage)}
                 </Text>
               </TouchableOpacity>
             </View>
@@ -419,7 +422,6 @@ function Main({navigation}: {navigation: any}) {
                     alignItems: 'flex-start',
                     width: '100%',
                   }}>
-                  
                   <View
                     style={{
                       display: 'flex',
@@ -437,13 +439,16 @@ function Main({navigation}: {navigation: any}) {
                         opacity: 0.85,
                         fontFamily: CustomFont.Poppins,
                       }}>
-                      Categorie
+                      {t('Categorie', preferredLangage)}
                     </Text>
                     <TextInput
                       onPressIn={handleOpenModalCategories}
                       value={currentCategorie.nom}
                       placeholderTextColor={'rgba(100,100,100,.7)'}
-                      placeholder="Selectionnez une categorie"
+                      placeholder={t(
+                        'Selectionnez_une_categorie',
+                        preferredLangage,
+                      )}
                       style={{
                         backgroundColor: 'transparent',
                         borderBottomWidth: 1,
@@ -483,14 +488,17 @@ function Main({navigation}: {navigation: any}) {
                         fontSize: 15,
                         fontFamily: CustomFont.Poppins,
                       }}>
-                      Etablissement
+                      {t('Etablissement', preferredLangage)}
                     </Text>
-                    
+
                     <TextInput
                       onPressIn={handleOpenModalEtablissement}
                       value={currentEtablissement.nom}
                       placeholderTextColor={'rgba(100,100,100,.7)'}
-                      placeholder="Selectionnez un etablissement"
+                      placeholder={t(
+                        'Selectionnez_un_etablissement',
+                        preferredLangage,
+                      )}
                       style={{
                         backgroundColor: 'transparent',
                         borderBottomWidth: 1,
@@ -528,7 +536,9 @@ function Main({navigation}: {navigation: any}) {
                   justifyContent: 'center',
                   flexDirection: 'row',
                 }}
-                onPress={() => activeTab === 'Tab 1' ? searchSalon() : searchOnlybYName()}>
+                onPress={() =>
+                  activeTab === 'Tab 1' ? searchSalon() : searchOnlybYName()
+                }>
                 <View
                   style={{
                     display: 'flex',
@@ -548,7 +558,7 @@ function Main({navigation}: {navigation: any}) {
                       color: couleurs.primary,
                       fontFamily: CustomFont.Poppins,
                     }}>
-                    Valider la recherche
+                    {t('Valider_la_recherche', preferredLangage)}
                   </Text>
                 </View>
               </TouchableOpacity>
@@ -587,7 +597,7 @@ function Main({navigation}: {navigation: any}) {
                       color: couleurs.secondary,
                       fontFamily: CustomFont.Poppins,
                     }}>
-                    Explorer sur la map
+                    {t('Explorer_sur_la_map', preferredLangage)}
                   </Text>
                 </View>
               </TouchableOpacity>
@@ -622,7 +632,7 @@ function Main({navigation}: {navigation: any}) {
                 color: 'rgba(0,0,0,.6)',
                 fontFamily: CustomFont.Poppins,
               }}>
-              Selectionnez une categorie
+              {t('Selectionnez_une_categorie', preferredLangage)}
             </Text>
             <View style={{width: '100%', paddingHorizontal: 10}}>
               <View style={{height: 300}}>
@@ -645,7 +655,7 @@ function Main({navigation}: {navigation: any}) {
                       color: 'rgba(100,100,100,.8)',
                       fontFamily: CustomFont.Poppins,
                     }}>
-                    Quitter
+                    {t('Quitter', preferredLangage)}
                   </Text>
                 </TouchableOpacity>
               </View>
@@ -656,23 +666,23 @@ function Main({navigation}: {navigation: any}) {
 
       {/* MODAL ETABLISSEMENT */}
       <Modal visible={modalVisibleEtablissement} transparent={false}>
-      <View
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              backgroundColor: '#fff',
-              width: '100%',
-              borderRadius: 15,
-            }}>
-            <View
+        <View
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            backgroundColor: '#fff',
+            width: '100%',
+            borderRadius: 15,
+          }}>
+          <View
             style={{
               display: 'flex',
               flexDirection: 'row',
-              justifyContent:'space-between',
+              justifyContent: 'space-between',
               backgroundColor: couleurs.primary,
               width: '100%',
               padding: 10,
-              height:50
+              height: 50,
             }}>
             <Text
               style={{
@@ -680,20 +690,18 @@ function Main({navigation}: {navigation: any}) {
                 color: couleurs.white,
                 fontFamily: CustomFont.Poppins,
               }}>
-              Selectionnez un etablissement
+              {t('Selectionnez_un_etablissement', preferredLangage)}
             </Text>
-              <TouchableOpacity onPress={handleCloseModalEtablissement} >
-                <CloseIcon color={couleurs.white} />
-              </TouchableOpacity>
-            </View>
-            <View style={{width: '100%', paddingHorizontal: 10}}>
-                         <View style={{height: Dimensions.get('screen').height-50}}>
-                <EtablissementList />
-              </View>
-
-              
+            <TouchableOpacity onPress={handleCloseModalEtablissement}>
+              <CloseIcon color={couleurs.white} />
+            </TouchableOpacity>
+          </View>
+          <View style={{width: '100%', paddingHorizontal: 10}}>
+            <View style={{height: Dimensions.get('screen').height - 50}}>
+              <EtablissementList />
             </View>
           </View>
+        </View>
       </Modal>
     </SafeAreaView>
   );

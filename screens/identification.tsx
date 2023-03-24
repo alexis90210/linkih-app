@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import {
   SafeAreaView,
@@ -16,16 +16,38 @@ import {
 } from 'react-native';
 import ShopIcon from '../components/shop';
 import AccountIcon from '../components/account';
-import EntrepreneurIcon from '../components/entrepreuneur';
 import {CustomFont, couleurs} from '../components/color';
 import ArrowLeftIcon from '../components/ArrowLeft';
+import ApiService from '../components/api/service';
+import translations from '../translations/translations';
+import storage from '../components/api/localstorage';
 
 // IdentificationScreen
 export default function IdentificationScreen({navigation}: {navigation: any}) {
+
+
+  /////////////////////////////////// LANGUAGE HANDLER ///////////////////////////////////////
+  
+  const [preferredLangage , setPreferredLangage] = useState('fr');
+
+  const t = (key:any , langage:any) => {
+    return translations[langage][key] || key
+  }
+
+  storage.load({
+    key: 'defaultlang', // Note: Do not use underscore("_") in key!
+    id: 'defaultlang' // Note: Do not use underscore("_") in id!
+  }).then( ( data:any) => {
+    setPreferredLangage(data)
+  })
+
+  //////////////////////////////////////////////////////////////////////////////////////
+
+
   var pack = [
     {
       icon: <AccountIcon color={couleurs.white} />,
-      title: 'Client',
+      title: t('client', preferredLangage),
       route: 'identification_client',
       props: 'ROLE_CLIENT',
       color: couleurs.primary,
@@ -34,7 +56,7 @@ export default function IdentificationScreen({navigation}: {navigation: any}) {
     },
     {
       icon: <ShopIcon color={couleurs.dark} />,
-      title: 'Societe',
+      title: t('societe', preferredLangage),
       route: 'identification_proprietaire',
       props: 'ROLE_SOCIETE',
       color: couleurs.dark,
@@ -43,7 +65,7 @@ export default function IdentificationScreen({navigation}: {navigation: any}) {
     },
     {
       icon: <ShopIcon color={couleurs.dark} />,
-      title: 'Auto\nEntrepreuneur',
+      title: t('auto_entrepreuneur', preferredLangage),
       route: 'identification_proprietaire',
       props: 'ROLE_AUTO_ENTREPREUNEUR',
       color: couleurs.dark,
@@ -115,7 +137,7 @@ export default function IdentificationScreen({navigation}: {navigation: any}) {
                     fontSize: 14,
                     fontFamily: CustomFont.Poppins,
                   }}>
-                  Veuillez-vous identifier pour continuer
+                  { t('veuillez_vous_identifier', preferredLangage)}
                 </Text>
               </View>
 
@@ -193,7 +215,7 @@ export default function IdentificationScreen({navigation}: {navigation: any}) {
                     textAlign: 'center',
                     fontFamily: CustomFont.Poppins,
                   }}>
-                  Je veux plus d'informations par rapport a l'identification
+                   { t('je_veux_info', preferredLangage)}
                 </Text>
               </View>
             </View>

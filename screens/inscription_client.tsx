@@ -1,5 +1,3 @@
-
-
 import {
   SafeAreaView,
   ScrollView,
@@ -13,13 +11,14 @@ import {
   Modal,
   ActivityIndicator,
 } from 'react-native';
-import { CustomFont, couleurs } from '../components/color';
+import {CustomFont, couleurs} from '../components/color';
 import storage from '../components/api/localstorage';
 import ApiService from '../components/api/service';
 import axios from 'axios';
 import UserPosition from '../components/api/user_position';
 import Geolocation from '@react-native-community/geolocation';
-import { useState } from 'react';
+import {useState} from 'react';
+import translations from '../translations/translations';
 
 // InscriptionClientScreen
 export default function InscriptionClientScreen({
@@ -27,104 +26,129 @@ export default function InscriptionClientScreen({
 }: {
   navigation: any;
 }) {
+  /////////////////////////////////// LANGUAGE HANDLER ///////////////////////////////////////
 
-  var client:any = {
-    nom:'',
-    email:'',
-    password:'',
-    role:'ROLE_CLIENT',
-    longitude:'',
+  const [preferredLangage, setPreferredLangage] = useState('fr');
+
+  const t = (key: any, langage: any) => {
+    return translations[langage][key] || key;
+  };
+
+  storage
+    .load({
+      key: 'defaultlang', // Note: Do not use underscore("_") in key!
+      id: 'defaultlang', // Note: Do not use underscore("_") in id!
+    })
+    .then((data: any) => {
+      setPreferredLangage(data);
+    });
+
+  //////////////////////////////////////////////////////////////////////////////////////
+
+  var client: any = {
+    nom: '',
+    email: '',
+    password: '',
+    role: 'ROLE_CLIENT',
+    longitude: '',
     latitude: '',
-    adresse:'',
-    mobile:'',
-    pays:'',
-    langue:'',
-  }
+    adresse: '',
+    mobile: '',
+    pays: '',
+    langue: '',
+  };
 
-  Geolocation.getCurrentPosition(
-    info => {
-      client.longitude = info.coords.longitude
-      client.latitude = info.coords.latitude      
-    }
-  );
-
-  const [isProccessing,  setProcessing] = useState(false)
-
-
-  storage.load({
-    key: 'configuration', // Note: Do not use underscore("_") in key!
-    id: 'configuration', // Note: Do not use underscore("_") in id!
-  }).then( data => {
-    client.langue = data.langage.name
-    client.pays = data.pays.name
+  Geolocation.getCurrentPosition(info => {
+    client.longitude = info.coords.longitude;
+    client.latitude = info.coords.latitude;
   });
+
+  const [isProccessing, setProcessing] = useState(false);
+
+  storage
+    .load({
+      key: 'configuration', // Note: Do not use underscore("_") in key!
+      id: 'configuration', // Note: Do not use underscore("_") in id!
+    })
+    .then(data => {
+      client.langue = data.langage.name;
+      client.pays = data.pays.name;
+    });
 
   const onSubmit = () => {
     console.log(client);
 
-
     var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-    if(!client.email.match(mailformat))
-    {
-      Alert.alert('', "Email invalide", [        
+    if (!client.email.match(mailformat)) {
+      Alert.alert('', t('email_invalide', preferredLangage), [
         {text: 'OK', onPress: () => null},
       ]);
       return;
     }
 
-    if(client.password.length < 4)
-    {
-      Alert.alert('', "Mot de passe trop court", [        
+    if (client.password.length < 4) {
+      Alert.alert('', t('mot_de_passe_court', preferredLangage), [
         {text: 'OK', onPress: () => null},
       ]);
       return;
     }
-    setProcessing(true)
+    setProcessing(true);
     axios({
       method: 'POST',
       url: ApiService.API_URL_CREATE_UTILISATEUR,
       data: JSON.stringify(client),
       headers: {
         Accept: 'application/json',
-       'Content-Type': 'application/json'
-     }
+        'Content-Type': 'application/json',
+      },
     })
-      .then((response: {data: any}) => {        
-         var api = response.data;
-         console.log( api );
-         setProcessing(false)
-         
-         if ( api.code == "success") {
-          Alert.alert('SUCCES', `Votre compte a bien ete cree, veuillez vous connecter . \nVotre login est : ${api.login}`, [   
-            {text: 'Se connecter', onPress: () => navigation.navigate('identification_client', {login : api.login})},
-          ]);        
-         }
-         if ( api.code == "error") {
-          Alert.alert('Erreur', api.message, [        
+      .then((response: {data: any}) => {
+        var api = response.data;
+        console.log(api);
+        setProcessing(false);
+
+        if (api.code == 'success') {
+          Alert.alert(
+            'SUCCES',
+            t('Votre_compte_a_bien_ete_cree', preferredLangage) +
+              ` ${api.login}`,
+            [
+              {
+                text: t('se_connecter', preferredLangage),
+                onPress: () =>
+                  navigation.navigate('identification_client', {
+                    login: api.login,
+                  }),
+              },
+            ],
+          );
+        }
+        if (api.code == 'error') {
+          Alert.alert(t('erreur_survenue', preferredLangage), api.message, [
             {text: 'OK', onPress: () => null},
           ]);
-         }         
+        }
       })
       .catch((error: any) => {
-        setProcessing(false)
+        setProcessing(false);
         console.log(error);
-        Alert.alert('Erreur', "Erreur survenue, il se pourrait que les informations fournis soit incorrects ou deja utilise pour un autre compte", [        
-          {text: 'OK', onPress: () => null},
-        ]);       
+        Alert.alert(
+          t('erreur_survenue', preferredLangage),
+          t('Erreur_survenue_il_se_pourrait', preferredLangage),
+          [{text: 'OK', onPress: () => null}],
+        );
       });
-  }
-  
+  };
+
   return (
     <>
-     <SafeAreaView
+      <SafeAreaView
         style={{
           width: '100%',
           height: '100%',
           backgroundColor: '#f6f6f6f6',
         }}>
-
-
-          {/* LOADING MODAL */}
+        {/* LOADING MODAL */}
 
         <Modal transparent={true} visible={isProccessing}>
           <View
@@ -149,9 +173,8 @@ export default function InscriptionClientScreen({
           contentInsetAdjustmentBehavior="automatic"
           style={{
             backgroundColor: '#f6f6f6f6',
-          }}>      
-
-       <View
+          }}>
+          <View
             style={{
               display: 'flex',
               flexDirection: 'column',
@@ -182,27 +205,30 @@ export default function InscriptionClientScreen({
                     fontSize: 15,
                     height: 30,
                     opacity: 0.85,
-                    fontFamily:CustomFont.Poppins
+                    fontFamily: CustomFont.Poppins,
                   }}>
-                  Noms & Prenoms
+                  {t('Noms_Prenoms', preferredLangage)}
                 </Text>
                 <TextInput
-                onChangeText={ (input) => client.nom = input}
-                placeholder='Entrez votre nom et prenom complet '
+                  onChangeText={input => (client.nom = input)}
+                  placeholder={t(
+                    'Entrez_votre_nom_et_prenom_complet',
+                    preferredLangage,
+                  )}
                   style={{
                     backgroundColor: 'transparent',
                     borderBottomWidth: 1,
                     borderBottomColor: couleurs.primary,
                     color: couleurs.primary,
                     width: '100%',
-                    fontFamily:CustomFont.Poppins,
-                    fontSize:15
+                    fontFamily: CustomFont.Poppins,
+                    fontSize: 15,
                   }}></TextInput>
               </View>
 
               <View
                 style={{
-                  marginTop:20,
+                  marginTop: 20,
                   display: 'flex',
                   flexDirection: 'column',
                   justifyContent: 'flex-start',
@@ -215,21 +241,21 @@ export default function InscriptionClientScreen({
                     fontSize: 15,
                     height: 30,
                     opacity: 0.85,
-                    fontFamily:CustomFont.Poppins
+                    fontFamily: CustomFont.Poppins,
                   }}>
-                  Email
+                  {t('Entrez_votre_email', preferredLangage)}
                 </Text>
                 <TextInput
-                onChangeText={ (input) => client.email = input}
-                placeholder='Entrez votre email'
+                  onChangeText={input => (client.email = input)}
+                  placeholder={t('Entrez_votre_email', preferredLangage)}
                   style={{
                     backgroundColor: 'transparent',
                     borderBottomWidth: 1,
                     borderBottomColor: couleurs.primary,
                     color: couleurs.primary,
                     width: '100%',
-                    fontFamily:CustomFont.Poppins,
-                    fontSize:15
+                    fontFamily: CustomFont.Poppins,
+                    fontSize: 15,
                   }}></TextInput>
               </View>
 
@@ -249,24 +275,24 @@ export default function InscriptionClientScreen({
                     fontSize: 15,
                     height: 30,
                     opacity: 0.85,
-                    fontFamily:CustomFont.Poppins
+                    fontFamily: CustomFont.Poppins,
                   }}>
-                  Mot de passe
+                  {t('mot_de_passe', preferredLangage)}
                 </Text>
                 <TextInput
-                onChangeText={ (input) => client.password = input}
-                textContentType='password'
-                keyboardType='default'
-                placeholder='Entrez votre mot de passe'
-                secureTextEntry={true} 
+                  onChangeText={input => (client.password = input)}
+                  textContentType="password"
+                  keyboardType="default"
+                  placeholder={t('entrez_votre_mot_de_passe', preferredLangage)}
+                  secureTextEntry={true}
                   style={{
                     backgroundColor: 'transparent',
                     borderBottomWidth: 1,
                     borderBottomColor: couleurs.primary,
                     color: couleurs.primary,
-                    fontSize:15,
+                    fontSize: 15,
                     width: '100%',
-                    fontFamily:CustomFont.Poppins
+                    fontFamily: CustomFont.Poppins,
                   }}></TextInput>
               </View>
 
@@ -278,7 +304,6 @@ export default function InscriptionClientScreen({
                   marginBottom: 20,
                 }}>
                 <TouchableOpacity
-                  
                   style={{
                     paddingHorizontal: 10,
                     width: '70%',
@@ -290,18 +315,16 @@ export default function InscriptionClientScreen({
                       padding: 10,
                       paddingHorizontal: 20,
                       fontSize: 15,
-                      fontFamily:CustomFont.Poppins,
+                      fontFamily: CustomFont.Poppins,
                       color: couleurs.secondary,
                     }}>
-                    valider
+                    {t('valider', preferredLangage)}
                   </Text>
                 </TouchableOpacity>
-              </View>   
-       
+              </View>
             </View>
 
-
-          <View
+            <View
               style={{
                 alignItems: 'center',
                 backgroundColor: 'transparent',
@@ -312,7 +335,6 @@ export default function InscriptionClientScreen({
                 marginTop: 70,
               }}>
               <TouchableOpacity
-                
                 style={{
                   paddingHorizontal: 10,
                 }}
@@ -321,18 +343,14 @@ export default function InscriptionClientScreen({
                   style={{
                     textAlign: 'center',
                     fontSize: 15,
-                    fontFamily:CustomFont.Poppins,
+                    fontFamily: CustomFont.Poppins,
                     color: couleurs.primary,
                   }}>
-                  Besoin d'aide ?
+                  {t('Besoin_d_aide', preferredLangage)}
                 </Text>
               </TouchableOpacity>
             </View>
-
-            
           </View>
-
-     
         </ScrollView>
       </SafeAreaView>
     </>

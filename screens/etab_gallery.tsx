@@ -21,6 +21,7 @@ import axios from 'axios';
 import storage from '../components/api/localstorage';
 import ShopIcon from '../components/shop';
 import ImageCropPicker from 'react-native-image-crop-picker';
+import translations from '../translations/translations';
 
 export default function Gallerie({
   navigation,
@@ -29,7 +30,24 @@ export default function Gallerie({
   navigation: any;
   route: any;
 }) {
+  /////////////////////////////////// LANGUAGE HANDLER //////////////////////////////////
 
+  const [preferredLangage, setPreferredLangage] = useState('fr');
+
+  const t = (key: any, langage: any) => {
+    return translations[langage][key] || key;
+  };
+
+  storage
+    .load({
+      key: 'defaultlang', // Note: Do not use underscore("_") in key!
+      id: 'defaultlang', // Note: Do not use underscore("_") in id!
+    })
+    .then((data: any) => {
+      setPreferredLangage(data);
+    });
+
+  //////////////////////////////////////////////////////////////////////////////////////
 
   // LOADER
   const [isLoading, setLoading] = useState(false);
@@ -57,16 +75,16 @@ export default function Gallerie({
           setGallerie(api.message);
         }
         if (api.code == 'error') {
-          Alert.alert('', 'Erreur survenue');
+          Alert.alert('', t('erreur_survenue', preferredLangage));
         }
       })
       .catch((error: any) => {
         console.log(error);
-        Alert.alert('', 'Erreur Network');
+        Alert.alert('', t('erreur_survenue', preferredLangage));
       });
   };
 
-  if (!isLoadedGallerie) loadGallerie()
+  if (!isLoadedGallerie) loadGallerie();
 
   // open picker
   const openImagePickerWithCrop = () => {
@@ -85,18 +103,18 @@ export default function Gallerie({
   };
 
   // SEND TO THE SERVER
-  const sendImage = ( base64:any) => {
+  const sendImage = (base64: any) => {
     console.log({
       vendeur_id: route.params.vendeur_id,
-      photo: base64
+      photo: base64,
     });
-    setLoading(true)
+    setLoading(true);
     axios({
       method: 'POST',
       url: ApiService.API_URL_ADD_PHOTO_GALLERIE,
       data: JSON.stringify({
         vendeur_id: route.params.vendeur_id,
-        photo: base64
+        photo: base64,
       }),
       headers: {
         Accept: 'application/json',
@@ -105,9 +123,9 @@ export default function Gallerie({
     })
       .then((response: {data: any}) => {
         var api = response.data;
-        setLoading(false)
+        setLoading(false);
         if (api.code == 'success') {
-          loadGallerie()
+          loadGallerie();
         }
         // if (api.code == 'error') {
         //   Alert.alert('', 'Erreur survenue');
@@ -115,14 +133,17 @@ export default function Gallerie({
       })
       .catch((error: any) => {
         console.log(error);
-        setLoading(false)
-        Alert.alert('Transfert du fichier', 'Erreur Network');
+        setLoading(false);
+        Alert.alert(
+          t('Transfert_du_fichier', preferredLangage),
+          t('erreur_survenue', preferredLangage),
+        );
       });
-  }
+  };
 
-   // delete modal
-   const deleteImage = (row:any) =>{
-    setLoading(true)
+  // delete modal
+  const deleteImage = (row: any) => {
+    setLoading(true);
     axios({
       method: 'POST',
       url: ApiService.API_URL_DELETE_PHOTO_GALLERIE,
@@ -136,48 +157,52 @@ export default function Gallerie({
     })
       .then((response: {data: any}) => {
         var api = response.data;
-        setLoading(false)
+        setLoading(false);
         if (api.code == 'success') {
-          loadGallerie()
+          loadGallerie();
         }
       })
       .catch((error: any) => {
         console.log(error);
-        setLoading(false)
-        Alert.alert('Suppression du fichier', 'Erreur Network');
+        setLoading(false);
+        Alert.alert(
+          t('Suppression_du_fichier', preferredLangage),
+          t('erreur_survenue', preferredLangage),
+        );
       });
-   }
+  };
 
-
-   // baack
-   const definirModal = (row:any) => {
+  // baack
+  const definirModal = (row: any) => {
     Alert.alert(
       '',
-      'Choisir comme photo de couverture',  
+      t('Choisir_comme_photo_de_couverture', preferredLangage),
       [
-         {
-          text: 'Oui !', onPress: () => {
-            photoDecouverture(row)
+        {
+          text: t('Oui', preferredLangage),
+          onPress: () => {
+            photoDecouverture(row);
           },
         },
         {
-          text: 'Non, supprimer !', onPress: () => {
-            deleteImage(row)
-          }
+          text: t('Non_supprimer', preferredLangage),
+          onPress: () => {
+            deleteImage(row);
+          },
         },
       ],
-      { cancelable: false }
- )
-   }
+      {cancelable: false},
+    );
+  };
 
   //  photo de profil
-  const photoDecouverture = (row:any) => {
+  const photoDecouverture = (row: any) => {
     axios({
       method: 'POST',
       url: ApiService.API_URL_EDIT_VENDEUR,
       data: JSON.stringify({
         vendeur_id: route.params.vendeur_id,
-        photo: row.photo
+        photo: row.photo,
       }),
       headers: {
         Accept: 'application/json',
@@ -187,14 +212,14 @@ export default function Gallerie({
       .then((response: {data: any}) => {
         var api = response.data;
         if (api.code == 'success') {
-          Alert.alert('', 'Operation reussie');
+          Alert.alert('', t('Operation_reussie', preferredLangage));
         }
       })
       .catch((error: any) => {
         console.log(error);
-        Alert.alert('', 'Erreur Network');
+        Alert.alert('', t('erreur_survenue', preferredLangage));
       });
-  }
+  };
 
   return (
     <View>
@@ -222,58 +247,65 @@ export default function Gallerie({
               fontSize: 16,
               fontFamily: CustomFont.Poppins,
             }}>
-            Ma Gallerie
+            {t('Ma_Gallerie', preferredLangage)}
           </Text>
         </View>
 
-        <View style={{display:'flex', backgroundColor:'#fff', alignItems:'center',
-         gap:10, padding:10, justifyContent:'flex-start', width:'100%' , flexDirection:'row'}}>
-            <TouchableOpacity
-              onPress={() => openImagePickerWithCrop()}>
-              <View
-                style={{
-                  borderWidth: 1,
-                  borderStyle: 'dashed',
+        <View
+          style={{
+            display: 'flex',
+            backgroundColor: '#fff',
+            alignItems: 'center',
+            gap: 10,
+            padding: 10,
+            justifyContent: 'flex-start',
+            width: '100%',
+            flexDirection: 'row',
+          }}>
+          <TouchableOpacity onPress={() => openImagePickerWithCrop()}>
+            <View
+              style={{
+                borderWidth: 1,
+                borderStyle: 'dashed',
 
+                alignSelf: 'center',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                marginTop: 10,
+                backgroundColor: couleurs.white,
+                borderColor: couleurs.primary,
+                height: 120,
+                width: 120,
+                borderRadius: 10,
+              }}>
+              <Text
+                style={{
+                  color: couleurs.dark,
+                  textAlign: 'center',
+                  flexWrap: 'wrap',
                   alignSelf: 'center',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'center',
-                  marginTop: 10,
-                  backgroundColor: couleurs.white,
-                  borderColor: couleurs.primary,
-                  height: 120,
-                  width: 120,
-                  borderRadius: 10,
+                  paddingHorizontal: 30,
                 }}>
-                  <Text
-                    style={{
-                      color: couleurs.dark,
-                      textAlign: 'center',
-                      flexWrap: 'wrap',
-                      alignSelf: 'center',
-                      paddingHorizontal: 30,
-                    }}>
-                    {' '}
-                    <ShopIcon color={couleurs.primary} />
-                  </Text>
-            
-              </View>
-            </TouchableOpacity>
-
-            {isLoading && (
-              <View
-                style={{
-                  width: 100,
-                  height: 100,
-                  display: 'flex',
-                  flexDirection: 'row',
-                  justifyContent: 'center',
-                }}>
-                <ActivityIndicator size={'large'}></ActivityIndicator>
-              </View>
-            )}
+                {' '}
+                <ShopIcon color={couleurs.primary} />
+              </Text>
             </View>
+          </TouchableOpacity>
+
+          {isLoading && (
+            <View
+              style={{
+                width: 100,
+                height: 100,
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'center',
+              }}>
+              <ActivityIndicator size={'large'}></ActivityIndicator>
+            </View>
+          )}
+        </View>
 
         {/* main */}
         <ScrollView
@@ -282,45 +314,48 @@ export default function Gallerie({
             backgroundColor: '#f6f6f6f6',
           }}>
           <View style={{marginHorizontal: 12, marginVertical: 10}}>
-                     
-            <View style={{display:'flex', gap:10, justifyContent:'flex-start', width:'100%' , flexDirection:'row', flexWrap:'wrap'}}>
-           
-            {gallerie.map((row:any,index:any) => (
-              <TouchableOpacity
-              key={index}
-              onPress={ () => definirModal(row)}
-              onLongPress={() => deleteImage(row)}>
-              <View
-                style={{
-                  borderWidth: 1,
-                  borderStyle: 'dashed',
-
-                  alignSelf: 'center',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'center',
-                  marginTop: 10,
-                  backgroundColor: 'rgba(200,200, 200, .3)',
-                  borderColor: couleurs.primary,
-                  height: 120,
-                  width: 120,
-                  borderRadius: 10,
-                }}><Image
-                    source={{uri:'data:image/png;base64,' + row.photo} }
+            <View
+              style={{
+                display: 'flex',
+                gap: 10,
+                justifyContent: 'flex-start',
+                width: '100%',
+                flexDirection: 'row',
+                flexWrap: 'wrap',
+              }}>
+              {gallerie.map((row: any, index: any) => (
+                <TouchableOpacity
+                  key={index}
+                  onPress={() => definirModal(row)}
+                  onLongPress={() => deleteImage(row)}>
+                  <View
                     style={{
+                      borderWidth: 1,
+                      borderStyle: 'dashed',
+
+                      alignSelf: 'center',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'center',
+                      marginTop: 10,
+                      backgroundColor: 'rgba(200,200, 200, .3)',
+                      borderColor: couleurs.primary,
                       height: 120,
                       width: 120,
                       borderRadius: 10,
-                    }}
-                  />
-                   </View>
-            </TouchableOpacity>
-            ))}
-
-        
-
+                    }}>
+                    <Image
+                      source={{uri: 'data:image/png;base64,' + row.photo}}
+                      style={{
+                        height: 120,
+                        width: 120,
+                        borderRadius: 10,
+                      }}
+                    />
+                  </View>
+                </TouchableOpacity>
+              ))}
             </View>
-
           </View>
 
           {/* Welcome text */}

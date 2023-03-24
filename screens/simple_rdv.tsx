@@ -18,6 +18,7 @@ import CalendarStrip from 'react-native-calendar-strip';
 import axios from 'axios';
 import ApiService from '../components/api/service';
 import storage from '../components/api/localstorage';
+import translations from '../translations/translations';
 
 export default function SimpleRdv({
   navigation,
@@ -26,6 +27,25 @@ export default function SimpleRdv({
   navigation: any;
   route: any;
 }) {
+    /////////////////////////////////// LANGUAGE HANDLER ///////////////////////////////////
+
+    const [preferredLangage, setPreferredLangage] = useState('fr');
+
+    const t = (key: any, langage: any) => {
+      return translations[langage][key] || key;
+    };
+  
+    storage
+      .load({
+        key: 'defaultlang', // Note: Do not use underscore("_") in key!
+        id: 'defaultlang', // Note: Do not use underscore("_") in id!
+      })
+      .then((data: any) => {
+        setPreferredLangage(data);
+      });
+  
+    //////////////////////////////////////////////////////////////////////////////////////
+
   // GET USER CONNECTED
   const [userConnected, SetUserConnected] = useState<any>({});
 
@@ -179,7 +199,7 @@ export default function SimpleRdv({
 
   // reservation data
   const [Heure, SetHeure] = useState('');
-  const [Prestation, SetPrestation] = useState('Je suis interesse par...cd');
+  const [Prestation, SetPrestation] = useState(t('Je_suis_interesse_par', preferredLangage));
 
   // LOAD CATEGORIES
   const [sous_categories, setCategories] = useState([]);
@@ -204,12 +224,12 @@ export default function SimpleRdv({
           setCategories(api.message);
         }
         if (api.code == 'error') {
-          Alert.alert('', 'Erreur survenue');
+          // Alert.alert('', 'Erreur survenue');
         }
       })
       .catch((error: any) => {
         console.log(error);
-        Alert.alert('', 'Erreur Network');
+        // Alert.alert('', 'Erreur Network');
       });
   };
 
@@ -241,7 +261,7 @@ export default function SimpleRdv({
         if (api.code == 'success') {
           Alert.alert(
             '',
-            "Votre rendez-vous a ete enregistre avec succes et en attente de confirmation par l'etablissement",
+            t('rdv_enregistre',preferredLangage),
             [
               {
                 text: 'OK',
@@ -261,7 +281,7 @@ export default function SimpleRdv({
       .catch((error: any) => {
         console.log(error);
         SetActivityActive(false);
-        Alert.alert('', 'Erreur Network');
+        // Alert.alert('', 'Erreur Network');
       });
   };
 
@@ -292,7 +312,7 @@ export default function SimpleRdv({
                 fontSize: 16,
                 fontFamily: CustomFont.Poppins,
               }}>
-              {stepper == 0 ? 'choisir un creaneau' : 'Objet du rendez-vous'}
+              {stepper == 0 ? t('choisir_un_creneau',preferredLangage) : t('Objet_du_rendez_vous', preferredLangage)}
             </Text>
           </View>
 
@@ -329,7 +349,7 @@ export default function SimpleRdv({
                         marginVertical: 0,
                         textAlign: 'center', color:couleurs.dark
                       }}>
-                      MATIN
+                      { t('MATIN', preferredLangage)}
                     </Text>
 
                     <View
@@ -372,7 +392,7 @@ export default function SimpleRdv({
                         marginVertical: 20,
                         textAlign: 'center', color:couleurs.dark
                       }}>
-                      MIDI + APRES MIDI
+                      { t('APRES_MIDI', preferredLangage)}
                     </Text>
 
                     <View
@@ -418,7 +438,7 @@ export default function SimpleRdv({
                       marginTop: 200,
                     }}>
                     <Text style={{fontSize: 15, textAlign: 'center', color:couleurs.dark}}>
-                      {'Veuillez selectionner une date \npour continuer'}
+                      {t('selectionnez_une_date', preferredLangage)}
                     </Text>
                   </View>
                 )}
@@ -495,7 +515,7 @@ export default function SimpleRdv({
                           color: couleurs.white,
                           fontFamily: CustomFont.Poppins,
                         }}>
-                        Valider
+                        {t('valider', preferredLangage)}
                       </Text>
                     </TouchableOpacity>
                   </View>

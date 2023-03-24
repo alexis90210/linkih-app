@@ -12,6 +12,8 @@ import {
 import ArrowLeftIcon from '../components/ArrowLeft';
 import {CustomFont, couleurs} from '../components/color';
 import CalendarStrip from 'react-native-calendar-strip';
+import translations from '../translations/translations';
+import storage from '../components/api/localstorage';
 
 export default function PersonnalisationReservationCreneau({
   navigation,
@@ -20,6 +22,26 @@ export default function PersonnalisationReservationCreneau({
   navigation: any;
   route: any;
 }) {
+  
+  /////////////////////////////////// LANGUAGE HANDLER ///////////////////////////////////
+
+  const [preferredLangage, setPreferredLangage] = useState('fr');
+
+  const t = (key: any, langage: any) => {
+    return translations[langage][key] || key;
+  };
+
+  storage
+    .load({
+      key: 'defaultlang', // Note: Do not use underscore("_") in key!
+      id: 'defaultlang', // Note: Do not use underscore("_") in id!
+    })
+    .then((data: any) => {
+      setPreferredLangage(data);
+    });
+
+  //////////////////////////////////////////////////////////////////////////////////////
+
   var hours_matin = [
     {
       hour: '07:00',
@@ -147,13 +169,13 @@ export default function PersonnalisationReservationCreneau({
   ];
 
   // selected date
-  const [ selectedDate, setDate ] = useState( '' );
+  const [selectedDate, setDate] = useState('');
 
   // handler
   const _setDate = (date: any) => {
-    console.log( date );
-    
-    setDate( date );
+    console.log(date);
+
+    setDate(date);
   };
 
   return (
@@ -182,7 +204,7 @@ export default function PersonnalisationReservationCreneau({
               fontSize: 16,
               fontFamily: CustomFont.Poppins,
             }}>
-            choisir un creaneau
+            {t('choisir_un_creaneau', preferredLangage)}
           </Text>
         </View>
 
@@ -210,12 +232,13 @@ export default function PersonnalisationReservationCreneau({
                   borderTopWidth: 1,
                   borderBottomWidth: 1,
                   borderColor: '#ddd',
-                  backgroundColor: couleurs.white, color:couleurs.dark,
+                  backgroundColor: couleurs.white,
+                  color: couleurs.dark,
                   padding: 10,
                   marginVertical: 0,
                   textAlign: 'center',
                 }}>
-                MATIN
+                {t('MATIN', preferredLangage)}
               </Text>
 
               <View
@@ -229,7 +252,7 @@ export default function PersonnalisationReservationCreneau({
                 }}>
                 {hours_matin.map((h, i) => (
                   <TouchableOpacity
-                  key={i}
+                    key={i}
                     onPress={() =>
                       navigation.navigate('bilan_reservation', {
                         props: route.params.props,
@@ -245,7 +268,8 @@ export default function PersonnalisationReservationCreneau({
                         borderColor: '#ddd',
                         borderRadius: 30,
                         padding: 10,
-                        paddingHorizontal: 20, color:couleurs.dark
+                        paddingHorizontal: 20,
+                        color: couleurs.dark,
                       }}>
                       {h.hour}
                     </Text>
@@ -261,9 +285,10 @@ export default function PersonnalisationReservationCreneau({
                   backgroundColor: couleurs.white,
                   padding: 10,
                   marginVertical: 20,
-                  textAlign: 'center', color:couleurs.dark
+                  textAlign: 'center',
+                  color: couleurs.dark,
                 }}>
-                MIDI + APRES MIDI
+                {t('APRES_MIDI', preferredLangage)}
               </Text>
 
               <View
@@ -277,7 +302,7 @@ export default function PersonnalisationReservationCreneau({
                 }}>
                 {hours_apresmidi.map((h, i) => (
                   <TouchableOpacity
-                  key={i}
+                    key={i}
                     onPress={() =>
                       navigation.navigate('bilan_reservation', {
                         props: route.params.props,
@@ -293,7 +318,8 @@ export default function PersonnalisationReservationCreneau({
                         borderColor: '#ddd',
                         borderRadius: 30,
                         padding: 10,
-                        paddingHorizontal: 20, color:couleurs.dark
+                        paddingHorizontal: 20,
+                        color: couleurs.dark,
                       }}>
                       {h.hour}
                     </Text>
@@ -313,8 +339,13 @@ export default function PersonnalisationReservationCreneau({
                 width: '100%',
                 marginTop: 200,
               }}>
-              <Text style={{fontSize: 15, textAlign: 'center', color:couleurs.dark}}>
-                {'Veuillez selectionner une date \npour continuer'}
+              <Text
+                style={{
+                  fontSize: 15,
+                  textAlign: 'center',
+                  color: couleurs.dark,
+                }}>
+                {t('selectionnez_une_date', preferredLangage)}
               </Text>
             </View>
           )}

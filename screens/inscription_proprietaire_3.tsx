@@ -18,7 +18,7 @@ import axios from 'axios';
 import ArrowLeftIcon from '../components/ArrowLeft';
 import RNFS from 'react-native-fs';
 import storage from '../components/api/localstorage';
-
+import translations from '../translations/translations';
 
 // InscriptionProprietaire3
 export default function InscriptionProprietaire3({
@@ -28,23 +28,45 @@ export default function InscriptionProprietaire3({
   navigation: any;
   route: any;
 }) {
+  /////////////////////////////////// LANGUAGE HANDLER ///////////////////////////////////////
+
+  const [preferredLangage, setPreferredLangage] = useState('fr');
+
+  const t = (key: any, langage: any) => {
+    return translations[langage][key] || key;
+  };
+
+  storage
+    .load({
+      key: 'defaultlang', // Note: Do not use underscore("_") in key!
+      id: 'defaultlang', // Note: Do not use underscore("_") in id!
+    })
+    .then((data: any) => {
+      setPreferredLangage(data);
+    });
+
+  //////////////////////////////////////////////////////////////////////////////////////
+
   var proprietaire = route.params;
 
-  storage.load({
-    key: 'typeuser', // Note: Do not use underscore("_") in key!
-    id: 'typeuser', // Note: Do not use underscore("_") in id!
-  }).then( data => {
-    proprietaire.type = data.type
-  }).catch( error => {
-    console.log(error); 
-  });
+  storage
+    .load({
+      key: 'typeuser', // Note: Do not use underscore("_") in key!
+      id: 'typeuser', // Note: Do not use underscore("_") in id!
+    })
+    .then(data => {
+      proprietaire.type = data.type;
+    })
+    .catch(error => {
+      console.log(error);
+    });
 
   const [photoCover, setPhotoCover] = useState('');
   const [photOnBase64, setphotOnBase64] = useState('');
   const [photoCoverImage, setPhotoCoverImage] = useState<any>({});
-  const [isLoading, setLoading] = useState(false)
+  const [isLoading, setLoading] = useState(false);
 
-  const [imageLink, setImageLink] = useState('')
+  const [imageLink, setImageLink] = useState('');
 
   // open picker
   const openImagePickerWithCrop = () => {
@@ -52,28 +74,28 @@ export default function InscriptionProprietaire3({
       width: 800,
       height: 500,
       cropping: true,
-      mediaType: 'photo'
-    }).then(image => {
-      console.log(image);
-      setPhotoCover(image.path);
-      setPhotoCoverImage(image as never);
-      return RNFS.readFile(image.path, 'base64');
-    }).then(imageBase64 => {
-      // Send the image to the server using axios
-      setphotOnBase64(imageBase64)
-    });
+      mediaType: 'photo',
+    })
+      .then(image => {
+        console.log(image);
+        setPhotoCover(image.path);
+        setPhotoCoverImage(image as never);
+        return RNFS.readFile(image.path, 'base64');
+      })
+      .then(imageBase64 => {
+        // Send the image to the server using axios
+        setphotOnBase64(imageBase64);
+      });
   };
-
 
   // Submit proprietaire
   const submitSaveProprietaire = () => {
-
-    setLoading(true)    
+    setLoading(true);
 
     var json = JSON.stringify({
-      photo:photOnBase64,
+      photo: photOnBase64,
       ...proprietaire,
-    })
+    });
 
     axios({
       method: 'POST',
@@ -83,34 +105,34 @@ export default function InscriptionProprietaire3({
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      })
+    })
       .then((response: {data: any}) => {
-
-        console.log(response.data);      
+        console.log(response.data);
 
         var api = response.data;
-        
+
         console.log(api);
 
-        setLoading(false)
+        setLoading(false);
 
         if (api.code == 'success') {
-          
-          navigation.navigate('inscription_proprietaire_4', {api: api})
-         
+          navigation.navigate('inscription_proprietaire_4', {api: api});
         }
         if (api.code == 'error') {
-          Alert.alert('Erreur', api.message, [
+          Alert.alert(t('erreur_survenue', preferredLangage), api.message, [
             {text: 'OK', onPress: () => null},
           ]);
         }
       })
       .catch(error => {
-        setLoading(false)
-        console.log('/////////////////////////////',error);
+        setLoading(false);
+        console.log('/////////////////////////////', error);
         Alert.alert(
-          'Erreur',
-          'Erreur survenue, il se pourrait que les informations fournis soit incorrects ou deja utilise pour un autre compte',
+          t('erreur_survenue', preferredLangage),
+          t(
+            'Erreur_survenue_il_se_pourrait_que_les_informations_fournis',
+            preferredLangage,
+          ),
           [{text: 'OK', onPress: () => null}],
         );
       });
@@ -128,7 +150,7 @@ export default function InscriptionProprietaire3({
           height: '100%',
           backgroundColor: '#fff',
         }}>
-          <View
+        <View
           style={{
             display: 'flex',
             flexDirection: 'row',
@@ -136,13 +158,18 @@ export default function InscriptionProprietaire3({
             gap: 30,
             paddingVertical: 10,
             paddingHorizontal: 10,
-            backgroundColor:couleurs.primary,
+            backgroundColor: couleurs.primary,
           }}>
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <ArrowLeftIcon color={couleurs.white} />
           </TouchableOpacity>
-          <Text style={{color: couleurs.white, fontSize: 16, fontFamily: CustomFont.Poppins}}>
-            Image de couverture
+          <Text
+            style={{
+              color: couleurs.white,
+              fontSize: 16,
+              fontFamily: CustomFont.Poppins,
+            }}>
+            {t('Image_de_couverture', preferredLangage)}
           </Text>
         </View>
 
@@ -155,10 +182,17 @@ export default function InscriptionProprietaire3({
               alignItems: 'center',
               padding: 10,
             }}>
-              <Text style={{color: couleurs.dark, fontFamily:CustomFont.Poppins, marginVertical:40, 
-                paddingHorizontal:30, textAlign:'center', fontSize:12}}>
-                  {"Cliquez pour selectionner la photo de couverture \nde votre etablissement"}
-                </Text>
+            <Text
+              style={{
+                color: couleurs.dark,
+                fontFamily: CustomFont.Poppins,
+                marginVertical: 40,
+                paddingHorizontal: 30,
+                textAlign: 'center',
+                fontSize: 12,
+              }}>
+              {t('select_photo', preferredLangage)}
+            </Text>
 
             <TouchableOpacity
               onPress={() => openImagePickerWithCrop()}
@@ -167,8 +201,8 @@ export default function InscriptionProprietaire3({
                 style={{
                   borderWidth: 1,
                   borderStyle: 'dashed',
-                  
-                  alignSelf:'center',
+
+                  alignSelf: 'center',
                   display: 'flex',
                   flexDirection: 'column',
                   justifyContent: 'center',
@@ -176,15 +210,15 @@ export default function InscriptionProprietaire3({
                   borderColor: couleurs.primary,
                   height: 130,
                   width: 130,
-                  borderRadius:200
+                  borderRadius: 200,
                 }}>
                 {photoCover && (
                   <Image
                     source={{uri: photoCover}}
                     style={{
                       height: 130,
-                      width: 130,                      
-                      borderRadius:200
+                      width: 130,
+                      borderRadius: 200,
                     }}
                   />
                 )}
@@ -195,11 +229,11 @@ export default function InscriptionProprietaire3({
                       textAlign: 'center',
                       flexWrap: 'wrap',
                       alignSelf: 'center',
-                      paddingHorizontal:30,
-                      fontSize:12
+                      paddingHorizontal: 30,
+                      fontSize: 12,
                     }}>
                     {' '}
-                    Tapez pour prendre une photo
+                    {t('Tapez_pour_prendre_une_photo', preferredLangage)}
                   </Text>
                 )}
               </View>
@@ -209,21 +243,18 @@ export default function InscriptionProprietaire3({
                   marginVertical: 50,
                   textAlign: 'center',
                   fontFamily: CustomFont.Poppins,
-                  color:couleurs.dark,
-                  paddingHorizontal:20,
-                  fontSize:12
+                  color: couleurs.dark,
+                  paddingHorizontal: 20,
+                  fontSize: 12,
                 }}>
-                En cliquant sur{' '}
+                {t('En_cliquant_sur', preferredLangage)}{' '}
                 <Text style={{color: couleurs.primary}}>
-                  je valide maintenant
+                  {t('je_valide_maintenant', preferredLangage)}
                 </Text>
-                , vous acceptez les termes et les conditions d'utilisations ,
-                ainsi que la politique de confidentialites de{' '}
+                {t('vous_acceptez', preferredLangage)}{' '}
                 <Text style={{color: couleurs.primary}}>Linkih</Text> .
               </Text>
             </TouchableOpacity>
-
-            
 
             <View
               style={{
@@ -249,34 +280,32 @@ export default function InscriptionProprietaire3({
                     padding: 10,
                     paddingHorizontal: 20,
                     fontSize: 14,
-                  }}>                   
-                    Je valide maintenant
-                  
+                  }}>
+                  {t('Je_valide_maintenant', preferredLangage)}
                 </Text>
-              </TouchableOpacity>              
+              </TouchableOpacity>
             </View>
 
-                  {/* LOADING MODAL */}
+            {/* LOADING MODAL */}
 
-        <Modal transparent={true} visible={isLoading}>
-          <View
-            style={{
-              flex: 1,
-              justifyContent: 'center',
-              flexDirection: 'column',
-              backgroundColor: 'rgba(200,200,200,.5)',
-              alignItems: 'center',
-              alignContent: 'center',
-            }}>
-            <ActivityIndicator
-              color={couleurs.primary}
-              style={{alignSelf: 'center'}}
-              size={'large'}></ActivityIndicator>
-          </View>
-        </Modal>
+            <Modal transparent={true} visible={isLoading}>
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: 'center',
+                  flexDirection: 'column',
+                  backgroundColor: 'rgba(200,200,200,.5)',
+                  alignItems: 'center',
+                  alignContent: 'center',
+                }}>
+                <ActivityIndicator
+                  color={couleurs.primary}
+                  style={{alignSelf: 'center'}}
+                  size={'large'}></ActivityIndicator>
+              </View>
+            </Modal>
 
-        {/* END LOADING */}
-            
+            {/* END LOADING */}
           </View>
         </ScrollView>
       </SafeAreaView>

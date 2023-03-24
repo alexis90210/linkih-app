@@ -25,9 +25,27 @@ import {CustomFont, couleurs} from '../components/color';
 import storage from '../components/api/localstorage';
 import ArrowLeftIcon from '../components/ArrowLeft';
 import ArrowRightIcon from '../components/ArrowRight';
+import translations from '../translations/translations';
 
 // ConfigurationScreen
 export default function ConfigurationScreen({navigation}: {navigation: any}) {
+
+  /////////////////////////////////// LANGUAGE HANDLER ///////////////////////////////////////
+  const [preferredLangage , setPreferredLangage] = useState('fr');
+
+  const t = (key:any , langage:any) => {
+    return translations[langage][key] || key
+  }
+
+  storage.load({
+    key: 'defaultlang', // Note: Do not use underscore("_") in key!
+    id: 'defaultlang' // Note: Do not use underscore("_") in id!
+  }).then( ( data:any) => {
+    setPreferredLangage(data)
+  })
+
+  //////////////////////////////////////////////////////////////////////////////////////
+
   // countries
   const [currentCountry, setCurrentCountry] = useState({name: ''});
 
@@ -51,11 +69,11 @@ export default function ConfigurationScreen({navigation}: {navigation: any}) {
 
 
   // Languages
-  const [currentLanguage, setCurrentLanguage] = useState({name: ''});
+  const [currentLanguage, setCurrentLanguage] = useState<any>({name: ''});
 
   const langages = [
-    {name: 'Francais', flag:  "🇫🇷"},
-    {name: 'Anglais', flag: "🇺🇸"},
+    {name: 'Francais', flag:  "🇫🇷", code:"fr"},
+    {name: 'Anglais', flag: "🇺🇸", code : "en"},
     // add more langages here
   ];
 
@@ -68,6 +86,12 @@ export default function ConfigurationScreen({navigation}: {navigation: any}) {
   // get and save configuration
 
   const saveConfiguration = () => {
+
+    storage.save({
+      key: 'defaultlang', // Note: Do not use underscore("_") in key!
+      id: 'defaultlang', // Note: Do not use underscore("_") in id!
+      data: currentLanguage.code,
+    });
 
     storage.save({
       key: 'configuration', // Note: Do not use underscore("_") in key!
@@ -111,8 +135,8 @@ export default function ConfigurationScreen({navigation}: {navigation: any}) {
               fontSize: 16,
               fontFamily: CustomFont.Poppins,
             }}>
-            {Stepper == 0 && 'Quel est votre pays ?'}
-            {Stepper == 1 && 'Vous parlez quelle langue ?'}
+            {Stepper == 0 && t('quel_est_votre_pays', preferredLangage)}
+            {Stepper == 1 && t('quel_est_votre_langue', preferredLangage)}
           </Text>
         </View>
 

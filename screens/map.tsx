@@ -27,6 +27,8 @@ import EyeIcon from '../components/eye';
 import defaultStyle from '../components/api/defaultMpaStyle';
 import ArrowLeftIcon from '../components/ArrowLeft';
 import {AirbnbRating} from 'react-native-ratings';
+import translations from '../translations/translations';
+import storage from '../components/api/localstorage';
 
 MapboxGL.setAccessToken(ApiService.MAPBOX_GL_TOKEN);
 
@@ -37,6 +39,27 @@ export default function Map({
   navigation: any;
   route: any;
 }) {
+
+    /////////////////////////////////// LANGUAGE HANDLER ///////////////////////////////////////
+
+    const [preferredLangage, setPreferredLangage] = useState('fr');
+
+    const t = (key: any, langage: any) => {
+      return translations[langage][key] || key;
+    };
+  
+    storage
+      .load({
+        key: 'defaultlang', // Note: Do not use underscore("_") in key!
+        id: 'defaultlang', // Note: Do not use underscore("_") in id!
+      })
+      .then((data: any) => {
+        setPreferredLangage(data);
+      });
+  
+    //////////////////////////////////////////////////////////////////////////////////////
+
+    
 
   MapboxGL.setTelemetryEnabled(false);
 
@@ -90,15 +113,13 @@ export default function Map({
 
         if (api.code == 'error') {
           // setPreccessing(false)
-          Alert.alert('Erreur', api.message, [
-            {text: 'OK', onPress: () => null},
-          ]);
+          
         }
       })
       .catch((error: any) => {
         // setPreccessing(false)
         console.log(error);
-        Alert.alert('Erreur', error, [{text: 'OK', onPress: () => null}]);
+      
       });
   };
 
@@ -330,7 +351,7 @@ export default function Map({
           }}
           onPress={() =>
             navigation.navigate('resultat_recherche', {
-              title: 'Les etablissements',
+              title: t('les_etabs', preferredLangage),
             })
           }>
           <View
@@ -356,7 +377,7 @@ export default function Map({
                 fontWeight: '500',
                 color: '#fff',
               }}>
-              Affichage sur liste
+              { t('Affichage_sur_liste', preferredLangage)}
             </Text>
           </View>
         </Pressable>
@@ -492,7 +513,7 @@ export default function Map({
                           color: '#000',
                         }}>
                         {/* {marker.adresse} */}
-                        <Text style={{color: 'green'}}>Ouvert</Text> . Ferme a
+                        <Text style={{color: 'green'}}> { t('Ouvert', preferredLangage)} </Text> . {t('Ferme_a', preferredLangage)}
                         18:00
                       </Text>
 
@@ -537,7 +558,7 @@ export default function Map({
                                 color: couleurs.white,
                                 fontFamily: CustomFont.Poppins,
                               }}>
-                              Itineraire
+                              { t('Itineraire', preferredLangage)}
                             </Text>
                           </TouchableOpacity>
                         </View>
@@ -576,7 +597,7 @@ export default function Map({
                                 color: couleurs.primary,
                                 fontFamily: CustomFont.Poppins,
                               }}>
-                              Appeler
+                              { t('Appeler', preferredLangage)}
                             </Text>
                           </TouchableOpacity>
                         </View>

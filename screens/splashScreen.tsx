@@ -11,9 +11,31 @@ import {
   StatusBar,
 } from 'react-native';
 import { CustomFont, couleurs } from '../components/color';
+import storage from '../components/api/localstorage';
+import translations from '../translations/translations';
 
 // SplashScreen
 export default function SplashScreen({navigation}: {navigation: any}) {
+
+
+  storage.save({
+    key: 'defaultlang', // Note: Do not use underscore("_") in key!
+    id: 'defaultlang', // Note: Do not use underscore("_") in id!
+    data: 'fr',
+  });
+
+  const [preferredLangage , setPreferredLangage] = useState('fr');
+
+  const t = (key:any , langage:any) => {
+    return translations[langage][key] || key
+  }
+
+  storage.load({
+    key: 'defaultlang', // Note: Do not use underscore("_") in key!
+    id: 'defaultlang' // Note: Do not use underscore("_") in id!
+  }).then( ( data:any) => {
+    setPreferredLangage(data)
+  })
 
   return (   
 
@@ -38,7 +60,7 @@ export default function SplashScreen({navigation}: {navigation: any}) {
                 fontSize: 20,
                 fontFamily:CustomFont.Poppins
               }}>
-              Bienvenu sur Linkih
+              {t('bienvenu', preferredLangage)}
             </Text>
             <Text
               style={{
@@ -48,7 +70,7 @@ export default function SplashScreen({navigation}: {navigation: any}) {
                 width:'80%',
                 fontFamily:CustomFont.Poppins
               }}>
-              {"Gérer votre fiche d'établissement directement\nsur l'application mobile"}
+              {t('bienvenu_sous_titre', preferredLangage)}
             </Text>
             <View
               style={{
@@ -76,7 +98,7 @@ export default function SplashScreen({navigation}: {navigation: any}) {
                     width: 150,
                     fontFamily:CustomFont.Poppins
                   }}>
-                  EXPLOREZ
+                  { t('explorez', preferredLangage)}
                 </Text>
               </TouchableOpacity>
             </View>

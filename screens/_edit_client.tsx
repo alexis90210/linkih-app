@@ -16,6 +16,7 @@ import ApiService from '../components/api/service';
 import axios from 'axios';
 import Geolocation from '@react-native-community/geolocation';
 import ImagePicker from 'react-native-image-crop-picker';
+import translations from '../translations/translations';
 
 // EditClientScreen
 export default function EditClientScreen({
@@ -25,6 +26,24 @@ export default function EditClientScreen({
   navigation: any;
   route: any;
 }) {
+
+  /////////////////////////////////// LANGUAGE HANDLER //////////////////////////////////
+  const [preferredLangage , setPreferredLangage] = useState('fr');
+
+  const t = (key:any , langage:any) => {
+    return translations[langage][key] || key
+  }
+
+  storage.load({
+    key: 'defaultlang', // Note: Do not use underscore("_") in key!
+    id: 'defaultlang' // Note: Do not use underscore("_") in id!
+  }).then( ( data:any) => {
+    setPreferredLangage(data)
+  })
+
+  //////////////////////////////////////////////////////////////////////////////////////
+
+
   var client = route.params;
   client.update = true;
 
@@ -50,12 +69,12 @@ export default function EditClientScreen({
 
     var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     if (!client.email.match(mailformat)) {
-      Alert.alert('', 'Email invalide', [{text: 'OK', onPress: () => null}]);
+      Alert.alert('', t('email_invalide', preferredLangage), [{text: 'OK', onPress: () => null}]);
       return;
     }
 
     if (client.password.length < 4) {
-      Alert.alert('', 'Mot de passe trop court', [
+      Alert.alert('', t('mot_de_passe_court', preferredLangage), [
         {text: 'OK', onPress: () => null},
       ]);
       return;
@@ -85,7 +104,7 @@ export default function EditClientScreen({
         console.log(error);
         Alert.alert(
           '',
-          'Erreur survenue'          
+          t('erreur_survenue', preferredLangage)
         );
       });
   };
@@ -151,7 +170,7 @@ export default function EditClientScreen({
                   padding: 10,
                   paddingHorizontal: 30,
                 }}>
-                Cliquez pour choisir une photo
+                { t('clique_pour_choisir_photo', preferredLangage) }
               </Text>
             </TouchableOpacity>
             <View
@@ -179,12 +198,12 @@ export default function EditClientScreen({
                     opacity: 0.85,
                     fontFamily: CustomFont.Poppins,
                   }}>
-                  Noms & Prenoms
+                  { t('noms_prenoms', preferredLangage) }
                 </Text>
                 <TextInput
                   defaultValue={client.nom}
                   onChangeText={input => (client.nom = input)}
-                  placeholder="Entrez votre nom et prenom complet "
+                  placeholder={ t('entrez_votre_noms_prenoms', preferredLangage) }
                   style={{
                     backgroundColor: 'transparent',
                     borderBottomWidth: 1,
@@ -213,12 +232,12 @@ export default function EditClientScreen({
                     opacity: 0.85,
                     fontFamily: CustomFont.Poppins,
                   }}>
-                  Email
+                  { t('email', preferredLangage) }
                 </Text>
                 <TextInput
                   defaultValue={client.email}
                   onChangeText={input => (client.email = input)}
-                  placeholder="Entrez votre email"
+                  placeholder={ t('entrez_votre_email', preferredLangage) }
                   style={{
                     backgroundColor: 'transparent',
                     borderBottomWidth: 1,
@@ -290,7 +309,7 @@ export default function EditClientScreen({
                       fontFamily: CustomFont.Poppins,
                       color: couleurs.secondary,
                     }}>
-                    Modifier
+                    { t('modifier', preferredLangage) }
                   </Text>
                 </TouchableOpacity>
               </View>
@@ -318,7 +337,7 @@ export default function EditClientScreen({
                     fontFamily: CustomFont.Poppins,
                     color: couleurs.primary,
                   }}>
-                  Besoin d'aide ?
+                  { t('besoin_d_aide', preferredLangage) }
                 </Text>
               </TouchableOpacity>
             </View>

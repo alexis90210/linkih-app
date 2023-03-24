@@ -13,10 +13,32 @@ import {
 import { CustomFont, couleurs } from '../components/color';
 import axios from 'axios';
 import ApiService from '../components/api/service';
+import translations from '../translations/translations';
+import storage from '../components/api/localstorage';
 
 // confirmationCompteScreen
 export default function ConfirmationCompteScreen({navigation, route}: {navigation: any, route:any}) {
   
+
+    /////////////////////////////////// LANGUAGE HANDLER //////////////////////////////////
+
+    const [preferredLangage, setPreferredLangage] = useState('fr');
+
+    const t = (key: any, langage: any) => {
+      return translations[langage][key] || key;
+    };
+  
+    storage
+      .load({
+        key: 'defaultlang', // Note: Do not use underscore("_") in key!
+        id: 'defaultlang', // Note: Do not use underscore("_") in id!
+      })
+      .then((data: any) => {
+        setPreferredLangage(data);
+      });
+  
+    //////////////////////////////////////////////////////////////////////////////////////
+
   const [isLoading, setLoading] = useState(false)
   const [isLoadingScreen, setLoadingScreen] = useState(false)
   const [codeVal, setCodeVal] = useState('')
@@ -26,8 +48,8 @@ export default function ConfirmationCompteScreen({navigation, route}: {navigatio
 
   if ( codeVal.length < 4 ) {
  
-      Alert.alert('', "Veuillez renseignez le code recu par mail", [
-        {text: 'Ressayez', onPress: () => null},
+      Alert.alert('', t("Veuillez_renseignez_le_code_recu_par_mail", preferredLangage), [
+        {text: t("Ressayez", preferredLangage), onPress: () => null},
       ]);
       return;
   }
@@ -99,8 +121,8 @@ export default function ConfirmationCompteScreen({navigation, route}: {navigatio
       setLoadingScreen(false)
       setLoading(false);
 
-      Alert.alert('', "Erreur serveur", [
-        {text: 'Ressayez', onPress: () => null},
+      Alert.alert('', t("erreur_survenue", preferredLangage), [
+        {text: t("Ressayez", preferredLangage), onPress: () => null},
       ]);
 
     });
@@ -141,7 +163,7 @@ export default function ConfirmationCompteScreen({navigation, route}: {navigatio
                 fontSize: 17,
                 width:'80%'
               }}>
-              {"Confirmation de compte, \nPlus qu'une derniere etape"}
+              {t("Confirmation_de_compte", preferredLangage)}
             </Text>
             <Text
               style={{
@@ -153,7 +175,7 @@ export default function ConfirmationCompteScreen({navigation, route}: {navigatio
                 marginVertical: 13,
                 width:'80%'
               }}>
-              Un code de validation de compte vous a ete transmit par mail
+              {t("Un_code_de_validation_de_compte_vous_a_ete_transmit_par_mail", preferredLangage)}
             </Text>
 
             <TextInput
@@ -201,7 +223,7 @@ export default function ConfirmationCompteScreen({navigation, route}: {navigatio
                     width: 250,
                     fontFamily:CustomFont.Poppins,
                   }}>
-                  Valider
+                  {t("Valider", preferredLangage)}
                 </Text>
               </Pressable>
             </View>
@@ -218,15 +240,16 @@ export default function ConfirmationCompteScreen({navigation, route}: {navigatio
                 marginVertical: 5,
                 width:'80%'
               }}>
-              Je n'ai pas recu mon code,
+              {t("Je_n_ai_pas_recu_mon_code", preferredLangage)}
             </Text>
             <Pressable onPress={ () => sendEmail()}>
             <Text style={{color:couleurs.primary,textAlign: 'center',
                 opacity: 0.85,
                 fontFamily:CustomFont.Poppins,
                 fontSize: 14,
-
-                marginVertical: 7,}}>Demander un autre ?</Text>
+                marginVertical: 7,}}>
+                  {t("Demander_un_autre", preferredLangage)}
+                </Text>
             </Pressable>
 
             {isLoading && <ActivityIndicator size="large" color={couleurs.primary} />}

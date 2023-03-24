@@ -17,7 +17,8 @@ import ArrowRightIcon from '../components/ArrowRight';
 import axios from 'axios';
 import ApiService from '../components/api/service';
 import storage from '../components/api/localstorage';
-import { Picker } from '@react-native-picker/picker';
+import {Picker} from '@react-native-picker/picker';
+import translations from '../translations/translations';
 
 // ConfigurationDefaultCategorie
 export default function ConfigurationDefaultCategorie({
@@ -25,6 +26,25 @@ export default function ConfigurationDefaultCategorie({
 }: {
   navigation: any;
 }) {
+  /////////////////////////////////// LANGUAGE HANDLER ///////////////////////////////////
+
+  const [preferredLangage, setPreferredLangage] = useState('fr');
+
+  const t = (key: any, langage: any) => {
+    return translations[langage][key] || key;
+  };
+
+  storage
+    .load({
+      key: 'defaultlang', // Note: Do not use underscore("_") in key!
+      id: 'defaultlang', // Note: Do not use underscore("_") in id!
+    })
+    .then((data: any) => {
+      setPreferredLangage(data);
+    });
+
+  //////////////////////////////////////////////////////////////////////////////////////
+
   const [Stepper, setStepper] = useState(0);
 
   // LOAD CATEGORIES
@@ -36,22 +56,19 @@ export default function ConfigurationDefaultCategorie({
   const [selectedProduit, setSelectedProduit] = useState('');
   const [isLoadedCategorie, setLoadedCategorie] = useState(false);
 
-
   storage
     .load({
       key: 'userconnected', // Note: Do not use underscore("_") in key!
       id: 'userconnected', // Note: Do not use underscore("_") in id!
     })
     .then(data => {
-
-      if ( data.role != 'ROLE_VENDEUR') {
-        navigation.navigate('identification_proprietaire')
+      if (data.role != 'ROLE_VENDEUR') {
+        navigation.navigate('identification_proprietaire');
       }
-      
+
       setessionEtab(data.etablissement[0]);
     })
     .catch(error => console.log(error));
-
 
   const loadCategories = () => {
     axios({
@@ -66,18 +83,16 @@ export default function ConfigurationDefaultCategorie({
         var api = response.data;
 
         console.log(api);
-        
+
         if (api.code == 'success') {
           setLoadedCategorie(true);
           setCategories(api.message);
         }
         if (api.code == 'error') {
-          Alert.alert('', 'Erreur survenue');
         }
       })
       .catch((error: any) => {
         console.log(error);
-        Alert.alert('', 'Erreur Network');
       });
   };
 
@@ -85,20 +100,20 @@ export default function ConfigurationDefaultCategorie({
   // get and save configuration
 
   // Select Devise
-  const [SelectedDevise, setSelectedDevise] = useState('$')
+  const [SelectedDevise, setSelectedDevise] = useState('$');
 
   const savePrestation = () => {
     var json = JSON.stringify({
       produit: selectedProduit,
       prix: selectedPrestationPrix,
       devise: SelectedDevise,
-      duree:selectedDuree,
+      duree: selectedDuree,
       sous_categorie_id: selectedPrestation.sous_categorie_id,
-      vendeur_id: sessionEtab.id
-    })
+      vendeur_id: sessionEtab.id,
+    });
 
     console.log(json);
-    
+
     axios({
       method: 'POST',
       url: ApiService.API_URL_ADD_VENDEUR_PRESTATION,
@@ -112,19 +127,17 @@ export default function ConfigurationDefaultCategorie({
         var api = response.data;
 
         console.log(api);
-        
+
         if (api.code == 'success') {
-          navigation.navigate('mes_prestations')
+          navigation.navigate('mes_prestations');
         }
         if (api.code == 'error') {
-          Alert.alert('', 'Erreur survenue');
         }
       })
       .catch((error: any) => {
         console.log(error);
-        Alert.alert('', 'Erreur Network');
       });
-  }
+  };
 
   return (
     <>
@@ -156,7 +169,7 @@ export default function ConfigurationDefaultCategorie({
               fontSize: 16,
               fontFamily: CustomFont.Poppins,
             }}>
-            {Stepper == 0 && 'Choisir une prestation'}
+            {Stepper == 0 && t('Choisir_une_prestation', preferredLangage)}
             {Stepper == 1 && selectedPrestation.nom}
           </Text>
         </View>
@@ -176,7 +189,10 @@ export default function ConfigurationDefaultCategorie({
               <View style={{width: '100%', marginTop: 2}}>
                 {sous_categories.map((item: any, index: any) => (
                   <View key={index}>
-                    <TouchableOpacity onPress={() => {setSelectedPrestation(item), setStepper(1)}}>
+                    <TouchableOpacity
+                      onPress={() => {
+                        setSelectedPrestation(item), setStepper(1);
+                      }}>
                       <View
                         style={{
                           display: 'flex',
@@ -223,192 +239,208 @@ export default function ConfigurationDefaultCategorie({
               </View>
             )}
 
-            { Stepper == 1 && <View style={{width:'100%'}}>
-               <View
-              style={{
-                marginVertical: 10,
-                backgroundColor: '#fff',
-                borderRadius: 11,
-                padding: 20,
-                width: '100%',
-                marginTop: 20,
-              }}>
-
-              <View
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'flex-start',
-                  alignItems: 'flex-start',
-                }}>
-                <Text
+            {Stepper == 1 && (
+              <View style={{width: '100%'}}>
+                <View
                   style={{
-                    textAlign: 'center',
-                    color: '#000',
-                    fontSize: 15,
-                    height: 30,
-                    opacity: 0.85,
-                    marginTop:14,
-                    fontFamily: CustomFont.Poppins,
-                  }}>
-                  Produit
-                </Text>
-                <TextInput
-                  defaultValue={selectedProduit}
-                  onChangeText={input => setSelectedProduit(input) }
-                  placeholder='Entrez un produit'
-                  style={{
-                    backgroundColor: 'transparent',
-                    borderBottomWidth: 1,
-                    borderBottomColor: '#E2C6BB',
-                    color: couleurs.primary,
+                    marginVertical: 10,
+                    backgroundColor: '#fff',
+                    borderRadius: 11,
+                    padding: 20,
                     width: '100%',
-                    fontWeight: '600',
-                    padding: 0,
-                    height:40,
-                    fontFamily: CustomFont.Poppins,
-                  }}></TextInput>
-              </View>
-                            
-              <View
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'flex-start',
-                  alignItems: 'flex-start',
-                }}>
-                <Text
-                  style={{
-                    textAlign: 'center',
-                    color: '#000',
-                    fontSize: 15,
-                    height: 30,
-                    opacity: 0.85,
-                    marginTop:14,
-                    fontFamily: CustomFont.Poppins,
+                    marginTop: 20,
                   }}>
-                  Prix
-                </Text>
-                <TextInput
-                  defaultValue={selectedPrestationPrix}
-                  onChangeText={input => setSelectedPrestationPrix(input) }
-                  placeholder='Entrez le prix'
-                  style={{
-                    backgroundColor: 'transparent',
-                    borderBottomWidth: 1,
-                    borderBottomColor: '#E2C6BB',
-                    color: couleurs.primary,
-                    width: '100%',
-                    fontWeight: '600',
-                    padding: 0,
-                    height:40,
-                    fontFamily: CustomFont.Poppins,
-                  }}></TextInput>
-
-                <Text
-                  style={{
-                    textAlign: 'center',
-                    color: '#000',
-                    fontSize: 15,
-                    height: 30,
-                    opacity: 0.85,
-                    marginTop:14,
-                    fontFamily: CustomFont.Poppins,
-                  }}>
-                  Device
-                </Text>
+                  <View
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'flex-start',
+                      alignItems: 'flex-start',
+                    }}>
+                    <Text
+                      style={{
+                        textAlign: 'center',
+                        color: '#000',
+                        fontSize: 15,
+                        height: 30,
+                        opacity: 0.85,
+                        marginTop: 14,
+                        fontFamily: CustomFont.Poppins,
+                      }}>
+                      {t('Produit', preferredLangage)}
+                    </Text>
+                    <TextInput
+                      defaultValue={selectedProduit}
+                      onChangeText={input => setSelectedProduit(input)}
+                      placeholder={t('Entrez_un_produit', preferredLangage)}
+                      style={{
+                        backgroundColor: 'transparent',
+                        borderBottomWidth: 1,
+                        borderBottomColor: '#E2C6BB',
+                        color: couleurs.primary,
+                        width: '100%',
+                        fontWeight: '600',
+                        padding: 0,
+                        height: 40,
+                        fontFamily: CustomFont.Poppins,
+                      }}></TextInput>
+                  </View>
 
                   <View
                     style={{
-                      borderBottomWidth: 1,
-                      width: '100%',
-                      height: 40,
-                      borderBottomColor: '#E2C6BB',
-                      marginTop:10
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'flex-start',
+                      alignItems: 'flex-start',
                     }}>
-                    <Picker
-                      style={{position: 'relative', bottom: 8,
-                      fontFamily: CustomFont.Poppins,}}
-                      selectedValue={SelectedDevise}
-                      onValueChange={(itemValue: any, itemIndex: any) =>
-                        setSelectedDevise(itemValue)
-                      }>
-                        <Picker.Item label={'Dollar ($)'} value={'$'} style={{ fontFamily: CustomFont.Poppins,fontSize: 15, color:couleurs.primary}} />
-                        <Picker.Item label={'Euro (€)'} value={'€'}  style={{ fontFamily: CustomFont.Poppins,fontSize: 15, color:couleurs.primary}} />
-                    </Picker>
+                    <Text
+                      style={{
+                        textAlign: 'center',
+                        color: '#000',
+                        fontSize: 15,
+                        height: 30,
+                        opacity: 0.85,
+                        marginTop: 14,
+                        fontFamily: CustomFont.Poppins,
+                      }}>
+                      {t('Prix', preferredLangage)}
+                    </Text>
+                    <TextInput
+                      defaultValue={selectedPrestationPrix}
+                      onChangeText={input => setSelectedPrestationPrix(input)}
+                      placeholder={t('Entrez_le_prix', preferredLangage)}
+                      style={{
+                        backgroundColor: 'transparent',
+                        borderBottomWidth: 1,
+                        borderBottomColor: '#E2C6BB',
+                        color: couleurs.primary,
+                        width: '100%',
+                        fontWeight: '600',
+                        padding: 0,
+                        height: 40,
+                        fontFamily: CustomFont.Poppins,
+                      }}></TextInput>
+
+                    <Text
+                      style={{
+                        textAlign: 'center',
+                        color: '#000',
+                        fontSize: 15,
+                        height: 30,
+                        opacity: 0.85,
+                        marginTop: 14,
+                        fontFamily: CustomFont.Poppins,
+                      }}>
+                      {t('Device', preferredLangage)}
+                    </Text>
+
+                    <View
+                      style={{
+                        borderBottomWidth: 1,
+                        width: '100%',
+                        height: 40,
+                        borderBottomColor: '#E2C6BB',
+                        marginTop: 10,
+                      }}>
+                      <Picker
+                        style={{
+                          position: 'relative',
+                          bottom: 8,
+                          fontFamily: CustomFont.Poppins,
+                        }}
+                        selectedValue={SelectedDevise}
+                        onValueChange={(itemValue: any, itemIndex: any) =>
+                          setSelectedDevise(itemValue)
+                        }>
+                        <Picker.Item
+                          label={'Dollar ($)'}
+                          value={'$'}
+                          style={{
+                            fontFamily: CustomFont.Poppins,
+                            fontSize: 15,
+                            color: couleurs.primary,
+                          }}
+                        />
+                        <Picker.Item
+                          label={'Euro (€)'}
+                          value={'€'}
+                          style={{
+                            fontFamily: CustomFont.Poppins,
+                            fontSize: 15,
+                            color: couleurs.primary,
+                          }}
+                        />
+                      </Picker>
+                    </View>
                   </View>
-              </View>
 
-              <View
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'flex-start',
-                  alignItems: 'flex-start',
-                }}>
-                <Text
-                  style={{
-                    textAlign: 'center',
-                    color: '#000',
-                    fontSize: 15,
-                    height: 30,
-                    opacity: 0.85,
-                    marginTop:14,
-                    fontFamily: CustomFont.Poppins,
-                  }}>
-                  Duree (En heure )
-                </Text>
-                <TextInput
-                  defaultValue={selectedDuree}
-                  onChangeText={input => setSelectedDuree(input) }
-                  placeholder='Entrez la duree'
-                  style={{
-                    backgroundColor: 'transparent',
-                    borderBottomWidth: 1,
-                    borderBottomColor: '#E2C6BB',
-                    color: couleurs.primary,
-                    width: '100%',
-                    fontWeight: '600',
-                    padding: 0,
-                    height:40,
-                    fontFamily: CustomFont.Poppins,
-                  }}></TextInput>
-              </View>
-
-              <View
-                style={{
-                  alignItems: 'center',
-                  backgroundColor: couleurs.primary,
-                  borderRadius: 30,
-                  marginBottom: 20,
-                  marginTop:20
-                }}>
-                <TouchableOpacity
-                  
-                  style={{
-                    paddingHorizontal: 10,
-                    width: '70%',
-                  }}
-                  onPress={() => savePrestation()}>
-                  <Text
+                  <View
                     style={{
-                      textAlign: 'center',
-                      padding: 10,
-                      paddingHorizontal: 20,
-                      fontSize: 15,
-                      fontWeight: '500',
-                      color: couleurs.white,
-                      fontFamily: CustomFont.Poppins,
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'flex-start',
+                      alignItems: 'flex-start',
                     }}>
-                    Enregistrer
-                  </Text>
-                </TouchableOpacity>
+                    <Text
+                      style={{
+                        textAlign: 'center',
+                        color: '#000',
+                        fontSize: 15,
+                        height: 30,
+                        opacity: 0.85,
+                        marginTop: 14,
+                        fontFamily: CustomFont.Poppins,
+                      }}>
+                      {t('duree_h', preferredLangage)}
+                    </Text>
+                    <TextInput
+                      defaultValue={selectedDuree}
+                      onChangeText={input => setSelectedDuree(input)}
+                      placeholder={t('entrez_la_duree', preferredLangage)}
+                      style={{
+                        backgroundColor: 'transparent',
+                        borderBottomWidth: 1,
+                        borderBottomColor: '#E2C6BB',
+                        color: couleurs.primary,
+                        width: '100%',
+                        fontWeight: '600',
+                        padding: 0,
+                        height: 40,
+                        fontFamily: CustomFont.Poppins,
+                      }}></TextInput>
+                  </View>
+
+                  <View
+                    style={{
+                      alignItems: 'center',
+                      backgroundColor: couleurs.primary,
+                      borderRadius: 30,
+                      marginBottom: 20,
+                      marginTop: 20,
+                    }}>
+                    <TouchableOpacity
+                      style={{
+                        paddingHorizontal: 10,
+                        width: '70%',
+                      }}
+                      onPress={() => savePrestation()}>
+                      <Text
+                        style={{
+                          textAlign: 'center',
+                          padding: 10,
+                          paddingHorizontal: 20,
+                          fontSize: 15,
+                          fontWeight: '500',
+                          color: couleurs.white,
+                          fontFamily: CustomFont.Poppins,
+                        }}>
+                        {t('Enregistrer', preferredLangage)}
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
               </View>
-
-              
-            </View>
-
-            </View> }
+            )}
           </View>
         </ScrollView>
       </SafeAreaView>

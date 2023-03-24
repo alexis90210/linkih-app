@@ -1,5 +1,13 @@
-import React, { useState } from 'react';
-import {Text, View, TouchableOpacity, SafeAreaView, ScrollView, Linking, Alert} from 'react-native';
+import React, {useState} from 'react';
+import {
+  Text,
+  View,
+  TouchableOpacity,
+  SafeAreaView,
+  ScrollView,
+  Linking,
+  Alert,
+} from 'react-native';
 
 import ShopIcon from '../components/shop';
 import LogoutIcon from '../components/logout';
@@ -10,43 +18,54 @@ import LawIcon from '../components/Law';
 import Law2Icon from '../components/Law2';
 import Law3Icon from '../components/Law3';
 import CallIcon from '../components/call';
-import { CustomFont, couleurs } from '../components/color';
+import {CustomFont, couleurs} from '../components/color';
 import storage from '../components/api/localstorage';
 import axios from 'axios';
 import ApiService from '../components/api/service';
+import translations from '../translations/translations';
 
 function MenuScreen({navigation}: {navigation: any}) {
+  /////////////////////////////////// LANGUAGE HANDLER ///////////////////////////////////
 
-  const [isVendeur, SetVendeur] = useState( false )
-  const [isClient, SetClient] = useState( false )
-  const [vendeur, SetVendeurData] = useState<any>( {} )
+  const [preferredLangage, setPreferredLangage] = useState('fr');
+
+  const t = (key: any, langage: any) => {
+    return translations[langage][key] || key;
+  };
 
   storage
-  .load({
-    key: 'userconnected', // Note: Do not use underscore("_") in key!
-    id: 'userconnected', // Note: Do not use underscore("_") in id!
-  })
-  .then(data => {
+    .load({
+      key: 'defaultlang', // Note: Do not use underscore("_") in key!
+      id: 'defaultlang', // Note: Do not use underscore("_") in id!
+    })
+    .then((data: any) => {
+      setPreferredLangage(data);
+    });
 
-    // console.log(data);
+  //////////////////////////////////////////////////////////////////////////////////////
 
+  const [isVendeur, SetVendeur] = useState(false);
+  const [isClient, SetClient] = useState(false);
+  const [vendeur, SetVendeurData] = useState<any>({});
 
-    if ( data.role == 'ROLE_VENDEUR' ) {
-      SetVendeur(true)
-      SetVendeurData( data.etablissement )
-    }
+  storage
+    .load({
+      key: 'userconnected', // Note: Do not use underscore("_") in key!
+      id: 'userconnected', // Note: Do not use underscore("_") in id!
+    })
+    .then(data => {
+      // console.log(data);
 
-    else if ( data.role == 'ROLE_CLIENT' ) {
-      SetClient(true)
-    }
-
-    else {
-      navigation.navigate('identification')
-    }
-
-  })
-  .catch(error => console.log(error));
-  
+      if (data.role == 'ROLE_VENDEUR') {
+        SetVendeur(true);
+        SetVendeurData(data.etablissement);
+      } else if (data.role == 'ROLE_CLIENT') {
+        SetClient(true);
+      } else {
+        navigation.navigate('identification');
+      }
+    })
+    .catch(error => console.log(error));
 
   // FILL VENDEUR STRIKE
   const [isGettingPath, SetGotPath] = useState(false);
@@ -56,7 +75,7 @@ function MenuScreen({navigation}: {navigation: any}) {
       method: 'POST',
       url: ApiService.API_URL_STRIPE_GENERATE_LINK,
       data: JSON.stringify({
-        stripe_id: vendeur[0].stripe_account_id
+        stripe_id: vendeur[0].stripe_account_id,
       }),
       headers: {
         Accept: 'application/json',
@@ -65,12 +84,12 @@ function MenuScreen({navigation}: {navigation: any}) {
     })
       .then((response: {data: any}) => {
         console.log('==>', response.data.message);
-        SetGotPath(true)
+        SetGotPath(true);
         var api = response.data;
         if (api.code == 'success') {
           navigation.navigate('paiement_screen', {
-            route: response.data.message
-          })
+            route: response.data.message,
+          });
         }
 
         if (api.code == 'error') {
@@ -81,7 +100,7 @@ function MenuScreen({navigation}: {navigation: any}) {
         console.log(error);
         Alert.alert('', error);
       });
-  }
+  };
 
   return (
     <SafeAreaView
@@ -97,10 +116,15 @@ function MenuScreen({navigation}: {navigation: any}) {
           gap: 30,
           paddingVertical: 15,
           paddingHorizontal: 10,
-          backgroundColor: couleurs.primary
+          backgroundColor: couleurs.primary,
         }}>
-        <Text style={{color: couleurs.white, fontSize: 17, fontFamily: CustomFont.Poppins}}>
-          Parametres du compte
+        <Text
+          style={{
+            color: couleurs.white,
+            fontSize: 17,
+            fontFamily: CustomFont.Poppins,
+          }}>
+          {t('Parametres_du_compte', preferredLangage)}
         </Text>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <ArrowRightIcon color={couleurs.white} />
@@ -115,199 +139,256 @@ function MenuScreen({navigation}: {navigation: any}) {
               justifyContent: 'space-around',
             }}>
             {/* Mon compte */}
-           
-          { !isVendeur && <TouchableOpacity
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-                borderBottomWidth:1,
-                borderColor: '#9c702b20',
-                borderStyle:'solid',
-                justifyContent: 'flex-start',
-                gap: 10,
-                backgroundColor: '#fff',
-                paddingHorizontal: 10,
-                alignItems: 'center',
-                marginTop:0
-              }}
-              onPress={() => {
-                navigation.navigate('compte');
-              }}>
-              <AccountIcon color={couleurs.primary} />
-              <Text style={{fontSize: 16, marginVertical: 10, color: '#000',fontFamily: CustomFont.Poppins}}>
-                Mon compte
-              </Text>
-            </TouchableOpacity>}
+
+            {!isVendeur && (
+              <TouchableOpacity
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  borderBottomWidth: 1,
+                  borderColor: '#9c702b20',
+                  borderStyle: 'solid',
+                  justifyContent: 'flex-start',
+                  gap: 10,
+                  backgroundColor: '#fff',
+                  paddingHorizontal: 10,
+                  alignItems: 'center',
+                  marginTop: 0,
+                }}
+                onPress={() => {
+                  navigation.navigate('compte');
+                }}>
+                <AccountIcon color={couleurs.primary} />
+                <Text
+                  style={{
+                    fontSize: 16,
+                    marginVertical: 10,
+                    color: '#000',
+                    fontFamily: CustomFont.Poppins,
+                  }}>
+                  {t('Mon_compte', preferredLangage)}
+                </Text>
+              </TouchableOpacity>
+            )}
 
             {/*  Mon etablissement */}
 
-            {isVendeur && (<TouchableOpacity
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-                borderTopWidth:1,
-                borderColor: '#9c702b20',
-                borderStyle:'solid',
-                justifyContent: 'flex-start',
-                gap: 10,
-                alignItems: 'center',
-                backgroundColor: '#fff',
-                paddingHorizontal: 10,
-              }}
-              onPress={() => {
-                navigation.navigate('mes_prestations')
-              }}>
-              <BillIcon color={couleurs.primary} />
-              <Text style={{fontSize: 16, marginVertical: 10, color: '#000',fontFamily: CustomFont.Poppins}}>
-                Mes prestations
-              </Text>
-            </TouchableOpacity>)}
+            {isVendeur && (
+              <TouchableOpacity
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  borderTopWidth: 1,
+                  borderColor: '#9c702b20',
+                  borderStyle: 'solid',
+                  justifyContent: 'flex-start',
+                  gap: 10,
+                  alignItems: 'center',
+                  backgroundColor: '#fff',
+                  paddingHorizontal: 10,
+                }}
+                onPress={() => {
+                  navigation.navigate('mes_prestations');
+                }}>
+                <BillIcon color={couleurs.primary} />
+                <Text
+                  style={{
+                    fontSize: 16,
+                    marginVertical: 10,
+                    color: '#000',
+                    fontFamily: CustomFont.Poppins,
+                  }}>
+                  {t('Mes_Prestations', preferredLangage)}
+                </Text>
+              </TouchableOpacity>
+            )}
 
-            {isVendeur && (<TouchableOpacity
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-                borderTopWidth:1,
-                borderColor: '#9c702b20',
-                borderStyle:'solid',
-                justifyContent: 'flex-start',
-                gap: 10,
-                alignItems: 'center',
-                backgroundColor: '#fff',
-                paddingHorizontal: 10,
-              }}
-              onPress={() => {
-               navigation.navigate('mes_horaires')
-              }}>
-              <BillIcon color={couleurs.primary} />
-              <Text style={{fontSize: 16, marginVertical: 10, color: '#000',fontFamily: CustomFont.Poppins}}>
-                Horaire
-              </Text>
-            </TouchableOpacity>)}
+            {isVendeur && (
+              <TouchableOpacity
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  borderTopWidth: 1,
+                  borderColor: '#9c702b20',
+                  borderStyle: 'solid',
+                  justifyContent: 'flex-start',
+                  gap: 10,
+                  alignItems: 'center',
+                  backgroundColor: '#fff',
+                  paddingHorizontal: 10,
+                }}
+                onPress={() => {
+                  navigation.navigate('mes_horaires');
+                }}>
+                <BillIcon color={couleurs.primary} />
+                <Text
+                  style={{
+                    fontSize: 16,
+                    marginVertical: 10,
+                    color: '#000',
+                    fontFamily: CustomFont.Poppins,
+                  }}>
+                  {t('Mes_Horaires', preferredLangage)}
+                </Text>
+              </TouchableOpacity>
+            )}
 
-            {isVendeur && (<TouchableOpacity
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-                borderTopWidth:1,
-                borderColor: '#9c702b20',
-                borderStyle:'solid',
-                justifyContent: 'flex-start',
-                gap: 10,
-                alignItems: 'center',
-                backgroundColor: '#fff',
-                paddingHorizontal: 10,
-              }}
-              onPress={() => {
-                navigation.navigate('ma_gallerie', {
-                  vendeur_id: vendeur[0].id
-                })
-              }}>
-              <BillIcon color={couleurs.primary} />
-              <Text style={{fontSize: 16, marginVertical: 10, color: '#000',fontFamily: CustomFont.Poppins}}>
-                Gallerie
-              </Text>
-            </TouchableOpacity>)}
-          
-            {isVendeur && (<TouchableOpacity
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-                borderTopWidth:1,
-                borderColor: '#9c702b20',
-                borderStyle:'solid',
-                justifyContent: 'flex-start',
-                gap: 10,
-                alignItems: 'center',
-                backgroundColor: '#fff',
-                paddingHorizontal: 10,
-              }}
-              onPress={() => {
-                fillInformation()
-              }}>
-              <BillIcon color={couleurs.primary} />
-              <Text style={{fontSize: 16, marginVertical: 10, color: '#000',fontFamily: CustomFont.Poppins}}>
-                Configuration de paiement
-              </Text>
-            </TouchableOpacity>)}
+            {isVendeur && (
+              <TouchableOpacity
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  borderTopWidth: 1,
+                  borderColor: '#9c702b20',
+                  borderStyle: 'solid',
+                  justifyContent: 'flex-start',
+                  gap: 10,
+                  alignItems: 'center',
+                  backgroundColor: '#fff',
+                  paddingHorizontal: 10,
+                }}
+                onPress={() => {
+                  navigation.navigate('ma_gallerie', {
+                    vendeur_id: vendeur[0].id,
+                  });
+                }}>
+                <BillIcon color={couleurs.primary} />
+                <Text
+                  style={{
+                    fontSize: 16,
+                    marginVertical: 10,
+                    color: '#000',
+                    fontFamily: CustomFont.Poppins,
+                  }}>
+                  {t('Ma_Gallerie', preferredLangage)}
+                </Text>
+              </TouchableOpacity>
+            )}
 
+            {isVendeur && (
+              <TouchableOpacity
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  borderTopWidth: 1,
+                  borderColor: '#9c702b20',
+                  borderStyle: 'solid',
+                  justifyContent: 'flex-start',
+                  gap: 10,
+                  alignItems: 'center',
+                  backgroundColor: '#fff',
+                  paddingHorizontal: 10,
+                }}
+                onPress={() => {
+                  fillInformation();
+                }}>
+                <BillIcon color={couleurs.primary} />
+                <Text
+                  style={{
+                    fontSize: 16,
+                    marginVertical: 10,
+                    color: '#000',
+                    fontFamily: CustomFont.Poppins,
+                  }}>
+                  {t('Configuration_de_paiement', preferredLangage)}
+                </Text>
+              </TouchableOpacity>
+            )}
 
-            {isVendeur && (<TouchableOpacity
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-                borderTopWidth:1,
-                borderColor: '#9c702b20',
-                borderStyle:'solid',
-                justifyContent: 'flex-start',
-                gap: 10,
-                alignItems: 'center',
-                backgroundColor: '#fff',
-                paddingHorizontal: 10,
-              }}
-              onPress={() => {
-                navigation.navigate('reabonnement')
-              }}>
-              <BillIcon color={couleurs.primary} />
-              <Text style={{fontSize: 16, marginVertical: 10, color: '#000',fontFamily: CustomFont.Poppins}}>
-                Reabonnement
-              </Text>
-            </TouchableOpacity>)}
-           { isVendeur && ( <TouchableOpacity
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-                borderTopWidth:1,
-                borderColor: '#9c702b20',
-                borderStyle:'solid',
-                justifyContent: 'flex-start',
-                gap: 10,
-                alignItems: 'center',
-                backgroundColor: '#fff',
-                paddingHorizontal: 10,
-              }}
-              onPress={() => {
-                navigation.navigate('MonEtablissement');
-              }}>
-              <ShopIcon color={couleurs.primary} />
-              <Text style={{fontSize: 16, marginVertical: 10, color: '#000',fontFamily: CustomFont.Poppins}}>
-                Mon etablissement
-              </Text>
-            </TouchableOpacity>)}
-
-         
+            {isVendeur && (
+              <TouchableOpacity
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  borderTopWidth: 1,
+                  borderColor: '#9c702b20',
+                  borderStyle: 'solid',
+                  justifyContent: 'flex-start',
+                  gap: 10,
+                  alignItems: 'center',
+                  backgroundColor: '#fff',
+                  paddingHorizontal: 10,
+                }}
+                onPress={() => {
+                  navigation.navigate('reabonnement');
+                }}>
+                <BillIcon color={couleurs.primary} />
+                <Text
+                  style={{
+                    fontSize: 16,
+                    marginVertical: 10,
+                    color: '#000',
+                    fontFamily: CustomFont.Poppins,
+                  }}>
+                  {t('Reabonnement', preferredLangage)}
+                </Text>
+              </TouchableOpacity>
+            )}
+            {isVendeur && (
+              <TouchableOpacity
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  borderTopWidth: 1,
+                  borderColor: '#9c702b20',
+                  borderStyle: 'solid',
+                  justifyContent: 'flex-start',
+                  gap: 10,
+                  alignItems: 'center',
+                  backgroundColor: '#fff',
+                  paddingHorizontal: 10,
+                }}
+                onPress={() => {
+                  navigation.navigate('MonEtablissement');
+                }}>
+                <ShopIcon color={couleurs.primary} />
+                <Text
+                  style={{
+                    fontSize: 16,
+                    marginVertical: 10,
+                    color: '#000',
+                    fontFamily: CustomFont.Poppins,
+                  }}>
+                  {t('mon_etablissement', preferredLangage)}
+                </Text>
+              </TouchableOpacity>
+            )}
 
             <TouchableOpacity
               style={{
                 display: 'flex',
                 flexDirection: 'row',
-                borderTopWidth:1,
+                borderTopWidth: 1,
                 borderColor: '#9c702b20',
-                borderStyle:'solid',
+                borderStyle: 'solid',
                 justifyContent: 'flex-start',
                 gap: 10,
                 alignItems: 'center',
                 backgroundColor: '#fff',
                 paddingHorizontal: 10,
               }}
-              onPress={() => 
-                Linking.openURL(`tel:242069500886`)
+              onPress={() =>
+                Linking.openURL(`tel:${ApiService.ADMIN_LINKIH_TEL}`)
               }>
               <CallIcon color={couleurs.primary} />
-              <Text style={{fontSize: 16, marginVertical: 10, color: '#000',fontFamily: CustomFont.Poppins}}>
-                Contactez-nous
+              <Text
+                style={{
+                  fontSize: 16,
+                  marginVertical: 10,
+                  color: '#000',
+                  fontFamily: CustomFont.Poppins,
+                }}>
+                {t('Contactez_nous', preferredLangage)}
               </Text>
             </TouchableOpacity>
 
-
-
             <TouchableOpacity
               style={{
                 display: 'flex',
                 flexDirection: 'row',
-                borderTopWidth:1,
+                borderTopWidth: 1,
                 borderColor: '#9c702b20',
-                borderStyle:'solid',
+                borderStyle: 'solid',
                 justifyContent: 'flex-start',
                 gap: 10,
                 alignItems: 'center',
@@ -318,8 +399,14 @@ function MenuScreen({navigation}: {navigation: any}) {
                 null;
               }}>
               <Law3Icon color={couleurs.primary} />
-              <Text style={{fontSize: 16, marginVertical: 10, color: '#000',fontFamily: CustomFont.Poppins}}>
-                Condition generale d'utilisation
+              <Text
+                style={{
+                  fontSize: 16,
+                  marginVertical: 10,
+                  color: '#000',
+                  fontFamily: CustomFont.Poppins,
+                }}>
+                {t('Condition_generale_d_utilisation', preferredLangage)}
               </Text>
             </TouchableOpacity>
 
@@ -327,9 +414,9 @@ function MenuScreen({navigation}: {navigation: any}) {
               style={{
                 display: 'flex',
                 flexDirection: 'row',
-                borderTopWidth:1,
+                borderTopWidth: 1,
                 borderColor: '#9c702b20',
-                borderStyle:'solid',
+                borderStyle: 'solid',
                 justifyContent: 'flex-start',
                 gap: 10,
                 alignItems: 'center',
@@ -340,8 +427,14 @@ function MenuScreen({navigation}: {navigation: any}) {
                 null;
               }}>
               <LawIcon color={couleurs.primary} />
-              <Text style={{fontSize: 16, marginVertical: 10, color: '#000',fontFamily: CustomFont.Poppins}}>
-                Politique de confidentialite
+              <Text
+                style={{
+                  fontSize: 16,
+                  marginVertical: 10,
+                  color: '#000',
+                  fontFamily: CustomFont.Poppins,
+                }}>
+                {t('Politique_de_confidentialite', preferredLangage)}
               </Text>
             </TouchableOpacity>
 
@@ -349,9 +442,9 @@ function MenuScreen({navigation}: {navigation: any}) {
               style={{
                 display: 'flex',
                 flexDirection: 'row',
-                borderTopWidth:1,
+                borderTopWidth: 1,
                 borderColor: '#9c702b20',
-                borderStyle:'solid',
+                borderStyle: 'solid',
                 justifyContent: 'flex-start',
                 gap: 10,
                 alignItems: 'center',
@@ -362,30 +455,48 @@ function MenuScreen({navigation}: {navigation: any}) {
                 null;
               }}>
               <Law2Icon color={couleurs.primary} />
-              <Text style={{fontSize: 16, marginVertical: 10, color: '#000',fontFamily: CustomFont.Poppins}}>
-                Mentions legales
+              <Text
+                style={{
+                  fontSize: 16,
+                  marginVertical: 10,
+                  color: '#000',
+                  fontFamily: CustomFont.Poppins,
+                }}>
+                {t('Mentions_legales', preferredLangage)}
               </Text>
             </TouchableOpacity>
 
             {/*  Session de connexion */}
-         
+
             <TouchableOpacity
               style={{
                 display: 'flex',
                 flexDirection: 'row',
-                borderTopWidth:1,
+                borderTopWidth: 1,
                 borderColor: '#9c702b20',
-                borderStyle:'solid',
+                borderStyle: 'solid',
                 justifyContent: 'flex-start',
                 gap: 10,
                 alignItems: 'center',
                 backgroundColor: '#fff',
                 paddingHorizontal: 10,
               }}
-              onPress={() =>  navigation.navigate(isVendeur ? 'identification_proprietaire' : 'identification_client' )}>
+              onPress={() =>
+                navigation.navigate(
+                  isVendeur
+                    ? 'identification_proprietaire'
+                    : 'identification_client',
+                )
+              }>
               <LogoutIcon color={couleurs.primary} />
-              <Text style={{fontSize: 16, marginVertical: 10, color: '#000',fontFamily: CustomFont.Poppins}}>
-                Deconnexion
+              <Text
+                style={{
+                  fontSize: 16,
+                  marginVertical: 10,
+                  color: '#000',
+                  fontFamily: CustomFont.Poppins,
+                }}>
+                {t('Deconnexion', preferredLangage)}
               </Text>
             </TouchableOpacity>
           </View>
