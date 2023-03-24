@@ -93,7 +93,7 @@ export default function InscriptionProprietaire3({
     setLoading(true);
 
     var json = JSON.stringify({
-      photo: photOnBase64,
+      photo:  photOnBase64,
       ...proprietaire,
     });
 

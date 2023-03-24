@@ -121,9 +121,9 @@ export default function ConfirmationCompteScreen({navigation, route}: {navigatio
       setLoadingScreen(false)
       setLoading(false);
 
-      Alert.alert('', t("erreur_survenue", preferredLangage), [
-        {text: t("Ressayez", preferredLangage), onPress: () => null},
-      ]);
+      // Alert.alert('', t("erreur_survenue", preferredLangage), [
+      //   {text: t("Ressayez", preferredLangage), onPress: () => null},
+      // ]);
 
     });
  }

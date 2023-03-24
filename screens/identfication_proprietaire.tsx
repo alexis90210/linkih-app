@@ -164,15 +164,21 @@ export default function IdentificationProprietaireScreen({
         if (api.code == 'error') {
           setIsProccessing(false);
 
-          Alert.alert('', api.message, [
-            {
-              text: t('Confirmer_maintenant', preferredLangage),
-              onPress: () =>
-                navigation.navigate('confirmation_screen', {
-                  vendeur_id: api.vendeur_id,
-                }),
-            },
-          ]);
+          if ( api.status) {
+            Alert.alert('', api.message, [
+              {
+                text: t('Confirmer_maintenant', preferredLangage),
+                onPress: () =>
+                  navigation.navigate('confirmation_screen', {
+                    vendeur_id: api.vendeur_id,
+                  }),
+              },
+            ]);
+          } else {
+            Alert.alert('', t('login_incorect', preferredLangage), [
+            
+            ], {cancelable:true});
+          }
         }
       })
       .catch((error: any) => {

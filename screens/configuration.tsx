@@ -72,15 +72,17 @@ export default function ConfigurationScreen({navigation}: {navigation: any}) {
   const [currentLanguage, setCurrentLanguage] = useState<any>({name: ''});
 
   const langages = [
-    {name: 'Francais', flag:  "🇫🇷", code:"fr"},
-    {name: 'Anglais', flag: "🇺🇸", code : "en"},
+    {name: 'Francais', flag:  "🇫🇷", code : "fr"},
+    {name: 'Anglais',  flag:  "🇺🇸",  code : "en"},
     // add more langages here
   ];
 
 
   const selectLanguage = (item: any) => {
     setCurrentLanguage(item);
-    saveConfiguration()
+    if(currentLanguage.code) {
+      saveConfiguration()
+    }
   };
 
   // get and save configuration
