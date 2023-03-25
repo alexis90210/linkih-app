@@ -240,6 +240,11 @@ export default function Map({
               <MapboxGL.PointAnnotation
                 key={index}
                 id={'marker'}
+                onSelected={(e) => {
+                  console.log(e);
+                  // SetModalVisible(true)
+                }
+                }
                 coordinate={[
                   parseFloat(marker.longitude),
                   parseFloat(marker.latitude),
@@ -365,7 +370,7 @@ export default function Map({
               flexDirection: 'row',
               gap: 4,
               paddingHorizontal: 20,
-              width: 200,
+              // width: 200,
             }}>
             <SearchIcon color={couleurs.secondary} />
             <Text
@@ -483,7 +488,7 @@ export default function Map({
                           reviewSize={4}
                           reviewColor={couleurs.primary}
                           showRating={false}
-                          count={4}
+                          count={5}
                           reviews={['Terrible', 'Bad', 'Good', 'Very Good']}
                           onFinishRating={(rate:any) => console.log(rate)}
                           defaultRating={marker.note}
@@ -499,11 +504,11 @@ export default function Map({
                         {marker.categorie}  . 
                         <Text style={{color: couleurs.primary}}>
                           { distance(
-                        Number(marker.latitude),
-                        Number(marker.longitude),
-                        Number(UserPosition.latitude),
-                        Number(UserPosition.longitude),
-                      )}
+                            Number(marker.latitude),
+                            Number(marker.longitude),
+                            Number(UserPosition.latitude),
+                            Number(UserPosition.longitude),
+                          )}
                         </Text>
                       </Text>
                       <Text
@@ -514,7 +519,7 @@ export default function Map({
                         }}>
                         {/* {marker.adresse} */}
                         <Text style={{color: 'green'}}> { t('Ouvert', preferredLangage)} </Text> . {t('Ferme_a', preferredLangage)}
-                        18:00
+                        {' '}18:00
                       </Text>
 
                       <View

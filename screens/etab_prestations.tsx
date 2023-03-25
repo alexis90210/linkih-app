@@ -215,7 +215,7 @@ export default function MesPrestations({
                     {t('Duree', preferredLangage)}
                   </Text>
                   <Text style={{color: couleurs.primary, fontSize: 15}}>
-                    {row.duree}
+                    {row.duree} h
                   </Text>
                 </View>
 
@@ -228,9 +228,10 @@ export default function MesPrestations({
                   }}>
                   <Text style={{fontSize: 15, color: couleurs.dark}}>Prix</Text>
                   <Text style={{color: couleurs.primary, fontSize: 15}}>
-                    {row.prix}
+                    {row.prix} {row.devise}
                   </Text>
                 </View>
+                
               </View>
             ))}
 

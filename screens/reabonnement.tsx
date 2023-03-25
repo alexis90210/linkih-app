@@ -107,6 +107,7 @@ export default function Reabonnement({
     expiration?: any;
     activation?: any;
     nom?: any;
+    en_nom?: any;
     code?: any;
   }>({});
 
@@ -245,7 +246,7 @@ export default function Reabonnement({
                         fontSize: 14,
                         color: couleurs.primary,
                       }}>
-                      {mon_abonnement.nom}
+                        {preferredLangage == 'fr' ? mon_abonnement.nom : mon_abonnement.en_nom}
                     </Text>
                   </View>
 

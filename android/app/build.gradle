@@ -117,6 +117,13 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
+
+        release {
+            storeFile file('linkih_app_key.keystore')
+            storePassword 'hisoka'
+            keyAlias 'linkih_app_key'
+            keyPassword 'hisoka'
+        }
     }
     buildTypes {
         debug {

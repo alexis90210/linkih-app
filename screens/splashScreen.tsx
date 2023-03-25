@@ -39,8 +39,8 @@ export default function SplashScreen({navigation}: {navigation: any}) {
 
   return (   
 
-        <ScrollView contentInsetAdjustmentBehavior="automatic" style={{backgroundColor:couleurs.dark}}>
-          <StatusBar backgroundColor={couleurs.dark}></StatusBar>
+        <ScrollView contentInsetAdjustmentBehavior="automatic" style={{backgroundColor:couleurs.primary}}>
+          <StatusBar backgroundColor={couleurs.primary}></StatusBar>
           <View
             style={{
               flex:1,
@@ -49,7 +49,9 @@ export default function SplashScreen({navigation}: {navigation: any}) {
               alignItems: 'center',
               marginTop: '40%',
             }}>
-              <Image source={require('../assets/images/logo.png')} style={{height:65, width:160, marginBottom:20}} />
+              <Image source={require('../assets/images/linkih-logo.jpeg')} style={{
+                height:90, width:160, marginBottom:20, borderRadius:10
+                }} />
           
             <Text
               style={{

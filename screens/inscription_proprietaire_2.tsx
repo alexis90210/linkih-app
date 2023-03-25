@@ -671,8 +671,7 @@ export default function InscriptionProprietaireScreen2({
                     color: couleurs.dark,
                     paddingHorizontal: 30,
                   }}>
-                  Veuillez selectionner la categorie, qui decrit le mieux votre
-                  etablissement
+                  { t('Veuillez_selectionner_la_categorie_qui_decrit_le_mieux_votre_etablissement', preferredLangage)}
                 </Text>
                 <View
                   style={{
@@ -717,7 +716,7 @@ export default function InscriptionProprietaireScreen2({
                               color: '#000',
                               fontFamily: CustomFont.Poppins,
                             }}>
-                            {row.nom}
+                            {preferredLangage == 'fr' ? row.nom : row.en_nom}
                           </Text>
                         </View>
                       </View>

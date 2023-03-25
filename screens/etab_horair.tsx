@@ -423,6 +423,7 @@ export default function MesHoraires({
 
         if (api.code == 'success') {
           setLoading(false);
+          Alert.alert('Succes!!', t('Operation_reussie', preferredLangage));
         }
       })
       .catch((error: any) => {
@@ -491,7 +492,7 @@ export default function MesHoraires({
                 <Text
                   style={{
                     fontFamily: CustomFont.Poppins,
-                    fontSize: 15,
+                    fontSize: 12,
                     color: couleurs.dark,
                     alignSelf: 'center',
                   }}>
@@ -502,7 +503,7 @@ export default function MesHoraires({
                     display: 'flex',
                     justifyContent: 'space-between',
                     gap: 10,
-                    flexDirection: 'row',
+                    flexDirection: 'column',
                   }}>
                   <View
                     style={{
@@ -513,7 +514,7 @@ export default function MesHoraires({
                     }}>
                     <Picker
                       style={{
-                        width: 125,
+                        width: 200,
                         height: 30,
                         alignSelf: 'center',
                         position: 'relative',
@@ -527,6 +528,7 @@ export default function MesHoraires({
                         label={t('Selectionner_une_heure', preferredLangage)}
                         value={''}
                         enabled={false}
+                        style={{fontSize:11}}
                       />
                       <Picker.Item
                         label={t('MATIN', preferredLangage)}
@@ -538,6 +540,7 @@ export default function MesHoraires({
                           key={index}
                           label={row.hour}
                           value={row.hour}
+                          style={{fontSize:13}}
                         />
                       ))}
 
@@ -551,6 +554,7 @@ export default function MesHoraires({
                           key={index}
                           label={row.hour}
                           value={row.hour}
+                          style={{fontSize:13}}
                         />
                       ))}
                     </Picker>
@@ -565,7 +569,7 @@ export default function MesHoraires({
                     }}>
                     <Picker
                       style={{
-                        width: 125,
+                        width: 200,
                         height: 30,
                         alignSelf: 'center',
                         position: 'relative',
@@ -579,6 +583,7 @@ export default function MesHoraires({
                         label={t('Selectionner_une_heure', preferredLangage)}
                         value={''}
                         enabled={false}
+                        style={{fontSize:11}}
                       />
                       <Picker.Item
                         label={t('MATIN', preferredLangage)}
@@ -590,6 +595,7 @@ export default function MesHoraires({
                           key={index}
                           label={row.hour}
                           value={row.hour}
+                          style={{fontSize:13}}
                         />
                       ))}
 
@@ -603,6 +609,7 @@ export default function MesHoraires({
                           key={index}
                           label={row.hour}
                           value={row.hour}
+                          style={{fontSize:13}}
                         />
                       ))}
                     </Picker>
@@ -626,7 +633,7 @@ export default function MesHoraires({
                 <Text
                   style={{
                     fontFamily: CustomFont.Poppins,
-                    fontSize: 15,
+                    fontSize: 12,
                     color: couleurs.dark,
                     alignSelf: 'center',
                   }}>
@@ -637,7 +644,7 @@ export default function MesHoraires({
                     display: 'flex',
                     justifyContent: 'space-between',
                     gap: 10,
-                    flexDirection: 'row',
+                    flexDirection: 'column',
                   }}>
                   <View
                     style={{
@@ -648,7 +655,7 @@ export default function MesHoraires({
                     }}>
                     <Picker
                       style={{
-                        width: 125,
+                        width: 200,
                         height: 30,
                         alignSelf: 'center',
                         position: 'relative',
@@ -662,6 +669,7 @@ export default function MesHoraires({
                         label={t('Selectionner_une_heure', preferredLangage)}
                         value={''}
                         enabled={false}
+                        style={{fontSize:11}}
                       />
                       <Picker.Item
                         label={t('MATIN', preferredLangage)}
@@ -673,6 +681,7 @@ export default function MesHoraires({
                           key={index}
                           label={row.hour}
                           value={row.hour}
+                          style={{fontSize:13}}
                         />
                       ))}
 
@@ -686,6 +695,7 @@ export default function MesHoraires({
                           key={index}
                           label={row.hour}
                           value={row.hour}
+                          style={{fontSize:13}}
                         />
                       ))}
                     </Picker>
@@ -700,7 +710,7 @@ export default function MesHoraires({
                     }}>
                     <Picker
                       style={{
-                        width: 125,
+                        width: 200,
                         height: 30,
                         alignSelf: 'center',
                         position: 'relative',
@@ -714,6 +724,7 @@ export default function MesHoraires({
                         label={t('Selectionner_une_heure', preferredLangage)}
                         value={''}
                         enabled={false}
+                        style={{fontSize:11}}
                       />
                       <Picker.Item
                         label={t('MATIN', preferredLangage)}
@@ -725,6 +736,7 @@ export default function MesHoraires({
                           key={index}
                           label={row.hour}
                           value={row.hour}
+                          style={{fontSize:13}}
                         />
                       ))}
 
@@ -738,6 +750,7 @@ export default function MesHoraires({
                           key={index}
                           label={row.hour}
                           value={row.hour}
+                          style={{fontSize:13}}
                         />
                       ))}
                     </Picker>
@@ -760,7 +773,7 @@ export default function MesHoraires({
                 <Text
                   style={{
                     fontFamily: CustomFont.Poppins,
-                    fontSize: 15,
+                    fontSize: 12,
                     color: couleurs.dark,
                     alignSelf: 'center',
                   }}>
@@ -771,7 +784,7 @@ export default function MesHoraires({
                     display: 'flex',
                     justifyContent: 'space-between',
                     gap: 10,
-                    flexDirection: 'row',
+                    flexDirection: 'column',
                   }}>
                   <View
                     style={{
@@ -782,7 +795,7 @@ export default function MesHoraires({
                     }}>
                     <Picker
                       style={{
-                        width: 125,
+                        width: 200,
                         height: 30,
                         alignSelf: 'center',
                         position: 'relative',
@@ -796,6 +809,7 @@ export default function MesHoraires({
                         label={t('Selectionner_une_heure', preferredLangage)}
                         value={''}
                         enabled={false}
+                        style={{fontSize:11}}
                       />
                       <Picker.Item
                         label={t('MATIN', preferredLangage)}
@@ -807,6 +821,7 @@ export default function MesHoraires({
                           key={index}
                           label={row.hour}
                           value={row.hour}
+                          style={{fontSize:13}}
                         />
                       ))}
 
@@ -820,6 +835,7 @@ export default function MesHoraires({
                           key={index}
                           label={row.hour}
                           value={row.hour}
+                          style={{fontSize:13}}
                         />
                       ))}
                     </Picker>
@@ -834,7 +850,7 @@ export default function MesHoraires({
                     }}>
                     <Picker
                       style={{
-                        width: 125,
+                        width: 200,
                         height: 30,
                         alignSelf: 'center',
                         position: 'relative',
@@ -848,6 +864,7 @@ export default function MesHoraires({
                         label={t('Selectionner_une_heure', preferredLangage)}
                         value={''}
                         enabled={false}
+                        style={{fontSize:11}}
                       />
                       <Picker.Item
                         label={t('MATIN', preferredLangage)}
@@ -859,6 +876,7 @@ export default function MesHoraires({
                           key={index}
                           label={row.hour}
                           value={row.hour}
+                          style={{fontSize:13}}
                         />
                       ))}
 
@@ -872,6 +890,7 @@ export default function MesHoraires({
                           key={index}
                           label={row.hour}
                           value={row.hour}
+                          style={{fontSize:13}}
                         />
                       ))}
                     </Picker>
@@ -894,7 +913,7 @@ export default function MesHoraires({
                 <Text
                   style={{
                     fontFamily: CustomFont.Poppins,
-                    fontSize: 15,
+                    fontSize: 12,
                     color: couleurs.dark,
                     alignSelf: 'center',
                   }}>
@@ -905,7 +924,7 @@ export default function MesHoraires({
                     display: 'flex',
                     justifyContent: 'space-between',
                     gap: 10,
-                    flexDirection: 'row',
+                    flexDirection: 'column',
                   }}>
                   <View
                     style={{
@@ -916,7 +935,7 @@ export default function MesHoraires({
                     }}>
                     <Picker
                       style={{
-                        width: 125,
+                        width: 200,
                         height: 30,
                         alignSelf: 'center',
                         position: 'relative',
@@ -930,6 +949,7 @@ export default function MesHoraires({
                         label={t('Selectionner_une_heure', preferredLangage)}
                         value={''}
                         enabled={false}
+                        style={{fontSize:11}}
                       />
                       <Picker.Item
                         label={t('MATIN', preferredLangage)}
@@ -941,6 +961,7 @@ export default function MesHoraires({
                           key={index}
                           label={row.hour}
                           value={row.hour}
+                          style={{fontSize:13}}
                         />
                       ))}
 
@@ -954,6 +975,7 @@ export default function MesHoraires({
                           key={index}
                           label={row.hour}
                           value={row.hour}
+                          style={{fontSize:13}}
                         />
                       ))}
                     </Picker>
@@ -968,7 +990,7 @@ export default function MesHoraires({
                     }}>
                     <Picker
                       style={{
-                        width: 125,
+                        width: 200,
                         height: 30,
                         alignSelf: 'center',
                         position: 'relative',
@@ -982,6 +1004,7 @@ export default function MesHoraires({
                         label={t('Selectionner_une_heure', preferredLangage)}
                         value={''}
                         enabled={false}
+                        style={{fontSize:11}}
                       />
                       <Picker.Item
                         label={t('MATIN', preferredLangage)}
@@ -993,6 +1016,7 @@ export default function MesHoraires({
                           key={index}
                           label={row.hour}
                           value={row.hour}
+                          style={{fontSize:13}}
                         />
                       ))}
 
@@ -1006,6 +1030,7 @@ export default function MesHoraires({
                           key={index}
                           label={row.hour}
                           value={row.hour}
+                          style={{fontSize:13}}
                         />
                       ))}
                     </Picker>
@@ -1028,7 +1053,7 @@ export default function MesHoraires({
                 <Text
                   style={{
                     fontFamily: CustomFont.Poppins,
-                    fontSize: 15,
+                    fontSize: 12,
                     color: couleurs.dark,
                     alignSelf: 'center',
                   }}>
@@ -1039,7 +1064,7 @@ export default function MesHoraires({
                     display: 'flex',
                     justifyContent: 'space-between',
                     gap: 10,
-                    flexDirection: 'row',
+                    flexDirection: 'column',
                   }}>
                   <View
                     style={{
@@ -1050,7 +1075,7 @@ export default function MesHoraires({
                     }}>
                     <Picker
                       style={{
-                        width: 125,
+                        width: 200,
                         height: 30,
                         alignSelf: 'center',
                         position: 'relative',
@@ -1064,6 +1089,7 @@ export default function MesHoraires({
                         label={t('Selectionner_une_heure', preferredLangage)}
                         value={''}
                         enabled={false}
+                        style={{fontSize:11}}
                       />
                       <Picker.Item
                         label={t('MATIN', preferredLangage)}
@@ -1075,6 +1101,7 @@ export default function MesHoraires({
                           key={index}
                           label={row.hour}
                           value={row.hour}
+                          style={{fontSize:13}}
                         />
                       ))}
 
@@ -1088,6 +1115,7 @@ export default function MesHoraires({
                           key={index}
                           label={row.hour}
                           value={row.hour}
+                          style={{fontSize:13}}
                         />
                       ))}
                     </Picker>
@@ -1102,7 +1130,7 @@ export default function MesHoraires({
                     }}>
                     <Picker
                       style={{
-                        width: 125,
+                        width: 200,
                         height: 30,
                         alignSelf: 'center',
                         position: 'relative',
@@ -1116,6 +1144,7 @@ export default function MesHoraires({
                         label={t('Selectionner_une_heure', preferredLangage)}
                         value={''}
                         enabled={false}
+                        style={{fontSize:11}}
                       />
                       <Picker.Item
                         label={t('MATIN', preferredLangage)}
@@ -1127,6 +1156,7 @@ export default function MesHoraires({
                           key={index}
                           label={row.hour}
                           value={row.hour}
+                          style={{fontSize:13}}
                         />
                       ))}
 
@@ -1140,6 +1170,7 @@ export default function MesHoraires({
                           key={index}
                           label={row.hour}
                           value={row.hour}
+                          style={{fontSize:13}}
                         />
                       ))}
                     </Picker>
@@ -1157,12 +1188,12 @@ export default function MesHoraires({
                   display: 'flex',
                   justifyContent: 'space-between',
                   gap: 15,
-                  flexDirection: 'row',
+                  flexDirection: 'row'
                 }}>
                 <Text
                   style={{
                     fontFamily: CustomFont.Poppins,
-                    fontSize: 15,
+                    fontSize: 12,
                     color: couleurs.dark,
                     alignSelf: 'center',
                   }}>
@@ -1173,7 +1204,7 @@ export default function MesHoraires({
                     display: 'flex',
                     justifyContent: 'space-between',
                     gap: 10,
-                    flexDirection: 'row',
+                    flexDirection: 'column'
                   }}>
                   <View
                     style={{
@@ -1184,7 +1215,7 @@ export default function MesHoraires({
                     }}>
                     <Picker
                       style={{
-                        width: 125,
+                        width: 200,
                         height: 30,
                         alignSelf: 'center',
                         position: 'relative',
@@ -1198,6 +1229,7 @@ export default function MesHoraires({
                         label={t('Selectionner_une_heure', preferredLangage)}
                         value={''}
                         enabled={false}
+                        style={{fontSize:11}}
                       />
                       <Picker.Item
                         label={t('MATIN', preferredLangage)}
@@ -1205,10 +1237,11 @@ export default function MesHoraires({
                         enabled={false}
                       />
                       {hours_matin.map((row, index) => (
-                        <Picker.Item
+                        <Picker.Item 
                           key={index}
                           label={row.hour}
                           value={row.hour}
+                          style={{fontSize:13}}
                         />
                       ))}
 
@@ -1222,6 +1255,7 @@ export default function MesHoraires({
                           key={index}
                           label={row.hour}
                           value={row.hour}
+                          style={{fontSize:13}}
                         />
                       ))}
                     </Picker>
@@ -1236,7 +1270,7 @@ export default function MesHoraires({
                     }}>
                     <Picker
                       style={{
-                        width: 125,
+                        width: 200,
                         height: 30,
                         alignSelf: 'center',
                         position: 'relative',
@@ -1250,6 +1284,7 @@ export default function MesHoraires({
                         label={t('Selectionner_une_heure', preferredLangage)}
                         value={''}
                         enabled={false}
+                        style={{fontSize:11}}
                       />
                       <Picker.Item
                         label={t('MATIN', preferredLangage)}
@@ -1261,6 +1296,7 @@ export default function MesHoraires({
                           key={index}
                           label={row.hour}
                           value={row.hour}
+                          style={{fontSize:13}}
                         />
                       ))}
 
@@ -1274,6 +1310,7 @@ export default function MesHoraires({
                           key={index}
                           label={row.hour}
                           value={row.hour}
+                          style={{fontSize:13}}
                         />
                       ))}
                     </Picker>

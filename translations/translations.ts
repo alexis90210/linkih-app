@@ -70,12 +70,12 @@ const translations: any = {
     Produit: 'Product',
     duree_de_la_prestation: 'Duration of the service',
     montant_de_la_prestation: 'Benefit amount',
-    prendre_un_rendez_vous: 'Make an appointment',
+    prendre_un_rendez_vous: 'Appointment',
     membre_depuis: 'Member since',
     adresse: 'Address',
     heure_d_ouverture: 'Opening time',
     lien_reseaux_sociaux: 'Social media link',
-    Prendre_un_RDV: 'Make an appointment',
+    Prendre_un_RDV: 'Appointment',
     Itineraire: 'Itinerary',
     Prestation_selectionnee: 'Selected service',
     Quel_jour: 'What day ?',
@@ -179,6 +179,8 @@ const translations: any = {
     Suivant: 'Next',
 
     // identification_proprietaire_2
+    
+    Veuillez_selectionner_la_categorie_qui_decrit_le_mieux_votre_etablissement : "Veuillez selectionner la categorie, qui decrit le mieux votre etablissement",
     Le_champ_poste_du_responsable_est_trop_court:
       'The manager position field is too short',
     Le_SIRET_de_l_entreprise_est_trop_court: "The company's SIRET is too short",
@@ -235,6 +237,7 @@ const translations: any = {
     Affichage_sur_liste: 'List view',
     Ouvert: 'Open',
     Ferme_a: 'Close at',
+    Ferme: 'Closed',
     Appeler: 'Call',
     Visualisation: 'Visualization',
 
@@ -495,6 +498,7 @@ const translations: any = {
     Suivant: 'Suivant',
 
     // identification_proprietaire_2
+    Veuillez_selectionner_la_categorie_qui_decrit_le_mieux_votre_etablissement : "Please select the category that best describes your establishment",
     Le_champ_poste_du_responsable_est_trop_court:
       'Le champ poste du responsable est trop court',
     Le_SIRET_de_l_entreprise_est_trop_court:
@@ -556,6 +560,7 @@ const translations: any = {
     Affichage_sur_liste: 'Affichage sur liste',
     Ouvert: 'Ouvert',
     Ferme_a: 'Ferme a',
+    Ferme: 'Ferme',
     Appeler: 'Appeler',
     Visualisation: 'Visualisation',
 

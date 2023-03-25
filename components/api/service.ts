@@ -1,11 +1,12 @@
 export default class ApiService {
   // BASE API URL
-  static API_BASE_URL = 'https://linkih.hlconception.com/';
-  static ADMIN_LINKIH_TEL="242069500886";
+  static API_BASE_URL = 'https://linkih.hlconception.com/'; // 'http://192.168.1.71:8000/'; 
+  static ADMIN_LINKIH_TEL = '+242069500886';
   static API_URL = this.API_BASE_URL + 'api/v1/'; // IP HOME
   static MAPBOX_GL_TOKEN =
     'pk.eyJ1IjoiaGxjb25jZXB0aW9uIiwiYSI6ImNsY3lrM285YjA5angzbm5vZDE5NDhjNGMifQ.j6TPH1G7fM9IMI2SAtKswA';
-  static YANDEX_API_KEY="trnsl.1.1.20200111T205255Z.688491bbea68797d.001dd6b498ea98d36f6c9f27ca84e9a8084c1f1d";
+  static YANDEX_API_KEY =
+    'trnsl.1.1.20200111T205255Z.688491bbea68797d.001dd6b498ea98d36f6c9f27ca84e9a8084c1f1d';
   static STRIPE_API_KEY =
     'pk_live_51Lba4wDhG7cSefHLfJBm8jzRBSfEWvlvj47ykhmVhVpddF00op4lK1UvIVhdLkXJ820Ys8ywCISQhtfp1tEikq1T00iDvxTD1j';
   static STRIPE_SECRETE_KEY =
@@ -40,4 +41,5 @@ export default class ApiService {
   static API_URL_ADD_PHOTO_GALLERIE = this.API_URL + 'add/vendeur/photo';
   static API_URL_DELETE_PHOTO_GALLERIE = this.API_URL + 'delete/vendeur/photo';
   static API_URL_EDIT_VENDEUR = this.API_URL + 'edit/vendeur';
+  static API_CREATE_NOTE_VENDEUR = this.API_URL + '/create/vendeur/note';
 }

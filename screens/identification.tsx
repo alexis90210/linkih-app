@@ -161,7 +161,7 @@ export default function IdentificationScreen({navigation}: {navigation: any}) {
                         paddingHorizontal: 10,
                         backgroundColor: row.bgColor,
                         padding: 18,
-                        width: 120,
+                        width: 105,
                         height: 140,
                         display: 'flex',
                         flexDirection: 'column',
@@ -188,7 +188,7 @@ export default function IdentificationScreen({navigation}: {navigation: any}) {
                             textAlign: 'center',
                             color: key == 0 ? couleurs.white : couleurs.dark,
                             fontWeight: 'normal',
-                            fontSize: 13,
+                            fontSize: 12,
                             opacity: 0.85,
                             fontFamily: CustomFont.Poppins,
                           }}>
@@ -211,7 +211,7 @@ export default function IdentificationScreen({navigation}: {navigation: any}) {
                 <Text
                   style={{
                     color: couleurs.dark,
-                    fontSize: 12,
+                    fontSize: 13,
                     textAlign: 'center',
                     fontFamily: CustomFont.Poppins,
                   }}>

@@ -118,8 +118,8 @@ export default function MonEtablissement({
               style={{
                 height: 200,
                 width: '100%',
-                borderRadius: 15,
-                marginTop: 2,
+                // borderRadius: 15,
+                // marginTop: 2,
                 borderWidth: 1,
                 borderColor: couleurs.primary,
               }}
@@ -133,13 +133,13 @@ export default function MonEtablissement({
               position: 'absolute',
               top: 130,
               left: 0,
-              paddingHorizontal: 24,
+              paddingHorizontal: 14,
               zIndex: 10,
             }}>
             <View
               style={{
                 borderRadius: 15,
-                backgroundColor: couleurs.primary,
+                backgroundColor: couleurs.white,
                 padding: 14,
                 width: '100%',
                 shadowColor: 'gray',
@@ -147,7 +147,7 @@ export default function MonEtablissement({
               }}>
               <Text
                 style={{
-                  color: couleurs.white,
+                  color: couleurs.dark,
                   paddingVertical: 3,
                   fontSize: 17,
                   fontFamily: CustomFont.Poppins,
@@ -156,9 +156,8 @@ export default function MonEtablissement({
               </Text>
               <Text
                 style={{
-                  color: couleurs.white,
+                  color: couleurs.dark,
                   paddingVertical: 3,
-                  opacity: 0.7,
                   fontSize: 15,
                   fontFamily: CustomFont.Poppins,
                 }}>
@@ -166,9 +165,9 @@ export default function MonEtablissement({
               </Text>
               <Text
                 style={{
-                  color: couleurs.white,
+                  color: couleurs.dark,
                   paddingVertical: 3,
-                  fontSize: 16,
+                  fontSize: 15,
                   fontFamily: CustomFont.Poppins,
                 }}>
                 {etablissement.mobile}
@@ -206,7 +205,6 @@ export default function MonEtablissement({
               }}>
               <Text
                 style={{
-                  color: '#000',
                   fontSize: 15,
                   fontFamily: CustomFont.Poppins,
                 }}>
@@ -216,7 +214,7 @@ export default function MonEtablissement({
                 style={{
                   color: couleurs.primary,
                   paddingVertical: 3,
-                  fontSize: 15,
+                  fontSize: 13,
                   fontFamily: CustomFont.Poppins,
                 }}>
                 {proprietaire.date_creation}
@@ -249,7 +247,6 @@ export default function MonEtablissement({
                   color: '#000',
                   paddingVertical: 3,
                   fontSize: 14,
-                  fontWeight: '600',
                   opacity: 0.8,
                 }}>
                 {proprietaire.pays}
@@ -260,7 +257,6 @@ export default function MonEtablissement({
                   paddingVertical: 3,
                   opacity: 0.7,
                   fontSize: 14,
-                  fontWeight: '600',
                 }}>
                 {etablissement.adresse}
               </Text>
@@ -336,11 +332,12 @@ export default function MonEtablissement({
                     </Text>
                     <Text
                       style={{
-                        color: couleurs.primary,
+                        color: !(row.heure_ouverture && row.heure_fermeture) ? 'rgba(240,20,25,.8)' : couleurs.primary,
                         fontSize: 14,
                         fontFamily: CustomFont.Poppins,
                       }}>
-                      {row.heure_ouverture}-{row.heure_fermeture}
+                      {(row.heure_ouverture && row.heure_fermeture ) && `${row.heure_ouverture}-${row.heure_fermeture}`}
+                      {!(row.heure_ouverture && row.heure_fermeture) && t('Ferme', preferredLangage) }
                     </Text>
                   </View>
                 </View>
