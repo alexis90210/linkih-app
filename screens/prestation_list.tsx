@@ -260,8 +260,8 @@ export default function ConfigurationDefaultCategorie({
                     <Text
                       style={{
                         textAlign: 'center',
-                        color: '#000',
-                        fontSize: 15,
+                        color: couleurs.dark,
+                        fontSize: 13,
                         height: 30,
                         opacity: 0.85,
                         marginTop: 14,
@@ -296,8 +296,8 @@ export default function ConfigurationDefaultCategorie({
                     <Text
                       style={{
                         textAlign: 'center',
-                        color: '#000',
-                        fontSize: 15,
+                        color: couleurs.dark,
+                        fontSize: 13,
                         height: 30,
                         opacity: 0.85,
                         marginTop: 14,
@@ -324,8 +324,8 @@ export default function ConfigurationDefaultCategorie({
                     <Text
                       style={{
                         textAlign: 'center',
-                        color: '#000',
-                        fontSize: 15,
+                        color: couleurs.dark,
+                        fontSize: 13,
                         height: 30,
                         opacity: 0.85,
                         marginTop: 14,
@@ -357,7 +357,7 @@ export default function ConfigurationDefaultCategorie({
                           value={'$'}
                           style={{
                             fontFamily: CustomFont.Poppins,
-                            fontSize: 15,
+                            fontSize: 13,
                             color: couleurs.primary,
                           }}
                         />
@@ -366,7 +366,7 @@ export default function ConfigurationDefaultCategorie({
                           value={'€'}
                           style={{
                             fontFamily: CustomFont.Poppins,
-                            fontSize: 15,
+                            fontSize: 13,
                             color: couleurs.primary,
                           }}
                         />
@@ -384,8 +384,8 @@ export default function ConfigurationDefaultCategorie({
                     <Text
                       style={{
                         textAlign: 'center',
-                        color: '#000',
-                        fontSize: 15,
+                        color: couleurs.dark,
+                        fontSize: 13,
                         height: 30,
                         opacity: 0.85,
                         marginTop: 14,
@@ -429,7 +429,7 @@ export default function ConfigurationDefaultCategorie({
                           textAlign: 'center',
                           padding: 10,
                           paddingHorizontal: 20,
-                          fontSize: 15,
+                          fontSize: 13,
                           fontWeight: '500',
                           color: couleurs.white,
                           fontFamily: CustomFont.Poppins,

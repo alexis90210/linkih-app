@@ -171,7 +171,7 @@ export default function ConfirmationCompteScreen({navigation, route}: {navigatio
                 color: '#00000090',
                 opacity: 0.85,
                 fontFamily:CustomFont.Poppins,
-                fontSize: 14,
+                fontSize: 13,
                 marginVertical: 13,
                 width:'80%'
               }}>
@@ -219,7 +219,7 @@ export default function ConfirmationCompteScreen({navigation, route}: {navigatio
                     color: couleurs.secondary,
                     padding: 10,
                     paddingHorizontal: 20,
-                    fontSize: 14,
+                    fontSize: 13,
                     width: 250,
                     fontFamily:CustomFont.Poppins,
                   }}>
@@ -236,7 +236,7 @@ export default function ConfirmationCompteScreen({navigation, route}: {navigatio
                 color: '#00000090',
                 opacity: 0.85,
                 fontFamily:CustomFont.Poppins,
-                fontSize: 14,
+                fontSize: 13,
                 marginVertical: 5,
                 width:'80%'
               }}>
@@ -246,7 +246,7 @@ export default function ConfirmationCompteScreen({navigation, route}: {navigatio
             <Text style={{color:couleurs.primary,textAlign: 'center',
                 opacity: 0.85,
                 fontFamily:CustomFont.Poppins,
-                fontSize: 14,
+                fontSize: 13,
                 marginVertical: 7,}}>
                   {t("Demander_un_autre", preferredLangage)}
                 </Text>

@@ -8,12 +8,10 @@ import {
   TouchableOpacity,
   TextInput,
   Alert,
-  Modal,
 } from 'react-native';
 import EyeSlashIcon from '../components/eye_slash';
 import EyeIcon from '../components/eye';
 import {CustomFont, couleurs} from '../components/color';
-import UserPosition from '../components/api/user_position';
 import Geolocation from '@react-native-community/geolocation';
 import translations from '../translations/translations';
 import storage from '../components/api/localstorage';
@@ -24,26 +22,24 @@ export default function InscriptionProprietaireScreen1({
 }: {
   navigation: any;
 }) {
+  /////////////////////////////////// LANGUAGE HANDLER ///////////////////////////////////////
 
-    /////////////////////////////////// LANGUAGE HANDLER ///////////////////////////////////////
+  const [preferredLangage, setPreferredLangage] = useState('fr');
 
-    const [preferredLangage, setPreferredLangage] = useState('fr');
+  const t = (key: any, langage: any) => {
+    return translations[langage][key] || key;
+  };
 
-    const t = (key: any, langage: any) => {
-      return translations[langage][key] || key;
-    };
-  
-    storage
-      .load({
-        key: 'defaultlang', // Note: Do not use underscore("_") in key!
-        id: 'defaultlang', // Note: Do not use underscore("_") in id!
-      })
-      .then((data: any) => {
-        setPreferredLangage(data);
-      });
-  
-    //////////////////////////////////////////////////////////////////////////////////////
-  
+  storage
+    .load({
+      key: 'defaultlang', // Note: Do not use underscore("_") in key!
+      id: 'defaultlang', // Note: Do not use underscore("_") in id!
+    })
+    .then((data: any) => {
+      setPreferredLangage(data);
+    });
+
+  //////////////////////////////////////////////////////////////////////////////////////
 
   var [isVisible, setVisible] = useState(false);
   var [isVisibleModalInfoPrivee, setVisibleModalInfoPrivee] = useState(false);
@@ -73,27 +69,33 @@ export default function InscriptionProprietaireScreen1({
   const getEtablissementData = () => {
     console.log(etablissement);
 
-    if (etablissement.nom.length < 2) {
-      Alert.alert('', t('Le_nom_de_l_entreprise_est_trop_court', preferredLangage), [
-        {text: 'OK', onPress: () => null},
-      ]);
+    if (!etablissement.nom) {
+      Alert.alert(
+        '',
+        t('Le_nom_de_l_entreprise_est_trop_court', preferredLangage),
+        [{text: 'OK', onPress: () => null}],
+      );
       return;
     }
 
-    if (etablissement.mobile.length < 6) {
-      Alert.alert('', t('Le_mobile_de_l_entreprise_est_trop_court', preferredLangage), [
-        {text: 'OK', onPress: () => null},
-      ]);
+    if (!etablissement.mobile) {
+      Alert.alert(
+        '',
+        t('Le_mobile_de_l_entreprise_est_trop_court', preferredLangage),
+        [{text: 'OK', onPress: () => null}],
+      );
       return;
     }
 
     var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     if (!etablissement.email.match(mailformat)) {
-      Alert.alert('', t('Email_invalide', preferredLangage), [{text: 'OK', onPress: () => null}]);
+      Alert.alert('', t('Email_invalide', preferredLangage), [
+        {text: 'OK', onPress: () => null},
+      ]);
       return;
     }
 
-    if (etablissement.password.length < 4) {
+    if (etablissement.password.length < 3 ) {
       Alert.alert('', t('Mot_de_passe_trop_court', preferredLangage), [
         {text: 'OK', onPress: () => null},
       ]);
@@ -103,10 +105,7 @@ export default function InscriptionProprietaireScreen1({
     navigation.navigate('inscription_proprietaire_2', {
       etablissement: etablissement,
     });
-    
   };
-
-
 
   return (
     <>
@@ -148,9 +147,8 @@ export default function InscriptionProprietaireScreen1({
                 <Text
                   style={{
                     textAlign: 'center',
-                    color: '#000',
-                    fontSize: 15,
-                    opacity: 0.85,
+                    color: couleurs.dark,
+                    fontSize: 13,
                     fontFamily: CustomFont.Poppins,
                   }}>
                   {t('Nom_entreprise', preferredLangage)}
@@ -171,8 +169,6 @@ export default function InscriptionProprietaireScreen1({
                   }}></TextInput>
               </View>
 
-           
-
               <View
                 style={{
                   display: 'flex',
@@ -184,9 +180,8 @@ export default function InscriptionProprietaireScreen1({
                 <Text
                   style={{
                     textAlign: 'center',
-                    color: '#000',
-                    fontSize: 15,
-                    opacity: 0.85,
+                    color: couleurs.dark,
+                    fontSize: 13,
                     fontFamily: CustomFont.Poppins,
                   }}>
                   {t('email', preferredLangage)}
@@ -195,6 +190,7 @@ export default function InscriptionProprietaireScreen1({
                   placeholderTextColor={'rgba(100,100,100,.7)'}
                   placeholder="Entrez l'email entreprise"
                   defaultValue={etablissement.email}
+                  keyboardType="email-address"
                   onChangeText={input => (etablissement.email = input)}
                   style={{
                     backgroundColor: 'transparent',
@@ -218,9 +214,8 @@ export default function InscriptionProprietaireScreen1({
                 <Text
                   style={{
                     textAlign: 'center',
-                    color: '#000',
-                    fontSize: 15,
-                    opacity: 0.85,
+                    color: couleurs.dark,
+                    fontSize: 13,
                     fontFamily: CustomFont.Poppins,
                   }}>
                   {t('Mobile', preferredLangage)}
@@ -229,6 +224,7 @@ export default function InscriptionProprietaireScreen1({
                   placeholderTextColor={'rgba(100,100,100,.7)'}
                   placeholder="Entrez le mobile entreprise"
                   defaultValue={etablissement.mobile}
+                  keyboardType="number-pad"
                   onChangeText={input => (etablissement.mobile = input)}
                   style={{
                     backgroundColor: 'transparent',
@@ -253,9 +249,8 @@ export default function InscriptionProprietaireScreen1({
                 <Text
                   style={{
                     textAlign: 'center',
-                    color: '#000',
-                    fontSize: 15,
-                    opacity: 0.85,
+                    color: couleurs.dark,
+                    fontSize: 13,
                     fontFamily: CustomFont.Poppins,
                   }}>
                   {t('mot_de_passe', preferredLangage)}
@@ -268,6 +263,8 @@ export default function InscriptionProprietaireScreen1({
                     justifyContent: 'flex-start',
                     width: '100%',
                     flexWrap: 'nowrap',
+                    borderBottomWidth: 1,
+                    borderBottomColor: couleurs.primary,
                   }}>
                   <TextInput
                     textContentType="password"
@@ -276,18 +273,19 @@ export default function InscriptionProprietaireScreen1({
                     defaultValue={etablissement.password}
                     onChangeText={input => (etablissement.password = input)}
                     placeholderTextColor={'rgba(100,100,100,.7)'}
-                    placeholder={t('entrez_votre_mot_de_passe', preferredLangage)}
+                    placeholder={t(
+                      'entrez_votre_mot_de_passe',
+                      preferredLangage,
+                    )}
                     style={{
                       backgroundColor: 'transparent',
-                      borderBottomWidth: 1,
-                      borderBottomColor: couleurs.primary,
                       color: couleurs.primary,
                       fontFamily: CustomFont.Poppins,
                       flex: 1,
                       padding: 10,
                     }}></TextInput>
                   <TouchableOpacity
-                    style={{padding: 15, width: 20, height: 20}}
+                    style={{margin: 5, width: 20, height: 20}}
                     onPress={_setVisible}>
                     {isVisible && <EyeSlashIcon />}
                     {!isVisible && <EyeIcon color={couleurs.primary} />}
@@ -313,7 +311,7 @@ export default function InscriptionProprietaireScreen1({
                       textAlign: 'center',
                       padding: 10,
                       paddingHorizontal: 20,
-                      fontSize: 15,
+                      fontSize: 13,
                       fontFamily: CustomFont.Poppins,
                       color: couleurs.secondary,
                     }}>
@@ -340,7 +338,7 @@ export default function InscriptionProprietaireScreen1({
                 <Text
                   style={{
                     textAlign: 'center',
-                    fontSize: 15,
+                    fontSize: 13,
                     fontFamily: CustomFont.Poppins,
                     color: couleurs.primary,
                   }}>

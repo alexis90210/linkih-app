@@ -1,4 +1,4 @@
-const translations: any = {
+var translations: any = {
   en: {
     // splash screen
     bienvenu: 'Welcome to Linkih',
@@ -13,7 +13,7 @@ const translations: any = {
     // identification
     client: 'Customer',
     societe: 'Company',
-    auto_entrepreuneur: 'Self\nEmployed',
+    auto_entrepreuneur: 'Self Employed',
     veuillez_vous_identifier: 'Please login to continue',
     je_veux_info: 'I want more information regarding identification',
 
@@ -179,8 +179,7 @@ const translations: any = {
     Suivant: 'Next',
 
     // identification_proprietaire_2
-    
-    Veuillez_selectionner_la_categorie_qui_decrit_le_mieux_votre_etablissement : "Veuillez selectionner la categorie, qui decrit le mieux votre etablissement",
+    Veuillez_selectionner_la_categorie_qui_decrit_le_mieux_votre_etablissement : "Please select the category that best describes your establishment",
     Le_champ_poste_du_responsable_est_trop_court:
       'The manager position field is too short',
     Le_SIRET_de_l_entreprise_est_trop_court: "The company's SIRET is too short",
@@ -329,7 +328,7 @@ const translations: any = {
     // identification
     client: 'Client',
     societe: 'Societe',
-    auto_entrepreuneur: 'Auto\nEntrepreuneur',
+    auto_entrepreuneur: 'Auto Entrepreuneur',
     veuillez_vous_identifier: 'Veuillez-vous identifier pour continuer',
     je_veux_info: "Je veux plus d'informations par rapport a l'identification",
 
@@ -498,7 +497,7 @@ const translations: any = {
     Suivant: 'Suivant',
 
     // identification_proprietaire_2
-    Veuillez_selectionner_la_categorie_qui_decrit_le_mieux_votre_etablissement : "Please select the category that best describes your establishment",
+   Veuillez_selectionner_la_categorie_qui_decrit_le_mieux_votre_etablissement : "Veuillez selectionner la categorie, qui decrit le mieux votre etablissement",
     Le_champ_poste_du_responsable_est_trop_court:
       'Le champ poste du responsable est trop court',
     Le_SIRET_de_l_entreprise_est_trop_court:
@@ -639,5 +638,35 @@ const translations: any = {
     Je_suis_interesse_par: 'Je suis interesse par...',
   },
 };
+
+// DICTIONNAIRE FR
+translations.fr = {
+  ...translations.fr,
+  Recherchez_un_pays: "Recherchez un pays",
+  Noms_prenoms_du_responsable : "Noms & prenoms du responsable",
+  choix_abonnement : "Choisir un abonnement",
+  choisir_cette_abonnement : "choisir cette abonnement",
+  nouveau_temp_pass_code : "Vous avez oublie votre mot de passe , Demandez a recevoir un mot de passe temporaire",
+  Demandez: "Demandez",
+  validation_code : "Code de recuperation",
+  entrez_validation_code : "Entrez le Code de recuperation",
+  code_valide_success : "Code verifie avec succes",
+  code_valide_invalid : "Code invalide"
+}
+
+// DICTIONNAIRE ANG
+translations.en = {
+  ...translations.en,
+  Recherchez_un_pays: "Find a country",
+  Noms_prenoms_du_responsable : "Last names & first names of the person in charge",
+  choix_abonnement : "Choose a subscription",
+  choisir_cette_abonnement : "choose this subscription",
+  nouveau_temp_pass_code : "You have forgotten your password, Ask to receive a temporary password",
+  Demandez: "Ask Now",
+  validation_code : "Recovery code",
+  entrez_validation_code : "Enter Recovery code",
+  code_valide_success : "Code verified successfully",
+  code_valide_invalid : "Invalid Code"
+}
 
 export default translations;

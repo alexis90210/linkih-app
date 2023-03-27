@@ -248,7 +248,7 @@ export default function AutreEtablissement({
             style={{
               fontFamily: CustomFont.Poppins,
               textTransform: 'uppercase',
-              fontSize: 15,
+              fontSize: 13,
               color: !item.isCollapsed ? couleurs.primary : couleurs.dark,
             }}>
             {item.title}
@@ -300,7 +300,7 @@ export default function AutreEtablissement({
                   <Text
                     style={{
                       fontFamily: CustomFont.Poppins,
-                      fontSize: 15,
+                      fontSize: 13,
                       color: couleurs.primary,
                     }}
                     numberOfLines={1}>
@@ -411,7 +411,7 @@ export default function AutreEtablissement({
                 style={{
                   color: couleurs.white,
                   paddingVertical: 3,
-                  fontSize: 15,
+                  fontSize: 13,
                   fontFamily: CustomFont.Poppins,
                 }}>
                 {VendeurData.nom}
@@ -421,7 +421,7 @@ export default function AutreEtablissement({
                   color: couleurs.white,
                   paddingVertical: 3,
                   opacity: 0.7,
-                  fontSize: 14,
+                  fontSize: 13,
                   fontFamily: CustomFont.Poppins,
                 }}>
                 {VendeurData.email}
@@ -478,9 +478,9 @@ export default function AutreEtablissement({
             {sections.length > 0 && (
               <Text
                 style={{
-                  color: '#000',
+                  color: couleurs.dark,
                   paddingVertical: 15,
-                  fontSize: 15,
+                  fontSize: 13,
                   fontFamily: CustomFont.Poppins,
                   width: '100%',
                   textAlign: 'center',
@@ -536,7 +536,7 @@ export default function AutreEtablissement({
                     <Text
                       style={{
                         fontFamily: CustomFont.Poppins,
-                        fontSize: 15,
+                        fontSize: 13,
                         color: couleurs.dark,
                       }}
                       numberOfLines={1}>
@@ -545,7 +545,7 @@ export default function AutreEtablissement({
                     <Text
                       style={{
                         fontFamily: CustomFont.Poppins,
-                        fontSize: 15,
+                        fontSize: 13,
                         color: couleurs.primary,
                       }}
                       numberOfLines={2}>
@@ -562,7 +562,7 @@ export default function AutreEtablissement({
                     <Text
                       style={{
                         fontFamily: CustomFont.Poppins,
-                        fontSize: 15,
+                        fontSize: 13,
                         color: couleurs.dark,
                       }}
                       numberOfLines={1}>
@@ -588,7 +588,7 @@ export default function AutreEtablissement({
                     <Text
                       style={{
                         fontFamily: CustomFont.Poppins,
-                        fontSize: 15,
+                        fontSize: 13,
                         color: couleurs.dark,
                       }}
                       numberOfLines={1}>
@@ -641,7 +641,7 @@ export default function AutreEtablissement({
                       style={{
                         textAlign: 'center',
                         padding: 5,
-                        fontSize: 15,
+                        fontSize: 13,
                         color: couleurs.white,
                         fontFamily: CustomFont.Poppins,
                       }}>
@@ -668,9 +668,9 @@ export default function AutreEtablissement({
               }}>
               <Text
                 style={{
-                  color: '#000',
+                  color: couleurs.dark,
                   paddingVertical: 3,
-                  fontSize: 15,
+                  fontSize: 13,
                   fontFamily: CustomFont.Poppins,
                 }}>
                 {t('membre_depuis', preferredLangage)}
@@ -679,7 +679,7 @@ export default function AutreEtablissement({
                 style={{
                   color: couleurs.primary,
                   paddingVertical: 3,
-                  fontSize: 15,
+                  fontSize: 13,
                   fontFamily: CustomFont.Poppins,
                 }}>
                 {VendeurData.creation}
@@ -708,9 +708,9 @@ export default function AutreEtablissement({
 
               <Text
                 style={{
-                  color: '#000',
+                  color: couleurs.dark,
                   paddingVertical: 3,
-                  fontSize: 14,
+                  fontSize: 13,
                   fontFamily: CustomFont.Poppins,
                   opacity: 0.8,
                 }}>
@@ -718,10 +718,10 @@ export default function AutreEtablissement({
               </Text>
               <Text
                 style={{
-                  color: '#000',
+                  color: couleurs.dark,
                   paddingVertical: 3,
                   opacity: 0.7,
-                  fontSize: 14,
+                  fontSize: 13,
                   fontFamily: CustomFont.Poppins,
                 }}>
                 {VendeurData.adresse}
@@ -816,7 +816,7 @@ export default function AutreEtablissement({
                 style={{
                   color: couleurs.primary,
                   paddingVertical: 3,
-                  fontSize: 15,
+                  fontSize: 13,
                   fontFamily: CustomFont.Poppins,
                 }}>
                 {t('lien_reseaux_sociaux', preferredLangage)}
@@ -905,7 +905,7 @@ export default function AutreEtablissement({
                       style={{
                         textAlign: 'center',
                         padding: 5,
-                        fontSize: 14,
+                        fontSize: 13,
                         color: couleurs.white,
                         fontFamily: CustomFont.Poppins,
                       }}>
@@ -959,7 +959,7 @@ export default function AutreEtablissement({
                   style={{
                     textAlign: 'center',
                     padding: 5,
-                    fontSize: 15,
+                    fontSize: 13,
                     color: couleurs.white,
                     fontFamily: CustomFont.Poppins,
                   }}>
@@ -1007,10 +1007,10 @@ export default function AutreEtablissement({
                         <Text
                           style={{
                             fontWeight: '400',
-                            fontSize: 15,
+                            fontSize: 13,
                             paddingLeft: 5,
                             paddingBottom: 12,
-                            color: '#000',
+                            color: couleurs.dark,
                             fontFamily: CustomFont.Poppins,
                           }}>
                           {t('Prestation_selectionnee', preferredLangage)}
@@ -1044,10 +1044,10 @@ export default function AutreEtablissement({
                         <Text
                           style={{
                             fontWeight: '400',
-                            fontSize: 15,
+                            fontSize: 13,
                             paddingLeft: 5,
                             paddingBottom: 12,
-                            color: '#000',
+                            color: couleurs.dark,
                             fontFamily: CustomFont.Poppins,
                           }}>
                           {t('Quel_jour', preferredLangage)}
@@ -1081,10 +1081,10 @@ export default function AutreEtablissement({
                         <Text
                           style={{
                             fontWeight: '400',
-                            fontSize: 15,
+                            fontSize: 13,
                             paddingLeft: 5,
                             paddingBottom: 12,
-                            color: '#000',
+                            color: couleurs.dark,
                             fontFamily: CustomFont.Poppins,
                           }}>
                           {t('A_quelle_heure', preferredLangage)}
@@ -1162,7 +1162,7 @@ export default function AutreEtablissement({
                           textAlign: 'center',
                           padding: 10,
                           paddingHorizontal: 20,
-                          fontSize: 14,
+                          fontSize: 13,
                           fontFamily: CustomFont.Poppins,
                           color: couleurs.secondary,
                         }}>

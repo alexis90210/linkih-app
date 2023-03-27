@@ -14,8 +14,6 @@ import {
   Alert,
 } from 'react-native';
 import {CustomFont, couleurs} from '../components/color';
-import {SelectList} from 'react-native-dropdown-select-list';
-import {categories} from '../components/api/categories';
 import storage from '../components/api/localstorage';
 
 import MapboxGL from '@rnmapbox/maps';
@@ -24,9 +22,6 @@ import defaultStyle from '../components/api/defaultMpaStyle';
 import Geolocation from '@react-native-community/geolocation';
 import axios from 'axios';
 
-import BouncyCheckbox from 'react-native-bouncy-checkbox';
-import {TimePickerModal} from 'react-native-paper-dates';
-import planning from '../components/api/planning';
 import ArrowLeftIcon from '../components/ArrowLeft';
 import translations from '../translations/translations';
 
@@ -41,6 +36,19 @@ export default function InscriptionProprietaireScreen2({
   route: any;
 }) {
   console.log(route.params);
+
+  var type = '';
+  storage
+    .load({
+      key: 'typeuser', // Note: Do not use underscore("_") in key!
+      id: 'typeuser', // Note: Do not use underscore("_") in id!
+    })
+    .then(data => {
+      type = data.type;
+    })
+    .catch(error => {
+      console.log(error);
+    });
 
   /////////////////////////////////// LANGUAGE HANDLER ///////////////////////////////////////
 
@@ -119,6 +127,8 @@ export default function InscriptionProprietaireScreen2({
     tiktok: '',
   };
 
+  var horaires = [];
+
   // LOAD CATEGORIES
   const [sous_categories, setCategories] = useState([]);
   const [isLoadedCategorie, setLoadedCategorie] = useState(false);
@@ -155,7 +165,7 @@ export default function InscriptionProprietaireScreen2({
   etablissement.sciem = '';
   etablissement.nom_prenom_responsable = '';
   etablissement.poste_occupe = '';
-
+  
   const [sciem, setSciem] = useState('');
   const [nom_prenom_responsable, setNPR] = useState('');
   const [poste_occupe, setPO] = useState('');
@@ -173,11 +183,46 @@ export default function InscriptionProprietaireScreen2({
   const nextPage = () => {
     console.log(stepper);
 
-    if (stepper == 3) {
+    if (stepper == 4) {
+      // redirect to new route
+      navigation.navigate('inscription_proprietaire_3', {
+        etablissement: etablissement,
+        categorie: selectedCategorie.sous_categorie_id,
+        horaires: horaires,
+        social: social,
+        abonnementSelected: abonnementSelected,
+      });
+    } else {
+      if (stepper == 0) {
+        // if (etablissement.sciem) {
+        //   Alert.alert(
+        //     '',
+        //     t('Le_SIRET_de_l_entreprise_est_trop_court', preferredLangage),
+        //     [{text: 'OK', onPress: () => null}],
+        //   );
+        //   return;
+        // }
+
+        if (!etablissement.nom_prenom_responsable) {
+          Alert.alert(
+            '',
+            t('Le_champ_poste_du_responsable_est_trop_court', preferredLangage),
+            [{text: 'OK', onPress: () => null}],
+          );
+          return;
+        }
+
+        if (!etablissement.poste_occupe) {
+          Alert.alert(
+            '',
+            t('Le_champ_poste_du_responsable_est_trop_court', preferredLangage),
+            [{text: 'OK', onPress: () => null}],
+          );
+          return;
+        }
+      }
+
       // formating horaire
-
-      var horaires = [];
-
       horaires.push({
         jour: 'Lundi',
         ouverture: selectedHoraireOuvertureLundi,
@@ -220,42 +265,6 @@ export default function InscriptionProprietaireScreen2({
         fermeture: selectedHoraireFermetureDimanche,
       });
 
-      // redirect to new route
-      navigation.navigate('inscription_proprietaire_3', {
-        etablissement: etablissement,
-        categorie: selectedCategorie.sous_categorie_id,
-        horaires: horaires,
-        social: social,
-      });
-    } else {
-      if (stepper == 0) {
-        if (etablissement.sciem.length < 4) {
-          Alert.alert(
-            '',
-            t('Le_SIRET_de_l_entreprise_est_trop_court', preferredLangage),
-            [{text: 'OK', onPress: () => null}],
-          );
-          return;
-        }
-
-        if (etablissement.nom_prenom_responsable.length < 4) {
-          Alert.alert(
-            '',
-            t('Le_champ_poste_du_responsable_est_trop_court', preferredLangage),
-            [{text: 'OK', onPress: () => null}],
-          );
-          return;
-        }
-
-        if (etablissement.poste_occupe.length < 4) {
-          Alert.alert(
-            '',
-            t('Le_champ_poste_du_responsable_est_trop_court', preferredLangage),
-            [{text: 'OK', onPress: () => null}],
-          );
-          return;
-        }
-      }
       setStepper(stepper + 1);
     }
   };
@@ -299,14 +308,45 @@ export default function InscriptionProprietaireScreen2({
   ///////////////////////////////////////////////////
   const [visible, setVisible] = useState(false);
 
-  const onDismiss = () => {
-    setVisible(false);
-  };
-
   const onConfirm = ({hours, minutes}: {hours: any; minutes: any}) => {
     setVisible(false);
     console.log({hours, minutes});
   };
+
+  // load abonnement
+  const [abonnements, setAbonnements] = useState<any>([]);
+  const [abonnementSelected, setAbonnementSelected] = useState<any>({});
+  const [isLoadingAbonnement, setIsLoadingAbonnement] = useState(false);
+
+  const loadAbonnementList = () => {
+    axios({
+      method: 'POST',
+      url: ApiService.API_URL_LISTE_ABONNEMENTS,
+      data: JSON.stringify({
+        type: type,
+      }),
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response: {data: any}) => {
+        var api = response.data;
+        setIsLoadingAbonnement(true);
+
+        if (api.code == 'success') {
+          setAbonnements(api.message);
+        }
+        if (api.code == 'error') {
+        }
+      })
+      .catch((error: any) => {
+        console.log(error);
+        setIsLoadingAbonnement(true);
+      });
+  };
+
+  if (!isLoadingAbonnement) loadAbonnementList();
 
   return (
     <>
@@ -344,6 +384,7 @@ export default function InscriptionProprietaireScreen2({
                 t('Information_du_responsable', preferredLangage)}
               {stepper == 2 && t('Choisir_une_categorie', preferredLangage)}
               {stepper == 3 && t('Lien_reseaux_sociaux', preferredLangage)}
+              {stepper == 4 && t('choix_abonnement', preferredLangage)}
             </Text>
           </View>
         )}
@@ -364,9 +405,8 @@ export default function InscriptionProprietaireScreen2({
                 surfaceView={true}
                 rotateEnabled={true}
                 scrollEnabled={true}>
-                {/* <MapboxGL.UserLocation /> */}
                 <MapboxGL.Camera
-                  zoomLevel={11}
+                  zoomLevel={15}
                   centerCoordinate={startCords}
                   followUserLocation={true}
                 />
@@ -393,7 +433,6 @@ export default function InscriptionProprietaireScreen2({
                         alignSelf: 'center',
                         display: 'flex',
                         flexDirection: 'column',
-                        gap: 3,
                       }}>
                       <View
                         style={{
@@ -412,9 +451,9 @@ export default function InscriptionProprietaireScreen2({
                         <Image
                           source={require('../assets/images/salon-de-coiffure.png')}
                           style={{
-                            width: 30,
-                            height: 30,
-                            marginLeft: 6,
+                            width: 20,
+                            height: 20,
+                            marginLeft: 10,
                           }}></Image>
                       </View>
                       <View
@@ -454,14 +493,14 @@ export default function InscriptionProprietaireScreen2({
                 position: 'absolute',
                 borderTopLeftRadius: 20,
                 borderTopRightRadius: 20,
-                backgroundColor: couleurs.primary,
+                backgroundColor: couleurs.white,
                 bottom: 0,
                 display: 'flex',
                 flexDirection: 'column',
                 width: '100%',
                 padding: 20,
                 zIndex: 100,
-                height: 200,
+                height: 250,
               }}>
               <TextInput
                 defaultValue={adresse}
@@ -470,11 +509,12 @@ export default function InscriptionProprietaireScreen2({
                 style={{
                   backgroundColor: 'transparent',
                   borderBottomWidth: 1,
-                  borderBottomColor: '#E2C6BB',
-                  color: couleurs.white,
+                  borderBottomColor: couleurs.primaryLight,
+                  color: couleurs.primary,
                   width: '100%',
                   padding: 0,
-                  fontSize: 14,
+                  fontSize: 13,
+                  paddingVertical: 10,
                   marginTop: 10,
                   fontFamily: CustomFont.Poppins,
                 }}></TextInput>
@@ -483,22 +523,24 @@ export default function InscriptionProprietaireScreen2({
                 defaultValue={postcode}
                 onChangeText={input => (etablissement.postcode = input)}
                 placeholder={t('Entrez_votre_code_postal', preferredLangage)}
+                keyboardType="numeric"
                 style={{
                   backgroundColor: 'transparent',
                   borderBottomWidth: 1,
-                  borderBottomColor: '#E2C6BB',
-                  color: couleurs.white,
+                  borderBottomColor: couleurs.primaryLight,
+                  color: couleurs.primary,
                   width: '100%',
                   padding: 0,
+                  paddingVertical: 10,
                   marginTop: 10,
-                  fontSize: 14,
+                  fontSize: 13,
                   fontFamily: CustomFont.Poppins,
                 }}></TextInput>
 
               <View
                 style={{
                   alignItems: 'center',
-                  backgroundColor: couleurs.white,
+                  backgroundColor: couleurs.primary,
                   borderRadius: 30,
                   marginTop: 20,
                 }}>
@@ -513,9 +555,9 @@ export default function InscriptionProprietaireScreen2({
                       textAlign: 'center',
                       padding: 10,
                       paddingHorizontal: 20,
-                      fontSize: 15,
+                      fontSize: 13,
                       fontWeight: '500',
-                      color: couleurs.primary,
+                      color: couleurs.white,
                       fontFamily: CustomFont.Poppins,
                     }}>
                     {t('Confirmez_l_adressse', preferredLangage)}
@@ -531,7 +573,7 @@ export default function InscriptionProprietaireScreen2({
           style={{
             backgroundColor: '#f6f6f6f6',
           }}>
-          {/* INformations privees */}
+          {/* Informations privees */}
           {stepper == 0 && (
             <View
               style={{
@@ -556,14 +598,13 @@ export default function InscriptionProprietaireScreen2({
                     flexDirection: 'column',
                     justifyContent: 'flex-start',
                     alignItems: 'flex-start',
+                    marginBottom: 10,
                   }}>
                   <Text
                     style={{
                       textAlign: 'center',
-                      color: '#000',
-                      fontSize: 15,
-                      opacity: 0.85,
-                      marginVertical: 8,
+                      color: couleurs.dark,
+                      fontSize: 13,
                       fontFamily: CustomFont.Poppins,
                     }}>
                     SIRET
@@ -580,7 +621,8 @@ export default function InscriptionProprietaireScreen2({
                       color: couleurs.primary,
                       width: '100%',
                       fontFamily: CustomFont.Poppins,
-                      padding: 10,
+                      paddingHorizontal: 0,
+                      paddingVertical: 5,
                     }}></TextInput>
                 </View>
 
@@ -590,21 +632,24 @@ export default function InscriptionProprietaireScreen2({
                     flexDirection: 'column',
                     justifyContent: 'flex-start',
                     alignItems: 'flex-start',
+                    marginBottom: 10,
                   }}>
                   <Text
                     style={{
                       textAlign: 'center',
-                      color: '#000',
-                      fontSize: 15,
-                      opacity: 0.85,
+                      color: couleurs.dark,
+                      fontSize: 13,
                       marginVertical: 8,
                       fontFamily: CustomFont.Poppins,
                     }}>
-                    {t('Noms_Prenoms', preferredLangage)}
+                    {t('Noms_prenoms_du_responsable', preferredLangage)}
                   </Text>
                   <TextInput
                     placeholderTextColor={'rgba(100,100,100,.7)'}
-                    placeholder={t('Noms_Prenoms', preferredLangage)}
+                    placeholder={t(
+                      'Noms_prenoms_du_responsable',
+                      preferredLangage,
+                    )}
                     defaultValue={nom_prenom_responsable}
                     onChangeText={input =>
                       (etablissement.nom_prenom_responsable = input)
@@ -616,7 +661,8 @@ export default function InscriptionProprietaireScreen2({
                       color: couleurs.primary,
                       width: '100%',
                       fontFamily: CustomFont.Poppins,
-                      padding: 10,
+                      paddingHorizontal: 0,
+                      paddingVertical: 5,
                     }}></TextInput>
                 </View>
 
@@ -626,13 +672,13 @@ export default function InscriptionProprietaireScreen2({
                     flexDirection: 'column',
                     justifyContent: 'flex-start',
                     alignItems: 'flex-start',
+                    marginBottom: 10,
                   }}>
                   <Text
                     style={{
                       textAlign: 'center',
-                      color: '#000',
-                      fontSize: 15,
-                      opacity: 0.85,
+                      color: couleurs.dark,
+                      fontSize: 13,
                       marginVertical: 8,
                       fontFamily: CustomFont.Poppins,
                     }}>
@@ -650,7 +696,8 @@ export default function InscriptionProprietaireScreen2({
                       color: couleurs.primary,
                       width: '100%',
                       fontFamily: CustomFont.Poppins,
-                      padding: 10,
+                      paddingHorizontal: 0,
+                      paddingVertical: 5,
                     }}></TextInput>
                 </View>
               </View>
@@ -666,12 +713,15 @@ export default function InscriptionProprietaireScreen2({
                     fontFamily: CustomFont.Poppins,
                     alignSelf: 'center',
                     textAlign: 'center',
-                    fontSize: 14,
+                    fontSize: 13,
                     paddingVertical: 20,
                     color: couleurs.dark,
                     paddingHorizontal: 30,
                   }}>
-                  { t('Veuillez_selectionner_la_categorie_qui_decrit_le_mieux_votre_etablissement', preferredLangage)}
+                  {t(
+                    'Veuillez_selectionner_la_categorie_qui_decrit_le_mieux_votre_etablissement',
+                    preferredLangage,
+                  )}
                 </Text>
                 <View
                   style={{
@@ -681,7 +731,7 @@ export default function InscriptionProprietaireScreen2({
                     flexWrap: 'wrap',
                     gap: 10,
                     paddingHorizontal: 5,
-                    marginTop: 40,
+                    marginTop: 15,
                   }}>
                   {sous_categories.map((row: any, index: any) => (
                     <TouchableOpacity
@@ -694,7 +744,7 @@ export default function InscriptionProprietaireScreen2({
                           display: 'flex',
                           flexDirection: 'row',
                           gap: 4,
-                          backgroundColor: '#fff',
+                          backgroundColor: couleurs.primary,
                           padding: 5,
                           paddingHorizontal: 15,
                           borderRadius: 50,
@@ -707,13 +757,12 @@ export default function InscriptionProprietaireScreen2({
                             display: 'flex',
                             flexDirection: 'column',
                             gap: 3,
-                            backgroundColor: '#fff',
                             padding: 6,
                             borderRadius: 50,
                           }}>
                           <Text
                             style={{
-                              color: '#000',
+                              color: couleurs.white,
                               fontFamily: CustomFont.Poppins,
                             }}>
                             {preferredLangage == 'fr' ? row.nom : row.en_nom}
@@ -736,24 +785,25 @@ export default function InscriptionProprietaireScreen2({
                   style={{
                     backgroundColor: '#fff',
                     borderRadius: 20,
-                    marginBottom: 10,
+                    marginBottom: 4,
+                    borderBottomWidth: 1,
+                    borderStyle: 'dashed',
+                    borderColor: couleurs.primary,
                   }}>
-                  <Text
+                  {/* <Text
                     style={{
                       paddingVertical: 10,
                       marginHorizontal: 23,
                       color: couleurs.primary,
                       borderBottomWidth: 1,
                       borderColor: '#ddd',
-                      fontSize: 15,
+                      fontSize: 13,
                     }}>
                     Facebook
-                  </Text>
+                  </Text> */}
                   <View
                     style={{
-                      backgroundColor: '#fff',
                       paddingLeft: 20,
-                      marginBottom: 10,
                       display: 'flex',
                       flexDirection: 'row',
                       alignItems: 'center',
@@ -768,7 +818,7 @@ export default function InscriptionProprietaireScreen2({
                         color: couleurs.primary,
                         fontFamily: CustomFont.Poppins,
                         flex: 1,
-                        fontSize: 14,
+                        fontSize: 13,
                       }}
                       defaultValue={social.facebook}
                       onChangeText={input => (social.facebook = input)}
@@ -785,24 +835,25 @@ export default function InscriptionProprietaireScreen2({
                   style={{
                     backgroundColor: '#fff',
                     borderRadius: 20,
-                    marginBottom: 10,
+                    marginBottom: 4,
+                    borderBottomWidth: 1,
+                    borderStyle: 'dashed',
+                    borderColor: couleurs.primary,
                   }}>
-                  <Text
+                  {/* <Text
                     style={{
                       paddingVertical: 10,
                       marginHorizontal: 23,
                       color: couleurs.primary,
                       borderBottomWidth: 1,
                       borderColor: '#ddd',
-                      fontSize: 15,
+                      fontSize: 13,
                     }}>
                     Twitter
-                  </Text>
+                  </Text> */}
                   <View
                     style={{
-                      backgroundColor: '#fff',
                       paddingLeft: 20,
-                      marginBottom: 10,
                       display: 'flex',
                       flexDirection: 'row',
                       alignItems: 'center',
@@ -816,7 +867,7 @@ export default function InscriptionProprietaireScreen2({
                         color: couleurs.primary,
                         fontFamily: CustomFont.Poppins,
                         flex: 1,
-                        fontSize: 14,
+                        fontSize: 13,
                       }}
                       defaultValue={social.twitter}
                       onChangeText={input => (social.twitter = input)}
@@ -833,25 +884,26 @@ export default function InscriptionProprietaireScreen2({
                   style={{
                     backgroundColor: '#fff',
                     borderRadius: 20,
-                    marginBottom: 10,
+                    marginBottom: 4,
+                    borderBottomWidth: 1,
+                    borderStyle: 'dashed',
+                    borderColor: couleurs.primary,
                   }}>
-                  <Text
+                  {/* <Text
                     style={{
                       paddingVertical: 10,
                       marginHorizontal: 23,
                       color: couleurs.primary,
                       borderBottomWidth: 1,
                       borderColor: '#ddd',
-                      fontSize: 15,
+                      fontSize: 13,
                     }}>
                     LinkedIn
-                  </Text>
+                  </Text> */}
                   <View
                     style={{
                       marginTop: 3,
-                      backgroundColor: '#fff',
                       paddingLeft: 20,
-                      marginBottom: 10,
                       display: 'flex',
                       flexDirection: 'row',
                       alignItems: 'center',
@@ -865,7 +917,7 @@ export default function InscriptionProprietaireScreen2({
                         color: couleurs.primary,
                         fontFamily: CustomFont.Poppins,
                         flex: 1,
-                        fontSize: 14,
+                        fontSize: 13,
                       }}
                       defaultValue={social.linkedin}
                       onChangeText={input => (social.linkedin = input)}
@@ -882,24 +934,25 @@ export default function InscriptionProprietaireScreen2({
                   style={{
                     backgroundColor: '#fff',
                     borderRadius: 20,
-                    marginBottom: 10,
+                    marginBottom: 4,
+                    borderBottomWidth: 1,
+                    borderStyle: 'dashed',
+                    borderColor: couleurs.primary,
                   }}>
-                  <Text
+                  {/* <Text
                     style={{
                       paddingVertical: 10,
                       marginHorizontal: 23,
                       color: couleurs.primary,
                       borderBottomWidth: 1,
                       borderColor: '#ddd',
-                      fontSize: 15,
+                      fontSize: 13,
                     }}>
                     Instagram
-                  </Text>
+                  </Text> */}
                   <View
                     style={{
-                      backgroundColor: '#fff',
                       paddingLeft: 20,
-                      marginBottom: 10,
                       display: 'flex',
                       flexDirection: 'row',
                       alignItems: 'center',
@@ -913,7 +966,7 @@ export default function InscriptionProprietaireScreen2({
                         color: couleurs.primary,
                         fontFamily: CustomFont.Poppins,
                         flex: 1,
-                        fontSize: 14,
+                        fontSize: 13,
                       }}
                       defaultValue={social.facebook}
                       onChangeText={input => (social.facebook = input)}
@@ -930,25 +983,26 @@ export default function InscriptionProprietaireScreen2({
                   style={{
                     backgroundColor: '#fff',
                     borderRadius: 20,
-                    marginBottom: 10,
+                    marginBottom: 4,
+                    borderBottomWidth: 1,
+                    borderStyle: 'dashed',
+                    borderColor: couleurs.primary,
                   }}>
-                  <Text
+                  {/* <Text
                     style={{
                       paddingVertical: 10,
                       marginHorizontal: 23,
                       color: couleurs.primary,
                       borderBottomWidth: 1,
                       borderColor: '#ddd',
-                      fontSize: 15,
+                      fontSize: 13,
                     }}>
                     Youtube
-                  </Text>
+                  </Text> */}
                   <View
                     style={{
                       marginTop: 3,
-                      backgroundColor: '#fff',
                       paddingLeft: 20,
-                      marginBottom: 10,
                       display: 'flex',
                       flexDirection: 'row',
                       alignItems: 'center',
@@ -962,7 +1016,7 @@ export default function InscriptionProprietaireScreen2({
                         color: couleurs.primary,
                         fontFamily: CustomFont.Poppins,
                         flex: 1,
-                        fontSize: 14,
+                        fontSize: 13,
                       }}
                       defaultValue={social.facebook}
                       onChangeText={input => (social.facebook = input)}
@@ -979,25 +1033,26 @@ export default function InscriptionProprietaireScreen2({
                   style={{
                     backgroundColor: '#fff',
                     borderRadius: 20,
-                    marginBottom: 10,
+                    marginBottom: 4,
+                    borderBottomWidth: 1,
+                    borderStyle: 'dashed',
+                    borderColor: couleurs.primary,
                   }}>
-                  <Text
+                  {/* <Text
                     style={{
                       paddingVertical: 10,
                       marginHorizontal: 23,
                       color: couleurs.primary,
                       borderBottomWidth: 1,
                       borderColor: '#ddd',
-                      fontSize: 15,
+                      fontSize: 13,
                     }}>
                     Tik-Tok
-                  </Text>
+                  </Text> */}
                   <View
                     style={{
                       marginTop: 3,
-                      backgroundColor: '#fff',
                       paddingLeft: 20,
-                      marginBottom: 10,
                       display: 'flex',
                       flexDirection: 'row',
                       alignItems: 'center',
@@ -1011,7 +1066,7 @@ export default function InscriptionProprietaireScreen2({
                         color: couleurs.primary,
                         fontFamily: CustomFont.Poppins,
                         flex: 1,
-                        fontSize: 14,
+                        fontSize: 13,
                       }}
                       defaultValue={social.tiktok}
                       onChangeText={input => (social.tiktok = input)}
@@ -1022,6 +1077,124 @@ export default function InscriptionProprietaireScreen2({
                       )}></TextInput>
                   </View>
                 </View>
+              </View>
+            </View>
+          )}
+
+          {/* Abonnements */}
+          {stepper == 4 && (
+            <View
+              style={{
+                alignContent: 'center',
+                display: 'flex',
+                flexDirection: 'column',
+              }}>
+              <Text
+                style={{
+                  fontFamily: CustomFont.Poppins,
+                  alignSelf: 'center',
+                  textAlign: 'center',
+                  fontSize: 13,
+                  paddingVertical: 20,
+                  color: couleurs.dark,
+                  paddingHorizontal: 30,
+                }}>
+                {t('Vous_n_avez_aucun_abonnement_actif', preferredLangage)}
+              </Text>
+              <View
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  flexWrap: 'wrap',
+                  gap: 10,
+                  marginTop: 15,
+                  width: '100%',
+                  alignContent: 'center',
+                }}>
+                {abonnements.map((row: any, key: any) => (
+                  <View
+                    key={key}
+                    style={{
+                      borderWidth: 1,
+                      borderColor: couleurs.primary,
+                      borderRadius: 10,
+                      marginBottom: 10,
+                      alignContent: 'center',
+                      width: Dimensions.get('screen').width - 20,
+                    }}>
+                    <View
+                      style={{
+                        backgroundColor: couleurs.primary,
+                        borderTopLeftRadius: 10,
+                        borderTopRightRadius: 10,
+                        paddingVertical: 10,
+                      }}>
+                      <Text
+                        style={{color: couleurs.white, alignSelf: 'center'}}>
+                        {preferredLangage == 'fr' ? row.nom : row.en_nom}
+                      </Text>
+                    </View>
+
+                    <View
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        paddingHorizontal: 30,
+                        paddingVertical: 10,
+                      }}>
+                      <Text
+                        style={{
+                          color: couleurs.primary,
+                          fontSize: 13,
+                        }}>
+                        {row.code}
+                      </Text>
+                      <View>
+                        <Text
+                          style={{
+                            color: couleurs.primary,
+                            fontSize: 16,
+                          }}>
+                          {row.devise} {row.montant}
+                        </Text>
+                      </View>
+                    </View>
+
+                    <View
+                      style={{
+                        marginBottom: 20,
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'center',
+                        backgroundColor: couleurs.primary,
+                        borderRadius: 30,
+                        marginHorizontal: 40,
+                      }}>
+                      <TouchableOpacity
+                        style={{
+                          paddingHorizontal: 10,
+                          width: '80%',
+                        }}
+                        onPress={() => {
+                          setAbonnementSelected(row), nextPage();
+                        }}>
+                        <Text
+                          style={{
+                            textAlign: 'center',
+                            alignSelf: 'center',
+                            color: couleurs.white,
+                            padding: 10,
+                            paddingHorizontal: 20,
+                            fontSize: 13,
+                          }}>
+                          {t('choisir_cette_abonnement', preferredLangage)}
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                ))}
               </View>
             </View>
           )}
@@ -1043,7 +1216,7 @@ export default function InscriptionProprietaireScreen2({
                   <Text
                     style={{
                       fontFamily: CustomFont.Poppins,
-                      fontSize: 14,
+                      fontSize: 13,
                       padding: 7,
                       color: couleurs.primary,
                       height: 40,
@@ -1052,7 +1225,6 @@ export default function InscriptionProprietaireScreen2({
                       borderColor: couleurs.primary,
                       paddingHorizontal: 30,
                     }}>
-                    Retour
                     {t('Retour', preferredLangage)}
                   </Text>
                 </TouchableOpacity>
@@ -1078,7 +1250,7 @@ export default function InscriptionProprietaireScreen2({
                       textAlign: 'center',
                       padding: 8,
                       paddingHorizontal: 10,
-                      fontSize: 14,
+                      fontSize: 13,
                       height: 40,
                       color: couleurs.secondary,
                       fontFamily: CustomFont.Poppins,

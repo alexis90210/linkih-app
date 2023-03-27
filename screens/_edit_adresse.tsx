@@ -265,7 +265,7 @@ export default function EditAdresse({navigation, route}: {navigation: any, route
                   textAlign: 'center',
                   padding: 10,
                   paddingHorizontal: 20,
-                  fontSize: 15,
+                  fontSize: 13,
                   fontWeight: '500',
                   color: couleurs.white,
                   fontFamily: CustomFont.Poppins,

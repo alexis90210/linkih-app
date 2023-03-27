@@ -1338,7 +1338,7 @@ export default function MesHoraires({
                 textAlign: 'center',
                 padding: 10,
                 paddingHorizontal: 20,
-                fontSize: 15,
+                fontSize: 13,
                 fontWeight: '500',
                 color: couleurs.secondary,
                 fontFamily: CustomFont.Poppins,

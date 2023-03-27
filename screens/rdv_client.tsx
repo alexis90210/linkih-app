@@ -234,7 +234,7 @@ export default function RdvClient({
                     }}>
                     <Text
                       style={{
-                        color: '#000',
+                        color: couleurs.dark,
                         paddingVertical: 3,
                         fontSize: 16,
                         fontFamily: CustomFont.Poppins,
@@ -252,9 +252,9 @@ export default function RdvClient({
                       }}>
                       <Text
                         style={{
-                          color: '#000',
+                          color: couleurs.dark,
                           paddingVertical: 3,
-                          fontSize: 14,
+                          fontSize: 13,
                           fontFamily: CustomFont.Poppins,
                         }}>
                         {new Date(row.date).toLocaleDateString()} .
@@ -272,7 +272,7 @@ export default function RdvClient({
                     {route.prix && (
                       <Text
                         style={{
-                          color: '#000',
+                          color: couleurs.dark,
                           paddingVertical: 3,
                           fontSize: 13,
                           fontFamily: CustomFont.Poppins,
@@ -286,7 +286,7 @@ export default function RdvClient({
                         style={{
                           color: couleurs.primary,
                           paddingVertical: 3,
-                          fontSize: 14,
+                          fontSize: 13,
                           fontFamily: CustomFont.Poppins,
                         }}>
                         {row.statut == 0

@@ -17,15 +17,14 @@ import {
   StatusBar,
 } from 'react-native';
 
-import SearchIcon from '../components/search';
-import LanguageIcon from '../components/language';
-import CloseIcon from '../components/close';
 import countries from '../components/countries.json';
 import {CustomFont, couleurs} from '../components/color';
 import storage from '../components/api/localstorage';
 import ArrowLeftIcon from '../components/ArrowLeft';
 import ArrowRightIcon from '../components/ArrowRight';
 import translations from '../translations/translations';
+import SearchIcon from '../components/search';
+import CloseIcon from '../components/close';
 
 // ConfigurationScreen
 export default function ConfigurationScreen({navigation}: {navigation: any}) {
@@ -85,6 +84,22 @@ export default function ConfigurationScreen({navigation}: {navigation: any}) {
     }
   };
 
+  // Load and filter country
+  const [countryKey, SetCountryKey] = useState('');
+  const applyFilter = () => {
+    let etabs = countries;
+
+    if ( !countryKey ) {
+      setCountries( etabs );      
+      return;
+    }
+
+    setCountries(etabs.filter((row, i) => {
+      return row.name.toString().toLowerCase().includes( countryKey.toString().toLowerCase() )
+    }))
+
+  }
+
   // get and save configuration
 
   const saveConfiguration = () => {
@@ -141,6 +156,45 @@ export default function ConfigurationScreen({navigation}: {navigation: any}) {
             {Stepper == 1 && t('quel_est_votre_langue', preferredLangage)}
           </Text>
         </View>
+
+
+          {/* INPUT RESEARCH */}
+          {(Stepper == 0)  &&  <View
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'flex-start',
+                  alignItems: 'center',
+                  gap:4,
+                  padding:10,
+                  borderRadius:20,
+                  marginVertical:4,
+                  width:'100%'
+                }}>
+                <TextInput
+                  defaultValue={countryKey}
+                  onChangeText={input => {
+                    SetCountryKey( input )                   
+                  }}                  
+                  placeholder={ t('Recherchez_un_pays', preferredLangage) }
+                  style={{
+                    backgroundColor: 'transparent',
+                    borderWidth: 1,
+                    borderColor: '#E2C6BB',
+                    color: couleurs.primary,
+                   flex:1,
+                    padding: 8,
+                    paddingHorizontal:20,
+                    borderRadius:30,
+                    fontFamily: CustomFont.Poppins,
+                  }}></TextInput>
+                  <TouchableOpacity style={{width:40, height:40, backgroundColor:couleurs.primary, 
+                    alignContent:'center', borderRadius:20, display:'flex', flexDirection:'row', justifyContent:'center', 
+                    paddingTop:7}} 
+                    onPress={ () => { applyFilter() }}>
+                    <SearchIcon color={couleurs.white} />
+                  </TouchableOpacity>
+          </View>}
 
         <ScrollView
           style={{
@@ -241,6 +295,8 @@ export default function ConfigurationScreen({navigation}: {navigation: any}) {
               ))
             )}
           </View>
+
+
         </ScrollView>
       </SafeAreaView>
     </>

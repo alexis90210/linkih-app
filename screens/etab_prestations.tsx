@@ -135,7 +135,7 @@ export default function MesPrestations({
             <Text
               style={{
                 color: '#fff',
-                fontSize: 15,
+                fontSize: 13,
                 fontFamily: CustomFont.Poppins,
               }}>
                 {t('Actualiser', preferredLangage)}
@@ -196,10 +196,10 @@ export default function MesPrestations({
                     justifyContent: 'space-between',
                     width: '100%',
                   }}>
-                  <Text style={{fontSize: 15, color: couleurs.dark}}>
+                  <Text style={{fontSize: 13, color: couleurs.dark}}>
                     {t('Produit', preferredLangage)}
                   </Text>
-                  <Text style={{color: couleurs.primary, fontSize: 15}}>
+                  <Text style={{color: couleurs.primary, fontSize: 13}}>
                     {row.produit}
                   </Text>
                 </View>
@@ -211,10 +211,10 @@ export default function MesPrestations({
                     justifyContent: 'space-between',
                     width: '100%',
                   }}>
-                  <Text style={{fontSize: 15, color: couleurs.dark}}>
+                  <Text style={{fontSize: 13, color: couleurs.dark}}>
                     {t('Duree', preferredLangage)}
                   </Text>
-                  <Text style={{color: couleurs.primary, fontSize: 15}}>
+                  <Text style={{color: couleurs.primary, fontSize: 13}}>
                     {row.duree} h
                   </Text>
                 </View>
@@ -226,8 +226,8 @@ export default function MesPrestations({
                     justifyContent: 'space-between',
                     width: '100%',
                   }}>
-                  <Text style={{fontSize: 15, color: couleurs.dark}}>Prix</Text>
-                  <Text style={{color: couleurs.primary, fontSize: 15}}>
+                  <Text style={{fontSize: 13, color: couleurs.dark}}>Prix</Text>
+                  <Text style={{color: couleurs.primary, fontSize: 13}}>
                     {row.prix} {row.devise}
                   </Text>
                 </View>
@@ -250,7 +250,7 @@ export default function MesPrestations({
                   style={{
                     alignSelf: 'center',
                     fontFamily: CustomFont.Poppins,
-                    fontSize: 15,
+                    fontSize: 13,
                   }}>
                   {t('Aucunes_prestations', preferredLangage)}
                 </Text>
@@ -277,7 +277,7 @@ export default function MesPrestations({
                 textAlign: 'center',
                 padding: 10,
                 paddingHorizontal: 20,
-                fontSize: 15,
+                fontSize: 13,
                 fontWeight: '500',
                 color: couleurs.secondary,
                 fontFamily: CustomFont.Poppins,

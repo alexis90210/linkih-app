@@ -16,7 +16,6 @@ import {
 import {CustomFont, couleurs} from '../components/color';
 import axios from 'axios';
 import ApiService from '../components/api/service';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 import translations from '../translations/translations';
 import storage from '../components/api/localstorage';
 
@@ -49,7 +48,7 @@ export default function InscriptionProprietaire4({
 
   const [isLoading, setLoading] = useState(false);
 
-  var code = '';
+  var [code, setCode] = useState(''); 
 
   const verifCompte = () => {
     if (code.length < 4) {
@@ -89,7 +88,11 @@ export default function InscriptionProprietaire4({
         }
       })
       .catch(error => {
+        setLoading(false);
         console.log(error);
+        Alert.alert('', t('Erreur_serveur', preferredLangage), [
+          {text: t('Ressayez', preferredLangage), onPress: () => null},
+        ]);
       });
   };
 
@@ -155,7 +158,7 @@ export default function InscriptionProprietaire4({
                 color: '#00000090',
                 opacity: 0.85,
                 fontFamily: CustomFont.Poppins,
-                fontSize: 15,
+                fontSize: 13,
                 marginVertical: 13,
                 width: '80%',
               }}>
@@ -169,7 +172,7 @@ export default function InscriptionProprietaire4({
                 color: '#00000090',
                 opacity: 0.85,
                 fontFamily: CustomFont.Poppins,
-                fontSize: 14,
+                fontSize: 13,
                 marginVertical: 13,
                 width: '80%',
               }}>
@@ -183,7 +186,10 @@ export default function InscriptionProprietaire4({
               placeholderTextColor={'rgba(100,100,100,.7)'}
               placeholder={t('Entrez_le_code', preferredLangage)}
               defaultValue={code}
-              onChangeText={input => (code = input)}
+              keyboardType='number-pad'
+              onChangeText={input => {
+                setCode(input)
+              }}
               style={{
                 backgroundColor: 'transparent',
                 borderBottomWidth: 1,
@@ -220,7 +226,7 @@ export default function InscriptionProprietaire4({
                     color: couleurs.secondary,
                     padding: 10,
                     paddingHorizontal: 20,
-                    fontSize: 14,
+                    fontSize: 13,
                     width: 250,
                     fontFamily: CustomFont.Poppins,
                   }}>
@@ -235,7 +241,7 @@ export default function InscriptionProprietaire4({
                 color: '#00000090',
                 opacity: 0.85,
                 fontFamily: CustomFont.Poppins,
-                fontSize: 14,
+                fontSize: 13,
                 marginVertical: 5,
                 width: '80%',
               }}>
@@ -248,7 +254,7 @@ export default function InscriptionProprietaire4({
                   textAlign: 'center',
                   opacity: 0.85,
                   fontFamily: CustomFont.Poppins,
-                  fontSize: 14,
+                  fontSize: 13,
                   marginVertical: 7,
                 }}>
                 {t('Demander_un_autre', preferredLangage)}

@@ -201,8 +201,8 @@ export default function InscriptionClientScreen({
                 <Text
                   style={{
                     textAlign: 'center',
-                    color: '#000',
-                    fontSize: 15,
+                    color: couleurs.dark,
+                    fontSize: 13,
                     height: 30,
                     opacity: 0.85,
                     fontFamily: CustomFont.Poppins,
@@ -222,7 +222,7 @@ export default function InscriptionClientScreen({
                     color: couleurs.primary,
                     width: '100%',
                     fontFamily: CustomFont.Poppins,
-                    fontSize: 15,
+                    fontSize: 13,
                   }}></TextInput>
               </View>
 
@@ -237,8 +237,8 @@ export default function InscriptionClientScreen({
                 <Text
                   style={{
                     textAlign: 'center',
-                    color: '#000',
-                    fontSize: 15,
+                    color: couleurs.dark,
+                    fontSize: 13,
                     height: 30,
                     opacity: 0.85,
                     fontFamily: CustomFont.Poppins,
@@ -255,7 +255,7 @@ export default function InscriptionClientScreen({
                     color: couleurs.primary,
                     width: '100%',
                     fontFamily: CustomFont.Poppins,
-                    fontSize: 15,
+                    fontSize: 13,
                   }}></TextInput>
               </View>
 
@@ -271,8 +271,8 @@ export default function InscriptionClientScreen({
                 <Text
                   style={{
                     textAlign: 'center',
-                    color: '#000',
-                    fontSize: 15,
+                    color: couleurs.dark,
+                    fontSize: 13,
                     height: 30,
                     opacity: 0.85,
                     fontFamily: CustomFont.Poppins,
@@ -290,7 +290,7 @@ export default function InscriptionClientScreen({
                     borderBottomWidth: 1,
                     borderBottomColor: couleurs.primary,
                     color: couleurs.primary,
-                    fontSize: 15,
+                    fontSize: 13,
                     width: '100%',
                     fontFamily: CustomFont.Poppins,
                   }}></TextInput>
@@ -314,7 +314,7 @@ export default function InscriptionClientScreen({
                       textAlign: 'center',
                       padding: 10,
                       paddingHorizontal: 20,
-                      fontSize: 15,
+                      fontSize: 13,
                       fontFamily: CustomFont.Poppins,
                       color: couleurs.secondary,
                     }}>
@@ -342,7 +342,7 @@ export default function InscriptionClientScreen({
                 <Text
                   style={{
                     textAlign: 'center',
-                    fontSize: 15,
+                    fontSize: 13,
                     fontFamily: CustomFont.Poppins,
                     color: couleurs.primary,
                   }}>

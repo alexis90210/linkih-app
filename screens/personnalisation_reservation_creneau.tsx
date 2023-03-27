@@ -341,7 +341,7 @@ export default function PersonnalisationReservationCreneau({
               }}>
               <Text
                 style={{
-                  fontSize: 15,
+                  fontSize: 13,
                   textAlign: 'center',
                   color: couleurs.dark,
                 }}>

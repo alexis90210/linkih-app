@@ -33,7 +33,7 @@ export default function CompteProprietaire({navigation}: {navigation: any}) {
           <Pressable onPress={() => navigation.navigate('main')}>
             <ArrowLeftIcon color={couleurs.primary} />
           </Pressable>
-          <Text style={{color: '#000', fontSize: 18, fontWeight: '700'}}>
+          <Text style={{color: couleurs.dark, fontSize: 18, fontWeight: '700'}}>
             Mon etablissement
           </Text>
         </View>
@@ -76,7 +76,7 @@ export default function CompteProprietaire({navigation}: {navigation: any}) {
               }}>
               <Text
                 style={{
-                  color: '#000',
+                  color: couleurs.dark,
                   paddingVertical: 3,
                   fontSize: 17,
                   fontWeight: '700',
@@ -85,17 +85,17 @@ export default function CompteProprietaire({navigation}: {navigation: any}) {
               </Text>
               <Text
                 style={{
-                  color: '#000',
+                  color: couleurs.dark,
                   paddingVertical: 3,
                   opacity: 0.7,
-                  fontSize: 15,
+                  fontSize: 13,
                   fontWeight: '600',
                 }}>
                 hisoka.tegiro@gmail.com
               </Text>
               <Text
                 style={{
-                  color: '#000',
+                  color: couleurs.dark,
                   paddingVertical: 3,
                   fontSize: 16,
                   fontWeight: '600',
@@ -136,9 +136,9 @@ export default function CompteProprietaire({navigation}: {navigation: any}) {
               }}>
               <Text
                 style={{
-                  color: '#000',
+                  color: couleurs.dark,
                   paddingVertical: 3,
-                  fontSize: 15,
+                  fontSize: 13,
                   fontWeight: '600',
                 }}>
                 Client depuis
@@ -147,7 +147,7 @@ export default function CompteProprietaire({navigation}: {navigation: any}) {
                 style={{
                   color: couleurs.primary,
                   paddingVertical: 3,
-                  fontSize: 15,
+                  fontSize: 13,
                   fontWeight: '600',
                 }}>
                 14-02-2023
@@ -156,7 +156,7 @@ export default function CompteProprietaire({navigation}: {navigation: any}) {
 
             <Text
               style={{
-                color: '#000',
+                color: couleurs.dark,
                 paddingVertical: 3,
                 fontSize: 16,
                 fontWeight: '800',
@@ -174,7 +174,7 @@ export default function CompteProprietaire({navigation}: {navigation: any}) {
               }}>
               <Text
                 style={{
-                  color: '#000',
+                  color: couleurs.dark,
                   paddingVertical: 3,
                   fontSize: 16,
                   fontWeight: '600',
@@ -184,10 +184,10 @@ export default function CompteProprietaire({navigation}: {navigation: any}) {
               </Text>
               <Text
                 style={{
-                  color: '#000',
+                  color: couleurs.dark,
                   paddingVertical: 3,
                   opacity: 0.7,
-                  fontSize: 15,
+                  fontSize: 13,
                   fontWeight: '600',
                 }}>
                 Brazzaville, vers boulevrd denis
@@ -204,7 +204,7 @@ export default function CompteProprietaire({navigation}: {navigation: any}) {
               <View>
                 <Text
                   style={{
-                    color: '#000',
+                    color: couleurs.dark,
                     paddingVertical: 3,
                     fontSize: 16,
                     fontWeight: '800',
@@ -222,9 +222,9 @@ export default function CompteProprietaire({navigation}: {navigation: any}) {
                 }}>
                 <Text
                   style={{
-                    color: '#000',
+                    color: couleurs.dark,
                     paddingVertical: 3,
-                    fontSize: 15,
+                    fontSize: 13,
                     fontWeight: '600',
                   }}>
                   expire le
@@ -233,7 +233,7 @@ export default function CompteProprietaire({navigation}: {navigation: any}) {
                   style={{
                     color: couleurs.primary,
                     paddingVertical: 3,
-                    fontSize: 15,
+                    fontSize: 13,
                     fontWeight: '600',
                   }}>
                   14-02-2023
@@ -250,7 +250,7 @@ export default function CompteProprietaire({navigation}: {navigation: any}) {
               }}>
               <Text
                 style={{
-                  color: '#000',
+                  color: couleurs.dark,
                   paddingVertical: 3,
                   fontSize: 16,
                   fontWeight: '600',
@@ -267,9 +267,9 @@ export default function CompteProprietaire({navigation}: {navigation: any}) {
                 }}>
                 <Text
                   style={{
-                    color: '#000',
+                    color: couleurs.dark,
                     paddingVertical: 3,
-                    fontSize: 15,
+                    fontSize: 13,
                     fontWeight: '800',
                   }}>
                   13
@@ -278,7 +278,7 @@ export default function CompteProprietaire({navigation}: {navigation: any}) {
                   style={{
                     color: couleurs.primary,
                     paddingVertical: 3,
-                    fontSize: 14,
+                    fontSize: 13,
                     fontWeight: '600',
                   }}>
                   € TTC / mois
@@ -296,7 +296,7 @@ export default function CompteProprietaire({navigation}: {navigation: any}) {
               <View>
                 <Text
                   style={{
-                    color: '#000',
+                    color: couleurs.dark,
                     paddingVertical: 3,
                     fontSize: 16,
                     fontWeight: '800',
@@ -317,7 +317,7 @@ export default function CompteProprietaire({navigation}: {navigation: any}) {
                     style={{
                       color: couleurs.primary,
                       paddingVertical: 3,
-                      fontSize: 15,
+                      fontSize: 13,
                       fontWeight: '600',
                     }}>
                     voir tout
@@ -335,7 +335,7 @@ export default function CompteProprietaire({navigation}: {navigation: any}) {
               }}>
               <Text
                 style={{
-                  color: '#000',
+                  color: couleurs.dark,
                   paddingVertical: 3,
                   fontSize: 16,
                   fontWeight: '600',
@@ -353,9 +353,9 @@ export default function CompteProprietaire({navigation}: {navigation: any}) {
                 }}>
                 <Text
                   style={{
-                    color: '#000',
+                    color: couleurs.dark,
                     paddingVertical: 3,
-                    fontSize: 15,
+                    fontSize: 13,
                     fontWeight: '800',
                   }}>
                   Lundi .
@@ -364,7 +364,7 @@ export default function CompteProprietaire({navigation}: {navigation: any}) {
                   style={{
                     color: couleurs.primary,
                     paddingVertical: 3,
-                    fontSize: 14,
+                    fontSize: 13,
                     fontWeight: '600',
                   }}>
                   15:30:50
@@ -379,9 +379,9 @@ export default function CompteProprietaire({navigation}: {navigation: any}) {
                 }}>
                 <Text
                   style={{
-                    color: '#000',
+                    color: couleurs.dark,
                     paddingVertical: 3,
-                    fontSize: 15,
+                    fontSize: 13,
                     fontWeight: '600',
                   }}>
                   Maquillage
@@ -392,7 +392,7 @@ export default function CompteProprietaire({navigation}: {navigation: any}) {
                     style={{
                       color: couleurs.primary,
                       paddingVertical: 3,
-                      fontSize: 15,
+                      fontSize: 13,
                       fontWeight: '600',
                     }}>
                     Annuler
@@ -412,7 +412,7 @@ export default function CompteProprietaire({navigation}: {navigation: any}) {
               }}>
               <Text
                 style={{
-                  color: '#000',
+                  color: couleurs.dark,
                   paddingVertical: 3,
                   fontSize: 16,
                   fontWeight: '600',
@@ -430,9 +430,9 @@ export default function CompteProprietaire({navigation}: {navigation: any}) {
                 }}>
                 <Text
                   style={{
-                    color: '#000',
+                    color: couleurs.dark,
                     paddingVertical: 3,
-                    fontSize: 15,
+                    fontSize: 13,
                     fontWeight: '800',
                   }}>
                   Jeudi .
@@ -441,7 +441,7 @@ export default function CompteProprietaire({navigation}: {navigation: any}) {
                   style={{
                     color: couleurs.primary,
                     paddingVertical: 3,
-                    fontSize: 14,
+                    fontSize: 13,
                     fontWeight: '600',
                   }}>
                   15:30:50
@@ -456,9 +456,9 @@ export default function CompteProprietaire({navigation}: {navigation: any}) {
                 }}>
                 <Text
                   style={{
-                    color: '#000',
+                    color: couleurs.dark,
                     paddingVertical: 3,
-                    fontSize: 15,
+                    fontSize: 13,
                     fontWeight: '600',
                   }}>
                   Soin ongle
@@ -469,7 +469,7 @@ export default function CompteProprietaire({navigation}: {navigation: any}) {
                     style={{
                       color: couleurs.primary,
                       paddingVertical: 3,
-                      fontSize: 15,
+                      fontSize: 13,
                       fontWeight: '600',
                     }}>
                     Annuler

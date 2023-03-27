@@ -136,7 +136,7 @@ export default function Compte({navigation}: {navigation: any}) {
                   color: couleurs.white,
                   paddingVertical: 3,
                   opacity: 0.7,
-                  fontSize: 15,
+                  fontSize: 13,
                   fontFamily: CustomFont.Poppins,
                 }}>
                 {proprietaire.email}
@@ -145,7 +145,7 @@ export default function Compte({navigation}: {navigation: any}) {
                 style={{
                   color: couleurs.white,
                   paddingVertical: 3,
-                  fontSize: 15,
+                  fontSize: 13,
                   fontFamily: CustomFont.Poppins,
                 }}>
                 {proprietaire.mobile}
@@ -169,9 +169,9 @@ export default function Compte({navigation}: {navigation: any}) {
               }}>
               <Text
                 style={{
-                  color: '#000',
+                  color: couleurs.dark,
                   paddingVertical: 3,
-                  fontSize: 15,
+                  fontSize: 13,
                   fontFamily: CustomFont.Poppins,
                 }}>
                 {t('Client_depuis', preferredLangage)}
@@ -180,7 +180,7 @@ export default function Compte({navigation}: {navigation: any}) {
                 style={{
                   color: couleurs.primary,
                   paddingVertical: 3,
-                  fontSize: 15,
+                  fontSize: 13,
                   fontFamily: CustomFont.Poppins,
                 }}>
                 {proprietaire.date_creation}
@@ -199,7 +199,7 @@ export default function Compte({navigation}: {navigation: any}) {
               }}>
               <Text
                 style={{
-                  color: '#000',
+                  color: couleurs.dark,
                   paddingVertical: 3,
                   fontSize: 16,
                   fontWeight: '700',
@@ -210,9 +210,9 @@ export default function Compte({navigation}: {navigation: any}) {
 
               <Text
                 style={{
-                  color: '#000',
+                  color: couleurs.dark,
                   paddingVertical: 3,
-                  fontSize: 15,
+                  fontSize: 13,
                   fontFamily: CustomFont.Poppins,
                   opacity: 0.8,
                 }}>
@@ -238,7 +238,7 @@ export default function Compte({navigation}: {navigation: any}) {
                 }}>
                 <Text
                   style={{
-                    color: '#000',
+                    color: couleurs.dark,
                     paddingVertical: 3,
                     fontSize: 16,
                     fontWeight: '700',
@@ -249,9 +249,9 @@ export default function Compte({navigation}: {navigation: any}) {
 
                 <Text
                   style={{
-                    color: '#000',
+                    color: couleurs.dark,
                     paddingVertical: 3,
-                    fontSize: 15,
+                    fontSize: 13,
                     fontFamily: CustomFont.Poppins,
                     opacity: 0.8,
                   }}>

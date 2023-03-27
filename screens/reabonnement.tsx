@@ -214,7 +214,7 @@ export default function Reabonnement({
                   <Text
                     style={{
                       fontFamily: CustomFont.Poppins,
-                      fontSize: 15,
+                      fontSize: 13,
                       color: couleurs.primary,
                       borderBottomWidth: 1,
                       borderStyle: 'solid',
@@ -234,7 +234,7 @@ export default function Reabonnement({
                     <Text
                       style={{
                         fontFamily: CustomFont.Poppins,
-                        fontSize: 14,
+                        fontSize: 13,
                         color: couleurs.dark,
                       }}>
                       {t('Abonnement', preferredLangage)}
@@ -243,7 +243,7 @@ export default function Reabonnement({
                     <Text
                       style={{
                         fontFamily: CustomFont.Poppins,
-                        fontSize: 14,
+                        fontSize: 13,
                         color: couleurs.primary,
                       }}>
                         {preferredLangage == 'fr' ? mon_abonnement.nom : mon_abonnement.en_nom}
@@ -259,7 +259,7 @@ export default function Reabonnement({
                     <Text
                       style={{
                         fontFamily: CustomFont.Poppins,
-                        fontSize: 14,
+                        fontSize: 13,
                         color: couleurs.dark,
                       }}>
                       {t('Type_Abonnement', preferredLangage)}
@@ -268,7 +268,7 @@ export default function Reabonnement({
                     <Text
                       style={{
                         fontFamily: CustomFont.Poppins,
-                        fontSize: 14,
+                        fontSize: 13,
                         color: couleurs.primary,
                       }}>
                       {mon_abonnement.code}
@@ -284,7 +284,7 @@ export default function Reabonnement({
                     <Text
                       style={{
                         fontFamily: CustomFont.Poppins,
-                        fontSize: 14,
+                        fontSize: 13,
                         color: couleurs.dark,
                       }}>
                       {t('Debut_d_activation', preferredLangage)}
@@ -293,7 +293,7 @@ export default function Reabonnement({
                     <Text
                       style={{
                         fontFamily: CustomFont.Poppins,
-                        fontSize: 14,
+                        fontSize: 13,
                         color: couleurs.dark,
                         opacity: 0.6,
                       }}>
@@ -310,7 +310,7 @@ export default function Reabonnement({
                     <Text
                       style={{
                         fontFamily: CustomFont.Poppins,
-                        fontSize: 14,
+                        fontSize: 13,
                         color: couleurs.dark,
                       }}>
                       {t('Date_d_expiration', preferredLangage)}
@@ -319,7 +319,7 @@ export default function Reabonnement({
                     <Text
                       style={{
                         fontFamily: CustomFont.Poppins,
-                        fontSize: 14,
+                        fontSize: 13,
                         color: couleurs.dark,
                         opacity: 0.6,
                       }}>
@@ -354,7 +354,7 @@ export default function Reabonnement({
             <Text
               style={{
                 fontFamily: CustomFont.Poppins,
-                fontSize: 15,
+                fontSize: 13,
                 color: couleurs.dark,
                 marginVertical: 20,
                 paddingHorizontal: 15,
@@ -379,7 +379,7 @@ export default function Reabonnement({
                     paddingVertical: 10,
                   }}>
                   <Text style={{color: couleurs.white, alignSelf: 'center'}}>
-                    {row.nom}
+                  { preferredLangage == 'fr' ? row.nom : row.en_nom}
                   </Text>
                 </View>
 
@@ -394,7 +394,7 @@ export default function Reabonnement({
                   <Text
                     style={{
                       color: couleurs.primary,
-                      fontSize: 15,
+                      fontSize: 13,
                     }}>
                     {row.code}
                   </Text>
@@ -432,7 +432,7 @@ export default function Reabonnement({
                         color: couleurs.white,
                         padding: 10,
                         paddingHorizontal: 20,
-                        fontSize: 14,
+                        fontSize: 13,
                       }}>
                       {t('S_abonner_maintenant', preferredLangage)}
                     </Text>

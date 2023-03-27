@@ -139,7 +139,7 @@ export default function PersonnalisationReservation({
                   }}>
                   <Text
                     style={{
-                      fontSize: 15,
+                      fontSize: 13,
                       fontFamily: CustomFont.Poppins,
                       color: !isCollapsedGoodToKnow
                         ? couleurs.primary
@@ -187,7 +187,7 @@ export default function PersonnalisationReservation({
                   }}>
                   <Text
                     style={{
-                      fontSize: 15,
+                      fontSize: 13,
                       fontFamily: CustomFont.Poppins,
                       color: !isCollapsedImportantInfo
                         ? couleurs.primary
@@ -231,9 +231,9 @@ export default function PersonnalisationReservation({
               }}>
               <Text
                 style={{
-                  color: '#000',
+                  color: couleurs.dark,
                   paddingVertical: 15,
-                  fontSize: 15,
+                  fontSize: 13,
                   fontFamily: CustomFont.Poppins,
                   width: '100%',
                   textAlign: 'center',
@@ -262,7 +262,7 @@ export default function PersonnalisationReservation({
                     <Text
                       style={{
                         fontFamily: CustomFont.Poppins,
-                        fontSize: 15,
+                        fontSize: 13,
                         color: couleurs.primary,
                       }}
                       numberOfLines={1}>

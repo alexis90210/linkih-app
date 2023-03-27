@@ -225,8 +225,8 @@ export default function IdentificationClientScreen({
                 <Text
                   style={{
                     textAlign: 'center',
-                    color: '#000',
-                    fontSize: 15,
+                    color: couleurs.dark,
+                    fontSize: 13,
                     height: 30,
                     opacity: 0.85,
                     marginTop:14,
@@ -262,8 +262,8 @@ export default function IdentificationClientScreen({
                 <Text
                   style={{
                     textAlign: 'center',
-                    color: '#000',
-                    fontSize: 15,
+                    color: couleurs.dark,
+                    fontSize: 13,
                     height: 30,
                     opacity: 0.85,
                     fontFamily: CustomFont.Poppins,
@@ -307,7 +307,7 @@ export default function IdentificationClientScreen({
                       textAlign: 'center',
                       padding: 10,
                       paddingHorizontal: 20,
-                      fontSize: 15,
+                      fontSize: 13,
                       fontWeight: '500',
                       color: couleurs.white,
                       fontFamily: CustomFont.Poppins,
@@ -336,9 +336,9 @@ export default function IdentificationClientScreen({
                   <Text
                     style={{
                       textAlign: 'center',
-                      fontSize: 15,
+                      fontSize: 13,
                       fontWeight: '500',
-                      color: '#000',
+                      color: couleurs.dark,
                       fontFamily: CustomFont.Poppins,
                     }}>
                     {t('Mot_de_passe_oublie', preferredLangage)}
@@ -368,9 +368,9 @@ export default function IdentificationClientScreen({
                   <Text
                     style={{
                       textAlign: 'center',
-                      fontSize: 15,
+                      fontSize: 13,
                       fontWeight: '500',
-                      color: '#000',                      
+                      color: couleurs.dark,                      
                     fontFamily: CustomFont.Poppins,
                     }}>
                     {t('Je_cree_mon_compte', preferredLangage)}
@@ -400,7 +400,7 @@ export default function IdentificationClientScreen({
               <Text
                 style={{
                   textAlign: 'center',
-                  fontSize: 15,
+                  fontSize: 13,
                   fontWeight: '500',
                   color: couleurs.primary,
                   fontFamily: CustomFont.Poppins,

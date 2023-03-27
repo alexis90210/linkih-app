@@ -163,7 +163,7 @@ function MenuScreen({navigation}: {navigation: any}) {
                   style={{
                     fontSize: 16,
                     marginVertical: 10,
-                    color: '#000',
+                    color: couleurs.dark,
                     fontFamily: CustomFont.Poppins,
                   }}>
                   {t('Mon_compte', preferredLangage)}
@@ -195,7 +195,7 @@ function MenuScreen({navigation}: {navigation: any}) {
                   style={{
                     fontSize: 16,
                     marginVertical: 10,
-                    color: '#000',
+                    color: couleurs.dark,
                     fontFamily: CustomFont.Poppins,
                   }}>
                   {t('Mes_Prestations', preferredLangage)}
@@ -225,7 +225,7 @@ function MenuScreen({navigation}: {navigation: any}) {
                   style={{
                     fontSize: 16,
                     marginVertical: 10,
-                    color: '#000',
+                    color: couleurs.dark,
                     fontFamily: CustomFont.Poppins,
                   }}>
                   {t('Mes_Horaires', preferredLangage)}
@@ -257,7 +257,7 @@ function MenuScreen({navigation}: {navigation: any}) {
                   style={{
                     fontSize: 16,
                     marginVertical: 10,
-                    color: '#000',
+                    color: couleurs.dark,
                     fontFamily: CustomFont.Poppins,
                   }}>
                   {t('Ma_Gallerie', preferredLangage)}
@@ -287,7 +287,7 @@ function MenuScreen({navigation}: {navigation: any}) {
                   style={{
                     fontSize: 16,
                     marginVertical: 10,
-                    color: '#000',
+                    color: couleurs.dark,
                     fontFamily: CustomFont.Poppins,
                   }}>
                   {t('Configuration_de_paiement', preferredLangage)}
@@ -317,7 +317,7 @@ function MenuScreen({navigation}: {navigation: any}) {
                   style={{
                     fontSize: 16,
                     marginVertical: 10,
-                    color: '#000',
+                    color: couleurs.dark,
                     fontFamily: CustomFont.Poppins,
                   }}>
                   {t('Reabonnement', preferredLangage)}
@@ -346,7 +346,7 @@ function MenuScreen({navigation}: {navigation: any}) {
                   style={{
                     fontSize: 16,
                     marginVertical: 10,
-                    color: '#000',
+                    color: couleurs.dark,
                     fontFamily: CustomFont.Poppins,
                   }}>
                   {t('mon_etablissement', preferredLangage)}
@@ -375,7 +375,7 @@ function MenuScreen({navigation}: {navigation: any}) {
                 style={{
                   fontSize: 16,
                   marginVertical: 10,
-                  color: '#000',
+                  color: couleurs.dark,
                   fontFamily: CustomFont.Poppins,
                 }}>
                 {t('Contactez_nous', preferredLangage)}
@@ -403,7 +403,7 @@ function MenuScreen({navigation}: {navigation: any}) {
                 style={{
                   fontSize: 16,
                   marginVertical: 10,
-                  color: '#000',
+                  color: couleurs.dark,
                   fontFamily: CustomFont.Poppins,
                 }}>
                 {t('Condition_generale_d_utilisation', preferredLangage)}
@@ -431,7 +431,7 @@ function MenuScreen({navigation}: {navigation: any}) {
                 style={{
                   fontSize: 16,
                   marginVertical: 10,
-                  color: '#000',
+                  color: couleurs.dark,
                   fontFamily: CustomFont.Poppins,
                 }}>
                 {t('Politique_de_confidentialite', preferredLangage)}
@@ -459,7 +459,7 @@ function MenuScreen({navigation}: {navigation: any}) {
                 style={{
                   fontSize: 16,
                   marginVertical: 10,
-                  color: '#000',
+                  color: couleurs.dark,
                   fontFamily: CustomFont.Poppins,
                 }}>
                 {t('Mentions_legales', preferredLangage)}
@@ -493,7 +493,7 @@ function MenuScreen({navigation}: {navigation: any}) {
                 style={{
                   fontSize: 16,
                   marginVertical: 10,
-                  color: '#000',
+                  color: couleurs.dark,
                   fontFamily: CustomFont.Poppins,
                 }}>
                 {t('Deconnexion', preferredLangage)}

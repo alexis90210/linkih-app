@@ -8,6 +8,7 @@ import {
   ScrollView,
   Image,
   Pressable,
+  Dimensions,
 } from 'react-native';
 import RdvIcon from '../components/rdv';
 import {AirbnbRating} from 'react-native-ratings';
@@ -15,9 +16,9 @@ import {CustomFont, couleurs} from '../components/color';
 import HomeIcon from '../components/home';
 import storage from '../components/api/localstorage';
 import MapIcon from '../components/map';
-import ImageModal from 'react-native-image-modal';
 import ArrowRightIcon from '../components/ArrowRight';
 import translations from '../translations/translations';
+import * as Progress from 'react-native-progress';
 
 export default function MonEtablissement({
   route,
@@ -56,7 +57,7 @@ export default function MonEtablissement({
   storage
     .load({
       key: 'userconnected', // Note: Do not use underscore("_") in key!
-      id: 'userconnected', // Note: Do not use underscore("_") in id!
+      id: 'userconnected',  // Note: Do not use underscore("_") in id!
     })
     .then(data => {
       if (data.role != 'ROLE_VENDEUR') {
@@ -135,6 +136,9 @@ export default function MonEtablissement({
               left: 0,
               paddingHorizontal: 14,
               zIndex: 10,
+              display:'flex',
+              justifyContent:'space-between',
+              alignItems:'center',
             }}>
             <View
               style={{
@@ -158,7 +162,7 @@ export default function MonEtablissement({
                 style={{
                   color: couleurs.dark,
                   paddingVertical: 3,
-                  fontSize: 15,
+                  fontSize: 14,
                   fontFamily: CustomFont.Poppins,
                 }}>
                 {etablissement.mail}
@@ -167,29 +171,27 @@ export default function MonEtablissement({
                 style={{
                   color: couleurs.dark,
                   paddingVertical: 3,
-                  fontSize: 15,
+                  fontSize: 14,
                   fontFamily: CustomFont.Poppins,
                 }}>
                 {etablissement.mobile}
               </Text>
 
-              <View style={{display: 'flex', flexDirection: 'row'}}>
-                <AirbnbRating
-                  reviewSize={5}
-                  reviewColor={couleurs.primary}
-                  showRating={false}
-                  count={5}
-                  reviews={['Terrible', 'Bad', 'Good', 'Very Good']}
-                  onFinishRating={rate => console.log(rate)}
-                  defaultRating={etablissement.note}
-                  size={14}
-                />
+              <View style={{display: 'flex', flexDirection: 'row', marginTop:6, justifyContent:'flex-start', alignItems:'center'}}>
+           
+                <Progress.Bar progress={etablissement.note || 0} width={200} height={8}
+                color={couleurs.success}
+                style={{backgroundColor:couleurs.Light, borderColor:couleurs.Light}} />
+
+                <Text>{'  '}{etablissement.note || 0} Avis</Text>
               </View>
             </View>
+
+            
           </View>
 
           <View
-            style={{marginHorizontal: 12, marginBottom: 60, marginTop: 120}}>
+            style={{marginHorizontal: 12, marginBottom: 60, marginTop: 100}}>
             <View
               style={{
                 display: 'flex',
@@ -205,7 +207,7 @@ export default function MonEtablissement({
               }}>
               <Text
                 style={{
-                  fontSize: 15,
+                  fontSize: 13,
                   fontFamily: CustomFont.Poppins,
                 }}>
                 {t('Vendeur_depuis', preferredLangage)}
@@ -236,7 +238,7 @@ export default function MonEtablissement({
                 style={{
                   color: couleurs.primary,
                   paddingVertical: 3,
-                  fontSize: 15,
+                  fontSize: 13,
                   fontFamily: CustomFont.Poppins,
                 }}>
                 {t('Pays_et_region_de_l_etablissement', preferredLangage)}
@@ -244,19 +246,19 @@ export default function MonEtablissement({
 
               <Text
                 style={{
-                  color: '#000',
+                  color: couleurs.dark,
                   paddingVertical: 3,
-                  fontSize: 14,
+                  fontSize: 13,
                   opacity: 0.8,
                 }}>
                 {proprietaire.pays}
               </Text>
               <Text
                 style={{
-                  color: '#000',
+                  color: couleurs.dark,
                   paddingVertical: 3,
                   opacity: 0.7,
-                  fontSize: 14,
+                  fontSize: 13,
                 }}>
                 {etablissement.adresse}
               </Text>
@@ -282,7 +284,7 @@ export default function MonEtablissement({
                 <Text
                   style={{
                     fontFamily: CustomFont.Poppins,
-                    fontSize: 15,
+                    fontSize: 13,
                     paddingBottom: 12,
                     color: couleurs.primary,
                   }}>
@@ -324,8 +326,8 @@ export default function MonEtablissement({
                     }}>
                     <Text
                       style={{
-                        color: '#000',
-                        fontSize: 14,
+                        color: couleurs.dark,
+                        fontSize: 13,
                         fontFamily: CustomFont.Poppins,
                       }}>
                       {row.jour}
@@ -333,7 +335,7 @@ export default function MonEtablissement({
                     <Text
                       style={{
                         color: !(row.heure_ouverture && row.heure_fermeture) ? 'rgba(240,20,25,.8)' : couleurs.primary,
-                        fontSize: 14,
+                        fontSize: 13,
                         fontFamily: CustomFont.Poppins,
                       }}>
                       {(row.heure_ouverture && row.heure_fermeture ) && `${row.heure_ouverture}-${row.heure_fermeture}`}
@@ -360,9 +362,9 @@ export default function MonEtablissement({
              <Text
                 style={{
                   fontFamily: CustomFont.Poppins,
-                  fontSize: 15,
+                  fontSize: 13,
                   paddingBottom: 12,
-                  color: '#000',
+                  color: couleurs.dark,
                 }}>
                 Gallerie
               </Text>
@@ -413,7 +415,7 @@ export default function MonEtablissement({
                 <Text
                   style={{
                     fontFamily: CustomFont.Poppins,
-                    fontSize: 15,
+                    fontSize: 13,
                     paddingBottom: 12,
                     color: couleurs.primary,
                   }}>
@@ -539,7 +541,7 @@ export default function MonEtablissement({
                   textAlign: 'center',
                   padding: 10,
                   paddingHorizontal: 20,
-                  fontSize: 14,
+                  fontSize: 13,
                   fontWeight: '500',
                   color: '#fff',
                 }}>

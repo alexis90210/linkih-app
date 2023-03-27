@@ -437,7 +437,7 @@ export default function SimpleRdv({
                       width: '100%',
                       marginTop: 200,
                     }}>
-                    <Text style={{fontSize: 15, textAlign: 'center', color:couleurs.dark}}>
+                    <Text style={{fontSize: 13, textAlign: 'center', color:couleurs.dark}}>
                       {t('selectionnez_une_date', preferredLangage)}
                     </Text>
                   </View>
@@ -480,7 +480,7 @@ export default function SimpleRdv({
                         justifyContent: 'flex-start',
                         textAlignVertical: 'top',
                         fontFamily: CustomFont.Poppins,
-                        fontSize: 15, color:couleurs.dark
+                        fontSize: 13, color:couleurs.dark
                       }}></TextInput>
                   </View>
 
@@ -511,7 +511,7 @@ export default function SimpleRdv({
                         style={{
                           textAlign: 'center',
                           padding: 5,
-                          fontSize: 15,
+                          fontSize: 13,
                           color: couleurs.white,
                           fontFamily: CustomFont.Poppins,
                         }}>

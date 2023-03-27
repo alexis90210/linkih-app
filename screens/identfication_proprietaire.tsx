@@ -17,6 +17,7 @@ import axios from 'axios';
 import ApiService from '../components/api/service';
 import storage from '../components/api/localstorage';
 import translations from '../translations/translations';
+import ArrowRightIcon from '../components/ArrowRight';
 
 // IdentificationProprietaireScreen
 export default function IdentificationProprietaireScreen({
@@ -176,7 +177,10 @@ export default function IdentificationProprietaireScreen({
             ]);
           } else {
             Alert.alert('', t('login_incorect', preferredLangage), [
-            
+            {
+              text: 'OK',
+              onPress: () => null
+            }
             ], {cancelable:true});
           }
         }
@@ -247,8 +251,8 @@ export default function IdentificationProprietaireScreen({
                 <Text
                   style={{
                     textAlign: 'center',
-                    color: '#000',
-                    fontSize: 15,
+                    color: couleurs.dark,
+                    fontSize: 13,
                     height: 30,
                     opacity: 0.85,
                     marginTop: 14,
@@ -287,8 +291,8 @@ export default function IdentificationProprietaireScreen({
                 <Text
                   style={{
                     textAlign: 'center',
-                    color: '#000',
-                    fontSize: 15,
+                    color: couleurs.dark,
+                    fontSize: 13,
                     height: 30,
                     opacity: 0.85,
                     fontFamily: CustomFont.Poppins,
@@ -335,8 +339,7 @@ export default function IdentificationProprietaireScreen({
                       textAlign: 'center',
                       padding: 10,
                       paddingHorizontal: 20,
-                      fontSize: 15,
-                      fontWeight: '500',
+                      fontSize: 13,
                       color: couleurs.secondary,
                       fontFamily: CustomFont.Poppins,
                     }}>
@@ -349,11 +352,10 @@ export default function IdentificationProprietaireScreen({
                 style={{
                   alignItems: 'center',
                   backgroundColor: 'transparent',
-                  borderRadius: 30,
                   display: 'flex',
                   flexDirection: 'row',
                   justifyContent: 'flex-end',
-                  marginVertical: 10,
+                  marginVertical: 5,
                 }}>
                 <TouchableOpacity
                   style={{}}
@@ -361,9 +363,8 @@ export default function IdentificationProprietaireScreen({
                   <Text
                     style={{
                       textAlign: 'center',
-                      fontSize: 15,
-                      fontWeight: '500',
-                      color: '#000',
+                      fontSize: 13,
+                      color: couleurs.dark,
                       fontFamily: CustomFont.Poppins,
                     }}>
                     {t('Mot_de_passe_oublie', preferredLangage)}
@@ -371,22 +372,36 @@ export default function IdentificationProprietaireScreen({
                 </TouchableOpacity>
               </View>
 
-              <View
+              
+            </View>
+          </View>
+
+          <View
                 style={{
                   alignItems: 'center',
                   backgroundColor: 'transparent',
                   display: 'flex',
                   flexDirection: 'row',
                   justifyContent: 'center',
-                  borderTopWidth: 1,
-                  borderStyle: 'dotted',
-                  borderColor: couleurs.primary,
                   paddingTop: 15,
                   marginTop: 10,
                 }}>
+
+<View
+                style={{
+                  alignItems: 'center',
+                  backgroundColor: couleurs.primaryLight,
+                  borderRadius: 30,
+                  marginBottom: 20,
+                }}>
                 <TouchableOpacity
                   style={{
-                    marginVertical: 10,
+                    paddingHorizontal: 10,
+                    width: '100%',
+                    display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  alignItems:'center'
                   }}
                   onPress={() =>
                     navigation.navigate('inscription_proprietaire_1')
@@ -394,17 +409,19 @@ export default function IdentificationProprietaireScreen({
                   <Text
                     style={{
                       textAlign: 'center',
-                      fontSize: 15,
-                      fontWeight: '500',
-                      color: '#000',
+                      padding: 10,
+                      paddingHorizontal: 20,
+                      fontSize: 13,
+                      color: couleurs.dark,
                       fontFamily: CustomFont.Poppins,
                     }}>
-                    {t('Je_cree_mon_compte', preferredLangage)}
+                   {t('Je_cree_mon_compte', preferredLangage)}
                   </Text>
                 </TouchableOpacity>
               </View>
-            </View>
-          </View>
+
+        
+              </View>
 
           <View
             style={{
@@ -415,7 +432,7 @@ export default function IdentificationProprietaireScreen({
               flexDirection: 'row',
               justifyContent: 'center',
               marginVertical: 10,
-              marginTop: 60,
+              marginTop: 10,
             }}>
             <TouchableOpacity
               style={{
@@ -425,8 +442,7 @@ export default function IdentificationProprietaireScreen({
               <Text
                 style={{
                   textAlign: 'center',
-                  fontSize: 15,
-                  fontWeight: '500',
+                  fontSize: 13,
                   color: couleurs.primary,
                   fontFamily: CustomFont.Poppins,
                 }}>

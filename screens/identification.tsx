@@ -13,6 +13,7 @@ import {
   Image,
   Pressable,
   Dimensions,
+  Linking,
 } from 'react-native';
 import ShopIcon from '../components/shop';
 import AccountIcon from '../components/account';
@@ -116,42 +117,42 @@ export default function IdentificationScreen({navigation}: {navigation: any}) {
               position: 'relative',
               marginTop: 5,
               borderRadius: 20,
+              top:-80
             }}>
             <View
               style={{
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'center',
-                marginVertical: 20,
+                marginVertical: 10,
               }}>
               <View
                 style={{
                   display: 'flex',
                   flexDirection: 'row',
                   justifyContent: 'center',
-                  marginVertical: 20,
+                  marginVertical: 10,
                 }}>
                 <Text
                   style={{
-                    color: '#000',
-                    fontSize: 14,
+                    color: couleurs.dark,
+                    fontSize: 13,
                     fontFamily: CustomFont.Poppins,
                   }}>
                   { t('veuillez_vous_identifier', preferredLangage)}
                 </Text>
               </View>
 
-              <ScrollView horizontal={true} style={{width: '100%'}}>
                 <View
                   style={{
                     display: 'flex',
-                    flexDirection: 'row',
+                    flexDirection: 'column',
                     justifyContent: 'center',
                     alignItems: 'center',
                     gap: 10,
                     padding: 10,
                     alignSelf: 'center',
-                    width: Dimensions.get('window').width,
+                    width: '100%'
                   }}>
                   {pack.map((row, key) => (
                     <TouchableOpacity
@@ -160,9 +161,8 @@ export default function IdentificationScreen({navigation}: {navigation: any}) {
                         borderRadius: 15,
                         paddingHorizontal: 10,
                         backgroundColor: row.bgColor,
-                        padding: 18,
-                        width: 105,
-                        height: 140,
+                        padding: 13,
+                        width: Dimensions.get('screen').width-20,
                         display: 'flex',
                         flexDirection: 'column',
                         justifyContent: 'center',
@@ -179,7 +179,6 @@ export default function IdentificationScreen({navigation}: {navigation: any}) {
                           flexDirection: 'column',
                           justifyContent: 'center',
                           alignItems: 'center',
-                          // padding:15,
                           gap: 10,
                         }}>
                         {row.icon}
@@ -198,15 +197,17 @@ export default function IdentificationScreen({navigation}: {navigation: any}) {
                     </TouchableOpacity>
                   ))}
                 </View>
-              </ScrollView>
 
               <View
                 style={{
                   display: 'flex',
                   flexDirection: 'row',
                   justifyContent: 'center',
-                  marginVertical: 30,
+                  marginVertical: 20,
                   paddingHorizontal:30
+                }}>
+                <TouchableOpacity onPress={ () => {
+                  Linking.openURL('tel:'+ApiService.ADMIN_LINKIH_TEL)
                 }}>
                 <Text
                   style={{
@@ -215,8 +216,9 @@ export default function IdentificationScreen({navigation}: {navigation: any}) {
                     textAlign: 'center',
                     fontFamily: CustomFont.Poppins,
                   }}>
-                   { t('je_veux_info', preferredLangage)}
+                   { t('besoin_d_aide', preferredLangage)}
                 </Text>
+                </TouchableOpacity>
               </View>
             </View>
           </View>

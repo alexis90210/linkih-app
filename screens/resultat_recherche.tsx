@@ -265,7 +265,7 @@ export default function ResultatRechercheScreen({
           <Text
             style={{
               fontFamily: CustomFont.Poppins,
-              fontSize: 15,
+              fontSize: 13,
               width: 200,
               color: couleurs.dark,
             }}
@@ -275,7 +275,7 @@ export default function ResultatRechercheScreen({
           <Text
             style={{
               fontFamily: CustomFont.Poppins,
-              fontSize: 15,
+              fontSize: 13,
               color: couleurs.primary,
             }}>
             {prestation.prix} {prestation.devise}
@@ -343,8 +343,8 @@ export default function ResultatRechercheScreen({
                 }}>
                 <Text
                   style={{
-                    fontSize: 15,
-                    color: '#000',
+                    fontSize: 13,
+                    color: couleurs.dark,
                     fontFamily: CustomFont.Poppins,
                   }}>
                   {data.nom}
@@ -373,7 +373,7 @@ export default function ResultatRechercheScreen({
                   style={{
                     fontFamily: CustomFont.Poppins,
                     fontSize: 13,
-                    color: '#000',
+                    color: couleurs.dark,
                   }}>
                   {data.categorie} .{' '}
                   <Text style={{color: couleurs.primary}}>
@@ -388,8 +388,8 @@ export default function ResultatRechercheScreen({
                 <Text
                   style={{
                     fontFamily: CustomFont.Poppins,
-                    fontSize: 14,
-                    color: '#000',
+                    fontSize: 13,
+                    color: couleurs.dark,
                     marginBottom: 3,
                   }}>
                   {/* {marker.adresse} */}
@@ -438,7 +438,7 @@ export default function ResultatRechercheScreen({
                         style={{
                           textAlign: 'center',
                           padding: 5,
-                          fontSize: 15,
+                          fontSize: 13,
                           color: couleurs.white,
                           fontFamily: CustomFont.Poppins,
                         }}>
@@ -477,7 +477,7 @@ export default function ResultatRechercheScreen({
                         style={{
                           textAlign: 'center',
                           padding: 5,
-                          fontSize: 15,
+                          fontSize: 13,
                           color: couleurs.primary,
                           fontFamily: CustomFont.Poppins,
                         }}>
@@ -916,7 +916,7 @@ export default function ResultatRechercheScreen({
                       textAlign: 'center',
                       padding: 10,
                       paddingHorizontal: 20,
-                      fontSize: 14,
+                      fontSize: 13,
                       color: couleurs.secondary,
                       fontFamily: CustomFont.Poppins,
                     }}>

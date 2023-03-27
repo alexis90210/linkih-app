@@ -385,7 +385,7 @@ function Main({navigation}: {navigation: any}) {
                 style={[styles.tab, activeTab === 'Tab 1' && styles.activeTab]}
                 onPress={() => handleTabPress('Tab 1')}>
                 <FilterIcon
-                  color={activeTab === 'Tab 1' ? couleurs.primary : '#000'}
+                  color={activeTab === 'Tab 1' ? couleurs.primary : couleurs.dark}
                 />
                 <Text
                   style={[
@@ -400,7 +400,7 @@ function Main({navigation}: {navigation: any}) {
                 style={[styles.tab, activeTab === 'Tab 2' && styles.activeTab]}
                 onPress={() => handleTabPress('Tab 2')}>
                 <ShopIcon
-                  color={activeTab === 'Tab 2' ? couleurs.primary : '#000'}
+                  color={activeTab === 'Tab 2' ? couleurs.primary : couleurs.dark}
                 />
                 <Text
                   style={[
@@ -434,8 +434,8 @@ function Main({navigation}: {navigation: any}) {
                     <Text
                       style={{
                         textAlign: 'center',
-                        color: '#000',
-                        fontSize: 15,
+                        color: couleurs.dark,
+                        fontSize: 13,
                         opacity: 0.85,
                         fontFamily: CustomFont.Poppins,
                       }}>
@@ -456,7 +456,7 @@ function Main({navigation}: {navigation: any}) {
                         color: couleurs.primary,
                         width: '100%',
                         fontWeight: '600',
-                        fontSize: 15,
+                        fontSize: 13,
                         padding: 10,
                         fontFamily: CustomFont.Poppins,
                       }}></TextInput>
@@ -484,8 +484,8 @@ function Main({navigation}: {navigation: any}) {
                     <Text
                       style={{
                         textAlign: 'center',
-                        color: '#000',
-                        fontSize: 15,
+                        color: couleurs.dark,
+                        fontSize: 13,
                         fontFamily: CustomFont.Poppins,
                       }}>
                       {t('Etablissement', preferredLangage)}
@@ -508,7 +508,7 @@ function Main({navigation}: {navigation: any}) {
                         fontWeight: '600',
                         padding: 10,
                         fontFamily: CustomFont.Poppins,
-                        fontSize: 15,
+                        fontSize: 13,
                       }}></TextInput>
                   </View>
                 </View>
@@ -554,7 +554,7 @@ function Main({navigation}: {navigation: any}) {
                       textAlign: 'center',
                       padding: 10,
                       paddingHorizontal: 20,
-                      fontSize: 15,
+                      fontSize: 13,
                       color: couleurs.primary,
                       fontFamily: CustomFont.Poppins,
                     }}>
@@ -592,7 +592,7 @@ function Main({navigation}: {navigation: any}) {
                       textAlign: 'center',
                       padding: 10,
                       paddingHorizontal: 20,
-                      fontSize: 15,
+                      fontSize: 13,
                       fontWeight: '500',
                       color: couleurs.secondary,
                       fontFamily: CustomFont.Poppins,
@@ -627,7 +627,7 @@ function Main({navigation}: {navigation: any}) {
             <Text
               style={{
                 padding: 15,
-                fontSize: 15,
+                fontSize: 13,
                 fontWeight: 'bold',
                 color: 'rgba(0,0,0,.6)',
                 fontFamily: CustomFont.Poppins,
@@ -686,7 +686,7 @@ function Main({navigation}: {navigation: any}) {
             }}>
             <Text
               style={{
-                fontSize: 15,
+                fontSize: 13,
                 color: couleurs.white,
                 fontFamily: CustomFont.Poppins,
               }}>
@@ -730,9 +730,9 @@ const styles = StyleSheet.create({
     fontFamily: CustomFont.Poppins,
   },
   tabText: {
-    color: '#000',
+    color: couleurs.dark,
     fontFamily: CustomFont.Poppins,
-    fontSize: 15,
+    fontSize: 13,
   },
   content: {
     flex: 1,

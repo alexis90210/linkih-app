@@ -130,7 +130,7 @@ export default function AbonnementActivation({
               <Text
                 style={{
                   fontFamily: CustomFont.Poppins,
-                  fontSize: 15,
+                  fontSize: 13,
                   paddingBottom: 12,
                   color: couleurs.dark,
                 }}>
@@ -151,7 +151,7 @@ export default function AbonnementActivation({
                 <Text
                   style={{
                     fontFamily: CustomFont.Poppins,
-                    fontSize: 15,
+                    fontSize: 13,
                     paddingBottom: 12,
                     color: couleurs.dark,
                   }}>
@@ -161,7 +161,7 @@ export default function AbonnementActivation({
                 <Text
                   style={{
                     color: couleurs.primary,
-                    fontSize: 15,
+                    fontSize: 13,
                   }}>
                   {abonnement.prix}
                 </Text>
@@ -193,7 +193,7 @@ export default function AbonnementActivation({
                       textAlign: 'center',
                       padding: 10,
                       paddingHorizontal: 20,
-                      fontSize: 15,
+                      fontSize: 13,
                       fontWeight: '500',
                       color: couleurs.secondary,
                       fontFamily: CustomFont.Poppins,

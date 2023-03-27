@@ -378,7 +378,7 @@ export default function Map({
                 textAlign: 'center',
                 padding: 10,
                 paddingHorizontal: 10,
-                fontSize: 14,
+                fontSize: 13,
                 fontWeight: '500',
                 color: '#fff',
               }}>
@@ -470,8 +470,8 @@ export default function Map({
                       }}>
                       <Text
                         style={{
-                          fontSize: 15,
-                          color: '#000',
+                          fontSize: 13,
+                          color: couleurs.dark,
                           fontFamily: CustomFont.Poppins,
                         }}>
                         {marker.nom}
@@ -499,7 +499,7 @@ export default function Map({
                         style={{
                           fontFamily: CustomFont.Poppins,
                           fontSize: 13,
-                          color: '#000',
+                          color: couleurs.dark,
                         }}>
                         {marker.categorie}  . 
                         <Text style={{color: couleurs.primary}}>
@@ -514,8 +514,8 @@ export default function Map({
                       <Text
                         style={{
                           fontFamily: CustomFont.Poppins,
-                          fontSize: 14,
-                          color: '#000',
+                          fontSize: 13,
+                          color: couleurs.dark,
                         }}>
                         {/* {marker.adresse} */}
                         <Text style={{color: 'green'}}> { t('Ouvert', preferredLangage)} </Text> . {t('Ferme_a', preferredLangage)}
@@ -559,7 +559,7 @@ export default function Map({
                               style={{
                                 textAlign: 'center',
                                 padding: 5,
-                                fontSize: 15,
+                                fontSize: 13,
                                 color: couleurs.white,
                                 fontFamily: CustomFont.Poppins,
                               }}>
@@ -598,7 +598,7 @@ export default function Map({
                               style={{
                                 textAlign: 'center',
                                 padding: 5,
-                                fontSize: 15,
+                                fontSize: 13,
                                 color: couleurs.primary,
                                 fontFamily: CustomFont.Poppins,
                               }}>
@@ -634,7 +634,7 @@ export default function Map({
               <Text
                 style={{
                   padding: 15,
-                  fontSize: 15,
+                  fontSize: 13,
                   fontWeight: 'bold',
                 }}>
                 Visualisation
@@ -686,8 +686,8 @@ export default function Map({
                         <Text
                           style={{
                             fontWeight: '700',
-                            fontSize: 15,
-                            color: '#000',
+                            fontSize: 13,
+                            color: couleurs.dark,
                           }}>
                           Maison de beaute
                         </Text>
@@ -702,13 +702,13 @@ export default function Map({
                           <Text
                             style={{
                               fontFamily: CustomFont.Poppins,
-                              fontSize: 15,
-                              color: '#000',
+                              fontSize: 13,
+                              color: couleurs.dark,
                             }}></Text>
                           <Text
                             style={{
                               fontFamily: CustomFont.Poppins,
-                              fontSize: 15,
+                              fontSize: 13,
                               color: couleurs.primary,
                             }}>
                             ( 450 avis )
@@ -717,8 +717,8 @@ export default function Map({
                         <Text
                           style={{
                             fontFamily: CustomFont.Poppins,
-                            fontSize: 14,
-                            color: '#000',
+                            fontSize: 13,
+                            color: couleurs.dark,
                           }}>
                           Brzzaville, Congo , Boulevard Denis
                         </Text>

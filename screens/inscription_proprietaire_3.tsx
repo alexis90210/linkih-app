@@ -63,10 +63,7 @@ export default function InscriptionProprietaire3({
 
   const [photoCover, setPhotoCover] = useState('');
   const [photOnBase64, setphotOnBase64] = useState('');
-  const [photoCoverImage, setPhotoCoverImage] = useState<any>({});
   const [isLoading, setLoading] = useState(false);
-
-  const [imageLink, setImageLink] = useState('');
 
   // open picker
   const openImagePickerWithCrop = () => {
@@ -79,13 +76,37 @@ export default function InscriptionProprietaire3({
       .then(image => {
         console.log(image);
         setPhotoCover(image.path);
-        setPhotoCoverImage(image as never);
         return RNFS.readFile(image.path, 'base64');
       })
       .then(imageBase64 => {
         // Send the image to the server using axios
         setphotOnBase64(imageBase64);
       });
+  };
+
+  // S'ABONNER
+  const sabonnerMaintenant = (abonnement: any, userSignIn:any) => {
+
+    abonnement.id ? axios({
+      method: 'POST',
+      url: ApiService.API_URL_ADD_ABONNEMENT_VENDEUR,
+      data: JSON.stringify({
+        vendeur_id: userSignIn.vendeur_id,
+        abonnement_id: abonnement.id,
+      }),
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response: {data: any}) => {
+        var api = response.data;
+        console.log(api);
+        navigation.navigate('inscription_proprietaire_4', {api: userSignIn})
+      })
+      .catch((error: any) => {
+        console.log(error);
+      }) :  navigation.navigate('inscription_proprietaire_4', {api: userSignIn})
   };
 
   // Submit proprietaire
@@ -116,7 +137,8 @@ export default function InscriptionProprietaire3({
         setLoading(false);
 
         if (api.code == 'success') {
-          navigation.navigate('inscription_proprietaire_4', {api: api});
+          sabonnerMaintenant(route.params.abonnementSelected, api)
+         
         }
         if (api.code == 'error') {
           Alert.alert(t('erreur_survenue', preferredLangage), api.message, [
@@ -126,9 +148,12 @@ export default function InscriptionProprietaire3({
       })
       .catch(error => {
         setLoading(false);
-        console.log('/////////////////////////////', error);
+        console.log('payload :: ', json);
+
+        
         Alert.alert(
-          t('erreur_survenue', preferredLangage),
+          // t('erreur_survenue', preferredLangage),
+          '',
           t(
             'Erreur_survenue_il_se_pourrait_que_les_informations_fournis',
             preferredLangage,
@@ -279,7 +304,7 @@ export default function InscriptionProprietaire3({
                     color: couleurs.secondary,
                     padding: 10,
                     paddingHorizontal: 20,
-                    fontSize: 14,
+                    fontSize: 13,
                   }}>
                   {t('Je_valide_maintenant', preferredLangage)}
                 </Text>

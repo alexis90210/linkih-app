@@ -206,7 +206,7 @@ export default function BilanReservation({
                 <Text
                   style={{
                     fontFamily: CustomFont.Poppins,
-                    fontSize: 15,
+                    fontSize: 13,
                     color: couleurs.primary,
                   }}
                   numberOfLines={1}>
@@ -300,7 +300,7 @@ export default function BilanReservation({
                 <Text
                   style={{
                     fontFamily: CustomFont.Poppins,
-                    fontSize: 15,
+                    fontSize: 13,
                     color: couleurs.primary,
                   }}
                   numberOfLines={1}>
@@ -335,7 +335,7 @@ export default function BilanReservation({
                       textAlign: 'center',
                       padding: 10,
                       paddingHorizontal: 20,
-                      fontSize: 14,
+                      fontSize: 13,
                       color: couleurs.secondary,
                       fontFamily: CustomFont.Poppins,
                     }}>
@@ -366,7 +366,7 @@ export default function BilanReservation({
               <Text
                 style={{
                   textAlign: 'center',
-                  fontSize: 15,
+                  fontSize: 13,
                   fontWeight: '500',
                   color: couleurs.primary,
                   fontFamily: CustomFont.Poppins,

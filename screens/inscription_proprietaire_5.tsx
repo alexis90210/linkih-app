@@ -70,15 +70,18 @@ export default function InscriptionProprietaire5({navigation, route}: {navigatio
               alignItems: 'center',
               marginTop: '20%',
             }}>
-              <Image source={require('../assets/images/success.png')} style={{height:250, width:'100%'}} />
+              <Image source={require('../assets/images/success.png')} style={
+                {height:150,
+                resizeMode:'contain',
+                width:'100%'}} />
             <Text
               style={{
                 textAlign: 'center',
                 color: couleurs.primary,
                 fontWeight: '600',
                 textTransform: 'uppercase',
-                fontSize: 17,
-                width:'80%',
+                fontSize: 14,
+                width:'60%',
                 marginTop:20
               }}>
               {t('Felicitations_votre_compte', preferredLangage)}
@@ -87,11 +90,9 @@ export default function InscriptionProprietaire5({navigation, route}: {navigatio
               style={{
                 textAlign: 'center',
                 color: '#00000090',
-                opacity: 0.85,
-                fontWeight: '600',
-                fontSize: 14,
+                fontSize: 13,
                 marginVertical: 13,
-                width:'80%'
+                width:'60%'
               }}>
               {t('Veuillez_completer_vos_Informations_dans_votre_profile', preferredLangage)}
             </Text>
@@ -112,12 +113,10 @@ export default function InscriptionProprietaire5({navigation, route}: {navigatio
                 <Text
                   style={{
                     textAlign: 'center',
-
-                    fontWeight: '500',
                     color: couleurs.secondary,
                     padding: 10,
                     paddingHorizontal: 20,
-                    fontSize: 14,
+                    fontSize: 13,
                     width: 250,
                   }}>
                   {t('se_connecter', preferredLangage)}

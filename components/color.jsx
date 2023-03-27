@@ -2,10 +2,11 @@ export class couleurs {
     static primary = '#9c702b';
     static secondary = '#fefefe'; 
     static white = '#FFF';
-    static black = '#000';
+    static black = couleurs.dark;
     static main = "#7B4C7A";
     static dark = "#413031";
-    static success = "green";
+    static Light = '#ddd';
+    static success = 'rgba(30,200,20,.6)';
     static primaryLight = "#f4e0a2";
 }
 

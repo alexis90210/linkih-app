@@ -267,7 +267,7 @@ export default function Rdv({
                     }}>
                     <Text
                       style={{
-                        color: '#000',
+                        color: couleurs.dark,
                         paddingVertical: 3,
                         fontSize: 16,
                         fontFamily: CustomFont.Poppins,
@@ -285,9 +285,9 @@ export default function Rdv({
                       }}>
                       <Text
                         style={{
-                          color: '#000',
+                          color: couleurs.dark,
                           paddingVertical: 3,
-                          fontSize: 14,
+                          fontSize: 13,
                           fontFamily: CustomFont.Poppins,
                         }}>
                         {new Date(row.date).toLocaleDateString()} .
@@ -305,7 +305,7 @@ export default function Rdv({
                     {route.prix && (
                       <Text
                         style={{
-                          color: '#000',
+                          color: couleurs.dark,
                           paddingVertical: 3,
                           fontSize: 13,
                           fontFamily: CustomFont.Poppins,
@@ -325,7 +325,7 @@ export default function Rdv({
                           style={{
                             color: couleurs.primary,
                             paddingVertical: 3,
-                            fontSize: 14,
+                            fontSize: 13,
                             fontFamily: CustomFont.Poppins,
                           }}>
                           {row.statut == 0
@@ -355,7 +355,7 @@ export default function Rdv({
                                 textAlign: 'center',
                                 padding: 10,
                                 paddingHorizontal: 10,
-                                fontSize: 14,
+                                fontSize: 13,
                                 fontWeight: '500',
                                 color: '#fff',
                               }}>
