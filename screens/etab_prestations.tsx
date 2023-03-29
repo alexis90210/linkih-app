@@ -251,6 +251,7 @@ export default function MesPrestations({
                     alignSelf: 'center',
                     fontFamily: CustomFont.Poppins,
                     fontSize: 13,
+                    color:couleurs.dark
                   }}>
                   {t('Aucunes_prestations', preferredLangage)}
                 </Text>

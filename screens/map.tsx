@@ -406,8 +406,13 @@ export default function Map({
             width: '100%',
             height: 280,
             borderRadius: 15,
+            backgroundColor: isLoadedEtab ? couleurs.white : 'transparent'
           }}>
-          {etablissements.map((marker: any, key:any) => (
+            {isLoadedEtab && <ActivityIndicator
+              color={couleurs.primary}
+              style={{alignSelf: 'center'}}
+              size={'large'}></ActivityIndicator>}
+          {!isLoadedEtab && etablissements.map((marker: any, key:any) => (
             <Pressable key={key}>
               <View
                 style={{

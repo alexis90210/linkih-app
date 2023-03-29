@@ -519,7 +519,9 @@ export default function MesHoraires({
                         alignSelf: 'center',
                         position: 'relative',
                         bottom: 10,
+                        color:couleurs.dark
                       }}
+                      dropdownIconColor={couleurs.primary}
                       selectedValue={selectedHoraireOuvertureLundi}
                       onValueChange={(itemValue: any, itemIndex: any) =>
                         setSelectedHoraireOuvertureLundi(itemValue)
@@ -574,7 +576,9 @@ export default function MesHoraires({
                         alignSelf: 'center',
                         position: 'relative',
                         bottom: 10,
+                        color:couleurs.dark
                       }}
+                      dropdownIconColor={couleurs.primary}
                       selectedValue={selectedHoraireFermetureLundi}
                       onValueChange={(itemValue: any, itemIndex: any) =>
                         setSelectedHoraireFermetureLundi(itemValue)
@@ -660,7 +664,9 @@ export default function MesHoraires({
                         alignSelf: 'center',
                         position: 'relative',
                         bottom: 10,
+                        color:couleurs.dark
                       }}
+                      dropdownIconColor={couleurs.primary}
                       selectedValue={selectedHoraireOuvertureMardi}
                       onValueChange={(itemValue: any, itemIndex: any) =>
                         setSelectedHoraireOuvertureMardi(itemValue)
@@ -715,7 +721,9 @@ export default function MesHoraires({
                         alignSelf: 'center',
                         position: 'relative',
                         bottom: 10,
+                        color:couleurs.dark
                       }}
+                      dropdownIconColor={couleurs.primary}
                       selectedValue={selectedHoraireFermetureMardi}
                       onValueChange={(itemValue: any, itemIndex: any) =>
                         setSelectedHoraireFermetureMardi(itemValue)
@@ -800,7 +808,9 @@ export default function MesHoraires({
                         alignSelf: 'center',
                         position: 'relative',
                         bottom: 10,
+                        color:couleurs.dark
                       }}
+                      dropdownIconColor={couleurs.primary}
                       selectedValue={selectedHoraireOuvertureMercredi}
                       onValueChange={(itemValue: any, itemIndex: any) =>
                         setSelectedHoraireOuvertureMercredi(itemValue)
@@ -855,7 +865,9 @@ export default function MesHoraires({
                         alignSelf: 'center',
                         position: 'relative',
                         bottom: 10,
+                        color:couleurs.dark
                       }}
+                      dropdownIconColor={couleurs.primary}
                       selectedValue={selectedHoraireFermetureMercredi}
                       onValueChange={(itemValue: any, itemIndex: any) =>
                         setSelectedHoraireFermetureMercredi(itemValue)
@@ -940,7 +952,9 @@ export default function MesHoraires({
                         alignSelf: 'center',
                         position: 'relative',
                         bottom: 10,
+                        color:couleurs.dark
                       }}
+                      dropdownIconColor={couleurs.primary}
                       selectedValue={selectedHoraireOuvertureJeudi}
                       onValueChange={(itemValue: any, itemIndex: any) =>
                         setSelectedHoraireOuvertureJeudi(itemValue)
@@ -995,7 +1009,9 @@ export default function MesHoraires({
                         alignSelf: 'center',
                         position: 'relative',
                         bottom: 10,
+                        color:couleurs.dark
                       }}
+                      dropdownIconColor={couleurs.primary}
                       selectedValue={selectedHoraireFermetureJeudi}
                       onValueChange={(itemValue: any, itemIndex: any) =>
                         setSelectedHoraireFermetureJeudi(itemValue)
@@ -1080,7 +1096,9 @@ export default function MesHoraires({
                         alignSelf: 'center',
                         position: 'relative',
                         bottom: 10,
+                        color:couleurs.dark
                       }}
+                      dropdownIconColor={couleurs.primary}
                       selectedValue={selectedHoraireOuvertureVendredi}
                       onValueChange={(itemValue: any, itemIndex: any) =>
                         setSelectedHoraireOuvertureVendredi(itemValue)
@@ -1135,7 +1153,9 @@ export default function MesHoraires({
                         alignSelf: 'center',
                         position: 'relative',
                         bottom: 10,
+                        color:couleurs.dark
                       }}
+                      dropdownIconColor={couleurs.primary}
                       selectedValue={selectedHoraireFermetureVendredi}
                       onValueChange={(itemValue: any, itemIndex: any) =>
                         setSelectedHoraireFermetureVendredi(itemValue)
@@ -1220,7 +1240,9 @@ export default function MesHoraires({
                         alignSelf: 'center',
                         position: 'relative',
                         bottom: 10,
+                        color:couleurs.dark
                       }}
+                      dropdownIconColor={couleurs.primary}
                       selectedValue={selectedHoraireOuvertureSamedi}
                       onValueChange={(itemValue: any, itemIndex: any) =>
                         setSelectedHoraireOuvertureSamedi(itemValue)
@@ -1275,7 +1297,9 @@ export default function MesHoraires({
                         alignSelf: 'center',
                         position: 'relative',
                         bottom: 10,
+                        color:couleurs.dark
                       }}
+                      dropdownIconColor={couleurs.primary}
                       selectedValue={selectedHoraireFermetureSamedi}
                       onValueChange={(itemValue: any, itemIndex: any) =>
                         setSelectedHoraireFermetureSamedi(itemValue)

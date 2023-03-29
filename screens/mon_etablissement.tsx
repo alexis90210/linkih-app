@@ -179,7 +179,7 @@ export default function MonEtablissement({
 
               <View style={{display: 'flex', flexDirection: 'row', marginTop:6, justifyContent:'flex-start', alignItems:'center'}}>
            
-                <Progress.Bar progress={etablissement.note || 0} width={200} height={8}
+                <Progress.Bar progress={etablissement.note || 0} width={Dimensions.get('screen').width - 60} height={8}
                 color={couleurs.success}
                 style={{backgroundColor:couleurs.Light, borderColor:couleurs.Light}} />
 
@@ -208,6 +208,7 @@ export default function MonEtablissement({
               <Text
                 style={{
                   fontSize: 13,
+                  color:couleurs.dark,
                   fontFamily: CustomFont.Poppins,
                 }}>
                 {t('Vendeur_depuis', preferredLangage)}

@@ -52,7 +52,7 @@ var translations: any = {
     se_connecter: 'Log in',
     erreur: 'Error',
     login: 'Login',
-    login_incorect:"Login or password incorrect",
+    login_incorect: 'Login or password incorrect',
     entrez_votre_identifiant: 'Enter your Login',
     mot_de_passe: 'Password',
     entrez_votre_mot_de_passe: 'Enter your password',
@@ -179,7 +179,8 @@ var translations: any = {
     Suivant: 'Next',
 
     // identification_proprietaire_2
-    Veuillez_selectionner_la_categorie_qui_decrit_le_mieux_votre_etablissement : "Please select the category that best describes your establishment",
+    Veuillez_selectionner_la_categorie_qui_decrit_le_mieux_votre_etablissement:
+      'Please select the category that best describes your establishment',
     Le_champ_poste_du_responsable_est_trop_court:
       'The manager position field is too short',
     Le_SIRET_de_l_entreprise_est_trop_court: "The company's SIRET is too short",
@@ -365,7 +366,7 @@ var translations: any = {
     // _recuperation_password
     mot_de_passe_change: 'Mot de passe change avec success',
     se_connecter: 'Se connecter',
-    login_incorect:"Identifiant ou Mot de passe incorrect",
+    login_incorect: 'Identifiant ou Mot de passe incorrect',
     erreur: 'Erreur',
     login: 'Login',
     entrez_votre_identifiant: 'Entrez votre identifiant',
@@ -497,7 +498,8 @@ var translations: any = {
     Suivant: 'Suivant',
 
     // identification_proprietaire_2
-   Veuillez_selectionner_la_categorie_qui_decrit_le_mieux_votre_etablissement : "Veuillez selectionner la categorie, qui decrit le mieux votre etablissement",
+    Veuillez_selectionner_la_categorie_qui_decrit_le_mieux_votre_etablissement:
+      'Veuillez selectionner la categorie, qui decrit le mieux votre etablissement',
     Le_champ_poste_du_responsable_est_trop_court:
       'Le champ poste du responsable est trop court',
     Le_SIRET_de_l_entreprise_est_trop_court:
@@ -642,31 +644,36 @@ var translations: any = {
 // DICTIONNAIRE FR
 translations.fr = {
   ...translations.fr,
-  Recherchez_un_pays: "Recherchez un pays",
-  Noms_prenoms_du_responsable : "Noms & prenoms du responsable",
-  choix_abonnement : "Choisir un abonnement",
-  choisir_cette_abonnement : "choisir cette abonnement",
-  nouveau_temp_pass_code : "Vous avez oublie votre mot de passe , Demandez a recevoir un mot de passe temporaire",
-  Demandez: "Demandez",
-  validation_code : "Code de recuperation",
-  entrez_validation_code : "Entrez le Code de recuperation",
-  code_valide_success : "Code verifie avec succes",
-  code_valide_invalid : "Code invalide"
-}
+  Recherchez_un_pays: 'Recherchez un pays',
+  Noms_prenoms_du_responsable: 'Noms & prenoms du responsable',
+  choix_abonnement: 'Choisir un abonnement',
+  choisir_cette_abonnement: 'choisir cette abonnement',
+  nouveau_temp_pass_code:
+    'Vous avez oublie votre mot de passe , Demandez a recevoir un mot de passe temporaire',
+  Demandez: 'Demandez',
+  validation_code: 'Code de recuperation',
+  entrez_validation_code: 'Entrez le Code de recuperation',
+  code_valide_success: 'Code verifie avec succes',
+  code_valide_invalid: 'Code invalide',
+  aucun_rdv: 'Aucun rendez-vous disponible',
+};
 
 // DICTIONNAIRE ANG
 translations.en = {
   ...translations.en,
-  Recherchez_un_pays: "Find a country",
-  Noms_prenoms_du_responsable : "Last names & first names of the person in charge",
-  choix_abonnement : "Choose a subscription",
-  choisir_cette_abonnement : "choose this subscription",
-  nouveau_temp_pass_code : "You have forgotten your password, Ask to receive a temporary password",
-  Demandez: "Ask Now",
-  validation_code : "Recovery code",
-  entrez_validation_code : "Enter Recovery code",
-  code_valide_success : "Code verified successfully",
-  code_valide_invalid : "Invalid Code"
-}
+  Recherchez_un_pays: 'Find a country',
+  Noms_prenoms_du_responsable:
+    'Last names & first names of the person in charge',
+  choix_abonnement: 'Choose a subscription',
+  choisir_cette_abonnement: 'choose this subscription',
+  nouveau_temp_pass_code:
+    'You have forgotten your password, Ask to receive a temporary password',
+  Demandez: 'Ask Now',
+  validation_code: 'Recovery code',
+  entrez_validation_code: 'Enter Recovery code',
+  code_valide_success: 'Code verified successfully',
+  code_valide_invalid: 'Invalid Code',
+  aucun_rdv: 'No Appointment available',
+};
 
 export default translations;
