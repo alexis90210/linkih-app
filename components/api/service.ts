@@ -1,6 +1,6 @@
 export default class ApiService {
   // BASE API URL
-  static API_BASE_URL =  'http://192.168.1.75:8000/'; // 'https://linkih.hlconception.com/'; //
+  static API_BASE_URL =  'http://192.168.1.89:8000/'; // 'https://linkih.hlconception.com/'; //
   static ADMIN_LINKIH_TEL = '+242069500886';
   static API_URL = this.API_BASE_URL + 'api/v1/'; // IP HOME
   static MAPBOX_GL_TOKEN =
@@ -23,8 +23,10 @@ export default class ApiService {
   static API_URL_GET_CATEGORIES = this.API_URL + 'sous-categories';
   static API_URL_LOGIN = this.API_URL + 'login';
   static API_URL_USER_DATA = this.API_URL + 'utilisateur/data';
-  static API_SEND_MAIL_CONFIRMATION = this.API_URL + 'send/mail';
-  static API_SEND_COMPTE_VERIFICATION = this.API_URL + 'confirme/compte';
+  static API_SEND_MAIL_CONFIRMATION = this.API_URL + 'send/mail/vendeur';
+  static API_SEND_MAIL_CONFIRMATION_CLIENT = this.API_URL + 'send/mail/client';
+  static API_SEND_COMPTE_VERIFICATION = this.API_URL + 'confirme/compte/vendeur';
+  static API_SEND_COMPTE_VERIFICATION_CLIENT = this.API_URL + 'confirme/compte/client';
   static API_URL_GET_RENDEZ_VOUS = this.API_URL + 'rendez-vous';
   static API_URL_GET_VENDEURS_PRESTATIONS = this.API_URL + 'vendeur/prestation';
   static API_URL_GET_VENDEURS_HORAIRES = this.API_URL + 'horaire/ouverture';
@@ -41,5 +43,5 @@ export default class ApiService {
   static API_URL_ADD_PHOTO_GALLERIE = this.API_URL + 'add/vendeur/photo';
   static API_URL_DELETE_PHOTO_GALLERIE = this.API_URL + 'delete/vendeur/photo';
   static API_URL_EDIT_VENDEUR = this.API_URL + 'edit/vendeur';
-  static API_CREATE_NOTE_VENDEUR = this.API_URL + '/create/vendeur/note';
+  static API_CREATE_NOTE_VENDEUR = this.API_URL + 'create/vendeur/note';
 }

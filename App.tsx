@@ -47,6 +47,11 @@ import MesPrestations from './screens/etab_prestations';
 import ConfigurationDefaultCategorie from './screens/prestation_list';
 import PaiementScreen from './screens/paiement_screen_stripe';
 import RecuperationPassword from './screens/_recuperation_password';
+import DrawItineaire from './screens/itineaire';
+import InscriptionClient2 from './screens/inscription_client_2';
+import InscriptionClient3 from './screens/inscription_client_3';
+import ConfirmationCompteScreenClient from './screens/confirmation_screen_client';
+import RecuperationPasswordClient from './screens/_recuperation_password_client';
 
 
 const Stack = createNativeStackNavigator();
@@ -688,10 +693,85 @@ export default function App(): JSX.Element {
           }}
         />
 
+        {/* RecuperationPasswordClient */}
+        <Stack.Screen
+          name="recup_pass_screen_client"
+          component={RecuperationPasswordClient}
+          options={{
+            title: 'Recuperation Mot de passe',
+            headerShadowVisible: false,
+            headerTitleStyle: {fontSize: 16, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
+            headerTintColor:couleurs.primary,
+            headerShown: true,
+            presentation: 'modal',
+            animationTypeForReplace: 'push',
+            animation: 'slide_from_left',
+          }}
+        />
 
+         {/* Itineaire */}
+         <Stack.Screen
+          name="draw_itineraire"
+          component={DrawItineaire}
+          options={{
+            title: 'Itineaire',
+            headerShadowVisible: false,
+            headerTitleStyle: {fontSize: 16, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
+            headerTintColor:couleurs.primary,
+            headerShown: false,
+            presentation: 'modal',
+            animationTypeForReplace: 'push',
+            animation: 'slide_from_left',
+          }}
+        />
 
+        {/* inscription_client_2 */}
+        <Stack.Screen
+          name="inscription_client_2"
+          component={InscriptionClient2}
+          options={{
+            title: 'inscription_client_2',
+            headerShadowVisible: false,
+            headerTitleStyle: {fontSize: 16, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
+            headerTintColor:couleurs.primary,
+            headerShown: false,
+            presentation: 'modal',
+            animationTypeForReplace: 'push',
+            animation: 'slide_from_left',
+          }}
+        />
 
+        {/* inscription_client_3 */}
+        <Stack.Screen
+          name="inscription_client_3"
+          component={InscriptionClient3}
+          options={{
+            title: 'inscription_client_3',
+            headerShadowVisible: false,
+            headerTitleStyle: {fontSize: 16, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
+            headerTintColor:couleurs.primary,
+            headerShown: false,
+            presentation: 'modal',
+            animationTypeForReplace: 'push',
+            animation: 'slide_from_left',
+          }}
+        />
 
+        {/* ConfirmationCompteScreenClient */}
+        <Stack.Screen
+          name="ConfirmationCompteScreenClient"
+          component={ConfirmationCompteScreenClient}
+          options={{
+            title: 'ConfirmationCompteScreenClient',
+            headerShadowVisible: false,
+            headerTitleStyle: {fontSize: 16, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
+            headerTintColor:couleurs.primary,
+            headerShown: false,
+            presentation: 'modal',
+            animationTypeForReplace: 'push',
+            animation: 'slide_from_left',
+          }}
+        />
 
         {/* end */} 
       </Stack.Navigator>

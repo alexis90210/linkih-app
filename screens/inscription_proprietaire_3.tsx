@@ -87,6 +87,13 @@ export default function InscriptionProprietaire3({
   // S'ABONNER
   const sabonnerMaintenant = (abonnement: any, userSignIn:any) => {
 
+    console.log({
+      vendeur_id: userSignIn.vendeur_id,
+      abonnement_id: abonnement.id,
+    });
+
+    return;
+    
     abonnement.id ? axios({
       method: 'POST',
       url: ApiService.API_URL_ADD_ABONNEMENT_VENDEUR,

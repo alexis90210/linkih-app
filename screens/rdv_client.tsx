@@ -8,6 +8,7 @@ import {
   ScrollView,
   Alert,
   ActivityIndicator,
+  Image,
 } from 'react-native';
 
 import ArrowLeftIcon from '../components/ArrowLeft';
@@ -214,6 +215,30 @@ export default function RdvClient({
             backgroundColor: '#f6f6f6f6',
           }}>
           <View style={{marginHorizontal: 12, marginVertical: 10}}>
+
+          {rendezvous.length == 0 && (
+              <>
+                <Image
+                  source={require('../assets/images/vide.png')}
+                  style={{
+                    marginTop: 150,
+                    width: 150,
+                    height: 150,
+                    alignSelf: 'center',
+                  }}
+                />
+                <Text
+                  style={{
+                    alignSelf: 'center',
+                    fontFamily: CustomFont.Poppins,
+                    color:couleurs.dark,
+                    fontSize: 13,
+                  }}>
+                  {t('aucun_rdv', preferredLangage)}
+                </Text>
+              </>
+            )}
+
             {rendezvous.length > 0 &&
               !isLoading &&
               rendezvous.map((row: any, key: any) => (

@@ -12,6 +12,7 @@ import {
   Linking,
   Modal,
   ActivityIndicator,
+  Platform,
 } from 'react-native';
 import ArrowLeftIcon from '../components/ArrowLeft';
 import SearchIcon from '../components/search';
@@ -51,7 +52,29 @@ export default function ResultatRechercheScreen({
       setPreferredLangage(data);
     });
 
-  //////////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////
+  
+  
+  const openMaps = (latitude:any, longitude:any) => {
+    const scheme = Platform.select({ ios: 'maps:0,0?q=', android: 'geo:0,0?q=' });
+    const latLng = `${latitude},${longitude}`;
+    const label = 'Linkih';
+    const url = Platform.select({
+      ios: `${scheme}${label}@${latLng}`,
+      android: `${scheme}${latLng}(${label})`
+    })
+  
+    url ? Linking.openURL(url) : console.log('Plateform not recognize');
+  };
+  
+  // Utilisation
+  // openMaps(48.8566, 2.3522); // Ouvre la position de Paris dans Google Maps
+  
+  
+  
+  
+  /////////////////////////////////////
+
 
   var title = route.params.title;
 
@@ -117,6 +140,7 @@ export default function ResultatRechercheScreen({
               response.data.message.length,
             );
           } else {
+            setLoading(true)
             Alert.alert(
               'Message',
               t('Aucun_resultat_n_a_ete_trouve', preferredLangage),
@@ -294,13 +318,7 @@ export default function ResultatRechercheScreen({
     );
 
     return (
-      <TouchableOpacity
-        onPress={() =>
-          navigation.navigate('autre_etab', {
-            nomEtab: data.nom,
-            vendeur_data: data,
-          })
-        }>
+    
         <View
           style={{
             borderRadius: 15,
@@ -429,7 +447,10 @@ export default function ResultatRechercheScreen({
                         alignItems: 'center',
                         flexDirection: 'row',
                       }}
-                      onPress={() => null}>
+                      onPress={() => {
+                        openMaps(Number(data.latitude) , Number(data.longitude))
+                       
+                      }}>
                       <Image
                         source={require('../assets/images/itinary.png')}
                         style={{width: 15, height: 15}}
@@ -496,6 +517,7 @@ export default function ResultatRechercheScreen({
                       onPress={() =>
                         navigation.navigate('autre_etab', {
                           nomEtab: data.nom,
+                          vendeur_data: data,
                         })
                       }>
                       <EyeIcon color={couleurs.primary} />
@@ -506,7 +528,6 @@ export default function ResultatRechercheScreen({
             </View>
           </View>
         </View>
-      </TouchableOpacity>
     );
   };
 
@@ -590,6 +611,29 @@ export default function ResultatRechercheScreen({
                 />
               );
             })}
+
+{etablissements.length == 0 && (
+              <>
+                <Image
+                  source={require('../assets/images/vide.png')}
+                  style={{
+                    marginTop: 150,
+                    width: 150,
+                    height: 150,
+                    alignSelf: 'center',
+                  }}
+                />
+                <Text
+                  style={{
+                    alignSelf: 'center',
+                    fontFamily: CustomFont.Poppins,
+                    fontSize: 13,
+                    color:couleurs.dark
+                  }}>
+                  {t('aucun_etab', preferredLangage)}
+                </Text>
+              </>
+            )}
           </View>
         </ScrollView>
 

@@ -10,6 +10,7 @@ import {
   Linking,
   Modal,
   Alert,
+  Platform,
 } from 'react-native';
 
 import ArrowLeftIcon from '../components/ArrowLeft';
@@ -55,6 +56,28 @@ export default function AutreEtablissement({
   
     //////////////////////////////////////////////////////////////////////////////////////
 
+  /////////////////////////////////////////////////
+  
+  
+  const openMaps = (latitude:any, longitude:any) => {
+    const scheme = Platform.select({ ios: 'maps:0,0?q=', android: 'geo:0,0?q=' });
+    const latLng = `${latitude},${longitude}`;
+    const label = 'Linkih';
+    const url = Platform.select({
+      ios: `${scheme}${label}@${latLng}`,
+      android: `${scheme}${latLng}(${label})`
+    })
+  
+    url ? Linking.openURL(url) : console.log('Plateform not recognize');
+  };
+  
+  // Utilisation
+  // openMaps(48.8566, 2.3522); // Ouvre la position de Paris dans Google Maps
+  
+  
+  
+  
+  /////////////////////////////////////
     
   const propsTitle = route.params?.nomEtab;
   var title = t('mon_etablissement', preferredLangage);
@@ -108,7 +131,20 @@ export default function AutreEtablissement({
   const activeModal = () => setVisibleModal(true);
   const desactiveModal = () => setVisibleModal(false);
 
-  ///////////////////////////////////////////////////
+  /////////////////////////
+    // GET USER CONNECTED
+    const [userConnected, SetUserConnected] = useState<any>({});
+
+    storage
+      .load({
+        key: 'userconnected', // Note: Do not use underscore("_") in key!
+        id: 'userconnected', // Note: Do not use underscore("_") in id!
+      })
+      .then(data => {
+        SetUserConnected(data.utilisateur[0]);
+      })
+      .catch(error => console.log(error));
+  //////////////////////////
   const [visibleHeureModal, setVisibleHeureModal] = React.useState(false);
 
   const onDismissHeureModal = () => {
@@ -125,6 +161,33 @@ export default function AutreEtablissement({
     setVisibleHeureModal(false);
     console.log({hours, minutes});
   };
+
+  //////////////////////////////////////////////////
+
+  const rateEtab = (rate:any) => {
+    console.log( userConnected.id );
+    
+    axios({
+      method: 'POST',
+      url: ApiService.API_CREATE_NOTE_VENDEUR,
+      data: JSON.stringify({
+        vendeur_id: route.params.vendeur_data.id,
+        note:rate,
+        client_id: userConnected.id
+      }),
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    }).then( (response: {data: any}) => {
+      console.log(response.data);
+      
+    })
+    .catch( (error: any) => {
+      console.log(error);
+      
+    })
+  }
 
   //////////////////////////////////////////////////
   const [selectedJour, setSelectedJour] = useState();
@@ -439,14 +502,17 @@ export default function AutreEtablissement({
               <View style={{display: 'flex', flexDirection: 'row'}}>
                 {isConsulting && (
                   <AirbnbRating
+                    onFinishRating= { (rate) => {
+                      rateEtab(rate)                      
+                    }}
                     reviewSize={4}
                     reviewColor={couleurs.primary}
                     showRating={false}
                     count={4}
                     reviews={['Terrible', 'Bad', 'Good', 'Very Good']}
-                    onFinishRating={rate => console.log(rate)}
                     defaultRating={VendeurData.note}
                     size={14}
+                    
                   />
                 )}
               </View>
@@ -950,7 +1016,9 @@ export default function AutreEtablissement({
                   flexDirection: 'row',
                   flexWrap: 'nowrap',
                 }}
-                onPress={() => null}>
+                onPress={() => {
+                  openMaps(Number(route.params.vendeur_data.latitude) , Number(route.params.vendeur_data.longitude))
+                }}>
                 <Image
                   source={require('../assets/images/itinary.png')}
                   style={{width: 15, height: 15}}

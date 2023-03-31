@@ -108,20 +108,23 @@ export default function InscriptionClientScreen({
         setProcessing(false);
 
         if (api.code == 'success') {
-          Alert.alert(
-            'SUCCES',
-            t('Votre_compte_a_bien_ete_cree', preferredLangage) +
-              ` ${api.login}`,
-            [
-              {
-                text: t('se_connecter', preferredLangage),
-                onPress: () =>
-                  navigation.navigate('identification_client', {
-                    login: api.login,
-                  }),
-              },
-            ],
-          );
+          // Alert.alert(
+          //   'SUCCES',
+          //   t('Votre_compte_a_bien_ete_cree', preferredLangage) +
+          //     ` ${api.login}`,
+          //   [
+          //     {
+          //       text: t('se_connecter', preferredLangage),
+          //       onPress: () =>
+          //         navigation.navigate('identification_client', {
+          //           login: api.login,
+          //         }),
+          //     },
+          //   ],
+          // );
+          navigation.navigate('inscription_client_2', {
+            api: api,
+          })
         }
         if (api.code == 'error') {
           Alert.alert(t('erreur_survenue', preferredLangage), api.message, [

@@ -637,6 +637,7 @@ function Main({navigation}: {navigation: any}) {
             <View style={{width: '100%', paddingHorizontal: 10}}>
               <View style={{height: 300}}>
                 <CategorieList />
+
               </View>
 
               <View style={{padding: 15, paddingVertical: 30}}>
@@ -649,7 +650,7 @@ function Main({navigation}: {navigation: any}) {
                     gap: 10,
                     justifyContent: 'flex-start',
                   }}>
-                  <CloseIcon color={couleurs.secondary} />
+                  <CloseIcon color={couleurs.primary} />
                   <Text
                     style={{
                       color: 'rgba(100,100,100,.8)',
@@ -698,7 +699,29 @@ function Main({navigation}: {navigation: any}) {
           </View>
           <View style={{width: '100%', paddingHorizontal: 10}}>
             <View style={{height: Dimensions.get('screen').height - 50}}>
-              <EtablissementList />
+              {etablissements.length> 0 && <EtablissementList />}
+              {etablissements.length == 0 && (
+              <>
+                <Image
+                  source={require('../assets/images/vide.png')}
+                  style={{
+                    marginTop: 150,
+                    width: 150,
+                    height: 150,
+                    alignSelf: 'center',
+                  }}
+                />
+                <Text
+                  style={{
+                    alignSelf: 'center',
+                    fontFamily: CustomFont.Poppins,
+                    color:couleurs.dark,
+                    fontSize: 13,
+                  }}>
+                  {t('aucun_etab', preferredLangage)}
+                </Text>
+              </>
+            )}
             </View>
           </View>
         </View>

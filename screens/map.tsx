@@ -13,6 +13,8 @@ import {
   TouchableOpacity,
   Linking,
   ActivityIndicator,
+  Dimensions,
+  Platform,
 } from 'react-native';
 
 import SearchIcon from '../components/search';
@@ -32,15 +34,9 @@ import storage from '../components/api/localstorage';
 
 MapboxGL.setAccessToken(ApiService.MAPBOX_GL_TOKEN);
 
-export default function Map({
-  navigation,
-  route,
-}: {
-  navigation: any;
-  route: any;
-}) {
+export default function Map({ navigation, route } : { navigation: any; route: any; }) {
 
-    /////////////////////////////////// LANGUAGE HANDLER ///////////////////////////////////////
+  //////////////////////////// LANGUAGE HANDLER ///////////////////////
 
     const [preferredLangage, setPreferredLangage] = useState('fr');
 
@@ -51,22 +47,37 @@ export default function Map({
     storage
       .load({
         key: 'defaultlang', // Note: Do not use underscore("_") in key!
-        id: 'defaultlang', // Note: Do not use underscore("_") in id!
+        id: 'defaultlang',  // Note: Do not use underscore("_") in id!
       })
       .then((data: any) => {
         setPreferredLangage(data);
       });
   
-    //////////////////////////////////////////////////////////////////////////////////////
-
+  ///////////////////////////////
     
+  const openMaps = (latitude:any, longitude:any) => {
+    const scheme = Platform.select({ ios: 'maps:0,0?q=', android: 'geo:0,0?q=' });
+    const latLng = `${latitude},${longitude}`;
+    const label = 'Linkih';
+    const url = Platform.select({
+      ios: `${scheme}${label}@${latLng}`,
+      android: `${scheme}${latLng}(${label})`
+    })
+  
+    url ? Linking.openURL(url) : console.log('Plateform not recognize');
+  };
+  
+  // Utilisation
+  // openMaps(48.8566, 2.3522); // Ouvre la position de Paris dans Google Maps
+  
+  
+  /////////////////////////////////////
 
   MapboxGL.setTelemetryEnabled(false);
 
-
-  const [modalVisible, SetModalVisible] = useState(false);
-  const [isLoadedEtab, setLoadedEtab] = useState(false);
-  const [isPreccessing, setPreccessing] = useState(false);
+  const [ modalVisible, SetModalVisible ] = useState(false);
+  const [ isLoadedEtab, setLoadedEtab ] = useState(false);
+  const [ isPreccessing, setPreccessing ] = useState(false);
 
   const openModal = () => {
     SetModalVisible(!modalVisible);
@@ -133,6 +144,7 @@ export default function Map({
     if (!isLoadedEtab) {
       loadEtablissements();
       _myPosition();
+      setLoadedEtab(true);
     }
   }
 
@@ -406,13 +418,26 @@ export default function Map({
             width: '100%',
             height: 280,
             borderRadius: 15,
-            backgroundColor: isLoadedEtab ? couleurs.white : 'transparent'
+           
           }}>
-            {isLoadedEtab && <ActivityIndicator
-              color={couleurs.primary}
-              style={{alignSelf: 'center'}}
-              size={'large'}></ActivityIndicator>}
-          {!isLoadedEtab && etablissements.map((marker: any, key:any) => (
+            {!isLoadedEtab && <View style={{
+              display: 'flex',
+              flexDirection: 'row',
+              width: Dimensions.get('screen').width -100,
+              height:100,
+              justifyContent:'center',
+              backgroundColor: couleurs.white,
+              padding:30,
+              borderRadius: 15,
+            }}>
+              <ActivityIndicator
+                color={couleurs.primary}
+                style={{alignSelf: 'center'}}
+                size={'large'}>
+
+              </ActivityIndicator>
+              </View>}
+          {isLoadedEtab && etablissements.map((marker: any, key:any) => (
             <Pressable key={key}>
               <View
                 style={{
@@ -522,9 +547,9 @@ export default function Map({
                           fontSize: 13,
                           color: couleurs.dark,
                         }}>
-                        {/* {marker.adresse} */}
+                        {/* marker.adresse */}
                         <Text style={{color: 'green'}}> { t('Ouvert', preferredLangage)} </Text> . {t('Ferme_a', preferredLangage)}
-                        {' '}18:00
+                        {' '} 18:00
                       </Text>
 
                       <View
@@ -555,9 +580,12 @@ export default function Map({
                               alignItems: 'center',
                               flexDirection: 'row',
                             }}
-                            onPress={() => null}>
+                            onPress={() => {
+                              openMaps(Number(marker.latitude) , Number(marker.longitude))
+                            }}>
+
                             <Image
-                              source={require('../assets/images/itinary.png')}
+                              source={ require('../assets/images/itinary.png') }
                               style={{width: 15, height: 15}}
                             />
                             <Text

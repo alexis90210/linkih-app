@@ -101,7 +101,7 @@ export default function IdentificationProprietaireScreen({
       .then((response: {data: any}) => {
         var api = response.data;
 
-        console.log(api);
+        console.log('login ===', api);
 
         if (api.code == 'success') {
           storage.save({
@@ -171,7 +171,7 @@ export default function IdentificationProprietaireScreen({
                 text: t('Confirmer_maintenant', preferredLangage),
                 onPress: () =>
                   navigation.navigate('confirmation_screen', {
-                    vendeur_id: api.vendeur_id,
+                    client_id: api.id,
                   }),
               },
             ]);
@@ -432,7 +432,7 @@ export default function IdentificationProprietaireScreen({
               flexDirection: 'row',
               justifyContent: 'center',
               marginVertical: 10,
-              marginTop: 10,
+              marginTop: 30,
             }}>
             <TouchableOpacity
               style={{

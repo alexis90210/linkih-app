@@ -656,12 +656,16 @@ translations.fr = {
   code_valide_success: 'Code verifie avec succes',
   code_valide_invalid: 'Code invalide',
   aucun_rdv: 'Aucun rendez-vous disponible',
+  aucun_etab: 'Aucun etablissemnt disponible',
+  plus_tard: 'Renseigner plus-tard',
 };
 
 // DICTIONNAIRE ANG
 translations.en = {
   ...translations.en,
   Recherchez_un_pays: 'Find a country',
+  aucun_etab: 'No available Establishment ',
+  plus_tard: 'Fill in Later',
   Noms_prenoms_du_responsable:
     'Last names & first names of the person in charge',
   choix_abonnement: 'Choose a subscription',

@@ -45,28 +45,25 @@ export default function IdentificationClientScreen({
    //////////////////////////////////////////////////////////////////////////////////////
  
 
-  var data = {
-    identifiant: '',
-    password: '',
-  };
+  const [ identifiant, setIdentifiant] = useState('');
+  const [ password, setPassword] = useState('');
 
   const [isProccessing,  setProcessing] = useState(false)
 
   if( route.params?.login && route.params?.login.length > 0 ) {
-    data.identifiant = route.params?.login
+    setIdentifiant(route.params?.login)
   }
 
   const logUser = async () => {
-    console.log(data);
 
-    if (!data.identifiant) {
+    if (!identifiant) {
       Alert.alert( t('erreur', preferredLangage), t('Veuillez_entrer_un_identifiant', preferredLangage), [        
         {text: 'OK', onPress: () => null},
       ]);
       return;
     }
 
-    if (!data.password) {
+    if (!password) {
       Alert.alert( t('erreur', preferredLangage), t('Veuillez_entrer_un_mot_de_passe_valide', preferredLangage), [        
         {text: 'OK', onPress: () => null},
       ]);
@@ -79,8 +76,8 @@ export default function IdentificationClientScreen({
       method: 'POST',
       url: ApiService.API_URL_LOGIN,
       data: JSON.stringify({
-        login: data.identifiant,
-        password: data.password,
+        login: identifiant,
+        password: password,
         role:'ROLE_CLIENT'
       }),
       headers: {
@@ -90,7 +87,9 @@ export default function IdentificationClientScreen({
     })
       .then((response: {data: any}) => {
         
-         var api = response.data;
+         var api = response.data;    
+         
+         console.log(api);
          
 
          if ( api.code == "success") {
@@ -149,8 +148,28 @@ export default function IdentificationClientScreen({
            })
          }
 
-         if ( api.code == "error") Alert.alert(t('erreur', preferredLangage), api.message, [  {text: 'OK', onPress: () => null}, ]);
+         if (api.code == 'error') {
+          setProcessing(false);
 
+          if ( api.status) {
+            Alert.alert('', api.message, [
+              {
+                text: t('Confirmer_maintenant', preferredLangage),
+                onPress: () =>
+                  navigation.navigate('ConfirmationCompteScreenClient', {
+                    id: api.id,
+                  }),
+              },
+            ]);
+          } else {
+            Alert.alert('', t('login_incorect', preferredLangage), [
+            {
+              text: 'OK',
+              onPress: () => null
+            }
+            ], {cancelable:true});
+          }
+        }
          setProcessing(false);
 
       })
@@ -235,8 +254,10 @@ export default function IdentificationClientScreen({
                   {t('Identifiant', preferredLangage)}
                 </Text>
                 <TextInput
-                  defaultValue={data.identifiant}
-                  onChangeText={input => (data.identifiant = input)}
+                  defaultValue={identifiant}
+                  onChangeText={input => {
+                    setIdentifiant( input )
+                  }}
                   placeholder={t('Entrez_votre_identifiant', preferredLangage)}
                   style={{
                     backgroundColor: 'transparent',
@@ -274,8 +295,10 @@ export default function IdentificationClientScreen({
                   textContentType="password"
                   keyboardType="default"
                   secureTextEntry={true}
-                  defaultValue={data.password}
-                  onChangeText={input => (data.password = input)}
+                  defaultValue={password}
+                  onChangeText={input => {
+                    setPassword( input )
+                  }}
                   placeholder={t('Entrez_votre_mot_de_passe', preferredLangage)}
                   style={{
                     backgroundColor: 'transparent',
@@ -332,7 +355,7 @@ export default function IdentificationClientScreen({
                   style={{
                     
                   }}
-                  onPress={() => navigation.navigate('recup_pass_screen')}>
+                  onPress={() => navigation.navigate('recup_pass_screen_client')}>
                   <Text
                     style={{
                       textAlign: 'center',

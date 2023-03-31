@@ -328,7 +328,7 @@ export default function InscriptionProprietaireScreen1({
                 display: 'flex',
                 flexDirection: 'row',
                 justifyContent: 'flex-end',
-                marginVertical: 10,
+                marginVertical: 50,
               }}>
               <TouchableOpacity
                 style={{

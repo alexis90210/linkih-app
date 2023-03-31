@@ -127,7 +127,7 @@ export default function InscriptionProprietaireScreen2({
     tiktok: '',
   };
 
-  var horaires = [];
+  var horaires: { jour: string; ouverture: string; fermeture: string; }[] = [];
 
   // LOAD CATEGORIES
   const [sous_categories, setCategories] = useState([]);
@@ -185,6 +185,7 @@ export default function InscriptionProprietaireScreen2({
 
     if (stepper == 4) {
       // redirect to new route
+      
       navigation.navigate('inscription_proprietaire_3', {
         etablissement: etablissement,
         categorie: selectedCategorie.sous_categorie_id,
@@ -504,6 +505,7 @@ export default function InscriptionProprietaireScreen2({
               }}>
               <TextInput
                 defaultValue={adresse}
+                placeholderTextColor={couleurs.dark}
                 onChangeText={input => (etablissement.adresse = input)}
                 placeholder={t('entrez_votre_adresse', preferredLangage)}
                 style={{
@@ -521,6 +523,7 @@ export default function InscriptionProprietaireScreen2({
 
               <TextInput
                 defaultValue={postcode}
+                placeholderTextColor={couleurs.dark}
                 onChangeText={input => (etablissement.postcode = input)}
                 placeholder={t('Entrez_votre_code_postal', preferredLangage)}
                 keyboardType="numeric"
@@ -1261,6 +1264,37 @@ export default function InscriptionProprietaireScreen2({
               </View>
             )}
           </View>
+
+          {stepper == 3 && <View
+              style={{
+                alignItems: 'center',
+                backgroundColor: 'transparent',
+                borderRadius: 30,
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'center',
+                marginVertical: 50,
+              }}>
+              <TouchableOpacity
+                style={{
+                  paddingHorizontal: 10,
+                }}
+                onPress={() =>  nextPage()}>
+                <Text
+                  style={{
+                    textAlign: 'center',
+                    fontSize: 13,
+                    fontFamily: CustomFont.Poppins,
+                    color: couleurs.primary,
+                    textDecorationColor: couleurs.primary,
+                    textDecorationLine:'underline',
+                    textDecorationStyle:'solid',
+                    
+                  }}>
+                  {t('plus_tard', preferredLangage)}
+                </Text>
+              </TouchableOpacity>
+            </View>}
 
           {stepper != 1 && <View style={{marginVertical: 20}}></View>}
         </ScrollView>

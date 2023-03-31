@@ -179,11 +179,11 @@ export default function MonEtablissement({
 
               <View style={{display: 'flex', flexDirection: 'row', marginTop:6, justifyContent:'flex-start', alignItems:'center'}}>
            
-                <Progress.Bar progress={etablissement.note || 0} width={Dimensions.get('screen').width - 60} height={8}
+                <Progress.Bar progress={etablissement.note || 0} width={Dimensions.get('screen').width - 100} height={8}
                 color={couleurs.success}
                 style={{backgroundColor:couleurs.Light, borderColor:couleurs.Light}} />
 
-                <Text>{'  '}{etablissement.note || 0} Avis</Text>
+                <Text style={{fontFamily:CustomFont.Poppins, color:couleurs.dark}}>{'  '}{etablissement.note || 0} Avis</Text>
               </View>
             </View>
 
