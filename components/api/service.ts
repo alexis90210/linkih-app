@@ -1,6 +1,6 @@
 export default class ApiService {
   // BASE API URL
-  static API_BASE_URL =  'http://192.168.1.89:8000/'; // 'https://linkih.hlconception.com/'; //
+  static API_BASE_URL =  'https://linkih.hlconception.com/'; // 'http://192.168.1.89:8000/'; // 
   static ADMIN_LINKIH_TEL = '+242069500886';
   static API_URL = this.API_BASE_URL + 'api/v1/'; // IP HOME
   static MAPBOX_GL_TOKEN =
