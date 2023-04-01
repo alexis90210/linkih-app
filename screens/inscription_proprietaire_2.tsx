@@ -12,6 +12,7 @@ import {
   Pressable,
   Dimensions,
   Alert,
+  Linking,
 } from 'react-native';
 import {CustomFont, couleurs} from '../components/color';
 import storage from '../components/api/localstorage';
@@ -127,7 +128,49 @@ export default function InscriptionProprietaireScreen2({
     tiktok: '',
   };
 
+  // INIT
   var horaires: { jour: string; ouverture: string; fermeture: string; }[] = [];
+  horaires.push({
+    jour: 'Lundi',
+    ouverture: selectedHoraireOuvertureLundi,
+    fermeture: selectedHoraireFermetureLundi,
+  });
+
+  horaires.push({
+    jour: 'Mardi',
+    ouverture: selectedHoraireOuvertureMardi,
+    fermeture: selectedHoraireFermetureMardi,
+  });
+
+  horaires.push({
+    jour: 'Mercredi',
+    ouverture: selectedHoraireOuvertureMercredi,
+    fermeture: selectedHoraireFermetureMercredi,
+  });
+
+  horaires.push({
+    jour: 'Jeudi',
+    ouverture: selectedHoraireOuvertureJeudi,
+    fermeture: selectedHoraireFermetureJeudi,
+  });
+
+  horaires.push({
+    jour: 'Vendredi',
+    ouverture: selectedHoraireOuvertureVendredi,
+    fermeture: selectedHoraireFermetureVendredi,
+  });
+
+  horaires.push({
+    jour: 'Samedi',
+    ouverture: selectedHoraireOuvertureSamedi,
+    fermeture: selectedHoraireFermetureSamedi,
+  });
+
+  horaires.push({
+    jour: 'Dimanche',
+    ouverture: selectedHoraireOuvertureDimanche,
+    fermeture: selectedHoraireFermetureDimanche,
+  });
 
   // LOAD CATEGORIES
   const [sous_categories, setCategories] = useState([]);
@@ -149,12 +192,13 @@ export default function InscriptionProprietaireScreen2({
           setCategories(api.message);
         }
         if (api.code == 'error') {
-          Alert.alert('', t('erreur_survenue', preferredLangage));
+          // Alert.alert('', t('erreur_survenue', preferredLangage));
+          console.log('erreur_survenue;;;;', api.message);
         }
       })
       .catch((error: any) => {
-        console.log(error);
-        Alert.alert('', t('erreur_survenue', preferredLangage));
+        // console.log(error);
+        // Alert.alert('', t('erreur_survenue', preferredLangage));
       });
   };
 
@@ -302,7 +346,7 @@ export default function InscriptionProprietaireScreen2({
         console.log(adresse, postcode);
       })
       .catch(error => {
-        console.log(error);
+        // console.log(error);
       });
   };
 
@@ -1296,7 +1340,29 @@ export default function InscriptionProprietaireScreen2({
               </TouchableOpacity>
             </View>}
 
-          {stepper != 1 && <View style={{marginVertical: 20}}></View>}
+        {stepper != 3 &&  <View
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'center',
+              marginTop:30,
+              marginBottom:40,
+              paddingHorizontal:30
+            }}>
+            <TouchableOpacity onPress={ () => {
+              Linking.openURL('tel:' + ApiService.ADMIN_LINKIH_TEL)
+            }}>
+            <Text
+              style={{
+                color: couleurs.dark,
+                fontSize: 13,
+                textAlign: 'center',
+                fontFamily: CustomFont.Poppins,
+              }}>
+                { t('besoin_d_aide', preferredLangage)}
+            </Text>
+            </TouchableOpacity>
+          </View>}
         </ScrollView>
       </SafeAreaView>
     </>

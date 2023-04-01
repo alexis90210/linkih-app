@@ -16,6 +16,8 @@ import ApiService from '../components/api/service';
 import axios from 'axios';
 import storage from '../components/api/localstorage';
 import translations from '../translations/translations';
+import EyeSlashIcon from '../components/eye_slash';
+import EyeIcon from '../components/eye';
 
 // IdentificationClientScreen
 export default function IdentificationClientScreen({
@@ -44,6 +46,15 @@ export default function IdentificationClientScreen({
  
    //////////////////////////////////////////////////////////////////////////////////////
  
+  var [isVisible, setVisible] = useState(false);
+
+  const _setVisible = () => {
+    if (isVisible) setVisible(false);
+    if (!isVisible) setVisible(true);
+  };
+
+  //////////////////////////////////////////
+
 
   const [ identifiant, setIdentifiant] = useState('');
   const [ password, setPassword] = useState('');
@@ -277,7 +288,7 @@ export default function IdentificationClientScreen({
                   flexDirection: 'column',
                   justifyContent: 'flex-start',
                   alignItems: 'flex-start',
-                  marginTop: 20,
+                  marginTop: 23,
                   marginBottom: 40,
                 }}>
                 <Text
@@ -289,28 +300,46 @@ export default function IdentificationClientScreen({
                     opacity: 0.85,
                     fontFamily: CustomFont.Poppins,
                   }}>
-                  {t('Mot_de_passe', preferredLangage)}
+                  {t('mot_de_passe', preferredLangage)}
                 </Text>
-                <TextInput
-                  textContentType="password"
-                  keyboardType="default"
-                  secureTextEntry={true}
-                  defaultValue={password}
+                  <View
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'flex-start',
+                    width: '100%',
+                    flexWrap: 'nowrap',
+                    borderBottomWidth: 1,
+                    borderBottomColor: couleurs.primary,
+                  }}>
+                  <TextInput
+                    textContentType="password"
+                    keyboardType="default"
+                    placeholder={t('entrez_votre_mot_de_passe', preferredLangage)}
+                    secureTextEntry={!isVisible}
+                    defaultValue={password}
                   onChangeText={input => {
                     setPassword( input )
                   }}
-                  placeholder={t('Entrez_votre_mot_de_passe', preferredLangage)}
-                  style={{
-                    backgroundColor: 'transparent',
-                    borderBottomWidth: 1,
-                    borderBottomColor: '#E2C6BB',
-                    color: couleurs.primary,
-                    fontWeight: '600',
-                    width: '100%',
-                    padding: 0,
-                    fontFamily: CustomFont.Poppins,
-                  }}></TextInput>
+                    placeholderTextColor={'rgba(100,100,100,.7)'}
+                    style={{
+                      backgroundColor: 'transparent',
+                      color: couleurs.primary,
+                      fontSize: 13,
+                      flex:1,
+                      fontFamily: CustomFont.Poppins,
+                    }}></TextInput>
+                  <TouchableOpacity
+                    style={{margin: 5, width: 20, height: 20}}
+                    onPress={_setVisible}>
+                    {isVisible && <EyeSlashIcon />}
+                    {!isVisible && <EyeIcon color={couleurs.primary} />}
+                  </TouchableOpacity>
+                </View>
               </View>
+
+              {/* ---------------------------- */}
 
               <View
                 style={{
@@ -369,7 +398,7 @@ export default function IdentificationClientScreen({
                 </TouchableOpacity>
               </View>
 
-              <View
+              {/* <View
                 style={{
                   alignItems: 'center',
                   backgroundColor: 'transparent',
@@ -399,7 +428,51 @@ export default function IdentificationClientScreen({
                     {t('Je_cree_mon_compte', preferredLangage)}
                   </Text>
                 </TouchableOpacity>
-              </View>              
+              </View>               */}
+            </View>
+          </View>
+
+          <View
+            style={{
+              alignItems: 'center',
+              backgroundColor: 'transparent',
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'center',
+              paddingTop: 15,
+              marginTop: 10,
+            }}>
+            <View
+              style={{
+                alignItems: 'center',
+                backgroundColor: couleurs.primaryLight,
+                borderRadius: 30,
+                marginBottom: 20,
+              }}>
+              <TouchableOpacity
+                style={{
+                  paddingHorizontal: 10,
+                  width: '100%',
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+                onPress={() =>
+                  navigation.navigate('creation_compte_client')
+                }>
+                <Text
+                  style={{
+                    textAlign: 'center',
+                    padding: 10,
+                    paddingHorizontal: 20,
+                    fontSize: 13,
+                    color: couleurs.dark,
+                    fontFamily: CustomFont.Poppins,
+                  }}>
+                  {t('Je_cree_mon_compte', preferredLangage)}
+                </Text>
+              </TouchableOpacity>
             </View>
           </View>
 
@@ -411,8 +484,8 @@ export default function IdentificationClientScreen({
               display: 'flex',
               flexDirection: 'row',
               justifyContent: 'center',
-              marginVertical: 10,
-              marginTop:60
+              marginTop:40,
+              marginBottom:30
             }}>
             <TouchableOpacity
               

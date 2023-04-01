@@ -19,6 +19,8 @@ import UserPosition from '../components/api/user_position';
 import Geolocation from '@react-native-community/geolocation';
 import {useState} from 'react';
 import translations from '../translations/translations';
+import EyeSlashIcon from '../components/eye_slash';
+import EyeIcon from '../components/eye';
 
 // InscriptionClientScreen
 export default function InscriptionClientScreen({
@@ -43,7 +45,16 @@ export default function InscriptionClientScreen({
       setPreferredLangage(data);
     });
 
-  //////////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////
+
+  var [isVisible, setVisible] = useState(false);
+
+  const _setVisible = () => {
+    if (isVisible) setVisible(false);
+    if (!isVisible) setVisible(true);
+  };
+
+  //////////////////////////////////////////
 
   var client: any = {
     nom: '',
@@ -268,7 +279,7 @@ export default function InscriptionClientScreen({
                   flexDirection: 'column',
                   justifyContent: 'flex-start',
                   alignItems: 'flex-start',
-                  marginTop: 20,
+                  marginTop: 23,
                   marginBottom: 40,
                 }}>
                 <Text
@@ -282,21 +293,41 @@ export default function InscriptionClientScreen({
                   }}>
                   {t('mot_de_passe', preferredLangage)}
                 </Text>
-                <TextInput
-                  onChangeText={input => (client.password = input)}
-                  textContentType="password"
-                  keyboardType="default"
-                  placeholder={t('entrez_votre_mot_de_passe', preferredLangage)}
-                  secureTextEntry={true}
+                  <View
                   style={{
-                    backgroundColor: 'transparent',
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'flex-start',
+                    width: '100%',
+                    flexWrap: 'nowrap',
                     borderBottomWidth: 1,
                     borderBottomColor: couleurs.primary,
-                    color: couleurs.primary,
-                    fontSize: 13,
-                    width: '100%',
-                    fontFamily: CustomFont.Poppins,
-                  }}></TextInput>
+                  }}>
+                  <TextInput
+                    textContentType="password"
+                    keyboardType="default"
+                    placeholder={t('entrez_votre_mot_de_passe', preferredLangage)}
+                    secureTextEntry={!isVisible}
+                    defaultValue={client.password}
+                    onChangeText={input => (client.password = input)}
+                    placeholderTextColor={'rgba(100,100,100,.7)'}
+                    style={{
+                      backgroundColor: 'transparent',
+                      color: couleurs.primary,
+                      fontSize: 13,
+                      flex:1,
+                      fontFamily: CustomFont.Poppins,
+                    }}></TextInput>
+                  <TouchableOpacity
+                    style={{margin: 5, width: 20, height: 20}}
+                    onPress={_setVisible}>
+                    {isVisible && <EyeSlashIcon />}
+                    {!isVisible && <EyeIcon color={couleurs.primary} />}
+                  </TouchableOpacity>
+                </View>
+
+                  {/*  */}
               </View>
 
               <View

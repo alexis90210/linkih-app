@@ -24,12 +24,12 @@ import ArrowLeftIcon from '../components/ArrowLeft';
 import ArrowRightIcon from '../components/ArrowRight';
 import translations from '../translations/translations';
 import SearchIcon from '../components/search';
-import CloseIcon from '../components/close';
+import ApiService from '../components/api/service';
 
 // ConfigurationScreen
 export default function ConfigurationScreen({navigation}: {navigation: any}) {
 
-  /////////////////////////////////// LANGUAGE HANDLER ///////////////////////////////////////
+  //////////////////////// LANGUAGE HANDLER //////////////////////////
   const [preferredLangage , setPreferredLangage] = useState('fr');
 
   const t = (key:any , langage:any) => {
@@ -43,7 +43,7 @@ export default function ConfigurationScreen({navigation}: {navigation: any}) {
     setPreferredLangage(data)
   })
 
-  //////////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////
 
   // countries
   const [currentCountry, setCurrentCountry] = useState({name: ''});
@@ -59,11 +59,8 @@ export default function ConfigurationScreen({navigation}: {navigation: any}) {
   const [_isLoadedcountries, setLoadedCountries] = useState(false);
 
   if ( !_isLoadedcountries) {
-    setTimeout(() => {
       setCountries( countries );
-      setLoadedCountries(true)
-    }, 400);
-
+      setLoadedCountries(true); 
   }
 
 

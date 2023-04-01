@@ -203,7 +203,7 @@ export default function IdentificationScreen({navigation}: {navigation: any}) {
                   display: 'flex',
                   flexDirection: 'row',
                   justifyContent: 'center',
-                  marginVertical: 20,
+                  marginTop:70,
                   paddingHorizontal:30
                 }}>
                 <TouchableOpacity onPress={ () => {

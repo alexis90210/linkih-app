@@ -18,6 +18,8 @@ import ApiService from '../components/api/service';
 import storage from '../components/api/localstorage';
 import translations from '../translations/translations';
 import ArrowRightIcon from '../components/ArrowRight';
+import EyeSlashIcon from '../components/eye_slash';
+import EyeIcon from '../components/eye';
 
 // IdentificationProprietaireScreen
 export default function IdentificationProprietaireScreen({
@@ -47,7 +49,14 @@ export default function IdentificationProprietaireScreen({
     });
 
   //////////////////////////////////////////////////////////////////////////////////////
+  var [isVisible, setVisible] = useState(false);
 
+  const _setVisible = () => {
+    if (isVisible) setVisible(false);
+    if (!isVisible) setVisible(true);
+  };
+
+  //////////////////////////////////////////
   storage.save({
     key: 'typeuser', // Note: Do not use underscore("_") in key!
     id: 'typeuser', // Note: Do not use underscore("_") in id!
@@ -165,7 +174,7 @@ export default function IdentificationProprietaireScreen({
         if (api.code == 'error') {
           setIsProccessing(false);
 
-          if ( api.status) {
+          if (api.status) {
             Alert.alert('', api.message, [
               {
                 text: t('Confirmer_maintenant', preferredLangage),
@@ -176,12 +185,17 @@ export default function IdentificationProprietaireScreen({
               },
             ]);
           } else {
-            Alert.alert('', t('login_incorect', preferredLangage), [
-            {
-              text: 'OK',
-              onPress: () => null
-            }
-            ], {cancelable:true});
+            Alert.alert(
+              '',
+              t('login_incorect', preferredLangage),
+              [
+                {
+                  text: 'OK',
+                  onPress: () => null,
+                },
+              ],
+              {cancelable: true},
+            );
           }
         }
       })
@@ -285,7 +299,7 @@ export default function IdentificationProprietaireScreen({
                   flexDirection: 'column',
                   justifyContent: 'flex-start',
                   alignItems: 'flex-start',
-                  marginTop: 20,
+                  marginTop: 23,
                   marginBottom: 40,
                 }}>
                 <Text
@@ -297,28 +311,46 @@ export default function IdentificationProprietaireScreen({
                     opacity: 0.85,
                     fontFamily: CustomFont.Poppins,
                   }}>
-                  {t('Mot_de_passe', preferredLangage)}
+                  {t('mot_de_passe', preferredLangage)}
                 </Text>
-                <TextInput
-                  textContentType="password"
-                  keyboardType="default"
-                  secureTextEntry={true}
-                  defaultValue={password}
-                  onChangeText={input => setPassword(input)}
-                  placeholder={t(
-                    'Veuillez_entrer_un_mot_de_passe_valide',
-                    preferredLangage,
-                  )}
+                <View
                   style={{
-                    backgroundColor: 'transparent',
-                    borderBottomWidth: 1,
-                    borderBottomColor: '#E2C6BB',
-                    color: couleurs.primary,
-                    fontWeight: '600',
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'flex-start',
                     width: '100%',
-                    padding: 0,
-                    fontFamily: CustomFont.Poppins,
-                  }}></TextInput>
+                    flexWrap: 'nowrap',
+                    borderBottomWidth: 1,
+                    borderBottomColor: couleurs.primary,
+                  }}>
+                  <TextInput
+                    textContentType="password"
+                    keyboardType="default"
+                    placeholder={t(
+                      'entrez_votre_mot_de_passe',
+                      preferredLangage,
+                    )}
+                    secureTextEntry={!isVisible}
+                    defaultValue={password}
+                    onChangeText={input => {
+                      setPassword(input);
+                    }}
+                    placeholderTextColor={'rgba(100,100,100,.7)'}
+                    style={{
+                      backgroundColor: 'transparent',
+                      color: couleurs.primary,
+                      fontSize: 13,
+                      flex: 1,
+                      fontFamily: CustomFont.Poppins,
+                    }}></TextInput>
+                  <TouchableOpacity
+                    style={{margin: 5, width: 20, height: 20}}
+                    onPress={_setVisible}>
+                    {isVisible && <EyeSlashIcon />}
+                    {!isVisible && <EyeIcon color={couleurs.primary} />}
+                  </TouchableOpacity>
+                </View>
               </View>
 
               <View
@@ -371,57 +403,52 @@ export default function IdentificationProprietaireScreen({
                   </Text>
                 </TouchableOpacity>
               </View>
-
-              
             </View>
           </View>
 
           <View
+            style={{
+              alignItems: 'center',
+              backgroundColor: 'transparent',
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'center',
+              paddingTop: 15,
+              marginTop: 10,
+            }}>
+            <View
+              style={{
+                alignItems: 'center',
+                backgroundColor: couleurs.primaryLight,
+                borderRadius: 30,
+                marginBottom: 20,
+              }}>
+              <TouchableOpacity
                 style={{
-                  alignItems: 'center',
-                  backgroundColor: 'transparent',
+                  paddingHorizontal: 10,
+                  width: '100%',
                   display: 'flex',
                   flexDirection: 'row',
                   justifyContent: 'center',
-                  paddingTop: 15,
-                  marginTop: 10,
-                }}>
-
-<View
-                style={{
                   alignItems: 'center',
-                  backgroundColor: couleurs.primaryLight,
-                  borderRadius: 30,
-                  marginBottom: 20,
-                }}>
-                <TouchableOpacity
+                }}
+                onPress={() =>
+                  navigation.navigate('inscription_proprietaire_1')
+                }>
+                <Text
                   style={{
-                    paddingHorizontal: 10,
-                    width: '100%',
-                    display: 'flex',
-                  flexDirection: 'row',
-                  justifyContent: 'center',
-                  alignItems:'center'
-                  }}
-                  onPress={() =>
-                    navigation.navigate('inscription_proprietaire_1')
-                  }>
-                  <Text
-                    style={{
-                      textAlign: 'center',
-                      padding: 10,
-                      paddingHorizontal: 20,
-                      fontSize: 13,
-                      color: couleurs.dark,
-                      fontFamily: CustomFont.Poppins,
-                    }}>
-                   {t('Je_cree_mon_compte', preferredLangage)}
-                  </Text>
-                </TouchableOpacity>
-              </View>
-
-        
-              </View>
+                    textAlign: 'center',
+                    padding: 10,
+                    paddingHorizontal: 20,
+                    fontSize: 13,
+                    color: couleurs.dark,
+                    fontFamily: CustomFont.Poppins,
+                  }}>
+                  {t('Je_cree_mon_compte', preferredLangage)}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
 
           <View
             style={{

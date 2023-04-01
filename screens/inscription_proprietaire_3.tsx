@@ -92,8 +92,6 @@ export default function InscriptionProprietaire3({
       abonnement_id: abonnement.id,
     });
 
-    return;
-    
     abonnement.id ? axios({
       method: 'POST',
       url: ApiService.API_URL_ADD_ABONNEMENT_VENDEUR,
@@ -125,6 +123,9 @@ export default function InscriptionProprietaire3({
       ...proprietaire,
     });
 
+    console.log('payloads ::: ',json);
+    
+
     axios({
       method: 'POST',
       url: ApiService.API_URL_CREATE_UTILISATEUR,
@@ -155,7 +156,7 @@ export default function InscriptionProprietaire3({
       })
       .catch(error => {
         setLoading(false);
-        console.log('payload :: ', json);
+        console.log('payload error :: ', error);
 
         
         Alert.alert(
