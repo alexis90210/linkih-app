@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-
+import { StackActions } from '@react-navigation/native';
 import {
   SafeAreaView,
   ScrollView,
@@ -39,14 +39,15 @@ export default function IdentificationProprietaireScreen({
     return translations[langage][key] || key;
   };
 
-  storage
-    .load({
-      key: 'defaultlang', // Note: Do not use underscore("_") in key!
-      id: 'defaultlang', // Note: Do not use underscore("_") in id!
-    })
-    .then((data: any) => {
-      setPreferredLangage(data);
-    });
+   secureStorage.getKey('defaultlang').then(res => {
+    if ( res ) {
+      setPreferredLangage(res);
+    } else {
+      setPreferredLangage(preferredLangage);
+    }
+  }, (err) => {
+    console.log(err)
+  })
 
   //////////////////////////////////////////////////////////////////////////////////////
   var [isVisible, setVisible] = useState(false);
@@ -153,10 +154,13 @@ export default function IdentificationProprietaireScreen({
                 },
               });
 
-              navigation.navigate('MonEtablissement', {
+           
+
+              navigation.dispatch(StackActions.push('MonEtablissement', {
                 vendeur_id: response.data.etablissement.id,
                 isProprietaire: true,
-              });
+              }))
+
             })
             .catch(error => {
               setIsProccessing(false);

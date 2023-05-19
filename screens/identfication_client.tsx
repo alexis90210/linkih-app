@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import { StackActions } from '@react-navigation/native';
 import {
   SafeAreaView,
   ScrollView,
@@ -18,6 +18,7 @@ import storage from '../components/api/localstorage';
 import translations from '../translations/translations';
 import EyeSlashIcon from '../components/eye_slash';
 import EyeIcon from '../components/eye';
+import secureStorage from '../components/api/secureStorage';
 
 // IdentificationClientScreen
 export default function IdentificationClientScreen({
@@ -35,14 +36,15 @@ export default function IdentificationClientScreen({
      return translations[langage][key] || key;
    };
  
-   storage
-     .load({
-       key: 'defaultlang', // Note: Do not use underscore("_") in key!
-       id: 'defaultlang', // Note: Do not use underscore("_") in id!
-     })
-     .then((data: any) => {
-       setPreferredLangage(data);
-     });
+    secureStorage.getKey('defaultlang').then(res => {
+    if ( res ) {
+      setPreferredLangage(res);
+    } else {
+      setPreferredLangage(preferredLangage);
+    }
+  }, (err) => {
+    console.log(err)
+  })
  
    //////////////////////////////////////////////////////////////////////////////////////
  
@@ -104,6 +106,11 @@ export default function IdentificationClientScreen({
          
 
          if ( api.code == "success") {
+
+          secureStorage.setKey('credentials',JSON.stringify({
+              pays: api.message
+            }))
+
           storage.save({
             key: 'credentials', // Note: Do not use underscore("_") in key!
             id: 'credentials', // Note: Do not use underscore("_") in id!
@@ -111,6 +118,11 @@ export default function IdentificationClientScreen({
               pays: api.message
             },
           });
+
+          secureStorage.setKey('firstusage',JSON.stringify({
+             isNew:false,
+             isClient:true        
+            }))
 
           storage.save({
             key: 'firstusage', // Note: Do not use underscore("_") in key!
@@ -145,10 +157,16 @@ export default function IdentificationClientScreen({
               },
             });
 
-            navigation.navigate('main', {
+            secureStorage.setKey('userconnected',JSON.stringify({
+                ...response.data,
+                role:api.message.role
+              }))
+          
+
+            navigation.dispatch(StackActions.push('main', {
               utilisateur_id: response.data.id,
               isProprietaire:false
-            })
+            }))
 
           })
           .catch((error) => {

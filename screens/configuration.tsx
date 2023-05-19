@@ -25,6 +25,7 @@ import ArrowRightIcon from '../components/ArrowRight';
 import translations from '../translations/translations';
 import SearchIcon from '../components/search';
 import ApiService from '../components/api/service';
+import secureStorage from '../components/api/secureStorage';
 
 // ConfigurationScreen
 export default function ConfigurationScreen({navigation}: {navigation: any}) {
@@ -36,11 +37,14 @@ export default function ConfigurationScreen({navigation}: {navigation: any}) {
     return translations[langage][key] || key
   }
 
-  storage.load({
-    key: 'defaultlang', // Note: Do not use underscore("_") in key!
-    id: 'defaultlang' // Note: Do not use underscore("_") in id!
-  }).then( ( data:any) => {
-    setPreferredLangage(data)
+  secureStorage.getKey('defaultlang').then(res => {
+    if ( res ) {
+      setPreferredLangage(res);
+    } else {
+      setPreferredLangage(preferredLangage);
+    }
+  }, (err) => {
+    console.log(err)
   })
 
   /////////////////////////////////////////////////////////////////////
@@ -101,11 +105,7 @@ export default function ConfigurationScreen({navigation}: {navigation: any}) {
 
   const saveConfiguration = () => {
 
-    storage.save({
-      key: 'defaultlang', // Note: Do not use underscore("_") in key!
-      id: 'defaultlang', // Note: Do not use underscore("_") in id!
-      data: currentLanguage.code,
-    });
+    secureStorage.setKey('defaultlang',currentLanguage.code)
 
     storage.save({
       key: 'configuration', // Note: Do not use underscore("_") in key!
