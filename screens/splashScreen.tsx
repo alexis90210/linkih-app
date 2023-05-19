@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-
+import { StackActions } from '@react-navigation/native';
 import {
   ScrollView,
   Text,
@@ -29,6 +29,30 @@ export default function SplashScreen({navigation}: {navigation: any}) {
       setPreferredLangage(res);
     } else {
       setPreferredLangage(preferredLangage);
+    }
+  }, (err) => {
+    console.log(err)
+  })
+
+  secureStorage.getKey('firstusage').then(res => {
+    if ( res == 1 ) {
+
+      secureStorage.getKey('firstusage').then(etablissement =>{
+        navigation.dispatch(StackActions.push('MonEtablissement', {
+                vendeur_id: etablissement,
+                isProprietaire: true,
+              }))
+      })
+      
+    } else {
+
+      secureStorage.getKey('utilisateur').then(utilisateur => {
+        navigation.dispatch(StackActions.push('main', {
+              utilisateur_id: utilisateur,
+              isProprietaire:false
+            }))
+      })
+       
     }
   }, (err) => {
     console.log(err)

@@ -119,6 +119,8 @@ export default function IdentificationClientScreen({
             },
           });
 
+          secureStorage.setKey('firstusage','2') // client
+
           secureStorage.setKey('firstusage',JSON.stringify({
              isNew:false,
              isClient:true        
@@ -161,12 +163,16 @@ export default function IdentificationClientScreen({
                 ...response.data,
                 role:api.message.role
               }))
+
+               secureStorage.setKey('utilisateur',response.data.id) 
           
 
             navigation.dispatch(StackActions.push('main', {
               utilisateur_id: response.data.id,
               isProprietaire:false
             }))
+
+           
 
           })
           .catch((error) => {

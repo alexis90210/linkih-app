@@ -131,6 +131,8 @@ export default function IdentificationProprietaireScreen({
             },
           });
 
+          secureStorage.setKey('firstusage','1') // vendeur
+
           axios({
             method: 'POST',
             url: ApiService.API_URL_USER_DATA,
@@ -153,6 +155,8 @@ export default function IdentificationProprietaireScreen({
                   role: api.message.role,
                 },
               });
+
+              secureStorage.setKey('etablissement',response.data.etablissement.id) // vendeur
 
            
 
