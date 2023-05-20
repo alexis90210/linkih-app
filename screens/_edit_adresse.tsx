@@ -79,6 +79,8 @@ export default function EditAdresse({navigation, route}: {navigation: any, route
     id:''
   };
 
+
+
   // GEOLOCALISATION
 
   useEffect(() =>{
@@ -116,7 +118,7 @@ export default function EditAdresse({navigation, route}: {navigation: any, route
       url: `https://api.mapbox.com/geocoding/v5/mapbox.places/${lon},${lat}.json?limit&types=address%2Cpostcode&access_token=${ApiService.MAPBOX_GL_TOKEN}`,
     })
       .then(response => {
-        client.adresse = response.data.features[1].place_name;
+      
         setAdresse(response.data.features[1].place_name);
       })
       .catch(error => {
@@ -127,17 +129,18 @@ export default function EditAdresse({navigation, route}: {navigation: any, route
   // SUBMIT
   const updateAdresse = () => {
 
-    if (client.adresse.length < 4) {
+    if (adresse.length < 4) {
       Alert.alert('', t('adresse_court', preferredLangage));
       return;
     }
 
-    client.id = route.params.id
-
     axios({
       method: 'PUT',
       url: ApiService.API_URL_EDIT_UTILISATEUR,
-      data: JSON.stringify(client),
+      data: JSON.stringify({
+        adresse: adresse,
+        id: route.params.id
+      }),
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -279,7 +282,7 @@ export default function EditAdresse({navigation, route}: {navigation: any, route
           }}>
           <TextInput
             defaultValue={adresse}
-            onChangeText={input => (client.adresse = input)}
+            onChangeText={input => (setAdresse( input))}
             placeholder={t('entrez_votre_adresse', preferredLangage)}
             style={{
               backgroundColor: 'transparent',

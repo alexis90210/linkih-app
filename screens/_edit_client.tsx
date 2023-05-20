@@ -74,14 +74,6 @@ export default function EditClientScreen({
   var client = route.params;
   client.update = true;
 
-  console.log(client);
-
-  Geolocation.getCurrentPosition(info => {
-    client.longitude = info.coords.longitude;
-    client.latitude = info.coords.latitude;
-  });
-
-
   useEffect(() =>{
     const rep = requestLocationPermission();
     rep.then(res =>{
