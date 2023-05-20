@@ -20,6 +20,13 @@ import EyeSlashIcon from '../components/eye_slash';
 import EyeIcon from '../components/eye';
 import secureStorage from '../components/api/secureStorage';
 
+
+//import JWT from './components/api/token'
+
+//axios.defaults.headers.common['Authorization'] = 'Bearer ' + JWT.token;
+
+
+
 // IdentificationClientScreen
 export default function IdentificationClientScreen({
   navigation, route
@@ -368,7 +375,7 @@ export default function IdentificationClientScreen({
               <View
                 style={{
                   alignItems: 'center',
-                  backgroundColor: couleurs.primary,
+                  backgroundColor:  !isProccessing ? couleurs.primary : couleurs.primaryLight,
                   borderRadius: 30,
                   marginBottom: 20,
                 }}>
@@ -377,7 +384,7 @@ export default function IdentificationClientScreen({
                     paddingHorizontal: 10,
                     width: '70%',
                   }}
-                  onPress={() => logUser()}>
+                  onPress={() => !isProccessing ? logUser() : null}>
                   <Text
                     style={{
                       textAlign: 'center',
