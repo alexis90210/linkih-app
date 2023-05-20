@@ -82,20 +82,31 @@ export default function EditAdresse({navigation, route}: {navigation: any, route
   // GEOLOCALISATION
 
   useEffect(() =>{
-    if (requestLocationPermission()) {
-      Geolocation.getCurrentPosition(info => {
-        let lon = Number(info.coords.longitude);
+ 
+
+    const rep = requestLocationPermission();
+    rep.then(res =>{
+      if (res) {
+        Geolocation.getCurrentPosition(info => {
+          let lon = Number(info.coords.longitude);
         let lat = Number(info.coords.latitude);
     
-        if (!isLoaded) {
-          setstartCords([lon, lat]);
-          setLoaded(true);
-        }
+       
+          setstartCords([lon, lat]);    
+        },
         
-      });
-    } else {
-      navigation.goBack()
-    }
+          error => {
+            // See error code charts below.
+            console.log(error.code, error.message);
+           
+          },
+          {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
+        );
+      } else {
+        navigation.goBack()
+      }
+    })
+    
   })
 
   // DRAG MARKER

@@ -81,15 +81,28 @@ export default function EditClientScreen({
     client.latitude = info.coords.latitude;
   });
 
+
   useEffect(() =>{
-    if (requestLocationPermission()) {
-      Geolocation.getCurrentPosition(info => {
-        client.longitude = info.coords.longitude;
-        client.latitude = info.coords.latitude;        
-      });
-    } else {
-      navigation.goBack()
-    }
+    const rep = requestLocationPermission();
+    rep.then(res =>{
+      if (res) {
+        Geolocation.getCurrentPosition(info => {
+          client.longitude = info.coords.longitude;
+          client.latitude = info.coords.latitude;    
+        },
+        
+          error => {
+            // See error code charts below.
+            console.log(error.code, error.message);
+           
+          },
+          {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
+        );
+      } else {
+        navigation.goBack()
+      }
+    })
+    
   })
 
   storage

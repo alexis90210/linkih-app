@@ -115,22 +115,35 @@ export default function Map({ navigation, route } : { navigation: any; route: an
   const [UserPosition, setUserPosition] = useState<any>({});
 
   const _myPosition = () => {
+
+    const rep = requestLocationPermission();
+    rep.then(res =>{
+      if (res) {
+        Geolocation.getCurrentPosition(info => {
+          let lon = Number(info.coords.longitude);
+          let lat = Number(info.coords.latitude);
+  
+        setUserPosition({
+          longitude: lon,
+          latitude: lat,
+        });
+  
+        setstartCords([lon, lat]);     
+        },
+        
+          error => {
+            // See error code charts below.
+            console.log(error.code, error.message);
+           
+          },
+          {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
+        );
+      } else {
+        navigation.goBack()
+      }
+    })
     
-    if (requestLocationPermission()) {
-      Geolocation.getCurrentPosition(info => {
-        let lon = Number(info.coords.longitude);
-        let lat = Number(info.coords.latitude);
-
-      setUserPosition({
-        longitude: lon,
-        latitude: lat,
-      });
-
-      setstartCords([lon, lat]);     
-      });
-    } else {
-      navigation.goBack()
-    }
+    
   };
 
 

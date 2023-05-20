@@ -351,18 +351,32 @@ export default function InscriptionProprietaireScreen2({
   const [postcode, setPCode] = useState('');
 
 
-  useEffect(() =>{
-    if (requestLocationPermission()) {
-      Geolocation.getCurrentPosition(info => {
-        let lon = Number(info.coords.longitude);
-        let lat = Number(info.coords.latitude);
+ 
 
-        setstartCords([lon, lat]);
-      _onDragGetAdresse(lon, lat);   
-      });
-    } else {
-      navigation.goBack()
-    }
+  useEffect(() =>{
+    const rep = requestLocationPermission();
+    rep.then(res =>{
+      if (res) {
+        Geolocation.getCurrentPosition(info => {
+          let lon = Number(info.coords.longitude);
+          let lat = Number(info.coords.latitude);
+
+            setstartCords([lon, lat]);
+          _onDragGetAdresse(lon, lat);
+        },
+        
+          error => {
+            // See error code charts below.
+            console.log(error.code, error.message);
+           
+          },
+          {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
+        );
+      } else {
+        navigation.goBack()
+      }
+    })
+    
   })
 
   const _onDragGetAdresse = (lon: number, lat: number) => {

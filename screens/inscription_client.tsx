@@ -100,15 +100,28 @@ export default function InscriptionClientScreen({
   const [clientPays, setClientPays] = useState('')
 
 
+
   useEffect(() =>{
-    if (requestLocationPermission()) {
-      Geolocation.getCurrentPosition(info => {
-        setClientLongitude(info.coords.longitude)
-    setClientLatitude(info.coords.latitude)       
-      });
-    } else {
-      navigation.goBack()
-    }
+    const rep = requestLocationPermission();
+    rep.then(res =>{
+      if (res) {
+        Geolocation.getCurrentPosition(info => {
+          setClientLongitude(info.coords.longitude)
+          setClientLatitude(info.coords.latitude) 
+        },
+        
+          error => {
+            // See error code charts below.
+            console.log(error.code, error.message);
+           
+          },
+          {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
+        );
+      } else {
+        navigation.goBack()
+      }
+    })
+    
   })
 
   const [isProccessing, setProcessing] = useState(false);
