@@ -481,215 +481,221 @@ export default function Map({ navigation, route } : { navigation: any; route: an
 
               </ActivityIndicator>
               </View>}
-          {isLoadedEtab && etablissements.map((marker: any, key:any) => (
-            <Pressable key={key}>
+          {isLoadedEtab && <FlatList
+          horizontal
+          data={etablissements}
+          renderItem={(marker) => (
+            <Pressable>
+            <View
+              style={{
+                borderRadius: 15,
+                padding: 10,
+                display: 'flex',
+                flexDirection: 'column',
+                flexWrap: 'nowrap',
+                justifyContent: 'flex-start',
+                backgroundColor: '#fff',
+                width: 300,
+                height: 260,
+                marginRight: 10,
+              }}>
               <View
                 style={{
-                  borderRadius: 15,
-                  padding: 10,
                   display: 'flex',
                   flexDirection: 'column',
                   flexWrap: 'nowrap',
                   justifyContent: 'flex-start',
-                  backgroundColor: '#fff',
-                  width: 300,
-                  height: 260,
-                  marginRight: 10,
                 }}>
+                <Image
+                  source={marker.logo ? {uri:'data:image/png;base64,' + marker.logo} : require('../assets/images/cover.jpg')}
+                  style={{width: '100%', height: 100, borderRadius:20}}
+                />
+
                 <View
                   style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    flexWrap: 'nowrap',
-                    justifyContent: 'flex-start',
+                    borderRadius: 100,
+                    backgroundColor: couleurs.primary,
+                    padding: 6,
+                    position: 'absolute',
+                    bottom: 113,
+                    right: 5,
+                    zIndex: 999,
                   }}>
-                  <Image
-                    source={marker.logo ? {uri:'data:image/png;base64,' + marker.logo} : require('../assets/images/cover.jpg')}
-                    style={{width: '100%', height: 100, borderRadius:20}}
-                  />
+                  <Pressable
+                    onPress={() =>
+                      navigation.navigate('autre_etab', {
+                        nomEtab: marker.nom,
+                        vendeur_data: marker
+                      })
+                    }>
+                    <EyeIcon color={'#fff'} />
+                  </Pressable>
+                </View>
 
+                <View
+                  style={{
+                    paddingHorizontal: 10,
+                    backgroundColor: couleurs.secondary,
+                  }}>
                   <View
                     style={{
-                      borderRadius: 100,
-                      backgroundColor: couleurs.primary,
-                      padding: 6,
-                      position: 'absolute',
-                      bottom: 113,
-                      right: 5,
-                      zIndex: 999,
+                      display: 'flex',
+                      flexDirection: 'column',
+                      flexWrap: 'nowrap',
+                      justifyContent: 'flex-start',
+                      paddingTop: 10,
                     }}>
-                    <Pressable
-                      onPress={() =>
-                        navigation.navigate('autre_etab', {
-                          nomEtab: marker.nom,
-                          vendeur_data: marker
-                        })
-                      }>
-                      <EyeIcon color={'#fff'} />
-                    </Pressable>
-                  </View>
+                    <Text
+                      style={{
+                        fontSize: 13,
+                        color: couleurs.dark,
+                        fontFamily: CustomFont.Poppins,
+                      }}>
+                      {marker.nom}
+                    </Text>
 
-                  <View
-                    style={{
-                      paddingHorizontal: 10,
-                      backgroundColor: couleurs.secondary,
-                    }}>
+                    <Text
+                      style={{
+                        fontFamily: CustomFont.Poppins,
+                        fontSize: 13,
+                        color: couleurs.dark,
+                      }}>
+
+                      <AirbnbRating
+                        reviewSize={4}
+                        reviewColor={couleurs.primary}
+                        showRating={false}
+                        count={5}
+                        reviews={['Terrible', 'Bad', 'Good', 'Very Good']}
+                        onFinishRating={(rate:any) => console.log(rate)}
+                        defaultRating={marker.note}
+                        size={14}
+                      />
+                    </Text>
+                    <Text
+                      style={{
+                        fontFamily: CustomFont.Poppins,
+                        fontSize: 13,
+                        color: couleurs.dark,
+                      }}>
+                      {marker.categorie}  . 
+                      <Text style={{color: couleurs.primary}}>
+                        { distance(
+                          Number(marker.latitude),
+                          Number(marker.longitude),
+                          Number(UserPosition.latitude),
+                          Number(UserPosition.longitude),
+                        )}
+                      </Text>
+                    </Text>
+                    <Text
+                      style={{
+                        fontFamily: CustomFont.Poppins,
+                        fontSize: 13,
+                        color: couleurs.dark,
+                      }}>
+                      {/* marker.adresse */}
+                      <Text style={{color: 'green'}}> { t('Ouvert', preferredLangage)} </Text> . {t('Ferme_a', preferredLangage)}
+                      {' '} 18:00
+                    </Text>
+
                     <View
                       style={{
                         display: 'flex',
-                        flexDirection: 'column',
+                        flexDirection: 'row',
                         flexWrap: 'nowrap',
-                        justifyContent: 'flex-start',
-                        paddingTop: 10,
+                        justifyContent: 'center',
+                        gap: 10,
+                        marginTop: 7,
                       }}>
-                      <Text
+                      <View
                         style={{
-                          fontSize: 13,
-                          color: couleurs.dark,
-                          fontFamily: CustomFont.Poppins,
+                          alignItems: 'center',
+                          backgroundColor: couleurs.primary,
+                          borderRadius: 30,
+                          marginBottom: 20,
+                          width: 120,
+                          height: 31,
                         }}>
-                        {marker.nom}
-                      </Text>
+                        <TouchableOpacity
+                          style={{
+                            paddingHorizontal: 10,
+                            position: 'relative',
+                            bottom: 2,
+                            display: 'flex',
+                            justifyContent: 'flex-start',
+                            alignItems: 'center',
+                            flexDirection: 'row',
+                          }}
+                          onPress={() => {
+                            openMaps(Number(marker.latitude) , Number(marker.longitude))
+                          }}>
 
-                      <Text
-                        style={{
-                          fontFamily: CustomFont.Poppins,
-                          fontSize: 13,
-                          color: couleurs.dark,
-                        }}>
-
-                        <AirbnbRating
-                          reviewSize={4}
-                          reviewColor={couleurs.primary}
-                          showRating={false}
-                          count={5}
-                          reviews={['Terrible', 'Bad', 'Good', 'Very Good']}
-                          onFinishRating={(rate:any) => console.log(rate)}
-                          defaultRating={marker.note}
-                          size={14}
-                        />
-                      </Text>
-                      <Text
-                        style={{
-                          fontFamily: CustomFont.Poppins,
-                          fontSize: 13,
-                          color: couleurs.dark,
-                        }}>
-                        {marker.categorie}  . 
-                        <Text style={{color: couleurs.primary}}>
-                          { distance(
-                            Number(marker.latitude),
-                            Number(marker.longitude),
-                            Number(UserPosition.latitude),
-                            Number(UserPosition.longitude),
-                          )}
-                        </Text>
-                      </Text>
-                      <Text
-                        style={{
-                          fontFamily: CustomFont.Poppins,
-                          fontSize: 13,
-                          color: couleurs.dark,
-                        }}>
-                        {/* marker.adresse */}
-                        <Text style={{color: 'green'}}> { t('Ouvert', preferredLangage)} </Text> . {t('Ferme_a', preferredLangage)}
-                        {' '} 18:00
-                      </Text>
+                          <Image
+                            source={ require('../assets/images/itinary.png') }
+                            style={{width: 15, height: 15}}
+                          />
+                          <Text
+                            style={{
+                              textAlign: 'center',
+                              padding: 5,
+                              fontSize: 13,
+                              color: couleurs.white,
+                              fontFamily: CustomFont.Poppins,
+                            }}>
+                            { t('Itineraire', preferredLangage)}
+                          </Text>
+                        </TouchableOpacity>
+                      </View>
 
                       <View
                         style={{
-                          display: 'flex',
-                          flexDirection: 'row',
-                          flexWrap: 'nowrap',
-                          justifyContent: 'center',
-                          gap: 10,
-                          marginTop: 7,
+                          alignItems: 'center',
+                          backgroundColor: 'transparent',
+                          borderRadius: 30,
+                          marginBottom: 20,
+                          width: 120,
+                          height: 31,
+                          borderWidth: 1,
+                          borderColor: couleurs.primary,
                         }}>
-                        <View
+                        <TouchableOpacity
                           style={{
+                            paddingHorizontal: 10,
+                            position: 'relative',
+                            bottom: 2,
+                            display: 'flex',
+                            justifyContent: 'flex-start',
                             alignItems: 'center',
-                            backgroundColor: couleurs.primary,
-                            borderRadius: 30,
-                            marginBottom: 20,
-                            width: 120,
-                            height: 31,
-                          }}>
-                          <TouchableOpacity
+                            flexDirection: 'row',
+                          }}
+                          onPress={() => Linking.openURL(`tel:${marker.mobile}`)}>
+                          <Image
+                            source={require('../assets/images/telephone.png')}
+                            style={{width: 18, height: 18}}
+                          />
+                          <Text
                             style={{
-                              paddingHorizontal: 10,
-                              position: 'relative',
-                              bottom: 2,
-                              display: 'flex',
-                              justifyContent: 'flex-start',
-                              alignItems: 'center',
-                              flexDirection: 'row',
-                            }}
-                            onPress={() => {
-                              openMaps(Number(marker.latitude) , Number(marker.longitude))
+                              textAlign: 'center',
+                              padding: 5,
+                              fontSize: 13,
+                              color: couleurs.primary,
+                              fontFamily: CustomFont.Poppins,
                             }}>
-
-                            <Image
-                              source={ require('../assets/images/itinary.png') }
-                              style={{width: 15, height: 15}}
-                            />
-                            <Text
-                              style={{
-                                textAlign: 'center',
-                                padding: 5,
-                                fontSize: 13,
-                                color: couleurs.white,
-                                fontFamily: CustomFont.Poppins,
-                              }}>
-                              { t('Itineraire', preferredLangage)}
-                            </Text>
-                          </TouchableOpacity>
-                        </View>
-
-                        <View
-                          style={{
-                            alignItems: 'center',
-                            backgroundColor: 'transparent',
-                            borderRadius: 30,
-                            marginBottom: 20,
-                            width: 120,
-                            height: 31,
-                            borderWidth: 1,
-                            borderColor: couleurs.primary,
-                          }}>
-                          <TouchableOpacity
-                            style={{
-                              paddingHorizontal: 10,
-                              position: 'relative',
-                              bottom: 2,
-                              display: 'flex',
-                              justifyContent: 'flex-start',
-                              alignItems: 'center',
-                              flexDirection: 'row',
-                            }}
-                            onPress={() => Linking.openURL(`tel:${marker.mobile}`)}>
-                            <Image
-                              source={require('../assets/images/telephone.png')}
-                              style={{width: 18, height: 18}}
-                            />
-                            <Text
-                              style={{
-                                textAlign: 'center',
-                                padding: 5,
-                                fontSize: 13,
-                                color: couleurs.primary,
-                                fontFamily: CustomFont.Poppins,
-                              }}>
-                              { t('Appeler', preferredLangage)}
-                            </Text>
-                          </TouchableOpacity>
-                        </View>
+                            { t('Appeler', preferredLangage)}
+                          </Text>
+                        </TouchableOpacity>
                       </View>
                     </View>
                   </View>
                 </View>
               </View>
-            </Pressable>
-          ))}
+            </View>
+          </Pressable>
+          )}
+          keyExtractor={(item, index) => index}
+      />}
+
         </ScrollView>
 
         <Modal visible={modalVisible} transparent={true}>
