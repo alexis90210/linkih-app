@@ -59,22 +59,23 @@ export default function InscriptionClientScreen({
 
   //////////////////////////////////////////
 
-  var client: any = {
-    nom: '',
-    email: '',
-    password: '',
-    role: 'ROLE_CLIENT',
-    longitude: '',
-    latitude: '',
-    adresse: '',
-    mobile: '',
-    pays: '',
-    langue: '',
-  };
+
+  const [clientNom, setClientNom] = useState('')
+  const [clientEmail, setClientEmail] = useState('')
+  const [clientPassword, setClientPassword] = useState('')
+  const [clientAdresse, setClientAdresse] = useState('')
+  const [clientMobile, setClientMobile] = useState('')
+  const [clientPays, setClientPays] = useState('')
+
+  const [clientLongitude, setClientLongitude] = useState('')
+  const [clientLatitude, setClientLatitude] = useState('')
+
+  const [clientLangue, setClientLangue] = useState('')
+  const [clientPays, setClientPays] = useState('')
 
   Geolocation.getCurrentPosition(info => {
-    client.longitude = info.coords.longitude;
-    client.latitude = info.coords.latitude;
+    setClientLongitude(info.coords.longitude)
+    setClientLatitude(info.coords.latitude)
   });
 
   const [isProccessing, setProcessing] = useState(false);
@@ -85,32 +86,44 @@ export default function InscriptionClientScreen({
       id: 'configuration', // Note: Do not use underscore("_") in id!
     })
     .then(data => {
-      client.langue = data.langage.name;
-      client.pays = data.pays.name;
+      setClientLangue(data.langage.name)
+      setClientPays(data.pays.name)
     });
 
   const onSubmit = () => {
-    console.log(client);
+   
 
     var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-    if (!client.email.match(mailformat)) {
+    if (!clientEmail.match(mailformat)) {
       Alert.alert('', t('email_invalide', preferredLangage), [
         {text: 'OK', onPress: () => null},
       ]);
       return;
     }
 
-    if (client.password.length < 4) {
+    if (clientPassword.length < 4) {
       Alert.alert('', t('mot_de_passe_court', preferredLangage), [
         {text: 'OK', onPress: () => null},
       ]);
       return;
     }
     setProcessing(true);
+
     axios({
       method: 'POST',
       url: ApiService.API_URL_CREATE_UTILISATEUR,
-      data: JSON.stringify(client),
+      data: JSON.stringify({
+        nom: clientNom,
+        email: clientEmail,
+        password: clientPassword,
+        role: 'ROLE_CLIENT',
+        longitude: clientLongitude,
+        latitude: clientLatitude,
+        adresse: clientAdresse,
+        mobile: clientMobile,
+        pays: clientPays,
+        langue: preferredLangage
+      }),
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -122,20 +135,7 @@ export default function InscriptionClientScreen({
         setProcessing(false);
 
         if (api.code == 'success') {
-          // Alert.alert(
-          //   'SUCCES',
-          //   t('Votre_compte_a_bien_ete_cree', preferredLangage) +
-          //     ` ${api.login}`,
-          //   [
-          //     {
-          //       text: t('se_connecter', preferredLangage),
-          //       onPress: () =>
-          //         navigation.navigate('identification_client', {
-          //           login: api.login,
-          //         }),
-          //     },
-          //   ],
-          // );
+     
           navigation.navigate('inscription_client_2', {
             api: api,
           })
@@ -215,6 +215,7 @@ export default function InscriptionClientScreen({
                   justifyContent: 'flex-start',
                   alignItems: 'flex-start',
                 }}>
+
                 <Text
                   style={{
                     textAlign: 'center',
@@ -227,7 +228,8 @@ export default function InscriptionClientScreen({
                   {t('Noms_Prenoms', preferredLangage)}
                 </Text>
                 <TextInput
-                  onChangeText={input => (client.nom = input)}
+                defaultValue={clientNom}
+                  onChangeText={input => (setClientNom(input) )}
                   placeholder={t(
                     'Entrez_votre_nom_et_prenom_complet',
                     preferredLangage,
@@ -262,8 +264,13 @@ export default function InscriptionClientScreen({
                   }}>
                   {t('Entrez_votre_email', preferredLangage)}
                 </Text>
+
+      
+
+
                 <TextInput
-                  onChangeText={input => (client.email = input)}
+                defaultValue={clientEmail}
+                  onChangeText={input => (setClientEmail(input))}
                   placeholder={t('Entrez_votre_email', preferredLangage)}
                   style={{
                     backgroundColor: 'transparent',
@@ -307,13 +314,14 @@ export default function InscriptionClientScreen({
                     borderBottomWidth: 1,
                     borderBottomColor: couleurs.primary,
                   }}>
+
                   <TextInput
                     textContentType="password"
                     keyboardType="default"
                     placeholder={t('entrez_votre_mot_de_passe', preferredLangage)}
                     secureTextEntry={!isVisible}
-                    defaultValue={client.password}
-                    onChangeText={input => (client.password = input)}
+                    defaultValue={clientPassword}
+                    onChangeText={input => (setClientPassword(input))}
                     placeholderTextColor={'rgba(100,100,100,.7)'}
                     style={{
                       backgroundColor: 'transparent',
