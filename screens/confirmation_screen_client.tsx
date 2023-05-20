@@ -15,6 +15,8 @@ import axios from 'axios';
 import ApiService from '../components/api/service';
 import translations from '../translations/translations';
 import storage from '../components/api/localstorage';
+import secureStorage from '../components/api/secureStorage';
+
 
 // confirmationCompteScreenClient
 export default function ConfirmationCompteScreenClient({
@@ -32,14 +34,15 @@ export default function ConfirmationCompteScreenClient({
     return translations[langage][key] || key;
   };
 
-  storage
-    .load({
-      key: 'defaultlang', // Note: Do not use underscore("_") in key!
-      id: 'defaultlang', // Note: Do not use underscore("_") in id!
-    })
-    .then((data: any) => {
-      setPreferredLangage(data);
-    });
+  secureStorage.getKey('defaultlang').then(res => {
+    if ( res ) {
+      setPreferredLangage(res);
+    } else {
+      setPreferredLangage(preferredLangage);
+    }
+  }, (err) => {
+    console.log(err)
+  })
 
   //////////////////////////////////////////////////////////////////////////////////////
 

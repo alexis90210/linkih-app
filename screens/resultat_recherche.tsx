@@ -27,6 +27,9 @@ import {AirbnbRating} from 'react-native-ratings';
 import GetLocation from 'react-native-get-location';
 import translations from '../translations/translations';
 import storage from '../components/api/localstorage';
+import secureStorage from '../components/api/secureStorage';
+
+
 // ResultatRechercheScreen
 export default function ResultatRechercheScreen({
   navigation,
@@ -43,14 +46,15 @@ export default function ResultatRechercheScreen({
     return translations[langage][key] || key;
   };
 
-  storage
-    .load({
-      key: 'defaultlang', // Note: Do not use underscore("_") in key!
-      id: 'defaultlang', // Note: Do not use underscore("_") in id!
-    })
-    .then((data: any) => {
-      setPreferredLangage(data);
-    });
+  secureStorage.getKey('defaultlang').then(res => {
+    if ( res ) {
+      setPreferredLangage(res);
+    } else {
+      setPreferredLangage(preferredLangage);
+    }
+  }, (err) => {
+    console.log(err)
+  })
 
   /////////////////////////////////////////////////
   

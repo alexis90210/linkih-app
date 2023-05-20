@@ -22,6 +22,8 @@ import storage from '../components/api/localstorage';
 import ShopIcon from '../components/shop';
 import ImageCropPicker from 'react-native-image-crop-picker';
 import translations from '../translations/translations';
+import secureStorage from '../components/api/secureStorage';
+
 
 export default function Gallerie({
   navigation,
@@ -38,14 +40,15 @@ export default function Gallerie({
     return translations[langage][key] || key;
   };
 
-  storage
-    .load({
-      key: 'defaultlang', // Note: Do not use underscore("_") in key!
-      id: 'defaultlang', // Note: Do not use underscore("_") in id!
-    })
-    .then((data: any) => {
-      setPreferredLangage(data);
-    });
+  secureStorage.getKey('defaultlang').then(res => {
+    if ( res ) {
+      setPreferredLangage(res);
+    } else {
+      setPreferredLangage(preferredLangage);
+    }
+  }, (err) => {
+    console.log(err)
+  })
 
   //////////////////////////////////////////////////////////////////////////////////////
 

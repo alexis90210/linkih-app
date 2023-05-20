@@ -19,6 +19,8 @@ import ApiService from '../components/api/service';
 import storage from '../components/api/localstorage';
 import {Picker} from '@react-native-picker/picker';
 import translations from '../translations/translations';
+import secureStorage from '../components/api/secureStorage';
+
 
 // ConfigurationDefaultCategorie
 export default function ConfigurationDefaultCategorie({
@@ -34,14 +36,15 @@ export default function ConfigurationDefaultCategorie({
     return translations[langage][key] || key;
   };
 
-  storage
-    .load({
-      key: 'defaultlang', // Note: Do not use underscore("_") in key!
-      id: 'defaultlang', // Note: Do not use underscore("_") in id!
-    })
-    .then((data: any) => {
-      setPreferredLangage(data);
-    });
+  secureStorage.getKey('defaultlang').then(res => {
+    if ( res ) {
+      setPreferredLangage(res);
+    } else {
+      setPreferredLangage(preferredLangage);
+    }
+  }, (err) => {
+    console.log(err)
+  })
 
   //////////////////////////////////////////////////////////////////////////////////////
 

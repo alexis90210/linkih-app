@@ -20,6 +20,8 @@ import translations from '../translations/translations';
 import ArrowRightIcon from '../components/ArrowRight';
 import EyeSlashIcon from '../components/eye_slash';
 import EyeIcon from '../components/eye';
+import secureStorage from '../components/api/secureStorage';
+
 
 // IdentificationProprietaireScreen
 export default function IdentificationProprietaireScreen({

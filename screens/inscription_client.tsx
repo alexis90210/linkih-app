@@ -21,6 +21,8 @@ import {useState} from 'react';
 import translations from '../translations/translations';
 import EyeSlashIcon from '../components/eye_slash';
 import EyeIcon from '../components/eye';
+import secureStorage from '../components/api/secureStorage';
+
 
 // InscriptionClientScreen
 export default function InscriptionClientScreen({
@@ -36,14 +38,15 @@ export default function InscriptionClientScreen({
     return translations[langage][key] || key;
   };
 
-  storage
-    .load({
-      key: 'defaultlang', // Note: Do not use underscore("_") in key!
-      id: 'defaultlang', // Note: Do not use underscore("_") in id!
-    })
-    .then((data: any) => {
-      setPreferredLangage(data);
-    });
+  secureStorage.getKey('defaultlang').then(res => {
+    if ( res ) {
+      setPreferredLangage(res);
+    } else {
+      setPreferredLangage(preferredLangage);
+    }
+  }, (err) => {
+    console.log(err)
+  })
 
   /////////////////////////////////////////
 

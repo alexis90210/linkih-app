@@ -22,6 +22,8 @@ import ApiService from '../components/api/service';
 import defaultStyle from '../components/api/defaultMpaStyle';
 import Geolocation from '@react-native-community/geolocation';
 import axios from 'axios';
+import secureStorage from '../components/api/secureStorage';
+
 
 import ArrowLeftIcon from '../components/ArrowLeft';
 import translations from '../translations/translations';
@@ -59,14 +61,15 @@ export default function InscriptionProprietaireScreen2({
     return translations[langage][key] || key;
   };
 
-  storage
-    .load({
-      key: 'defaultlang', // Note: Do not use underscore("_") in key!
-      id: 'defaultlang', // Note: Do not use underscore("_") in id!
-    })
-    .then((data: any) => {
-      setPreferredLangage(data);
-    });
+  secureStorage.getKey('defaultlang').then(res => {
+    if ( res ) {
+      setPreferredLangage(res);
+    } else {
+      setPreferredLangage(preferredLangage);
+    }
+  }, (err) => {
+    console.log(err)
+  })
 
   //////////////////////////////////////////////////////////////////////////////////////
 

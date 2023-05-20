@@ -19,6 +19,8 @@ import axios from 'axios';
 import ApiService from '../components/api/service';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import translations from '../translations/translations';
+import secureStorage from '../components/api/secureStorage';
+
 
 export default function RdvClient({
   navigation,
@@ -35,14 +37,15 @@ export default function RdvClient({
     return translations[langage][key] || key;
   };
 
-  storage
-    .load({
-      key: 'defaultlang', // Note: Do not use underscore("_") in key!
-      id: 'defaultlang', // Note: Do not use underscore("_") in id!
-    })
-    .then((data: any) => {
-      setPreferredLangage(data);
-    });
+  secureStorage.getKey('defaultlang').then(res => {
+    if ( res ) {
+      setPreferredLangage(res);
+    } else {
+      setPreferredLangage(preferredLangage);
+    }
+  }, (err) => {
+    console.log(err)
+  })
 
   //////////////////////////////////////////////////////////////////////////////////////
 

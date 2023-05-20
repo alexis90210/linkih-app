@@ -19,6 +19,8 @@ import MapIcon from '../components/map';
 import ArrowRightIcon from '../components/ArrowRight';
 import translations from '../translations/translations';
 import * as Progress from 'react-native-progress';
+import secureStorage from '../components/api/secureStorage';
+
 
 export default function MonEtablissement({
   route,
@@ -35,14 +37,15 @@ export default function MonEtablissement({
     return translations[langage][key] || key;
   };
 
-  storage
-    .load({
-      key: 'defaultlang', // Note: Do not use underscore("_") in key!
-      id: 'defaultlang', // Note: Do not use underscore("_") in id!
-    })
-    .then((data: any) => {
-      setPreferredLangage(data);
-    });
+  secureStorage.getKey('defaultlang').then(res => {
+    if ( res ) {
+      setPreferredLangage(res);
+    } else {
+      setPreferredLangage(preferredLangage);
+    }
+  }, (err) => {
+    console.log(err)
+  })
 
   //////////////////////////////////////////////////////////////////////////////////////
 

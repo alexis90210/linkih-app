@@ -20,6 +20,8 @@ import ApiService from '../components/api/service';
 import storage from '../components/api/localstorage';
 import translations from '../translations/translations';
 
+axios.defaults.headers.common['Authorization'] = 'Bearer ' ;
+
 export default function SimpleRdv({
   navigation,
   route,

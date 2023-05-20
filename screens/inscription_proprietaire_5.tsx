@@ -17,6 +17,8 @@ import axios from 'axios';
 import ApiService from '../components/api/service';
 import translations from '../translations/translations';
 import storage from '../components/api/localstorage';
+import secureStorage from '../components/api/secureStorage';
+
 
 // InscriptionProprietaire5
 export default function InscriptionProprietaire5({navigation, route}: {navigation: any, route:any}) {
@@ -29,14 +31,15 @@ export default function InscriptionProprietaire5({navigation, route}: {navigatio
     return translations[langage][key] || key;
   };
 
-  storage
-    .load({
-      key: 'defaultlang', // Note: Do not use underscore("_") in key!
-      id: 'defaultlang', // Note: Do not use underscore("_") in id!
-    })
-    .then((data: any) => {
-      setPreferredLangage(data);
-    });
+  secureStorage.getKey('defaultlang').then(res => {
+    if ( res ) {
+      setPreferredLangage(res);
+    } else {
+      setPreferredLangage(preferredLangage);
+    }
+  }, (err) => {
+    console.log(err)
+  })
 
   //////////////////////////////////////////////////////////////////////////////////////
 

@@ -18,6 +18,7 @@ import secureStorage from '../components/api/secureStorage';
 // SplashScreen
 export default function SplashScreen({navigation}: {navigation: any}) {
 
+
   const [preferredLangage, setPreferredLangage] = useState('fr');
 
   const t = (key: any, langage: any) => {
