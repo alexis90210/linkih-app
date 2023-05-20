@@ -55,7 +55,7 @@ import CloseIcon from '../components/close';
 
       setProcessing(true)
       axios({
-        method: 'POST',
+        method: 'PUT',
         url: ApiService.API_URL_EDIT_UTILISATEUR,
         data: JSON.stringify({
           login: Login,
@@ -91,7 +91,7 @@ import CloseIcon from '../components/close';
       setVisibleCodeValModal(false)
       setProcessing(true)
       axios({
-        method: 'POST',
+        method: 'PUT',
         url: ApiService.API_URL_EDIT_UTILISATEUR,
         data: JSON.stringify({
           login: Login,

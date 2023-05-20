@@ -135,7 +135,7 @@ export default function EditAdresse({navigation, route}: {navigation: any, route
     client.id = route.params.id
 
     axios({
-      method: 'POST',
+      method: 'PUT',
       url: ApiService.API_URL_EDIT_UTILISATEUR,
       data: JSON.stringify(client),
       headers: {

@@ -144,7 +144,7 @@ export default function IdentificationClientScreen({
           });
 
           axios({
-            method: 'POST',
+            method: 'GET',
             url: ApiService.API_URL_USER_DATA,
             data: JSON.stringify({
               id:api.message.id

@@ -1,7 +1,7 @@
 export default class ApiService {
   // BASE API URL
   static API_BASE_URL = 'http://linkih.hlconception.com/'; 
-  static ADMIN_LINKIH_TEL = '+242069500886';
+  static ADMIN_LINKIH_TEL = '+2420';
   static API_URL = this.API_BASE_URL + 'api/v1/'; // IP HOME
   static MAPBOX_GL_TOKEN =
     'pk.eyJ1IjoiaGxjb25jZXB0aW9uIiwiYSI6ImNsY3lrM285YjA5angzbm5vZDE5NDhjNGMifQ.j6TPH1G7fM9IMI2SAtKswA';
@@ -45,3 +45,5 @@ export default class ApiService {
   static API_URL_EDIT_VENDEUR = this.API_URL + 'edit/vendeur';
   static API_CREATE_NOTE_VENDEUR = this.API_URL + 'create/vendeur/note';
 }
+
+

@@ -408,7 +408,7 @@ export default function MesHoraires({
 
     // SEND TO SERVER
     axios({
-      method: 'POST',
+      method: 'PUT',
       url: ApiService.API_URL_EDIT_HORAIRE,
       data: JSON.stringify({
         vendeur_id: userConnected.id,

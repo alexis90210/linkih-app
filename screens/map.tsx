@@ -150,7 +150,7 @@ export default function Map({ navigation, route } : { navigation: any; route: an
   const loadEtablissements = () => {
       // setPreccessing(true)
       axios({
-        method: 'POST',
+        method: 'GET',
         url: ApiService.API_URL_GET_VENDEURS,
         headers: {
           Accept: 'application/json',

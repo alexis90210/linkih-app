@@ -132,7 +132,7 @@ export default function EditClientScreen({
     }
 
     axios({
-      method: 'POST',
+      method: 'PUT',
       url: ApiService.API_URL_EDIT_UTILISATEUR,
       data: JSON.stringify(client),
       headers: {

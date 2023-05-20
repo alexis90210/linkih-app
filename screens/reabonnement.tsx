@@ -116,7 +116,7 @@ export default function Reabonnement({
 
   const loadMonAbonnement = () => {
     axios({
-      method: 'POST',
+      method: 'GET',
       url: ApiService.API_URL_GET_ABONNEMENT,
       data: JSON.stringify({
         vendeur_id: userConnected.id,
@@ -141,7 +141,7 @@ export default function Reabonnement({
 
   const loadAbonnementList = () => {
     axios({
-      method: 'POST',
+      method: 'GET',
       url: ApiService.API_URL_LISTE_ABONNEMENTS,
       headers: {
         Accept: 'application/json',

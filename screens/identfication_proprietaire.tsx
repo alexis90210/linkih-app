@@ -136,7 +136,7 @@ export default function IdentificationProprietaireScreen({
           secureStorage.setKey('firstusage','1') // vendeur
 
           axios({
-            method: 'POST',
+            method: 'GET',
             url: ApiService.API_URL_USER_DATA,
             data: JSON.stringify({
               id: api.message.id,

@@ -75,7 +75,7 @@ export default function ConfigurationDefaultCategorie({
 
   const loadCategories = () => {
     axios({
-      method: 'POST',
+      method: 'GET',
       url: ApiService.API_URL_GET_CATEGORIES,
       headers: {
         Accept: 'application/json',

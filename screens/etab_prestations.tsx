@@ -76,7 +76,7 @@ export default function MesPrestations({
 
   const loadPrestationsVendeur = () => {
     axios({
-      method: 'POST',
+      method: 'GET',
       url: ApiService.API_URL_GET_PRODUIT,
       data: JSON.stringify({
         vendeur_id: userConnected.id,

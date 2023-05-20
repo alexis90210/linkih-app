@@ -208,7 +208,7 @@ export default function InscriptionProprietaireScreen2({
 
   const loadCategories = () => {
     axios({
-      method: 'POST',
+      method: 'GET',
       url: ApiService.API_URL_GET_CATEGORIES,
       headers: {
         Accept: 'application/json',
@@ -413,7 +413,7 @@ export default function InscriptionProprietaireScreen2({
 
   const loadAbonnementList = () => {
     axios({
-      method: 'POST',
+      method: 'GET',
       url: ApiService.API_URL_LISTE_ABONNEMENTS,
       data: JSON.stringify({
         type: type,

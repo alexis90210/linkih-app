@@ -93,7 +93,7 @@ export default function AutreEtablissement({
 
   const loadVendeurData = () => {
     axios({
-      method: 'POST',
+      method: 'GET',
       url: ApiService.API_URL_GET_VENDEURS,
       data: JSON.stringify({
         vendeur_id: route.params?.vendeur_data?.id,
@@ -198,7 +198,7 @@ export default function AutreEtablissement({
 
   const loadPrestations = () => {
     axios({
-      method: 'POST',
+      method: 'GET',
       url: ApiService.API_URL_GET_PRODUIT,
       data: JSON.stringify({
         vendeur_id: route.params?.vendeur_data?.id,
@@ -238,7 +238,7 @@ export default function AutreEtablissement({
 
   const loadHoraires = () => {
     axios({
-      method: 'POST',
+      method: 'GET',
       url: ApiService.API_URL_GET_VENDEURS_HORAIRES,
       data: JSON.stringify({
         vendeur_id: route.params?.vendeur_data?.id,

@@ -61,7 +61,7 @@ export default function Gallerie({
 
   const loadGallerie = () => {
     axios({
-      method: 'POST',
+      method: 'GET',
       url: ApiService.API_URL_GET_GALLERIE,
       data: JSON.stringify({
         vendeur_id: route.params.vendeur_id,
@@ -148,7 +148,7 @@ export default function Gallerie({
   const deleteImage = (row: any) => {
     setLoading(true);
     axios({
-      method: 'POST',
+      method: 'DELETE',
       url: ApiService.API_URL_DELETE_PHOTO_GALLERIE,
       data: JSON.stringify({
         photo_id: row.id,
@@ -201,7 +201,7 @@ export default function Gallerie({
   //  photo de profil
   const photoDecouverture = (row: any) => {
     axios({
-      method: 'POST',
+      method: 'PUT',
       url: ApiService.API_URL_EDIT_VENDEUR,
       data: JSON.stringify({
         vendeur_id: route.params.vendeur_id,

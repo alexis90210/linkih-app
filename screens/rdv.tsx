@@ -84,7 +84,7 @@ export default function Rdv({
 
   const loadRendezvous = () => {
     axios({
-      method: 'POST',
+      method: 'GET',
       url: ApiService.API_URL_GET_RENDEZ_VOUS,
       data: JSON.stringify({
         vendeur_id: userConnected.id,
@@ -117,7 +117,7 @@ export default function Rdv({
 
   const confirmRdv = (id: any) => {
     axios({
-      method: 'POST',
+      method: 'PUT',
       url: ApiService.API_URL_CONFIRM_RDV,
       data: JSON.stringify({
         rendez_vous_id: id,

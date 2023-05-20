@@ -81,7 +81,7 @@ export default function RdvClient({
 
   const loadRendezvous = () => {
     axios({
-      method: 'POST',
+      method: 'GET',
       url: ApiService.API_URL_GET_RENDEZ_VOUS,
       data: JSON.stringify({
         utilisateur_id: userConnected.id,

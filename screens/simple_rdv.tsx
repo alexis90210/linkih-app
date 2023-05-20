@@ -209,7 +209,7 @@ export default function SimpleRdv({
 
   const loadCategories = () => {
     axios({
-      method: 'POST',
+      method: 'GET',
       url: ApiService.API_URL_GET_VENDEURS_SOUS_PRESTATIONS,
       data: JSON.stringify({
         vendeur_id: route.params.id,

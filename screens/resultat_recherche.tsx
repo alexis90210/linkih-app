@@ -92,7 +92,7 @@ export default function ResultatRechercheScreen({
 
   const loadEtablissements = () => {
     axios({
-      method: 'POST',
+      method: 'GET',
       url: ApiService.API_URL_GET_VENDEURS,
       headers: {
         Accept: 'application/json',
@@ -124,7 +124,7 @@ export default function ResultatRechercheScreen({
     console.log(route.params.currentCategorie);
 
     axios({
-      method: 'POST',
+      method: 'GET',
       url: ApiService.API_URL_GET_VENDEURS,
       data: JSON.stringify({
         categorie: route.params.currentCategorie,
@@ -169,7 +169,7 @@ export default function ResultatRechercheScreen({
     console.log(route.params.currentEtablissement);
 
     axios({
-      method: 'POST',
+      method: 'GET',
       url: ApiService.API_URL_GET_VENDEURS,
       data: JSON.stringify({
         etablissement: route.params.currentEtablissement,
