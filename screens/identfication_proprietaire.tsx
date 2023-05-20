@@ -9,7 +9,7 @@ import {
   Alert,
   TouchableOpacity,
   ActivityIndicator,
-  Modal,
+  Modal
 } from 'react-native';
 
 import {CustomFont, couleurs} from '../components/color';

@@ -15,6 +15,7 @@ import {
   ActivityIndicator,
   Dimensions,
   Platform,
+  PermissionsAndroid
 } from 'react-native';
 
 import SearchIcon from '../components/search';
@@ -33,6 +34,32 @@ import translations from '../translations/translations';
 import storage from '../components/api/localstorage';
 
 MapboxGL.setAccessToken(ApiService.MAPBOX_GL_TOKEN);
+
+// Function to get permission for location
+const requestLocationPermission = async () => {
+  try {
+    const granted = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+      {
+        title: 'Permission de localiser votre position',
+        message: 'Pouvons-nous accéder à votre emplacement?',
+        buttonNeutral: 'Demande moi plus tard',
+        buttonNegative: 'Annuler',
+        buttonPositive: 'OK',
+      },
+    );
+    console.log('granted', granted);
+    if (granted === 'granted') {
+      console.log('You can use Geolocation');
+      return true;
+    } else {
+      console.log('You cannot use Geolocation');
+      return false;
+    }
+  } catch (err) {
+    return false;
+  }
+};
 
 export default function Map({ navigation, route } : { navigation: any; route: any; }) {
 
@@ -88,20 +115,24 @@ export default function Map({ navigation, route } : { navigation: any; route: an
   const [UserPosition, setUserPosition] = useState<any>({});
 
   const _myPosition = () => {
-    // setPreccessing(true)
-    Geolocation.getCurrentPosition(info => {
-      let lon = Number(info.coords.longitude);
-      let lat = Number(info.coords.latitude);
+    
+    if (requestLocationPermission()) {
+      Geolocation.getCurrentPosition(info => {
+        let lon = Number(info.coords.longitude);
+        let lat = Number(info.coords.latitude);
 
       setUserPosition({
         longitude: lon,
         latitude: lat,
       });
 
-      setstartCords([lon, lat]);
-      // setPreccessing(false)
-    });
+      setstartCords([lon, lat]);     
+      });
+    } else {
+      navigation.goBack()
+    }
   };
+
 
   const loadEtablissements = () => {
       // setPreccessing(true)

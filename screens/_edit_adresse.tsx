@@ -9,6 +9,7 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  PermissionsAndroid
 } from 'react-native';
 import {CustomFont, couleurs} from '../components/color';
 import MapboxGL from '@rnmapbox/maps';
@@ -20,6 +21,32 @@ import ArrowLeftIcon from '../components/ArrowLeft';
 import ApiService from '../components/api/service';
 import translations from '../translations/translations';
 import storage from '../components/api/localstorage';
+
+// Function to get permission for location
+const requestLocationPermission = async () => {
+  try {
+    const granted = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+      {
+        title: 'Permission de localiser votre position',
+        message: 'Pouvons-nous accéder à votre emplacement?',
+        buttonNeutral: 'Demande moi plus tard',
+        buttonNegative: 'Annuler',
+        buttonPositive: 'OK',
+      },
+    );
+    console.log('granted', granted);
+    if (granted === 'granted') {
+      console.log('You can use Geolocation');
+      return true;
+    } else {
+      console.log('You cannot use Geolocation');
+      return false;
+    }
+  } catch (err) {
+    return false;
+  }
+};
 
 export default function EditAdresse({navigation, route}: {navigation: any, route:any}) {
 
@@ -53,16 +80,23 @@ export default function EditAdresse({navigation, route}: {navigation: any, route
   };
 
   // GEOLOCALISATION
-  Geolocation.getCurrentPosition(info => {
-    let lon = Number(info.coords.longitude);
-    let lat = Number(info.coords.latitude);
 
-    if (!isLoaded) {
-      setstartCords([lon, lat]);
-      setLoaded(true);
-    }
+  useEffect(() =>{
+    if (requestLocationPermission()) {
+      Geolocation.getCurrentPosition(info => {
+        let lon = Number(info.coords.longitude);
+        let lat = Number(info.coords.latitude);
     
-  });
+        if (!isLoaded) {
+          setstartCords([lon, lat]);
+          setLoaded(true);
+        }
+        
+      });
+    } else {
+      navigation.goBack()
+    }
+  })
 
   // DRAG MARKER
   const _onDragGetAdresse = (lon: number, lat: number) => {

@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   TextInput,
   Alert,
+  PermissionsAndroid
 } from 'react-native';
 import EyeSlashIcon from '../components/eye_slash';
 import EyeIcon from '../components/eye';
@@ -17,7 +18,31 @@ import translations from '../translations/translations';
 import storage from '../components/api/localstorage';
 import secureStorage from '../components/api/secureStorage';
 
-
+// Function to get permission for location
+const requestLocationPermission = async () => {
+  try {
+    const granted = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+      {
+        title: 'Permission de localiser votre position',
+        message: 'Pouvons-nous accéder à votre emplacement?',
+        buttonNeutral: 'Demande moi plus tard',
+        buttonNegative: 'Annuler',
+        buttonPositive: 'OK',
+      },
+    );
+    console.log('granted', granted);
+    if (granted === 'granted') {
+      console.log('You can use Geolocation');
+      return true;
+    } else {
+      console.log('You cannot use Geolocation');
+      return false;
+    }
+  } catch (err) {
+    return false;
+  }
+};
 // InscriptionProprietaireScreen1
 export default function InscriptionProprietaireScreen1({
   navigation,
@@ -61,10 +86,17 @@ export default function InscriptionProprietaireScreen1({
   const [EtablissementLatitude, setEtablissementLatitude] = useState('')
   const [EtablissementLongitude, setEtablissementLongitude] = useState('')
 
-  Geolocation.getCurrentPosition(info => {
-    EtablissementLongitude(info.coords.longitude)
-    EtablissementLatitude(info.coords.latitude)
-  });
+  useEffect(() =>{
+    if (requestLocationPermission()) {
+      Geolocation.getCurrentPosition(info => {
+        EtablissementLongitude(info.coords.longitude)
+        EtablissementLatitude(info.coords.latitude)      
+      });
+    } else {
+      navigation.goBack()
+    }
+  })
+
 
   const getEtablissementData = () => {
 

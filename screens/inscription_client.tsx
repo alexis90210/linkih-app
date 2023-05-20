@@ -10,6 +10,7 @@ import {
   Alert,
   Modal,
   ActivityIndicator,
+  PermissionsAndroid
 } from 'react-native';
 import {CustomFont, couleurs} from '../components/color';
 import storage from '../components/api/localstorage';
@@ -23,6 +24,31 @@ import EyeSlashIcon from '../components/eye_slash';
 import EyeIcon from '../components/eye';
 import secureStorage from '../components/api/secureStorage';
 
+// Function to get permission for location
+const requestLocationPermission = async () => {
+  try {
+    const granted = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+      {
+        title: 'Permission de localiser votre position',
+        message: 'Pouvons-nous accéder à votre emplacement?',
+        buttonNeutral: 'Demande moi plus tard',
+        buttonNegative: 'Annuler',
+        buttonPositive: 'OK',
+      },
+    );
+    console.log('granted', granted);
+    if (granted === 'granted') {
+      console.log('You can use Geolocation');
+      return true;
+    } else {
+      console.log('You cannot use Geolocation');
+      return false;
+    }
+  } catch (err) {
+    return false;
+  }
+};
 
 // InscriptionClientScreen
 export default function InscriptionClientScreen({
@@ -73,10 +99,17 @@ export default function InscriptionClientScreen({
   const [clientLangue, setClientLangue] = useState('')
   const [clientPays, setClientPays] = useState('')
 
-  Geolocation.getCurrentPosition(info => {
-    setClientLongitude(info.coords.longitude)
-    setClientLatitude(info.coords.latitude)
-  });
+
+  useEffect(() =>{
+    if (requestLocationPermission()) {
+      Geolocation.getCurrentPosition(info => {
+        setClientLongitude(info.coords.longitude)
+    setClientLatitude(info.coords.latitude)       
+      });
+    } else {
+      navigation.goBack()
+    }
+  })
 
   const [isProccessing, setProcessing] = useState(false);
 

@@ -9,6 +9,7 @@ import {
   TextInput,
   Alert,
   Image,
+  PermissionsAndroid
 } from 'react-native';
 import {CustomFont, couleurs} from '../components/color';
 import storage from '../components/api/localstorage';
@@ -18,6 +19,32 @@ import Geolocation from '@react-native-community/geolocation';
 import ImagePicker from 'react-native-image-crop-picker';
 import translations from '../translations/translations';
 
+
+// Function to get permission for location
+const requestLocationPermission = async () => {
+  try {
+    const granted = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+      {
+        title: 'Permission de localiser votre position',
+        message: 'Pouvons-nous accéder à votre emplacement?',
+        buttonNeutral: 'Demande moi plus tard',
+        buttonNegative: 'Annuler',
+        buttonPositive: 'OK',
+      },
+    );
+    console.log('granted', granted);
+    if (granted === 'granted') {
+      console.log('You can use Geolocation');
+      return true;
+    } else {
+      console.log('You cannot use Geolocation');
+      return false;
+    }
+  } catch (err) {
+    return false;
+  }
+};
 // EditClientScreen
 export default function EditClientScreen({
   navigation,
@@ -53,6 +80,17 @@ export default function EditClientScreen({
     client.longitude = info.coords.longitude;
     client.latitude = info.coords.latitude;
   });
+
+  useEffect(() =>{
+    if (requestLocationPermission()) {
+      Geolocation.getCurrentPosition(info => {
+        client.longitude = info.coords.longitude;
+        client.latitude = info.coords.latitude;        
+      });
+    } else {
+      navigation.goBack()
+    }
+  })
 
   storage
     .load({

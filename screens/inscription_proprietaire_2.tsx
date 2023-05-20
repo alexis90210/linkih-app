@@ -13,6 +13,7 @@ import {
   Dimensions,
   Alert,
   Linking,
+  PermissionsAndroid
 } from 'react-native';
 import {CustomFont, couleurs} from '../components/color';
 import storage from '../components/api/localstorage';
@@ -30,6 +31,32 @@ import translations from '../translations/translations';
 
 MapboxGL.setAccessToken(ApiService.MAPBOX_GL_TOKEN);
 
+
+// Function to get permission for location
+const requestLocationPermission = async () => {
+  try {
+    const granted = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+      {
+        title: 'Permission de localiser votre position',
+        message: 'Pouvons-nous accéder à votre emplacement?',
+        buttonNeutral: 'Demande moi plus tard',
+        buttonNegative: 'Annuler',
+        buttonPositive: 'OK',
+      },
+    );
+    console.log('granted', granted);
+    if (granted === 'granted') {
+      console.log('You can use Geolocation');
+      return true;
+    } else {
+      console.log('You cannot use Geolocation');
+      return false;
+    }
+  } catch (err) {
+    return false;
+  }
+};
 // InscriptionProprietaireScreen2
 export default function InscriptionProprietaireScreen2({
   navigation,
@@ -323,16 +350,20 @@ export default function InscriptionProprietaireScreen2({
   const [adresse, setAdresse] = useState('');
   const [postcode, setPCode] = useState('');
 
-  Geolocation.getCurrentPosition(info => {
-    let lon = Number(info.coords.longitude);
-    let lat = Number(info.coords.latitude);
 
-    if (!isLoaded) {
-      setstartCords([lon, lat]);
-      _onDragGetAdresse(lon, lat);
-      setLoaded(true);
+  useEffect(() =>{
+    if (requestLocationPermission()) {
+      Geolocation.getCurrentPosition(info => {
+        let lon = Number(info.coords.longitude);
+        let lat = Number(info.coords.latitude);
+
+        setstartCords([lon, lat]);
+      _onDragGetAdresse(lon, lat);   
+      });
+    } else {
+      navigation.goBack()
     }
-  });
+  })
 
   const _onDragGetAdresse = (lon: number, lat: number) => {
     axios({

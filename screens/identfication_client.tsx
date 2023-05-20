@@ -10,6 +10,7 @@ import {
   Alert,
   Modal,
   ActivityIndicator,
+  PermissionsAndroid
 } from 'react-native';
 import {CustomFont, couleurs} from '../components/color';
 import ApiService from '../components/api/service';
