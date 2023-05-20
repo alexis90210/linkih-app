@@ -97,7 +97,6 @@ export default function InscriptionClientScreen({
   const [clientLatitude, setClientLatitude] = useState('')
 
   const [clientLangue, setClientLangue] = useState('')
-  const [clientPays, setClientPays] = useState('')
 
 
 
