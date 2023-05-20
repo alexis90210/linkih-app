@@ -104,7 +104,7 @@ export default function BilanReservation({
 
           var devise = data.props.devise ? data.props.devise : "$";
 
-          var paiement = `${ApiService.API_BASE_URL}stripe/paiement/${data.props.prix}/${devise}/${data.props.vendeur_id}`;
+          var paiement = `${ApiService.API_BASE_URL_HTTPS}stripe/paiement/${data.props.prix}/${devise}/${data.props.vendeur_id}`;
           
           Alert.alert('', t('succes_commande_enregistree', preferredLangage), [
             {

@@ -89,7 +89,7 @@ export default function Reabonnement({
         if (api.code == 'success') {
           navigation.navigate('paiement_screen', {
             route:
-              ApiService.API_BASE_URL +
+              ApiService.API_BASE_URL_HTTPS +
               `stripe/${abonnement.montant}/${abonnement.devise}`,
           });
           // Alert.alert('Nouvel Abonnement', api.message);
