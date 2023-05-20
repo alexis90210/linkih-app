@@ -36,7 +36,7 @@ export default function IdentificationProprietaireScreen({
   /////////////////////////////////// LANGUAGE HANDLER //////////////////////////////////
 
   const [preferredLangage, setPreferredLangage] = useState('fr');
-
+    
   const t = (key: any, langage: any) => {
     return translations[langage][key] || key;
   };

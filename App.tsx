@@ -61,7 +61,8 @@ export default function App(): JSX.Element {
   
   const [initialRouteName, setInitialRouteName] = useState('splash')
 
-  storage.load({
+  try {
+    storage.load({
     key: 'firstusage', // Note: Do not use underscore("_") in key!
     id: 'firstusage', // Note: Do not use underscore("_") in id!
   }).then( data => {
@@ -74,6 +75,9 @@ export default function App(): JSX.Element {
     console.log(error);
     
   });
+  } catch (err){
+    console.log(err)
+  }
   
   return (
     <NavigationContainer>
