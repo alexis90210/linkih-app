@@ -52,27 +52,23 @@ export default function InscriptionProprietaireScreen1({
     if (!isVisible) setVisible(true);
   };
 
-  var etablissement: any = {
-    nom: '',
-    email: '',
-    mobile: '',
-    password: '',
-    role: 'ROLE_VENDEUR',
-    longitude: '',
-    latitude: '',
-    adresse: '',
-    corps_metier: '',
-  };
+  const [EtablissementNom, setEtablissementNom] = useState('')
+  const [EtablissementEmail, setEtablissementEmail] = useState('')
+  const [EtablissementPassword, setEtablissementPassword] = useState('')
+  const [EtablissementAdresse, setEtablissementAdresse] = useState('')
+  const [EtablissementMobile, setEtablissementMobile] = useState('')
+  const [EtablissementCorpsMetier, setEtablissementCorpsMetier] = useState('')
+  const [EtablissementLatitude, setEtablissementLatitude] = useState('')
+  const [EtablissementLongitude, setEtablissementLongitude] = useState('')
 
   Geolocation.getCurrentPosition(info => {
-    etablissement.longitude = info.coords.longitude;
-    etablissement.latitude = info.coords.latitude;
+    EtablissementLongitude(info.coords.longitude)
+    EtablissementLatitude(info.coords.latitude)
   });
 
   const getEtablissementData = () => {
-    console.log(etablissement);
 
-    if (!etablissement.nom) {
+    if (!EtablissementNom) {
       Alert.alert(
         '',
         t('Le_nom_de_l_entreprise_est_trop_court', preferredLangage),
@@ -81,7 +77,7 @@ export default function InscriptionProprietaireScreen1({
       return;
     }
 
-    if (!etablissement.mobile) {
+    if (!EtablissementMobile) {
       Alert.alert(
         '',
         t('Le_mobile_de_l_entreprise_est_trop_court', preferredLangage),
@@ -91,14 +87,14 @@ export default function InscriptionProprietaireScreen1({
     }
 
     var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-    if (!etablissement.email.match(mailformat)) {
+    if (!EtablissementEmail.match(mailformat)) {
       Alert.alert('', t('Email_invalide', preferredLangage), [
         {text: 'OK', onPress: () => null},
       ]);
       return;
     }
 
-    if (etablissement.password.length < 3 ) {
+    if (EtablissementPassword.length < 3 ) {
       Alert.alert('', t('Mot_de_passe_trop_court', preferredLangage), [
         {text: 'OK', onPress: () => null},
       ]);
@@ -106,7 +102,17 @@ export default function InscriptionProprietaireScreen1({
     }
 
     navigation.navigate('inscription_proprietaire_2', {
-      etablissement: etablissement,
+      etablissement: {
+        nom: EtablissementNom,
+        email: EtablissementEmail,
+        mobile: EtablissementMobile,
+        password: EtablissementPassword,
+        role: 'ROLE_VENDEUR',
+        longitude: EtablissementLongitude,
+        latitude: EtablissementLatitude,
+        adresse: EtablissementAdresse,
+        corps_metier: EtablissementCorpsMetier
+      }
     });
   };
 
@@ -156,11 +162,12 @@ export default function InscriptionProprietaireScreen1({
                   }}>
                   {t('Nom_entreprise', preferredLangage)}
                 </Text>
+
                 <TextInput
                   placeholderTextColor={'rgba(100,100,100,.7)'}
                   placeholder={t('Entrez_le_nom_entreprise', preferredLangage)}
-                  defaultValue={etablissement.nom}
-                  onChangeText={input => (etablissement.nom = input)}
+                  defaultValue={EtablissementNom}
+                  onChangeText={input => ( EtablissementNom(input))}
                   style={{
                     backgroundColor: 'transparent',
                     borderBottomWidth: 1,
@@ -189,12 +196,13 @@ export default function InscriptionProprietaireScreen1({
                   }}>
                   {t('email', preferredLangage)}
                 </Text>
+
                 <TextInput
                   placeholderTextColor={'rgba(100,100,100,.7)'}
                   placeholder="Entrez l'email entreprise"
-                  defaultValue={etablissement.email}
+                  defaultValue={EtablissementEmail}
                   keyboardType="email-address"
-                  onChangeText={input => (etablissement.email = input)}
+                  onChangeText={input => (setEtablissementEmail(input))}
                   style={{
                     backgroundColor: 'transparent',
                     borderBottomWidth: 1,
@@ -223,12 +231,13 @@ export default function InscriptionProprietaireScreen1({
                   }}>
                   {t('Mobile', preferredLangage)}
                 </Text>
+
                 <TextInput
                   placeholderTextColor={'rgba(100,100,100,.7)'}
                   placeholder="Entrez le mobile entreprise"
-                  defaultValue={etablissement.mobile}
+                  defaultValue={EtablissementMobile}
                   keyboardType="number-pad"
-                  onChangeText={input => (etablissement.mobile = input)}
+                  onChangeText={input => (setEtablissementMobile(input))}
                   style={{
                     backgroundColor: 'transparent',
                     borderBottomWidth: 1,
@@ -249,6 +258,7 @@ export default function InscriptionProprietaireScreen1({
                   marginTop: 20,
                   marginBottom: 40,
                 }}>
+
                 <Text
                   style={{
                     textAlign: 'center',
@@ -269,12 +279,13 @@ export default function InscriptionProprietaireScreen1({
                     borderBottomWidth: 1,
                     borderBottomColor: couleurs.primary,
                   }}>
+
                   <TextInput
                     textContentType="password"
                     keyboardType="default"
                     secureTextEntry={!isVisible}
-                    defaultValue={etablissement.password}
-                    onChangeText={input => (etablissement.password = input)}
+                    defaultValue={EtablissementPassword}
+                    onChangeText={input => (setEtablissementPassword(input))}
                     placeholderTextColor={'rgba(100,100,100,.7)'}
                     placeholder={t(
                       'entrez_votre_mot_de_passe',
