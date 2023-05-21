@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useRef, useState, useEffect} from 'react';
 import {
   Text,
   StyleSheet,
@@ -17,7 +17,6 @@ import storage from '../components/api/localstorage';
 import translations from '../translations/translations';
 import secureStorage from '../components/api/secureStorage';
 
-
 export default function Compte({navigation}: {navigation: any}) {
   /////////////////////////////////// LANGUAGE HANDLER //////////////////////////////////
 
@@ -27,42 +26,55 @@ export default function Compte({navigation}: {navigation: any}) {
     return translations[langage][key] || key;
   };
 
-  secureStorage.getKey('defaultlang').then(res => {
-    if ( res ) {
-      setPreferredLangage(res);
-    } else {
-      setPreferredLangage(preferredLangage);
-    }
-  }, (err) => {
-    console.log(err)
+  useEffect(async () => {
+    let lang = await secureStorage.getKey('defaultlang')
+      if ( lang ) {
+        setPreferredLangage(lang);
+      } 
+  })
+ 
+  const [userConnectedId, SetUserConnectedId] = useState('');
+
+  useEffect(async () =>{
+    let _userConnectedId = await secureStorage.getKey('utilisateur')
+    if(_userConnectedId) SetUserConnectedId(_userConnectedId)
   })
 
-  //////////////////////////////////////////////////////////////////////////////////////
-
   const [proprietaire, setProprietaire] = useState<any>({});
-  const [isLoadedProprietaire, setisLoadedProprietaire] = useState(false);
 
-  if (!isLoadedProprietaire) {
-    storage
-      .load({
-        key: 'userconnected', // Note: Do not use underscore("_") in key!
-        id: 'userconnected', // Note: Do not use underscore("_") in id!
-      })
-      .then(data => {
-        if (data.utilisateur) setProprietaire(data.utilisateur[0]);
-        else
-          setProprietaire({
-            nom: data.message.nom,
-            prenom: data.message.prenom,
-            client: true,
-            vendeur_id: '',
-            data: data.message,
-          });
+  const loadUserData = () => {
+    axios({
+      method: 'POST',
+      url: ApiService.API_URL_USER_DATA,
+      data: JSON.stringify({
+        id: userConnectedId
+      }),
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(async (response: { data: any }) => {
+        console.log(response)
+        if (response.data.code == 'success') {
+          if (response.data.message.utilisateur) setProprietaire( response.data.message.utilisateur[0]);
+          else
+            setProprietaire({
+              nom: response.data.message.nom,
+              prenom: response.data.message.prenom,
+              client: true,
+              vendeur_id: '',
+              data: response.data.message,
+            });
 
-        setisLoadedProprietaire(true);
-      })
-      .catch(error => console.log(error));
-  }
+          setisLoadedProprietaire(true);
+        }
+      }).catch(error => console.log(error))
+   }
+
+   useEffect(() =>{
+    loadUserData()
+   })
 
   return (
     <View>

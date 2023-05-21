@@ -12,6 +12,7 @@ import {
   ActivityIndicator,
   PermissionsAndroid
 } from 'react-native';
+import React, {useRef, useState, useEffect} from 'react';
 import {CustomFont, couleurs} from '../components/color';
 import storage from '../components/api/localstorage';
 import ApiService from '../components/api/service';
@@ -64,15 +65,13 @@ export default function InscriptionClientScreen({
     return translations[langage][key] || key;
   };
 
-  secureStorage.getKey('defaultlang').then(res => {
-    if ( res ) {
-      setPreferredLangage(res);
-    } else {
-      setPreferredLangage(preferredLangage);
-    }
-  }, (err) => {
-    console.log(err)
+    useEffect(async () => {
+    let lang = await secureStorage.getKey('defaultlang')
+      if ( lang ) {
+        setPreferredLangage(lang);
+      } 
   })
+ 
 
   /////////////////////////////////////////
 

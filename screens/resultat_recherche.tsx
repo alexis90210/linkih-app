@@ -14,6 +14,7 @@ import {
   ActivityIndicator,
   Platform,
 } from 'react-native';
+import React, {useRef, useState, useEffect} from 'react';
 import ArrowLeftIcon from '../components/ArrowLeft';
 import SearchIcon from '../components/search';
 import {CustomFont, couleurs} from '../components/color';
@@ -46,14 +47,11 @@ export default function ResultatRechercheScreen({
     return translations[langage][key] || key;
   };
 
-  secureStorage.getKey('defaultlang').then(res => {
-    if ( res ) {
-      setPreferredLangage(res);
-    } else {
-      setPreferredLangage(preferredLangage);
-    }
-  }, (err) => {
-    console.log(err)
+  useEffect(async () => {
+    let lang = await secureStorage.getKey('defaultlang')
+      if ( lang ) {
+        setPreferredLangage(lang);
+      } 
   })
 
   /////////////////////////////////////////////////

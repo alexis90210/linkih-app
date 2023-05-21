@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useRef, useState, useEffect} from 'react';
 import {
   Text,
   StyleSheet,
@@ -37,15 +37,13 @@ export default function MesHoraires({
     return translations[langage][key] || key;
   };
 
-  secureStorage.getKey('defaultlang').then(res => {
-    if ( res ) {
-      setPreferredLangage(res);
-    } else {
-      setPreferredLangage(preferredLangage);
-    }
-  }, (err) => {
-    console.log(err)
+    useEffect(async () => {
+    let lang = await secureStorage.getKey('defaultlang')
+      if ( lang ) {
+        setPreferredLangage(lang);
+      } 
   })
+ 
 
   //////////////////////////////////////////////////////////////////////////////////////
 
@@ -59,52 +57,74 @@ export default function MesHoraires({
   // GET HORAIRES
   const [Horaires, SetHoraires] = useState<any>({});
 
-  storage
-    .load({
-      key: 'userconnected', // Note: Do not use underscore("_") in key!
-      id: 'userconnected', // Note: Do not use underscore("_") in id!
+
+    const [userConnectedId, SetUserConnectedId] = useState('');
+
+    useEffect(async () =>{
+      let _userConnectedId = await secureStorage.getKey('utilisateur')
+      if(_userConnectedId) SetUserConnectedId(_userConnectedId)
     })
-    .then(data => {
-      SetHoraires(data.horaire_ouverture);
-
-      SetUserConnected(data.etablissement[0]);
-
-      if (!isLoadingHoraire) {
-        data.horaire_ouverture.map((row: any, index: any) => {
-          if (row.jour == 'Lundi') {
-            setSelectedHoraireOuvertureLundi(row.heure_ouverture);
-            setSelectedHoraireFermetureLundi(row.heure_fermeture);
+  
+      const loadUserData = () => {
+        axios({
+          method: 'POST',
+          url: ApiService.API_URL_USER_DATA,
+          data: JSON.stringify({
+            id: userConnectedId
+          }),
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
           }
-          if (row.jour == 'Mardi') {
-            setSelectedHoraireOuvertureMardi(row.heure_ouverture);
-            setSelectedHoraireFermetureMardi(row.heure_fermeture);
-          }
+        })
+          .then(async (response: { data: any }) => {
+            console.log(response)
+            if (response.data.code == 'success') {
+              SetHoraires(response.data.message.horaire_ouverture);
 
-          if (row.jour == 'Mercredi') {
-            setSelectedHoraireOuvertureMercredi(row.heure_ouverture);
-            setSelectedHoraireFermetureMercredi(row.heure_fermeture);
-          }
-
-          if (row.jour == 'Jeudi') {
-            setSelectedHoraireOuvertureJeudi(row.heure_ouverture);
-            setSelectedHoraireFermetureJeudi(row.heure_fermeture);
-          }
-
-          if (row.jour == 'Vendredi') {
-            setSelectedHoraireOuvertureVendredi(row.heure_ouverture);
-            setSelectedHoraireFermetureVendredi(row.heure_fermeture);
-          }
-
-          if (row.jour == 'Samedi') {
-            setSelectedHoraireOuvertureSamedi(row.heure_ouverture);
-            setSelectedHoraireFermetureSamedi(row.heure_fermeture);
-          }
-        });
-
-        setLoadingHoraire(true);
-      }
-    })
-    .catch(error => console.log(error));
+              SetUserConnected(response.data.message.etablissement[0]);
+        
+              if (!isLoadingHoraire) {
+                response.data.message.horaire_ouverture.map((row: any, index: any) => {
+                  if (row.jour == 'Lundi') {
+                    setSelectedHoraireOuvertureLundi(row.heure_ouverture);
+                    setSelectedHoraireFermetureLundi(row.heure_fermeture);
+                  }
+                  if (row.jour == 'Mardi') {
+                    setSelectedHoraireOuvertureMardi(row.heure_ouverture);
+                    setSelectedHoraireFermetureMardi(row.heure_fermeture);
+                  }
+        
+                  if (row.jour == 'Mercredi') {
+                    setSelectedHoraireOuvertureMercredi(row.heure_ouverture);
+                    setSelectedHoraireFermetureMercredi(row.heure_fermeture);
+                  }
+        
+                  if (row.jour == 'Jeudi') {
+                    setSelectedHoraireOuvertureJeudi(row.heure_ouverture);
+                    setSelectedHoraireFermetureJeudi(row.heure_fermeture);
+                  }
+        
+                  if (row.jour == 'Vendredi') {
+                    setSelectedHoraireOuvertureVendredi(row.heure_ouverture);
+                    setSelectedHoraireFermetureVendredi(row.heure_fermeture);
+                  }
+        
+                  if (row.jour == 'Samedi') {
+                    setSelectedHoraireOuvertureSamedi(row.heure_ouverture);
+                    setSelectedHoraireFermetureSamedi(row.heure_fermeture);
+                  }
+                });
+        
+                setLoadingHoraire(true);
+              }
+            }
+          }).catch(error => console.log(error))
+       }
+    
+       useEffect(() =>{
+        loadUserData()
+       })
 
   var hours_matin = [
     {
@@ -411,7 +431,7 @@ export default function MesHoraires({
       method: 'PUT',
       url: ApiService.API_URL_EDIT_HORAIRE,
       data: JSON.stringify({
-        vendeur_id: userConnected.id,
+        vendeur_id:userConnectedId,
         horaire: final,
       }),
       headers: {

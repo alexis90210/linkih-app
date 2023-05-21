@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useRef, useState, useEffect} from 'react';
 
 import {
   SafeAreaView,
@@ -57,15 +57,13 @@ export default function InscriptionProprietaireScreen1({
     return translations[langage][key] || key;
   };
 
-  secureStorage.getKey('defaultlang').then(res => {
-    if ( res ) {
-      setPreferredLangage(res);
-    } else {
-      setPreferredLangage(preferredLangage);
-    }
-  }, (err) => {
-    console.log(err)
+    useEffect(async () => {
+    let lang = await secureStorage.getKey('defaultlang')
+      if ( lang ) {
+        setPreferredLangage(lang);
+      } 
   })
+ 
 
   //////////////////////////////////////////////////////////////////////////////////////
 

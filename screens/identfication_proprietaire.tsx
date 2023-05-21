@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useRef, useState, useEffect} from 'react';
 import { StackActions } from '@react-navigation/native';
 import {
   SafeAreaView,
@@ -41,15 +41,13 @@ export default function IdentificationProprietaireScreen({
     return translations[langage][key] || key;
   };
 
-  secureStorage.getKey('defaultlang').then(res => {
-    if (res) {
-      setPreferredLangage(res);
-    } else {
-      setPreferredLangage(preferredLangage);
-    }
-  }, (err) => {
-    console.log(err)
+  useEffect(async () => {
+    let lang = await secureStorage.getKey('defaultlang')
+      if ( lang ) {
+        setPreferredLangage(lang);
+      } 
   })
+ 
 
   //////////////////////////////////////////////////////////////////////////////////////
   var [isVisible, setVisible] = useState(false);

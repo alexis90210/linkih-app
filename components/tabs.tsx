@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useRef, useState, useEffect} from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 
 const App = () => {

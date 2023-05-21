@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useRef, useState, useEffect} from 'react';
 import {
   Text,
   StyleSheet,
@@ -32,15 +32,37 @@ export default function MaCategorie({
   // GET USER CONNECTED
   const [userConnected, SetUserConnected] = useState<any>({})
 
-  storage.load({
-    key: 'userconnected', // Note: Do not use underscore("_") in key!
-    id: 'userconnected', // Note: Do not use underscore("_") in id!
-  }).then( data => {
+  const [userConnectedId, SetUserConnectedId] = useState('');
 
-    SetUserConnected(data.etablissement[0])
+  useEffect(async () =>{
+    let _userConnectedId = await secureStorage.getKey('utilisateur')
+    if(_userConnectedId) SetUserConnectedId(_userConnectedId)
   })
-  .catch(error => console.log(error)
-  );
+
+  const loadUserData = () => {
+    axios({
+      method: 'POST',
+      url: ApiService.API_URL_USER_DATA,
+      data: JSON.stringify({
+        id: userConnectedId
+      }),
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(async (response: { data: any }) => {
+        console.log(response)
+        if (response.data.code == 'success') {
+          SetUserConnected(response.data.message.etablissement[0]);
+        }
+      }).catch(error => console.log(error))
+   }
+
+   useEffect(() =>{
+    loadUserData()
+   })
+
 
  //   GET GALLERIE
  const [CategorieVendeur, setCategorieVendeur] = useState([]);
@@ -51,7 +73,7 @@ export default function MaCategorie({
      method: 'POST',
      url: '', //ApiService.,
      data:JSON.stringify({
-       vendeur_id: userConnected.id,
+       vendeur_id: userConnectedId,
         // date: date
      }),
      headers: {

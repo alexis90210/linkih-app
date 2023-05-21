@@ -31,6 +31,7 @@ const ApiService =  {
 
   // FETCH USING GET
   API_URL_STRIPE_PAIEMENT_PORTAIL : this.API_BASE_URL + 'stripe',
+  API_URL_LOGGED_USER_DATA : this.API_BASE_URL + 'logged/user-data',
   API_URL_LISTE_ABONNEMENTS : this.API_URL + 'liste/abonnements',
   API_URL_GET_VENDEURS : this.API_URL + 'vendeurs',
   API_URL_GET_CATEGORIES : this.API_URL + 'sous-categories',

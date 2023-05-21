@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useRef, useState, useEffect} from 'react';
 import {
   Text,
   StyleSheet,
@@ -13,6 +13,7 @@ import {
   Alert,
   Dimensions,
 } from 'react-native';
+
 
 import GetLocation from 'react-native-get-location';
 import ShopIcon from '../components/shop';
@@ -29,60 +30,45 @@ import storage from '../components/api/localstorage';
 import translations from '../translations/translations';
 import secureStorage from '../components/api/secureStorage';
 
-
 function Main({navigation}: {navigation: any}) {
-  /////////////////////////////////// LANGUAGE HANDLER ///////////////////////////////////////
 
   const [preferredLangage, setPreferredLangage] = useState('fr');
+
 
   const t = (key: any, langage: any) => {
     return translations[langage][key] || key;
   };
 
-  secureStorage.getKey('defaultlang').then(res => {
-    if ( res ) {
-      setPreferredLangage(res);
-    } else {
-      setPreferredLangage(preferredLangage);
-    }
-  }, (err) => {
-    console.log(err)
+  useEffect(async () => {
+    let lang = await secureStorage.getKey('defaultlang')
+      if ( lang ) {
+        setPreferredLangage(lang);
+      } 
   })
 
-  //////////////////////////////////////////////////////////////////////////////////////
-
-  // GET USER CONNECTED
   const [userConnectedRole, SetUserRole] = useState('');
-
-  storage
-    .load({
-      key: 'userconnected', // Note: Do not use underscore("_") in key!
-      id: 'userconnected', // Note: Do not use underscore("_") in id!
-    })
-    .then(data => {
-      console.log('role=======', data.role);
-
-      SetUserRole(data.role);
-    })
-    .catch(error => console.log(error));
+  useEffect(async () => {
+    let role = await secureStorage.getKey('role')
+      if ( role ) {
+        SetUserRole(role);
+      }    
+  })
 
   // LOAD CATEGORIES
   const [sous_categories, setCategories] = useState([]);
-  const [isLoadedCategorie, setLoadedCategorie] = useState(false);
-
+  
   const loadCategories = () => {
-    axios({
-      method: 'GET',
-      url: ApiService.API_URL_GET_CATEGORIES,
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-    })
+      axios({
+        method: 'GET',
+        url: ApiService.API_URL_GET_CATEGORIES,
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      })
       .then((response: {data: any}) => {
         var api = response.data;
         if (api.code == 'success') {
-          setLoadedCategorie(true);
           setCategories(api.message);
         }
       })
@@ -91,7 +77,9 @@ function Main({navigation}: {navigation: any}) {
       });
   };
 
-  if (!isLoadedCategorie) loadCategories();
+  useEffect(() => {
+    loadCategories();
+  })
 
   // USER POSITION
   const [myPosition, SetMyPosition] = useState({

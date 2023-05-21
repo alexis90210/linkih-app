@@ -44,15 +44,13 @@ export default function IdentificationClientScreen({
     return translations[langage][key] || key;
   };
 
-  secureStorage.getKey('defaultlang').then(res => {
-    if (res) {
-      setPreferredLangage(res);
-    } else {
-      setPreferredLangage(preferredLangage);
-    }
-  }, (err) => {
-    console.log(err)
+  useEffect(async () => {
+    let lang = await secureStorage.getKey('defaultlang')
+      if ( lang ) {
+        setPreferredLangage(lang);
+      } 
   })
+ 
 
   //////////////////////////////////////////////////////////////////////////////////////
 
@@ -98,8 +96,7 @@ export default function IdentificationClientScreen({
       url: ApiService.API_URL_LOGIN,
       data: JSON.stringify({
         login: identifiant,
-        password: password,
-        role: 'ROLE_CLIENT'
+        password: password
       }),
       headers: {
         Accept: 'application/json',
@@ -108,7 +105,7 @@ export default function IdentificationClientScreen({
     })
       .then(async (response: { data: any }) => {
 
-        var api = response.data;
+        
 
         /**  Setup Jwt token  */
         /*** ======================= TODO: EDIT IF NEEDED (e.g: remove logs...) ========================== */
@@ -121,109 +118,65 @@ export default function IdentificationClientScreen({
         }
         /*** ======================= TODO: EDIT IF NEEDED (e.g: remove logs...) ========================== */
 
+        // user logged data
 
-
-        if (api.code == "success") {
-
-          secureStorage.setKey('credentials', JSON.stringify({
-            pays: api.message
-          }))
-
-          storage.save({
-            key: 'credentials', // Note: Do not use underscore("_") in key!
-            id: 'credentials', // Note: Do not use underscore("_") in id!
-            data: {
-              pays: api.message
-            },
-          });
-
-          secureStorage.setKey('firstusage', '2') // client
-
-          secureStorage.setKey('firstusage', JSON.stringify({
-            isNew: false,
-            isClient: true
-          }))
-
-          storage.save({
-            key: 'firstusage', // Note: Do not use underscore("_") in key!
-            id: 'firstusage', // Note: Do not use underscore("_") in id!
-            data: {
-              isNew: false,
-              isClient: true
-            },
-          });
-
-          axios({
-            method: 'GET',
-            url: ApiService.API_URL_USER_DATA,
-            data: JSON.stringify({
-              id: api.message.id
-            }),
-            headers: {
-              Accept: 'application/json',
-              'Content-Type': 'application/json'
-            }
-          })
-            .then((response: { data: any }) => {
-
-              setProcessing(false);
-
-              storage.save({
-                key: 'userconnected', // Note: Do not use underscore("_") in key!
-                id: 'userconnected', // Note: Do not use underscore("_") in id!
-                data: {
-                  ...response.data,
-                  role: api.message.role
-                },
-              });
-
-              secureStorage.setKey('userconnected', JSON.stringify({
-                ...response.data,
-                role: api.message.role
-              }))
-
-              secureStorage.setKey('utilisateur', response.data.id)
-
-
-              navigation.dispatch(StackActions.push('main', {
-                utilisateur_id: response.data.id,
-                isProprietaire: false
-              }))
-
-
-
-            })
-            .catch((error) => {
-              setProcessing(false);
-              Alert.alert(t('erreur', preferredLangage), t('Nous_n_avons_pas_pu_recuper_vos_informations', preferredLangage), [
-                { text: 'OK', onPress: () => null },
-              ]);
-            })
-        }
-
-        if (api.code == 'error') {
-          setProcessing(false);
-
-          if (api.status) {
-            Alert.alert('', api.message, [
-              {
-                text: t('Confirmer_maintenant', preferredLangage),
-                onPress: () =>
-                  navigation.navigate('ConfirmationCompteScreenClient', {
-                    id: api.id,
-                  }),
-              },
-            ]);
-          } else {
-            Alert.alert('', t('login_incorect', preferredLangage), [
-              {
-                text: 'OK',
-                onPress: () => null
-              }
-            ], { cancelable: true });
+        axios({
+          method: 'GET',
+          url: ApiService.API_URL_LOGGED_USER_DATA,
+          data: JSON.stringify({
+            login: identifiant,
+            password: password,
+            role: 'ROLE_CLIENT'
+          }),
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
           }
-        }
-        setProcessing(false);
+        }).then( async (response: { data: any }) => {
+          var api = response.data;
+          if (api.code == "success") {
+
+              setProcessing(false);
+              
+              await secureStorage.setKey('firstusage', '2') // client
+              await secureStorage.setKey('utilisateur', response.data.id)
+              await secureStorage.setKey('isProprietaire', '0')
+              await secureStorage.setKey('role', 'ROLE_CLIENT')
+
+              navigation.dispatch(StackActions.push('main'))        
+          
+          }
+
+          if (api.code == 'error') {
+            setProcessing(false);
+
+            if (api.status) {
+              Alert.alert('', api.message, [
+                {
+                  text: t('Confirmer_maintenant', preferredLangage),
+                  onPress: () =>
+                    navigation.navigate('ConfirmationCompteScreenClient', {
+                      id: api.id,
+                    }),
+                },
+              ]);
+            } else {
+              Alert.alert('', t('login_incorect', preferredLangage), [
+                {
+                  text: 'OK',
+                  onPress: () => null
+                }
+              ], { cancelable: true });
+            }
+          }
+          setProcessing(false);
+        }).catch((error: any) => {
+          console.log(error);
+          setProcessing(false);
+          Alert.alert('Erreur', error, [
+            { text: 'OK', onPress: () => null },
+          ]);
+        });
 
       })
       .catch((error: any) => {

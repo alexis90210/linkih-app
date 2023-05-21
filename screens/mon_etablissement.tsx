@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useRef, useState, useEffect} from 'react';
 import {
   Text,
   StyleSheet,
@@ -37,15 +37,14 @@ export default function MonEtablissement({
     return translations[langage][key] || key;
   };
 
-  secureStorage.getKey('defaultlang').then(res => {
-    if ( res ) {
-      setPreferredLangage(res);
-    } else {
-      setPreferredLangage(preferredLangage);
-    }
-  }, (err) => {
-    console.log(err)
+
+  useEffect(async () => {
+    let lang = await secureStorage.getKey('defaultlang')
+      if ( lang ) {
+        setPreferredLangage(lang);
+      } 
   })
+ 
 
   //////////////////////////////////////////////////////////////////////////////////////
 
@@ -57,22 +56,51 @@ export default function MonEtablissement({
   const [lien_reseaux_sociaux, setLien_reseaux_sociaux] = useState<any[]>([]);
   const [horaire_ouverture, setHoraire_ouverture] = useState<any[]>([]);
 
-  storage
-    .load({
-      key: 'userconnected', // Note: Do not use underscore("_") in key!
-      id: 'userconnected',  // Note: Do not use underscore("_") in id!
-    })
-    .then(data => {
-      if (data.role != 'ROLE_VENDEUR') {
-        navigation.navigate('identification_proprietaire');
-      }
 
-      setEtablissement(data.etablissement[0]);
-      setProprietaire(data.utilisateur[0]);
-      setLien_reseaux_sociaux(data.lien_reseaux_sociaux);
-      setHoraire_ouverture(data.horaire_ouverture);
+    useEffect(async () => {
+      let role = await secureStorage.getKey('role')
+        if ( role ) {
+          SetUserRole(role);
+
+          if (role != 'ROLE_VENDEUR') {
+            navigation.navigate('identification_proprietaire');
+          }
+        }    
     })
-    .catch(error => console.log('ERREUR RECUP DATA', error));
+
+    const [userConnectedId, SetUserConnectedId] = useState('');
+
+    useEffect(async () =>{
+      let _userConnectedId = await secureStorage.getKey('utilisateur')
+      if(_userConnectedId) SetUserConnectedId(_userConnectedId)
+    })
+
+    const loadUserData = () => {
+      axios({
+        method: 'POST',
+        url: ApiService.API_URL_USER_DATA,
+        data: JSON.stringify({
+          id: userConnectedId
+        }),
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        }
+      })
+        .then(async (response: { data: any }) => {
+          console.log(response)
+          if (response.data.code == 'success') {
+            setEtablissement(response.data.message.etablissement[0]);
+            setProprietaire(response.data.message.utilisateur[0]);
+            setLien_reseaux_sociaux(response.data.message.lien_reseaux_sociaux);
+            setHoraire_ouverture(response.data.message.horaire_ouverture);
+          }
+        }).catch(error => console.log(error))
+     }
+  
+     useEffect(() =>{
+      loadUserData()
+     })
 
   return (
     <View>

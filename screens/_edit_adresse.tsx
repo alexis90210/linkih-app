@@ -11,6 +11,7 @@ import {
   View,
   PermissionsAndroid
 } from 'react-native';
+
 import {CustomFont, couleurs} from '../components/color';
 import MapboxGL from '@rnmapbox/maps';
 import defaultStyle from '../components/api/defaultMpaStyle';
@@ -59,11 +60,11 @@ export default function EditAdresse({navigation, route}: {navigation: any, route
       return translations[langage][key] || key
     }
   
-    storage.load({
-      key: 'defaultlang', // Note: Do not use underscore("_") in key!
-      id: 'defaultlang' // Note: Do not use underscore("_") in id!
-    }).then( ( data:any) => {
-      setPreferredLangage(data)
+    useEffect(async () => {
+      let lang = await secureStorage.getKey('defaultlang')
+        if ( lang ) {
+          setPreferredLangage(lang);
+        } 
     })
   
     //////////////////////////////////////////////////////////////////////////////////////

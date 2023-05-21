@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useRef, useState, useEffect} from 'react';
 import {
   Text,
   StyleSheet,
@@ -37,14 +37,11 @@ export default function RdvClient({
     return translations[langage][key] || key;
   };
 
-  secureStorage.getKey('defaultlang').then(res => {
-    if ( res ) {
-      setPreferredLangage(res);
-    } else {
-      setPreferredLangage(preferredLangage);
-    }
-  }, (err) => {
-    console.log(err)
+  useEffect(async () => {
+    let lang = await secureStorage.getKey('defaultlang')
+      if ( lang ) {
+        setPreferredLangage(lang);
+      } 
   })
 
   //////////////////////////////////////////////////////////////////////////////////////
@@ -63,17 +60,12 @@ export default function RdvClient({
   };
 
   // GET USER CONNECTED
-  const [userConnected, SetUserConnected] = useState<any>({});
+  const [userConnectedId, SetUserConnectedId] = useState('');
 
-  storage
-    .load({
-      key: 'userconnected', // Note: Do not use underscore("_") in key!
-      id: 'userconnected', // Note: Do not use underscore("_") in id!
-    })
-    .then(data => {
-      SetUserConnected(data.utilisateur[0]);
-    })
-    .catch(error => console.log(error));
+  useEffect(async () =>{
+    let _userConnectedId = await secureStorage.getKey('utilisateur')
+    if(_userConnectedId) SetUserConnectedId(_userConnectedId)
+  })
 
   //   GET RENDEZ-VOUS
   const [rendezvous, setRendezvous] = useState([]);
@@ -84,7 +76,7 @@ export default function RdvClient({
       method: 'GET',
       url: ApiService.API_URL_GET_RENDEZ_VOUS,
       data: JSON.stringify({
-        utilisateur_id: userConnected.id,
+        utilisateur_id: userConnectedId,
         // date: date
       }),
       headers: {
@@ -97,7 +89,6 @@ export default function RdvClient({
 
         if (api.code == 'success') {
           setLoading(false);
-          setLoadedRendezVous(true);
           setRendezvous(api.message);
         }
         if (api.code == 'error') {
@@ -110,7 +101,10 @@ export default function RdvClient({
       });
   };
 
-  if (!isLoadedRendezVous) loadRendezvous();
+  useEffect(()=>{
+    loadRendezvous();
+  })
+
 
   return (
     <View>

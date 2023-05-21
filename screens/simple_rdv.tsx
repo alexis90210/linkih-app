@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useRef, useState, useEffect} from 'react';
 import {
   Text,
   StyleSheet,
@@ -36,30 +36,49 @@ export default function SimpleRdv({
     const t = (key: any, langage: any) => {
       return translations[langage][key] || key;
     };
-  
-    storage
-      .load({
-        key: 'defaultlang', // Note: Do not use underscore("_") in key!
-        id: 'defaultlang', // Note: Do not use underscore("_") in id!
-      })
-      .then((data: any) => {
-        setPreferredLangage(data);
-      });
-  
-    //////////////////////////////////////////////////////////////////////////////////////
 
+
+  useEffect(async () => {
+    let lang = await secureStorage.getKey('defaultlang')
+      if ( lang ) {
+        setPreferredLangage(lang);
+      } 
+  })
   // GET USER CONNECTED
   const [userConnected, SetUserConnected] = useState<any>({});
 
-  storage
-    .load({
-      key: 'userconnected', // Note: Do not use underscore("_") in key!
-      id: 'userconnected', // Note: Do not use underscore("_") in id!
-    })
-    .then(data => {
-      SetUserConnected(data.utilisateur[0]);
-    })
-    .catch(error => console.log(error));
+  const [userConnectedId, SetUserConnectedId] = useState('');
+
+  useEffect(async () =>{
+    let _userConnectedId = await secureStorage.getKey('utilisateur')
+    if(_userConnectedId) SetUserConnectedId(_userConnectedId)
+  })
+
+
+    const loadUserData = () => {
+      axios({
+        method: 'POST',
+        url: ApiService.API_URL_USER_DATA,
+        data: JSON.stringify({
+          id: userConnectedId
+        }),
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        }
+      })
+        .then(async (response: { data: any }) => {
+          console.log(response)
+          if (response.data.code == 'success') {
+            SetUserConnected( response.data.message.utilisateur[0]);
+          
+          }
+        }).catch(error => console.log(error))
+     }
+  
+     useEffect(() =>{
+      loadUserData()
+     })
 
   // horaire
   var hours_matin = [
@@ -249,7 +268,7 @@ export default function SimpleRdv({
         heure: Heure,
         prestation: Prestation,
         date: selectedDate,
-        utilisateur_id: userConnected.id,
+        utilisateur_id: userConnectedId,
         prix: '',
       }),
       headers: {
@@ -269,7 +288,7 @@ export default function SimpleRdv({
                 text: 'OK',
                 onPress: () =>
                   navigation.navigate('main', {
-                    utilisateur_id: userConnected.id,
+                    utilisateur_id: userConnectedId,
                     isProprietaire: false,
                   }),
               },

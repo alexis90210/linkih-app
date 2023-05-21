@@ -15,6 +15,7 @@ import {
   Dimensions,
   Linking,
 } from 'react-native';
+import React, {useRef, useState, useEffect} from 'react';
 import ShopIcon from '../components/shop';
 import AccountIcon from '../components/account';
 import {CustomFont, couleurs} from '../components/color';
@@ -35,12 +36,13 @@ export default function IdentificationScreen({navigation}: {navigation: any}) {
     return translations[langage][key] || key
   }
 
-  storage.load({
-    key: 'defaultlang', // Note: Do not use underscore("_") in key!
-    id: 'defaultlang' // Note: Do not use underscore("_") in id!
-  }).then( ( data:any) => {
-    setPreferredLangage(data)
+    useEffect(async () => {
+    let lang = await secureStorage.getKey('defaultlang')
+      if ( lang ) {
+        setPreferredLangage(lang);
+      } 
   })
+ 
 
   //////////////////////////////////////////////////////////////////////////////////////
 

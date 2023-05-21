@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useRef, useState, useEffect} from 'react';
 import {
   Text,
   StyleSheet,
@@ -39,35 +39,52 @@ export default function MesPrestations({
     return translations[langage][key] || key;
   };
 
-  secureStorage.getKey('defaultlang').then(res => {
-    if ( res ) {
-      setPreferredLangage(res);
-    } else {
-      setPreferredLangage(preferredLangage);
-    }
-  }, (err) => {
-    console.log(err)
+    useEffect(async () => {
+    let lang = await secureStorage.getKey('defaultlang')
+      if ( lang ) {
+        setPreferredLangage(lang);
+      } 
   })
+ 
 
   //////////////////////////////////////////////////////////////////////////////////////
 
-
-      
   // LOADER
   const [isLoading, setLoading] = useState(false);
 
   // GET USER CONNECTED
   const [userConnected, SetUserConnected] = useState<any>({});
 
-  storage
-    .load({
-      key: 'userconnected', // Note: Do not use underscore("_") in key!
-      id: 'userconnected', // Note: Do not use underscore("_") in id!
-    })
-    .then(data => {
-      SetUserConnected(data.etablissement[0]);
-    })
-    .catch(error => console.log(error));
+  const [userConnectedId, SetUserConnectedId] = useState('');
+
+  useEffect(async () =>{
+    let _userConnectedId = await secureStorage.getKey('utilisateur')
+    if(_userConnectedId) SetUserConnectedId(_userConnectedId)
+  })
+
+    const loadUserData = () => {
+      axios({
+        method: 'POST',
+        url: ApiService.API_URL_USER_DATA,
+        data: JSON.stringify({
+          id: userConnectedId
+        }),
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        }
+      })
+        .then(async (response: { data: any }) => {
+          console.log(response)
+          if (response.data.code == 'success') {
+            SetUserConnected(response.data.message.etablissement[0])
+          }
+        }).catch(error => console.log(error))
+     }
+  
+     useEffect(() =>{
+      loadUserData()
+     })
 
   //   GET GALLERIE
   const [PrestationsVendeur, setPrestationsVendeur] = useState([]);
@@ -79,7 +96,7 @@ export default function MesPrestations({
       method: 'GET',
       url: ApiService.API_URL_GET_PRODUIT,
       data: JSON.stringify({
-        vendeur_id: userConnected.id,
+        vendeur_id: userConnectedId,
       }),
       headers: {
         Accept: 'application/json',

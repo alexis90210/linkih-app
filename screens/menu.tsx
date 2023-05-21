@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useRef, useState, useEffect} from 'react';
 import {
   Text,
   View,
@@ -35,14 +35,11 @@ function MenuScreen({navigation}: {navigation: any}) {
     return translations[langage][key] || key;
   };
 
-  secureStorage.getKey('defaultlang').then(res => {
-    if ( res ) {
-      setPreferredLangage(res);
-    } else {
-      setPreferredLangage(preferredLangage);
-    }
-  }, (err) => {
-    console.log(err)
+  useEffect(async () => {
+    let lang = await secureStorage.getKey('defaultlang')
+      if ( lang ) {
+        setPreferredLangage(lang);
+      } 
   })
 
   //////////////////////////////////////////////////////////////////////////////////////
@@ -50,25 +47,54 @@ function MenuScreen({navigation}: {navigation: any}) {
   const [isVendeur, SetVendeur] = useState(false);
   const [isClient, SetClient] = useState(false);
   const [vendeur, SetVendeurData] = useState<any>({});
+  const [userConnectedRole, SetUserRole] = useState('');
 
-  storage
-    .load({
-      key: 'userconnected', // Note: Do not use underscore("_") in key!
-      id: 'userconnected', // Note: Do not use underscore("_") in id!
-    })
-    .then(data => {
-      // console.log(data);
+   // GET USER CONNECTED
+   const [userConnectedId, SetUserConnectedId] = useState('');
 
-      if (data.role == 'ROLE_VENDEUR') {
-        SetVendeur(true);
-        SetVendeurData(data.etablissement);
-      } else if (data.role == 'ROLE_CLIENT') {
-        SetClient(true);
-      } else {
-        navigation.navigate('identification');
+   useEffect(async () =>{
+     let _userConnectedId = await secureStorage.getKey('utilisateur')
+     if(_userConnectedId) SetUserConnectedId(_userConnectedId)
+   })
+
+   const loadUserData = () => {
+    axios({
+      method: 'POST',
+      url: ApiService.API_URL_USER_DATA,
+      data: JSON.stringify({
+        id: userConnectedId
+      }),
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
       }
     })
-    .catch(error => console.log(error));
+      .then(async (response: { data: any }) => {
+        console.log(response)
+        if (response.data.code == 'success') {
+          SetVendeurData( response.data.message.etablissement );
+        }
+      }).catch(error => console.log(error))
+   }
+
+   useEffect(async () => {
+    
+    let role = await secureStorage.getKey('role')
+      if ( role ) {
+        SetUserRole(role);
+
+        if ( role == 'ROLE_VENDEUR') {
+          SetVendeur(true);
+          loadUserData()          
+        } else if ( role == 'ROLE_CLIENT') {
+          SetClient(true);
+        } else {
+          navigation.navigate('identification');
+        }
+
+      }    
+  })
+
 
   // FILL VENDEUR STRIKE
   const [isGettingPath, SetGotPath] = useState(false);

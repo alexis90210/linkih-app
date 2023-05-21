@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useRef, useState, useEffect} from 'react';
 import {
   Text,
   StyleSheet,
@@ -36,12 +36,13 @@ export default function BilanReservation({
     return translations[langage][key] || key
   }
 
-  storage.load({
-    key: 'defaultlang', // Note: Do not use underscore("_") in key!
-    id: 'defaultlang' // Note: Do not use underscore("_") in id!
-  }).then( ( data:any) => {
-    setPreferredLangage(data)
+    useEffect(async () => {
+    let lang = await secureStorage.getKey('defaultlang')
+      if ( lang ) {
+        setPreferredLangage(lang);
+      } 
   })
+ 
 
   //////////////////////////////////////////////////////////////////////////////////////
 

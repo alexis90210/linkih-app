@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useRef, useState, useEffect} from 'react';
 import {
   Text,
   StyleSheet,
@@ -34,15 +34,20 @@ export default function Reabonnement({
     return translations[langage][key] || key;
   };
 
-  secureStorage.getKey('defaultlang').then(res => {
-    if ( res ) {
-      setPreferredLangage(res);
-    } else {
-      setPreferredLangage(preferredLangage);
-    }
-  }, (err) => {
-    console.log(err)
+  useEffect(async () => {
+    let lang = await secureStorage.getKey('defaultlang')
+      if ( lang ) {
+        setPreferredLangage(lang);
+      } 
   })
+
+  const [userConnectedId, SetUserConnectedId] = useState('');
+
+  useEffect(async () =>{
+    let _userConnectedId = await secureStorage.getKey('utilisateur')
+    if(_userConnectedId) SetUserConnectedId(_userConnectedId)
+  })
+
 
   //////////////////////////////////////////////////////////////////////////////////////
 
@@ -50,21 +55,35 @@ export default function Reabonnement({
   const [userConnected, SetUserConnected] = useState<any>({});
   const [isProccessing, setIsProccessing] = useState(false);
 
-  storage
-    .load({
-      key: 'userconnected', // Note: Do not use underscore("_") in key!
-      id: 'userconnected', // Note: Do not use underscore("_") in id!
-    })
-    .then(data => {
-      SetUserConnected(data.etablissement[0]);
-    })
-    .catch(error => console.log(error));
+    const loadUserData = () => {
+      axios({
+        method: 'POST',
+        url: ApiService.API_URL_USER_DATA,
+        data: JSON.stringify({
+          id: userConnectedId
+        }),
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        }
+      })
+        .then(async (response: { data: any }) => {
+          console.log(response)
+          if (response.data.code == 'success') {
+            SetUserConnected(response.data.message.etablissement[0]);
+          }
+        }).catch(error => console.log(error))
+     }
+  
+     useEffect(() =>{
+      loadUserData()
+     })
 
   // S'ABONNER
   const sabonnerMaintenant = (abonnement: any) => {
     setIsProccessing(true);
     console.log({
-      vendeur_id: userConnected.id,
+      vendeur_id: userConnectedId,
       abonnement_id: abonnement.id,
     });
 
@@ -72,7 +91,7 @@ export default function Reabonnement({
       method: 'POST',
       url: ApiService.API_URL_ADD_ABONNEMENT_VENDEUR,
       data: JSON.stringify({
-        vendeur_id: userConnected.id,
+        vendeur_id: userConnectedId,
         abonnement_id: abonnement.id,
       }),
       headers: {
@@ -119,7 +138,7 @@ export default function Reabonnement({
       method: 'GET',
       url: ApiService.API_URL_GET_ABONNEMENT,
       data: JSON.stringify({
-        vendeur_id: userConnected.id,
+        vendeur_id: userConnectedId,
       }),
       headers: {
         Accept: 'application/json',

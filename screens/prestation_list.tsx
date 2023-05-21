@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useRef, useState, useEffect} from 'react';
 
 import {
   SafeAreaView,
@@ -36,14 +36,18 @@ export default function ConfigurationDefaultCategorie({
     return translations[langage][key] || key;
   };
 
-  secureStorage.getKey('defaultlang').then(res => {
-    if ( res ) {
-      setPreferredLangage(res);
-    } else {
-      setPreferredLangage(preferredLangage);
-    }
-  }, (err) => {
-    console.log(err)
+  useEffect(async () => {
+    let lang = await secureStorage.getKey('defaultlang')
+      if ( lang ) {
+        setPreferredLangage(lang);
+      } 
+  })
+ 
+  const [userConnectedId, SetUserConnectedId] = useState('');
+
+  useEffect(async () =>{
+    let _userConnectedId = await secureStorage.getKey('utilisateur')
+    if(_userConnectedId) SetUserConnectedId(_userConnectedId)
   })
 
   //////////////////////////////////////////////////////////////////////////////////////
@@ -59,19 +63,42 @@ export default function ConfigurationDefaultCategorie({
   const [selectedProduit, setSelectedProduit] = useState('');
   const [isLoadedCategorie, setLoadedCategorie] = useState(false);
 
-  storage
-    .load({
-      key: 'userconnected', // Note: Do not use underscore("_") in key!
-      id: 'userconnected', // Note: Do not use underscore("_") in id!
-    })
-    .then(data => {
-      if (data.role != 'ROLE_VENDEUR') {
-        navigation.navigate('identification_proprietaire');
-      }
+ 
+    useEffect(async () => {
+      let role = await secureStorage.getKey('role')
+        if ( role ) {
+          SetUserRole(role);
 
-      setessionEtab(data.etablissement[0]);
+          if (role != 'ROLE_VENDEUR') {
+            navigation.navigate('identification_proprietaire');
+          }
+        }    
     })
-    .catch(error => console.log(error));
+
+    const loadUserData = () => {
+      axios({
+        method: 'POST',
+        url: ApiService.API_URL_USER_DATA,
+        data: JSON.stringify({
+          id: userConnectedId
+        }),
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        }
+      })
+        .then(async (response: { data: any }) => {
+          console.log(response)
+          if (response.data.code == 'success') {
+            setessionEtab(response.data.message.etablissement[0]);
+          }
+        }).catch(error => console.log(error))
+     }
+  
+     useEffect(() =>{
+      loadUserData()
+     })
+
 
   const loadCategories = () => {
     axios({

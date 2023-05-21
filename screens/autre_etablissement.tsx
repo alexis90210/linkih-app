@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useRef, useState, useEffect} from 'react';
 import {
   Text,
   StyleSheet,
@@ -39,24 +39,17 @@ export default function AutreEtablissement({
 }) {
 
 
-    /////////////////////////////////// LANGUAGE HANDLER //////////////////////////////////
-    
     const [preferredLangage , setPreferredLangage] = useState('fr');
-
     const t = (key:any , langage:any) => {
       return translations[langage][key] || key
     }
   
-    storage.load({
-      key: 'defaultlang', // Note: Do not use underscore("_") in key!
-      id: 'defaultlang' // Note: Do not use underscore("_") in id!
-    }).then( ( data:any) => {
-      setPreferredLangage(data)
+   useEffect(async () => {
+    let lang = await secureStorage.getKey('defaultlang')
+      if ( lang ) {
+        setPreferredLangage(lang);
+      } 
     })
-  
-    //////////////////////////////////////////////////////////////////////////////////////
-
-  /////////////////////////////////////////////////
   
   
   const openMaps = (latitude:any, longitude:any) => {
@@ -89,7 +82,6 @@ export default function AutreEtablissement({
 
   // LOAD VENDEUR DATA
   const [VendeurData, setVendeurData] = useState<any>([]);
-  const [VendeurDataLoaded, setSetVendeurDataLoaded] = useState(false);
 
   const loadVendeurData = () => {
     axios({
@@ -109,7 +101,6 @@ export default function AutreEtablissement({
         var api = response.data;
         if (api.code == 'success') {
           setVendeurData(api.message[0]);
-          setSetVendeurDataLoaded(true);
         }
 
         if (api.code == 'error') {
@@ -121,8 +112,9 @@ export default function AutreEtablissement({
         Alert.alert('', error);
       });
   };
-  // CHECK LOAD OF HORAIRES
-  if (!VendeurDataLoaded) loadVendeurData();
+  useEffect(()=>{
+    loadVendeurData();
+  })
 
   /// END
 
@@ -131,19 +123,13 @@ export default function AutreEtablissement({
   const activeModal = () => setVisibleModal(true);
   const desactiveModal = () => setVisibleModal(false);
 
-  /////////////////////////
-    // GET USER CONNECTED
-    const [userConnected, SetUserConnected] = useState<any>({});
 
-    storage
-      .load({
-        key: 'userconnected', // Note: Do not use underscore("_") in key!
-        id: 'userconnected', // Note: Do not use underscore("_") in id!
-      })
-      .then(data => {
-        SetUserConnected(data.utilisateur[0]);
-      })
-      .catch(error => console.log(error));
+  const [userConnectedId, SetUserConnectedId] = useState('');
+  useEffect(async () =>{
+    let _userConnectedId = await secureStorage.getKey('utilisateur')
+    if(_userConnectedId) SetUserConnected(_userConnectedId)
+  })
+
   //////////////////////////
   const [visibleHeureModal, setVisibleHeureModal] = React.useState(false);
 
@@ -165,7 +151,7 @@ export default function AutreEtablissement({
   //////////////////////////////////////////////////
 
   const rateEtab = (rate:any) => {
-    console.log( userConnected.id );
+    console.log( userConnectedId );
     
     axios({
       method: 'POST',
@@ -173,7 +159,7 @@ export default function AutreEtablissement({
       data: JSON.stringify({
         vendeur_id: route.params.vendeur_data.id,
         note:rate,
-        client_id: userConnected.id
+        client_id: userConnectedId
       }),
       headers: {
         Accept: 'application/json',
