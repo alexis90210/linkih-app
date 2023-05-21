@@ -19,7 +19,7 @@ import ApiService from "../components/api/service";
 import axios from "axios";
 import UserPosition from "../components/api/user_position";
 import Geolocation from "@react-native-community/geolocation";
-import { useState } from "react";
+
 import translations from "../translations/translations";
 import EyeSlashIcon from "../components/eye_slash";
 import EyeIcon from "../components/eye";
