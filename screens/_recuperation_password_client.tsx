@@ -15,7 +15,6 @@ import { CustomFont, couleurs } from "../components/color";
 import storage from "../components/api/localstorage";
 import ApiService from "../components/api/service";
 import axios from "axios";
-import { useState } from "react";
 import translations from "../translations/translations";
 import CloseIcon from "../components/close";
 
