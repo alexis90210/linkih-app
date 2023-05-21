@@ -16,7 +16,7 @@ let secureStorage = {
   },
 
   keyExists: async (key: string) => {
-    return await RNSecureStorage.remove(key);
+    return await RNSecureStorage.exists(key);
   },
 };
 export default secureStorage;

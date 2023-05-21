@@ -1,3 +1,7 @@
+import axios from 'axios';
+import secureStorage from './secureStorage';
+
+
 const ApiService =  {
   // INTERNA TO APP
   ADMIN_LINKIH_TEL : '', // admin phone number here
@@ -55,6 +59,27 @@ const ApiService =  {
   API_URL_DELETE_PHOTO_GALLERIE : this.API_URL + 'delete/vendeur/photo',
   
 }
+
+/**
+ * Configure Jwt authorization using Global axios defaults.
+ */
+export async function setupAxiosAuth() {
+  try {
+    const tokenExists = await secureStorage.keyExists("token");
+    if (tokenExists) {
+      const token = await secureStorage.getKey("token");
+      if (token) {
+        axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
+      } else {
+        delete axios.defaults.headers.common['Authorization'];
+      }
+    }
+  } catch (error) {
+    delete axios.defaults.headers.common['Authorization'];
+    throw error;
+  }
+}
+
 
 export default ApiService;
 

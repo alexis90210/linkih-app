@@ -5,9 +5,9 @@
  * @format
  */
 
-import React, { useState } from 'react';
-import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import React, { useEffect, useState } from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import SplashScreen from './screens/splashScreen';
 import ConfigurationScreen from './screens/configuration';
 import IdentificationScreen from './screens/identification';
@@ -52,37 +52,53 @@ import InscriptionClient2 from './screens/inscription_client_2';
 import InscriptionClient3 from './screens/inscription_client_3';
 import ConfirmationCompteScreenClient from './screens/confirmation_screen_client';
 import RecuperationPasswordClient from './screens/_recuperation_password_client';
+import { setupAxiosAuth } from './components/api/service';
 
 
 const Stack = createNativeStackNavigator();
 
-export default function App(): JSX.Element {
+export default function App() {
 
-  
-  const [initialRouteName, setInitialRouteName] = useState('splash')
 
-  try {
-    storage.load({
-    key: 'firstusage', // Note: Do not use underscore("_") in key!
-    id: 'firstusage', // Note: Do not use underscore("_") in id!
-  }).then( data => {
-       if ( data.isClient) {
-        setInitialRouteName('identification_client')  
-       } else {
-        setInitialRouteName('identification_proprietaire')  
-       }  
-  }).catch( error => {
-    console.log(error);
-    
-  });
-  } catch (err){
-    console.log(err)
+  const [initialRouteName, setInitialRouteName] = useState('splash');
+  const [appLoaded, setAppLoaded] = useState<boolean>(false);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        await Promise.all([
+          storage.load({
+            key: 'firstusage', // Note: Do not use underscore("_") in key!
+            id: 'firstusage', // Note: Do not use underscore("_") in id!
+          }).then(data => {
+            if (data.isClient) {
+              setInitialRouteName('identification_client');
+            } else {
+              setInitialRouteName('identification_proprietaire');
+            }
+          }).catch(error => {
+            console.log(error);
+          }),
+
+          // Configure jwt auth in axios.
+          setupAxiosAuth().catch(e => console.log("setupAxiosAuthError", e))
+        ]);
+      } catch (error) {
+        console.log(error)
+      } finally {
+        setAppLoaded(true)
+      }
+    })();
+  }, []);
+
+  if (!appLoaded) {
+    return null;
   }
-  
+
   return (
     <NavigationContainer>
       <Stack.Navigator
-      initialRouteName={initialRouteName}
+        initialRouteName={initialRouteName}
       >
 
         {/* splash */}
@@ -102,13 +118,13 @@ export default function App(): JSX.Element {
           name="configuration"
           component={ConfigurationScreen}
           options={{
-            title:'Configuration',
-            headerTitleStyle: {fontSize: 16, color:couleurs.white, fontFamily: CustomFont.Poppins,},
-            headerTintColor:couleurs.white,
+            title: 'Configuration',
+            headerTitleStyle: { fontSize: 16, color: couleurs.white, fontFamily: CustomFont.Poppins, },
+            headerTintColor: couleurs.white,
             headerShown: false,
             headerStyle: {
-      backgroundColor: couleurs.primary,
-    },
+              backgroundColor: couleurs.primary,
+            },
             presentation: 'modal',
             animationTypeForReplace: 'push',
             animation: 'slide_from_right',
@@ -149,14 +165,14 @@ export default function App(): JSX.Element {
           component={IdentificationClientScreen}
           options={{
             title: 'Connexion client',
-            
+
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 16, color:couleurs.white, fontFamily: CustomFont.Poppins,},
-            headerTintColor:couleurs.white,
+            headerTitleStyle: { fontSize: 16, color: couleurs.white, fontFamily: CustomFont.Poppins, },
+            headerTintColor: couleurs.white,
             headerShown: true,
             headerStyle: {
-      backgroundColor: couleurs.primary,
-    },
+              backgroundColor: couleurs.primary,
+            },
             presentation: 'modal',
             animationTypeForReplace: 'push',
             animation: 'slide_from_right',
@@ -169,12 +185,12 @@ export default function App(): JSX.Element {
           component={PersonnalisationReservation}
           options={{
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 16, color:couleurs.white, fontFamily: CustomFont.Poppins,},
-            headerTintColor:couleurs.white,
+            headerTitleStyle: { fontSize: 16, color: couleurs.white, fontFamily: CustomFont.Poppins, },
+            headerTintColor: couleurs.white,
             headerShown: false,
             headerStyle: {
-      backgroundColor: couleurs.primary,
-    },
+              backgroundColor: couleurs.primary,
+            },
             presentation: 'modal',
             animationTypeForReplace: 'push',
             animation: 'slide_from_right',
@@ -187,12 +203,12 @@ export default function App(): JSX.Element {
           component={PersonnalisationReservationCreneau}
           options={{
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 16, color:couleurs.white, fontFamily: CustomFont.Poppins,},
-            headerTintColor:couleurs.white,
+            headerTitleStyle: { fontSize: 16, color: couleurs.white, fontFamily: CustomFont.Poppins, },
+            headerTintColor: couleurs.white,
             headerShown: false,
             headerStyle: {
-      backgroundColor: couleurs.primary,
-    },
+              backgroundColor: couleurs.primary,
+            },
             presentation: 'modal',
             animationTypeForReplace: 'push',
             animation: 'slide_from_right',
@@ -206,12 +222,12 @@ export default function App(): JSX.Element {
           options={{
             title: 'Inscription client',
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 16, color:couleurs.white, fontFamily: CustomFont.Poppins,},
-            headerTintColor:couleurs.white,
+            headerTitleStyle: { fontSize: 16, color: couleurs.white, fontFamily: CustomFont.Poppins, },
+            headerTintColor: couleurs.white,
             headerShown: true,
             headerStyle: {
-      backgroundColor: couleurs.primary,
-    },
+              backgroundColor: couleurs.primary,
+            },
             presentation: 'modal',
             animationTypeForReplace: 'push',
             animation: 'slide_from_right',
@@ -225,12 +241,12 @@ export default function App(): JSX.Element {
           options={{
             title: 'Re/Abonnement',
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 16, color:couleurs.white, fontFamily: CustomFont.Poppins,},
-            headerTintColor:couleurs.white,
+            headerTitleStyle: { fontSize: 16, color: couleurs.white, fontFamily: CustomFont.Poppins, },
+            headerTintColor: couleurs.white,
             headerShown: true,
             headerStyle: {
-      backgroundColor: couleurs.primary,
-    },
+              backgroundColor: couleurs.primary,
+            },
             presentation: 'modal',
             animationTypeForReplace: 'push',
             animation: 'slide_from_right',
@@ -247,12 +263,12 @@ export default function App(): JSX.Element {
           options={{
             title: 'Connexion proprietaire',
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 16, color:couleurs.white, fontFamily: CustomFont.Poppins,},
-            headerTintColor:couleurs.white,
+            headerTitleStyle: { fontSize: 16, color: couleurs.white, fontFamily: CustomFont.Poppins, },
+            headerTintColor: couleurs.white,
             headerShown: true,
             headerStyle: {
-      backgroundColor: couleurs.primary,
-    },
+              backgroundColor: couleurs.primary,
+            },
             presentation: 'modal',
             animationTypeForReplace: 'push',
             animation: 'slide_from_right',
@@ -266,12 +282,12 @@ export default function App(): JSX.Element {
           options={{
             title: 'Creation du compte proprietaire',
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 16, color:couleurs.white, fontFamily: CustomFont.Poppins,},
-            headerTintColor:couleurs.white,
+            headerTitleStyle: { fontSize: 16, color: couleurs.white, fontFamily: CustomFont.Poppins, },
+            headerTintColor: couleurs.white,
             headerShown: true,
             headerStyle: {
-      backgroundColor: couleurs.primary,
-    },
+              backgroundColor: couleurs.primary,
+            },
             presentation: 'modal',
             animationTypeForReplace: 'push',
             animation: 'slide_from_right',
@@ -285,8 +301,8 @@ export default function App(): JSX.Element {
           options={{
             title: 'Creation du compte proprietaire',
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 16, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
-            headerTintColor:couleurs.primary,
+            headerTitleStyle: { fontSize: 16, color: couleurs.primary, fontFamily: CustomFont.Poppins, },
+            headerTintColor: couleurs.primary,
             headerShown: false,
             presentation: 'modal',
             animationTypeForReplace: 'push',
@@ -301,8 +317,8 @@ export default function App(): JSX.Element {
           options={{
             title: 'Image de couverture',
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 16, color:couleurs.primary, fontFamily: CustomFont.Poppins},
-            headerTintColor:couleurs.primary,
+            headerTitleStyle: { fontSize: 16, color: couleurs.primary, fontFamily: CustomFont.Poppins },
+            headerTintColor: couleurs.primary,
             headerShown: false,
             presentation: 'modal',
             animationTypeForReplace: 'push',
@@ -317,8 +333,8 @@ export default function App(): JSX.Element {
           options={{
             title: '',
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 16, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
-            headerTintColor:couleurs.primary,
+            headerTitleStyle: { fontSize: 16, color: couleurs.primary, fontFamily: CustomFont.Poppins, },
+            headerTintColor: couleurs.primary,
             headerShown: false,
             presentation: 'modal',
             animationTypeForReplace: 'push',
@@ -333,8 +349,8 @@ export default function App(): JSX.Element {
           options={{
             title: '',
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 16, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
-            headerTintColor:couleurs.primary,
+            headerTitleStyle: { fontSize: 16, color: couleurs.primary, fontFamily: CustomFont.Poppins, },
+            headerTintColor: couleurs.primary,
             headerShown: false,
             presentation: 'modal',
             animationTypeForReplace: 'push',
@@ -348,8 +364,8 @@ export default function App(): JSX.Element {
           component={Main}
           options={{
             headerShadowVisible: true,
-            headerTitleStyle: {fontSize: 16, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
-            headerTintColor:couleurs.primary,
+            headerTitleStyle: { fontSize: 16, color: couleurs.primary, fontFamily: CustomFont.Poppins, },
+            headerTintColor: couleurs.primary,
             headerShown: false,
             presentation: 'modal',
             animationTypeForReplace: 'push',
@@ -364,8 +380,8 @@ export default function App(): JSX.Element {
           options={{
             title: 'Mon compte',
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 16, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
-            headerTintColor:couleurs.primary,
+            headerTitleStyle: { fontSize: 16, color: couleurs.primary, fontFamily: CustomFont.Poppins, },
+            headerTintColor: couleurs.primary,
             headerShown: false,
             presentation: 'modal',
             animationTypeForReplace: 'push',
@@ -380,8 +396,8 @@ export default function App(): JSX.Element {
           options={{
             title: 'Mon rdv',
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 16, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
-            headerTintColor:couleurs.primary,
+            headerTitleStyle: { fontSize: 16, color: couleurs.primary, fontFamily: CustomFont.Poppins, },
+            headerTintColor: couleurs.primary,
             headerShown: false,
             presentation: 'modal',
             animationTypeForReplace: 'push',
@@ -396,8 +412,8 @@ export default function App(): JSX.Element {
           options={{
             title: 'La carte',
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 16, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
-            headerTintColor:couleurs.primary,
+            headerTitleStyle: { fontSize: 16, color: couleurs.primary, fontFamily: CustomFont.Poppins, },
+            headerTintColor: couleurs.primary,
             headerShown: false,
             presentation: 'modal',
             animationTypeForReplace: 'push',
@@ -412,8 +428,8 @@ export default function App(): JSX.Element {
           options={{
             title: 'Resultat de la recherche',
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 16, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
-            headerTintColor:couleurs.primary,
+            headerTitleStyle: { fontSize: 16, color: couleurs.primary, fontFamily: CustomFont.Poppins, },
+            headerTintColor: couleurs.primary,
             headerShown: false,
             presentation: 'modal',
             animationTypeForReplace: 'push',
@@ -421,15 +437,15 @@ export default function App(): JSX.Element {
           }}
         />
 
-         {/* compte directeur */}
-         <Stack.Screen
+        {/* compte directeur */}
+        <Stack.Screen
           name="CompteProprietaire"
           component={CompteProprietaire}
           options={{
             title: 'Resultat de la recherche',
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 16, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
-            headerTintColor:couleurs.primary,
+            headerTitleStyle: { fontSize: 16, color: couleurs.primary, fontFamily: CustomFont.Poppins, },
+            headerTintColor: couleurs.primary,
             headerShown: false,
             presentation: 'modal',
             animationTypeForReplace: 'push',
@@ -444,8 +460,8 @@ export default function App(): JSX.Element {
           options={{
             title: 'Espace etablissement',
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 16, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
-            headerTintColor:couleurs.primary,
+            headerTitleStyle: { fontSize: 16, color: couleurs.primary, fontFamily: CustomFont.Poppins, },
+            headerTintColor: couleurs.primary,
             headerShown: false,
             presentation: 'modal',
             animationTypeForReplace: 'push',
@@ -460,8 +476,8 @@ export default function App(): JSX.Element {
           options={{
             title: 'Espace etablissement',
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 16, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
-            headerTintColor:couleurs.primary,
+            headerTitleStyle: { fontSize: 16, color: couleurs.primary, fontFamily: CustomFont.Poppins, },
+            headerTintColor: couleurs.primary,
             headerShown: false,
             presentation: 'modal',
             animationTypeForReplace: 'push',
@@ -476,8 +492,8 @@ export default function App(): JSX.Element {
           options={{
             title: 'Edition compte',
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 16, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
-            headerTintColor:couleurs.primary,
+            headerTitleStyle: { fontSize: 16, color: couleurs.primary, fontFamily: CustomFont.Poppins, },
+            headerTintColor: couleurs.primary,
             headerShown: true,
             presentation: 'modal',
             animationTypeForReplace: 'push',
@@ -492,8 +508,8 @@ export default function App(): JSX.Element {
           options={{
             title: 'Menu screen',
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 16, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
-            headerTintColor:couleurs.primary,
+            headerTitleStyle: { fontSize: 16, color: couleurs.primary, fontFamily: CustomFont.Poppins, },
+            headerTintColor: couleurs.primary,
             headerShown: false,
             presentation: 'modal',
             animationTypeForReplace: 'push',
@@ -509,8 +525,8 @@ export default function App(): JSX.Element {
           options={{
             title: 'Selectionnez l\'addresse',
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 16, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
-            headerTintColor:couleurs.primary,
+            headerTitleStyle: { fontSize: 16, color: couleurs.primary, fontFamily: CustomFont.Poppins, },
+            headerTintColor: couleurs.primary,
             headerShown: false,
             presentation: 'modal',
             animationTypeForReplace: 'push',
@@ -525,8 +541,8 @@ export default function App(): JSX.Element {
           options={{
             title: 'Bilan reservation',
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 16, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
-            headerTintColor:couleurs.primary,
+            headerTitleStyle: { fontSize: 16, color: couleurs.primary, fontFamily: CustomFont.Poppins, },
+            headerTintColor: couleurs.primary,
             headerShown: false,
             presentation: 'modal',
             animationTypeForReplace: 'push',
@@ -541,8 +557,8 @@ export default function App(): JSX.Element {
           options={{
             title: 'rdv client',
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 16, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
-            headerTintColor:couleurs.primary,
+            headerTitleStyle: { fontSize: 16, color: couleurs.primary, fontFamily: CustomFont.Poppins, },
+            headerTintColor: couleurs.primary,
             headerShown: false,
             presentation: 'modal',
             animationTypeForReplace: 'push',
@@ -558,8 +574,8 @@ export default function App(): JSX.Element {
           options={{
             title: 'rdv client',
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 16, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
-            headerTintColor:couleurs.primary,
+            headerTitleStyle: { fontSize: 16, color: couleurs.primary, fontFamily: CustomFont.Poppins, },
+            headerTintColor: couleurs.primary,
             headerShown: false,
             presentation: 'modal',
             animationTypeForReplace: 'push',
@@ -567,15 +583,15 @@ export default function App(): JSX.Element {
           }}
         />
 
-          {/* AbonnementActivation */}
-          <Stack.Screen
+        {/* AbonnementActivation */}
+        <Stack.Screen
           name="abonnement_activation"
           component={AbonnementActivation}
           options={{
             title: 'rdv client',
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 16, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
-            headerTintColor:couleurs.primary,
+            headerTitleStyle: { fontSize: 16, color: couleurs.primary, fontFamily: CustomFont.Poppins, },
+            headerTintColor: couleurs.primary,
             headerShown: false,
             presentation: 'modal',
             animationTypeForReplace: 'push',
@@ -583,15 +599,15 @@ export default function App(): JSX.Element {
           }}
         />
 
-         {/* Gallerie */}
-         <Stack.Screen
+        {/* Gallerie */}
+        <Stack.Screen
           name="ma_gallerie"
           component={Gallerie}
           options={{
             title: 'Gallerie',
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 16, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
-            headerTintColor:couleurs.primary,
+            headerTitleStyle: { fontSize: 16, color: couleurs.primary, fontFamily: CustomFont.Poppins, },
+            headerTintColor: couleurs.primary,
             headerShown: false,
             presentation: 'modal',
             animationTypeForReplace: 'push',
@@ -606,8 +622,8 @@ export default function App(): JSX.Element {
           options={{
             title: 'Mes Horaires',
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 16, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
-            headerTintColor:couleurs.primary,
+            headerTitleStyle: { fontSize: 16, color: couleurs.primary, fontFamily: CustomFont.Poppins, },
+            headerTintColor: couleurs.primary,
             headerShown: false,
             presentation: 'modal',
             animationTypeForReplace: 'push',
@@ -623,8 +639,8 @@ export default function App(): JSX.Element {
           options={{
             title: 'Mes Horaires',
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 16, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
-            headerTintColor:couleurs.primary,
+            headerTitleStyle: { fontSize: 16, color: couleurs.primary, fontFamily: CustomFont.Poppins, },
+            headerTintColor: couleurs.primary,
             headerShown: false,
             presentation: 'modal',
             animationTypeForReplace: 'push',
@@ -639,8 +655,8 @@ export default function App(): JSX.Element {
           options={{
             title: 'Mes Horaires',
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 16, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
-            headerTintColor:couleurs.primary,
+            headerTitleStyle: { fontSize: 16, color: couleurs.primary, fontFamily: CustomFont.Poppins, },
+            headerTintColor: couleurs.primary,
             headerShown: false,
             presentation: 'modal',
             animationTypeForReplace: 'push',
@@ -655,8 +671,8 @@ export default function App(): JSX.Element {
           options={{
             title: 'Choisir une prestation',
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 16, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
-            headerTintColor:couleurs.primary,
+            headerTitleStyle: { fontSize: 16, color: couleurs.primary, fontFamily: CustomFont.Poppins, },
+            headerTintColor: couleurs.primary,
             headerShown: false,
             presentation: 'modal',
             animationTypeForReplace: 'push',
@@ -665,15 +681,15 @@ export default function App(): JSX.Element {
         />
 
 
-         {/* PaiementScreen */}
-         <Stack.Screen
+        {/* PaiementScreen */}
+        <Stack.Screen
           name="paiement_screen"
           component={PaiementScreen}
           options={{
             title: 'Portail de paiement',
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 16, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
-            headerTintColor:couleurs.primary,
+            headerTitleStyle: { fontSize: 16, color: couleurs.primary, fontFamily: CustomFont.Poppins, },
+            headerTintColor: couleurs.primary,
             headerShown: true,
             presentation: 'modal',
             animationTypeForReplace: 'push',
@@ -688,8 +704,8 @@ export default function App(): JSX.Element {
           options={{
             title: 'Recuperation Mot de passe',
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 16, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
-            headerTintColor:couleurs.primary,
+            headerTitleStyle: { fontSize: 16, color: couleurs.primary, fontFamily: CustomFont.Poppins, },
+            headerTintColor: couleurs.primary,
             headerShown: true,
             presentation: 'modal',
             animationTypeForReplace: 'push',
@@ -704,8 +720,8 @@ export default function App(): JSX.Element {
           options={{
             title: 'Recuperation Mot de passe',
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 16, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
-            headerTintColor:couleurs.primary,
+            headerTitleStyle: { fontSize: 16, color: couleurs.primary, fontFamily: CustomFont.Poppins, },
+            headerTintColor: couleurs.primary,
             headerShown: true,
             presentation: 'modal',
             animationTypeForReplace: 'push',
@@ -713,15 +729,15 @@ export default function App(): JSX.Element {
           }}
         />
 
-         {/* Itineaire */}
-         <Stack.Screen
+        {/* Itineaire */}
+        <Stack.Screen
           name="draw_itineraire"
           component={DrawItineaire}
           options={{
             title: 'Itineaire',
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 16, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
-            headerTintColor:couleurs.primary,
+            headerTitleStyle: { fontSize: 16, color: couleurs.primary, fontFamily: CustomFont.Poppins, },
+            headerTintColor: couleurs.primary,
             headerShown: false,
             presentation: 'modal',
             animationTypeForReplace: 'push',
@@ -736,8 +752,8 @@ export default function App(): JSX.Element {
           options={{
             title: 'inscription_client_2',
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 16, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
-            headerTintColor:couleurs.primary,
+            headerTitleStyle: { fontSize: 16, color: couleurs.primary, fontFamily: CustomFont.Poppins, },
+            headerTintColor: couleurs.primary,
             headerShown: false,
             presentation: 'modal',
             animationTypeForReplace: 'push',
@@ -752,8 +768,8 @@ export default function App(): JSX.Element {
           options={{
             title: 'inscription_client_3',
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 16, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
-            headerTintColor:couleurs.primary,
+            headerTitleStyle: { fontSize: 16, color: couleurs.primary, fontFamily: CustomFont.Poppins, },
+            headerTintColor: couleurs.primary,
             headerShown: false,
             presentation: 'modal',
             animationTypeForReplace: 'push',
@@ -768,8 +784,8 @@ export default function App(): JSX.Element {
           options={{
             title: 'ConfirmationCompteScreenClient',
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 16, color:couleurs.primary, fontFamily: CustomFont.Poppins,},
-            headerTintColor:couleurs.primary,
+            headerTitleStyle: { fontSize: 16, color: couleurs.primary, fontFamily: CustomFont.Poppins, },
+            headerTintColor: couleurs.primary,
             headerShown: false,
             presentation: 'modal',
             animationTypeForReplace: 'push',
@@ -777,7 +793,7 @@ export default function App(): JSX.Element {
           }}
         />
 
-        {/* end */} 
+        {/* end */}
       </Stack.Navigator>
     </NavigationContainer>
   );

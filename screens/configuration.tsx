@@ -212,59 +212,49 @@ export default function ConfigurationScreen({navigation}: {navigation: any}) {
               <View style={{width: '100%',
               marginTop:2,}}>
                 {_countries.map((item: any, index: any) => (
-                  <>
-                      <FlatList 
-                      data={_countries}
-                      renderItem={({item}) => (
-                        <View>
-                          <TouchableOpacity onPress={() => selectCountry(item)}>
-                            <View style={{
-                                display: 'flex',
-                                flexDirection: 'row',
-                                alignItems: 'space-between',
-                                paddingVertical: 16,
-                                gap: 10,
-                                width:'100%',
-                                paddingHorizontal:20
-                              }}>
-                              <View
-                                style={{
-                                  display: 'flex',
-                                  flexDirection: 'row',
-                                  alignItems: 'center',
-                                  gap: 10,    
-                                  flex:1                      
-                                }}>
-                                {/* <WorldIcon /> */}
-                                <Text> {item.emoji}</Text>
-                                <Text style={{color: 'rgba(100,100,100,1)'}}>
-                                  {item.name}
-                                </Text>
-                              </View>
-                              <ArrowRightIcon color={'#ddd'}/>
-                            </View>
-                          </TouchableOpacity>
-                          <View
-                            style={{
-                              height: 1,
-                              overflow: 'hidden',
-                              paddingHorizontal: 10,
-                            }}>
-                            <View
-                              style={{
-                                height: 2,
-                                borderWidth: 1,
-                                borderColor: '#ddd',
-                                borderStyle: 'solid',
-                              }}></View>
-                          </View>
+                  <View key={item.code}>
+                    <TouchableOpacity onPress={() => selectCountry(item)}>
+                      <View style={{
+                          display: 'flex',
+                          flexDirection: 'row',
+                          alignItems: 'space-between',
+                          paddingVertical: 16,
+                          gap: 10,
+                          width:'100%',
+                          paddingHorizontal:20
+                        }}>
+                        <View
+                          style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            gap: 10,    
+                            flex:1                      
+                          }}>
+                          {/* <WorldIcon /> */}
+                          <Text> {item.emoji}</Text>
+                          <Text style={{color: 'rgba(100,100,100,1)'}}>
+                            {item.name}
+                          </Text>
                         </View>
-                      ) }
-                      keyExtractor={item => item.iso3}
-                      />
-
-                      
-                  </>                  
+                        <ArrowRightIcon color={'#ddd'}/>
+                      </View>
+                    </TouchableOpacity>
+                    <View
+                      style={{
+                        height: 1,
+                        overflow: 'hidden',
+                        paddingHorizontal: 10,
+                      }}>
+                      <View
+                        style={{
+                          height: 2,
+                          borderWidth: 1,
+                          borderColor: '#ddd',
+                          borderStyle: 'solid',
+                        }}></View>
+                    </View>
+                  </View>                 
                 ))}
               </View>
             )}
