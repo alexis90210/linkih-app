@@ -36,6 +36,20 @@ export default function Rdv({
   const t = (key: any, langage: any) => {
     return translations[langage][key] || key;
   };
+  useEffect(() => {
+    // declare the data fetching function
+    const fetchData = async () => {
+      let lang = await secureStorage.getKey('defaultlang')
+      if ( lang ) {
+        setPreferredLangage(lang);
+      }
+    }
+  
+    // call the function
+    fetchData()
+      // make sure to catch any error
+      .catch(console.error);
+  }, [])
 
   const [userConnectedId, SetUserConnectedId] = useState('');
 

@@ -61,12 +61,21 @@ export default function EditClientScreen({
     return translations[langage][key] || key
   }
 
-    useEffect(async () => {
-    let lang = await secureStorage.getKey('defaultlang')
+  useEffect(() => {
+    // declare the data fetching function
+    const fetchData = async () => {
+      let lang = await secureStorage.getKey('defaultlang')
       if ( lang ) {
         setPreferredLangage(lang);
-      } 
-  })
+      }
+    }
+  
+    // call the function
+    fetchData()
+      // make sure to catch any error
+      .catch(console.error);
+  }, [])
+
  
 
   //////////////////////////////////////////////////////////////////////////////////////

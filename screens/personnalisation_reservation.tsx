@@ -35,12 +35,20 @@ export default function PersonnalisationReservation({
     };
   
    
-  useEffect(async () => {
-    let lang = await secureStorage.getKey('defaultlang')
-      if ( lang ) {
-        setPreferredLangage(lang);
-      } 
-  })
+    useEffect(() => {
+      // declare the data fetching function
+      const fetchData = async () => {
+        let lang = await secureStorage.getKey('defaultlang')
+        if ( lang ) {
+          setPreferredLangage(lang);
+        }
+      }
+    
+      // call the function
+      fetchData()
+        // make sure to catch any error
+        .catch(console.error);
+    }, [])
  
   var data = route.params.props;
 
