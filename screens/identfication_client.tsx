@@ -12,8 +12,8 @@ import {
   ActivityIndicator,
   PermissionsAndroid
 } from 'react-native';
-import {CustomFont, couleurs} from '../components/color';
-import ApiService from '../components/api/service';
+import { CustomFont, couleurs } from '../components/color';
+import ApiService, { setupAxiosAuth } from '../components/api/service';
 import axios from 'axios';
 import storage from '../components/api/localstorage';
 import translations from '../translations/translations';
@@ -36,16 +36,16 @@ export default function IdentificationClientScreen({
   route: any
 }) {
 
-   /////////////////////////////////// LANGUAGE HANDLER //////////////////////////////////
+  /////////////////////////////////// LANGUAGE HANDLER //////////////////////////////////
 
-   const [preferredLangage, setPreferredLangage] = useState('fr');
+  const [preferredLangage, setPreferredLangage] = useState('fr');
 
-   const t = (key: any, langage: any) => {
-     return translations[langage][key] || key;
-   };
- 
-    secureStorage.getKey('defaultlang').then(res => {
-    if ( res ) {
+  const t = (key: any, langage: any) => {
+    return translations[langage][key] || key;
+  };
+
+  secureStorage.getKey('defaultlang').then(res => {
+    if (res) {
       setPreferredLangage(res);
     } else {
       setPreferredLangage(preferredLangage);
@@ -53,9 +53,9 @@ export default function IdentificationClientScreen({
   }, (err) => {
     console.log(err)
   })
- 
-   //////////////////////////////////////////////////////////////////////////////////////
- 
+
+  //////////////////////////////////////////////////////////////////////////////////////
+
   var [isVisible, setVisible] = useState(false);
 
   const _setVisible = () => {
@@ -66,27 +66,27 @@ export default function IdentificationClientScreen({
   //////////////////////////////////////////
 
 
-  const [ identifiant, setIdentifiant] = useState('');
-  const [ password, setPassword] = useState('');
+  const [identifiant, setIdentifiant] = useState('');
+  const [password, setPassword] = useState('');
 
-  const [isProccessing,  setProcessing] = useState(false)
+  const [isProccessing, setProcessing] = useState(false)
 
-  if( route.params?.login && route.params?.login.length > 0 ) {
+  if (route.params?.login && route.params?.login.length > 0) {
     setIdentifiant(route.params?.login)
   }
 
   const logUser = async () => {
 
     if (!identifiant) {
-      Alert.alert( t('erreur', preferredLangage), t('Veuillez_entrer_un_identifiant', preferredLangage), [        
-        {text: 'OK', onPress: () => null},
+      Alert.alert(t('erreur', preferredLangage), t('Veuillez_entrer_un_identifiant', preferredLangage), [
+        { text: 'OK', onPress: () => null },
       ]);
       return;
     }
 
     if (!password) {
-      Alert.alert( t('erreur', preferredLangage), t('Veuillez_entrer_un_mot_de_passe_valide', preferredLangage), [        
-        {text: 'OK', onPress: () => null},
+      Alert.alert(t('erreur', preferredLangage), t('Veuillez_entrer_un_mot_de_passe_valide', preferredLangage), [
+        { text: 'OK', onPress: () => null },
       ]);
       return;
     }
@@ -99,25 +99,35 @@ export default function IdentificationClientScreen({
       data: JSON.stringify({
         login: identifiant,
         password: password,
-        role:'ROLE_CLIENT'
+        role: 'ROLE_CLIENT'
       }),
       headers: {
         Accept: 'application/json',
-       'Content-Type': 'application/json'
-     }
+        'Content-Type': 'application/json'
+      }
     })
-      .then((response: {data: any}) => {
-        
-         var api = response.data;    
-         
-         console.log(api);
-         
+      .then(async (response: { data: any }) => {
 
-         if ( api.code == "success") {
+        var api = response.data;
 
-          secureStorage.setKey('credentials',JSON.stringify({
-              pays: api.message
-            }))
+        /**  Setup Jwt token  */
+        /*** ======================= TODO: EDIT IF NEEDED (e.g: remove logs...) ========================== */
+        console.log({ loginResp: api });
+        try {
+          await secureStorage.setKey("token", api.token);
+          await setupAxiosAuth(api.token);
+        } catch (error) {
+          console.log("settoken error", error);
+        }
+        /*** ======================= TODO: EDIT IF NEEDED (e.g: remove logs...) ========================== */
+
+
+
+        if (api.code == "success") {
+
+          secureStorage.setKey('credentials', JSON.stringify({
+            pays: api.message
+          }))
 
           storage.save({
             key: 'credentials', // Note: Do not use underscore("_") in key!
@@ -127,19 +137,19 @@ export default function IdentificationClientScreen({
             },
           });
 
-          secureStorage.setKey('firstusage','2') // client
+          secureStorage.setKey('firstusage', '2') // client
 
-          secureStorage.setKey('firstusage',JSON.stringify({
-             isNew:false,
-             isClient:true        
-            }))
+          secureStorage.setKey('firstusage', JSON.stringify({
+            isNew: false,
+            isClient: true
+          }))
 
           storage.save({
             key: 'firstusage', // Note: Do not use underscore("_") in key!
             id: 'firstusage', // Note: Do not use underscore("_") in id!
             data: {
-             isNew:false,
-             isClient:true        
+              isNew: false,
+              isClient: true
             },
           });
 
@@ -147,54 +157,54 @@ export default function IdentificationClientScreen({
             method: 'GET',
             url: ApiService.API_URL_USER_DATA,
             data: JSON.stringify({
-              id:api.message.id
+              id: api.message.id
             }),
             headers: {
               Accept: 'application/json',
-             'Content-Type': 'application/json'
-           }
+              'Content-Type': 'application/json'
+            }
           })
-          .then((response: {data: any}) => {
+            .then((response: { data: any }) => {
 
-            setProcessing(false);
+              setProcessing(false);
 
-            storage.save({
-              key: 'userconnected', // Note: Do not use underscore("_") in key!
-              id: 'userconnected', // Note: Do not use underscore("_") in id!
-              data: {
+              storage.save({
+                key: 'userconnected', // Note: Do not use underscore("_") in key!
+                id: 'userconnected', // Note: Do not use underscore("_") in id!
+                data: {
+                  ...response.data,
+                  role: api.message.role
+                },
+              });
+
+              secureStorage.setKey('userconnected', JSON.stringify({
                 ...response.data,
-                role:api.message.role
-              },
-            });
-
-            secureStorage.setKey('userconnected',JSON.stringify({
-                ...response.data,
-                role:api.message.role
+                role: api.message.role
               }))
 
-               secureStorage.setKey('utilisateur',response.data.id) 
-          
+              secureStorage.setKey('utilisateur', response.data.id)
 
-            navigation.dispatch(StackActions.push('main', {
-              utilisateur_id: response.data.id,
-              isProprietaire:false
-            }))
 
-           
+              navigation.dispatch(StackActions.push('main', {
+                utilisateur_id: response.data.id,
+                isProprietaire: false
+              }))
 
-          })
-          .catch((error) => {
-            setProcessing(false);
-            Alert.alert(t('erreur', preferredLangage), t('Nous_n_avons_pas_pu_recuper_vos_informations', preferredLangage), [        
-              {text: 'OK', onPress: () => null},
-            ]);
-           })
-         }
 
-         if (api.code == 'error') {
+
+            })
+            .catch((error) => {
+              setProcessing(false);
+              Alert.alert(t('erreur', preferredLangage), t('Nous_n_avons_pas_pu_recuper_vos_informations', preferredLangage), [
+                { text: 'OK', onPress: () => null },
+              ]);
+            })
+        }
+
+        if (api.code == 'error') {
           setProcessing(false);
 
-          if ( api.status) {
+          if (api.status) {
             Alert.alert('', api.message, [
               {
                 text: t('Confirmer_maintenant', preferredLangage),
@@ -206,22 +216,22 @@ export default function IdentificationClientScreen({
             ]);
           } else {
             Alert.alert('', t('login_incorect', preferredLangage), [
-            {
-              text: 'OK',
-              onPress: () => null
-            }
-            ], {cancelable:true});
+              {
+                text: 'OK',
+                onPress: () => null
+              }
+            ], { cancelable: true });
           }
         }
-         setProcessing(false);
+        setProcessing(false);
 
       })
       .catch((error: any) => {
-          console.log(error);
-          setProcessing(false);
-          Alert.alert('Erreur', error, [        
-            {text: 'OK', onPress: () => null},
-          ]);
+        console.log(error);
+        setProcessing(false);
+        Alert.alert('Erreur', error, [
+          { text: 'OK', onPress: () => null },
+        ]);
       });
   };
 
@@ -234,7 +244,7 @@ export default function IdentificationClientScreen({
           backgroundColor: '#f6f6f6f6',
         }}>
 
-          {/* LOADING MODAL */}
+        {/* LOADING MODAL */}
 
         <Modal transparent={true} visible={isProccessing}>
           <View
@@ -248,7 +258,7 @@ export default function IdentificationClientScreen({
             }}>
             <ActivityIndicator
               color={couleurs.primary}
-              style={{alignSelf: 'center'}}
+              style={{ alignSelf: 'center' }}
               size={'large'}></ActivityIndicator>
           </View>
         </Modal>
@@ -291,7 +301,7 @@ export default function IdentificationClientScreen({
                     fontSize: 13,
                     height: 30,
                     opacity: 0.85,
-                    marginTop:14,
+                    marginTop: 14,
                     fontFamily: CustomFont.Poppins,
                   }}>
                   {t('Identifiant', preferredLangage)}
@@ -299,7 +309,7 @@ export default function IdentificationClientScreen({
                 <TextInput
                   defaultValue={identifiant}
                   onChangeText={input => {
-                    setIdentifiant( input )
+                    setIdentifiant(input)
                   }}
                   placeholder={t('Entrez_votre_identifiant', preferredLangage)}
                   style={{
@@ -334,7 +344,7 @@ export default function IdentificationClientScreen({
                   }}>
                   {t('mot_de_passe', preferredLangage)}
                 </Text>
-                  <View
+                <View
                   style={{
                     display: 'flex',
                     flexDirection: 'row',
@@ -351,19 +361,19 @@ export default function IdentificationClientScreen({
                     placeholder={t('entrez_votre_mot_de_passe', preferredLangage)}
                     secureTextEntry={!isVisible}
                     defaultValue={password}
-                  onChangeText={input => {
-                    setPassword( input )
-                  }}
+                    onChangeText={input => {
+                      setPassword(input)
+                    }}
                     placeholderTextColor={'rgba(100,100,100,.7)'}
                     style={{
                       backgroundColor: 'transparent',
                       color: couleurs.primary,
                       fontSize: 13,
-                      flex:1,
+                      flex: 1,
                       fontFamily: CustomFont.Poppins,
                     }}></TextInput>
                   <TouchableOpacity
-                    style={{margin: 5, width: 20, height: 20}}
+                    style={{ margin: 5, width: 20, height: 20 }}
                     onPress={_setVisible}>
                     {isVisible && <EyeSlashIcon />}
                     {!isVisible && <EyeIcon color={couleurs.primary} />}
@@ -376,11 +386,11 @@ export default function IdentificationClientScreen({
               <View
                 style={{
                   alignItems: 'center',
-                  backgroundColor:  !isProccessing ? couleurs.primary : couleurs.primaryLight,
+                  backgroundColor: !isProccessing ? couleurs.primary : couleurs.primaryLight,
                   borderRadius: 30,
                   marginBottom: 20,
                 }}>
-                <TouchableOpacity                  
+                <TouchableOpacity
                   style={{
                     paddingHorizontal: 10,
                     width: '70%',
@@ -412,9 +422,9 @@ export default function IdentificationClientScreen({
                   marginVertical: 10,
                 }}>
                 <TouchableOpacity
-                  
+
                   style={{
-                    
+
                   }}
                   onPress={() => navigation.navigate('recup_pass_screen_client')}>
                   <Text
@@ -516,11 +526,11 @@ export default function IdentificationClientScreen({
               display: 'flex',
               flexDirection: 'row',
               justifyContent: 'center',
-              marginTop:40,
-              marginBottom:30
+              marginTop: 40,
+              marginBottom: 30
             }}>
             <TouchableOpacity
-              
+
               style={{
                 paddingHorizontal: 10,
               }}

@@ -8,7 +8,7 @@ const ApiService =  {
 
   // BASE API URL
   API_BASE_URL_HTTPS : 'https://linkih.hlconception.com/',
-  API_BASE_URL : 'http://linkih.hlconception.com/', 
+  API_BASE_URL : 'https://linkih.hlconception.com/', 
   API_URL : this.API_BASE_URL + 'api/v1/',
 
   // EXTERNAL API KEYS
@@ -63,16 +63,21 @@ const ApiService =  {
 /**
  * Configure Jwt authorization using Global axios defaults.
  */
-export async function setupAxiosAuth() {
+export async function setupAxiosAuth(jwtToken: string|null|undefined = null) {
   try {
-    const tokenExists = await secureStorage.keyExists("token");
-    if (tokenExists) {
-      const token = await secureStorage.getKey("token");
-      if (token) {
-        axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
-      } else {
-        delete axios.defaults.headers.common['Authorization'];
+
+    let token = jwtToken;
+    if (!token) {
+      const tokenExists = await secureStorage.keyExists("token");
+      if (tokenExists) {
+        token = await secureStorage.getKey("token");
       }
+    }
+
+    if (token) {
+      axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
+    } else {
+      delete axios.defaults.headers.common['Authorization'];
     }
   } catch (error) {
     delete axios.defaults.headers.common['Authorization'];

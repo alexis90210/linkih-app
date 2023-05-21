@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { StackActions } from '@react-navigation/native';
 import {
   SafeAreaView,
@@ -12,9 +12,9 @@ import {
   Modal
 } from 'react-native';
 
-import {CustomFont, couleurs} from '../components/color';
+import { CustomFont, couleurs } from '../components/color';
 import axios from 'axios';
-import ApiService from '../components/api/service';
+import ApiService, { setupAxiosAuth } from '../components/api/service';
 import storage from '../components/api/localstorage';
 import translations from '../translations/translations';
 import ArrowRightIcon from '../components/ArrowRight';
@@ -36,13 +36,13 @@ export default function IdentificationProprietaireScreen({
   /////////////////////////////////// LANGUAGE HANDLER //////////////////////////////////
 
   const [preferredLangage, setPreferredLangage] = useState('fr');
-    
+
   const t = (key: any, langage: any) => {
     return translations[langage][key] || key;
   };
 
-   secureStorage.getKey('defaultlang').then(res => {
-    if ( res ) {
+  secureStorage.getKey('defaultlang').then(res => {
+    if (res) {
       setPreferredLangage(res);
     } else {
       setPreferredLangage(preferredLangage);
@@ -81,7 +81,7 @@ export default function IdentificationProprietaireScreen({
   const logUser = async () => {
     if (!identifiant) {
       Alert.alert('', t('Veuillez_entrer_un_identifiant', preferredLangage), [
-        {text: 'OK', onPress: () => null},
+        { text: 'OK', onPress: () => null },
       ]);
       return;
     }
@@ -90,7 +90,7 @@ export default function IdentificationProprietaireScreen({
       Alert.alert(
         '',
         t('Veuillez_entrer_un_mot_de_passe_valide', preferredLangage),
-        [{text: 'OK', onPress: () => null}],
+        [{ text: 'OK', onPress: () => null }],
       );
       return;
     }
@@ -110,8 +110,19 @@ export default function IdentificationProprietaireScreen({
         'Content-Type': 'application/json',
       },
     })
-      .then((response: {data: any}) => {
+      .then(async (response: { data: any }) => {
         var api = response.data;
+
+        /**  Setup Jwt token  */
+        /*** ======================= TODO: EDIT IF NEEDED (e.g: remove logs...) ========================== */
+        console.log({ loginResp: api });
+        try {
+          await secureStorage.setKey("token", api.token);
+          await setupAxiosAuth(api.token);
+        } catch (error) {
+          console.log("settoken error", error);
+        }
+        /*** ======================= TODO: EDIT IF NEEDED (e.g: remove logs...) ========================== */
 
         console.log('login ===', api);
 
@@ -133,7 +144,7 @@ export default function IdentificationProprietaireScreen({
             },
           });
 
-          secureStorage.setKey('firstusage','1') // vendeur
+          secureStorage.setKey('firstusage', '1') // vendeur
 
           axios({
             method: 'GET',
@@ -146,7 +157,7 @@ export default function IdentificationProprietaireScreen({
               'Content-Type': 'application/json',
             },
           })
-            .then((response: {data: any}) => {
+            .then((response: { data: any }) => {
               setIsProccessing(false);
 
               storage.save({
@@ -158,9 +169,9 @@ export default function IdentificationProprietaireScreen({
                 },
               });
 
-              secureStorage.setKey('etablissement',response.data.etablissement.id) // vendeur
+              secureStorage.setKey('etablissement', response.data.etablissement.id) // vendeur
 
-           
+
 
               navigation.dispatch(StackActions.push('MonEtablissement', {
                 vendeur_id: response.data.etablissement.id,
@@ -176,7 +187,7 @@ export default function IdentificationProprietaireScreen({
                   'Nous_n_avons_pas_pu_recuper_vos_informations',
                   preferredLangage,
                 ),
-                [{text: 'OK', onPress: () => null}],
+                [{ text: 'OK', onPress: () => null }],
               );
             });
         }
@@ -204,7 +215,7 @@ export default function IdentificationProprietaireScreen({
                   onPress: () => null,
                 },
               ],
-              {cancelable: true},
+              { cancelable: true },
             );
           }
         }
@@ -212,7 +223,7 @@ export default function IdentificationProprietaireScreen({
       .catch((error: any) => {
         setIsProccessing(false);
         console.log(error);
-        Alert.alert('', error, [{text: 'OK', onPress: () => null}]);
+        Alert.alert('', error, [{ text: 'OK', onPress: () => null }]);
       });
   };
   return (
@@ -237,7 +248,7 @@ export default function IdentificationProprietaireScreen({
             }}>
             <ActivityIndicator
               color={couleurs.primary}
-              style={{alignSelf: 'center'}}
+              style={{ alignSelf: 'center' }}
               size={'large'}></ActivityIndicator>
           </View>
         </Modal>
@@ -355,7 +366,7 @@ export default function IdentificationProprietaireScreen({
                       fontFamily: CustomFont.Poppins,
                     }}></TextInput>
                   <TouchableOpacity
-                    style={{margin: 5, width: 20, height: 20}}
+                    style={{ margin: 5, width: 20, height: 20 }}
                     onPress={_setVisible}>
                     {isVisible && <EyeSlashIcon />}
                     {!isVisible && <EyeIcon color={couleurs.primary} />}
