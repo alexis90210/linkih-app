@@ -80,21 +80,6 @@ export default function Rdv({
     loadRendezvous();
   };
 
-  // GET USER CONNECTED
-  const [userConnectedId, SetUserConnectedId] = useState("");
-
-  useEffect(() => {
-    // declare the data fetching function
-    const ___fetchData = async () => {
-      let _userConnectedId = await secureStorage.getKey("utilisateur");
-      if (_userConnectedId) SetUserConnectedId(_userConnectedId);
-    };
-
-    // call the function
-    ___fetchData()
-      // make sure to catch any error
-      .catch(console.error);
-  }, []);
 
   const [userConnected, SetUserConnected] = useState<any>({});
 
