@@ -1,4 +1,4 @@
-import React, {useRef, useState, useEffect} from 'react';
+import React, { useRef, useState, useEffect } from "react";
 import {
   Text,
   StyleSheet,
@@ -10,17 +10,16 @@ import {
   Alert,
   TouchableOpacity,
   ActivityIndicator,
-} from 'react-native';
+} from "react-native";
 
-import ArrowLeftIcon from '../components/ArrowLeft';
-import {CustomFont, couleurs} from '../components/color';
-import ApiService from '../components/api/service';
-import axios from 'axios';
-import storage from '../components/api/localstorage';
-import {Picker} from '@react-native-picker/picker';
-import translations from '../translations/translations';
-import secureStorage from '../components/api/secureStorage';
-
+import ArrowLeftIcon from "../components/ArrowLeft";
+import { CustomFont, couleurs } from "../components/color";
+import ApiService from "../components/api/service";
+import axios from "axios";
+import storage from "../components/api/localstorage";
+import { Picker } from "@react-native-picker/picker";
+import translations from "../translations/translations";
+import secureStorage from "../components/api/secureStorage";
 
 export default function MesHoraires({
   navigation,
@@ -31,7 +30,7 @@ export default function MesHoraires({
 }) {
   /////////////////////////////////// LANGUAGE HANDLER //////////////////////////////////
 
-  const [preferredLangage, setPreferredLangage] = useState('fr');
+  const [preferredLangage, setPreferredLangage] = useState("fr");
 
   const t = (key: any, langage: any) => {
     return translations[langage][key] || key;
@@ -40,18 +39,17 @@ export default function MesHoraires({
   useEffect(() => {
     // declare the data fetching function
     const fetchData = async () => {
-      let lang = await secureStorage.getKey('defaultlang')
-      if ( lang ) {
+      let lang = await secureStorage.getKey("defaultlang");
+      if (lang) {
         setPreferredLangage(lang);
       }
-    }
-  
+    };
+
     // call the function
     fetchData()
       // make sure to catch any error
       .catch(console.error);
-  }, [])
- 
+  }, []);
 
   //////////////////////////////////////////////////////////////////////////////////////
 
@@ -65,198 +63,207 @@ export default function MesHoraires({
   // GET HORAIRES
   const [Horaires, SetHoraires] = useState<any>({});
 
+  const [userConnectedId, SetUserConnectedId] = useState("");
 
-    const [userConnectedId, SetUserConnectedId] = useState('');
+  useEffect(() => {
+    const fetchData = async () => {
+      let _userConnectedId = await secureStorage.getKey("utilisateur");
+      if (_userConnectedId) SetUserConnected(_userConnectedId);
+    };
 
-    useEffect(async () =>{
-      let _userConnectedId = await secureStorage.getKey('utilisateur')
-      if(_userConnectedId) SetUserConnectedId(_userConnectedId)
+    // call the function
+    fetchData()
+      // make sure to catch any error
+      .catch(console.error);
+  });
+
+  const loadUserData = () => {
+    axios({
+      method: "POST",
+      url: ApiService.API_URL_USER_DATA,
+      data: JSON.stringify({
+        id: userConnectedId,
+      }),
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
     })
-  
-      const loadUserData = () => {
-        axios({
-          method: 'POST',
-          url: ApiService.API_URL_USER_DATA,
-          data: JSON.stringify({
-            id: userConnectedId
-          }),
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json'
-          }
-        })
-          .then(async (response: { data: any }) => {
-            console.log(response)
-            if (response.data.code == 'success') {
-              SetHoraires(response.data.message.horaire_ouverture);
+      .then(async (response: { data: any }) => {
+        console.log(response);
+        if (response.data.code == "success") {
+          SetHoraires(response.data.message.horaire_ouverture);
 
-              SetUserConnected(response.data.message.etablissement[0]);
-        
-              if (!isLoadingHoraire) {
-                response.data.message.horaire_ouverture.map((row: any, index: any) => {
-                  if (row.jour == 'Lundi') {
-                    setSelectedHoraireOuvertureLundi(row.heure_ouverture);
-                    setSelectedHoraireFermetureLundi(row.heure_fermeture);
-                  }
-                  if (row.jour == 'Mardi') {
-                    setSelectedHoraireOuvertureMardi(row.heure_ouverture);
-                    setSelectedHoraireFermetureMardi(row.heure_fermeture);
-                  }
-        
-                  if (row.jour == 'Mercredi') {
-                    setSelectedHoraireOuvertureMercredi(row.heure_ouverture);
-                    setSelectedHoraireFermetureMercredi(row.heure_fermeture);
-                  }
-        
-                  if (row.jour == 'Jeudi') {
-                    setSelectedHoraireOuvertureJeudi(row.heure_ouverture);
-                    setSelectedHoraireFermetureJeudi(row.heure_fermeture);
-                  }
-        
-                  if (row.jour == 'Vendredi') {
-                    setSelectedHoraireOuvertureVendredi(row.heure_ouverture);
-                    setSelectedHoraireFermetureVendredi(row.heure_fermeture);
-                  }
-        
-                  if (row.jour == 'Samedi') {
-                    setSelectedHoraireOuvertureSamedi(row.heure_ouverture);
-                    setSelectedHoraireFermetureSamedi(row.heure_fermeture);
-                  }
-                });
-        
-                setLoadingHoraire(true);
+          SetUserConnected(response.data.message.etablissement[0]);
+
+          if (!isLoadingHoraire) {
+            response.data.message.horaire_ouverture.map(
+              (row: any, index: any) => {
+                if (row.jour == "Lundi") {
+                  setSelectedHoraireOuvertureLundi(row.heure_ouverture);
+                  setSelectedHoraireFermetureLundi(row.heure_fermeture);
+                }
+                if (row.jour == "Mardi") {
+                  setSelectedHoraireOuvertureMardi(row.heure_ouverture);
+                  setSelectedHoraireFermetureMardi(row.heure_fermeture);
+                }
+
+                if (row.jour == "Mercredi") {
+                  setSelectedHoraireOuvertureMercredi(row.heure_ouverture);
+                  setSelectedHoraireFermetureMercredi(row.heure_fermeture);
+                }
+
+                if (row.jour == "Jeudi") {
+                  setSelectedHoraireOuvertureJeudi(row.heure_ouverture);
+                  setSelectedHoraireFermetureJeudi(row.heure_fermeture);
+                }
+
+                if (row.jour == "Vendredi") {
+                  setSelectedHoraireOuvertureVendredi(row.heure_ouverture);
+                  setSelectedHoraireFermetureVendredi(row.heure_fermeture);
+                }
+
+                if (row.jour == "Samedi") {
+                  setSelectedHoraireOuvertureSamedi(row.heure_ouverture);
+                  setSelectedHoraireFermetureSamedi(row.heure_fermeture);
+                }
               }
-            }
-          }).catch(error => console.log(error))
-       }
-    
-       useEffect(() =>{
-        loadUserData()
-       })
+            );
+
+            setLoadingHoraire(true);
+          }
+        }
+      })
+      .catch((error) => console.log(error));
+  };
+
+  useEffect(() => {
+    loadUserData();
+  });
 
   var hours_matin = [
     {
-      hour: '07:00',
+      hour: "07:00",
     },
     {
-      hour: '07:15',
+      hour: "07:15",
     },
     {
-      hour: '07:30',
+      hour: "07:30",
     },
     {
-      hour: '07:45',
+      hour: "07:45",
     },
     {
-      hour: '08:00',
+      hour: "08:00",
     },
     {
-      hour: '08:15',
+      hour: "08:15",
     },
     {
-      hour: '08:30',
+      hour: "08:30",
     },
     {
-      hour: '08:45',
+      hour: "08:45",
     },
     {
-      hour: '09:00',
+      hour: "09:00",
     },
     {
-      hour: '09:15',
+      hour: "09:15",
     },
     {
-      hour: '09:30',
+      hour: "09:30",
     },
     {
-      hour: '09:45',
+      hour: "09:45",
     },
     {
-      hour: '10:00',
+      hour: "10:00",
     },
     {
-      hour: '10:15',
+      hour: "10:15",
     },
     {
-      hour: '10:30',
+      hour: "10:30",
     },
     {
-      hour: '10:45',
+      hour: "10:45",
     },
     {
-      hour: '11:00',
+      hour: "11:00",
     },
     {
-      hour: '11:15',
+      hour: "11:15",
     },
     {
-      hour: '11:30',
+      hour: "11:30",
     },
     {
-      hour: '11:45',
+      hour: "11:45",
     },
   ];
 
   var hours_apresmidi = [
     {
-      hour: '12:00',
+      hour: "12:00",
     },
     {
-      hour: '12:15',
+      hour: "12:15",
     },
     {
-      hour: '12:30',
+      hour: "12:30",
     },
     {
-      hour: '12:45',
+      hour: "12:45",
     },
     {
-      hour: '13:00',
+      hour: "13:00",
     },
     {
-      hour: '13:15',
+      hour: "13:15",
     },
     {
-      hour: '13:30',
+      hour: "13:30",
     },
     {
-      hour: '13:45',
+      hour: "13:45",
     },
     {
-      hour: '15:00',
+      hour: "15:00",
     },
     {
-      hour: '15:15',
+      hour: "15:15",
     },
     {
-      hour: '15:30',
+      hour: "15:30",
     },
     {
-      hour: '15:45',
+      hour: "15:45",
     },
     {
-      hour: '16:00',
+      hour: "16:00",
     },
     {
-      hour: '16:15',
+      hour: "16:15",
     },
     {
-      hour: '16:30',
+      hour: "16:30",
     },
     {
-      hour: '16:45',
+      hour: "16:45",
     },
     {
-      hour: '17:00',
+      hour: "17:00",
     },
     {
-      hour: '17:15',
+      hour: "17:15",
     },
     {
-      hour: '17:30',
+      hour: "17:30",
     },
     {
-      hour: '17:45',
+      hour: "17:45",
     },
   ];
 
@@ -367,7 +374,7 @@ export default function MesHoraires({
       heure_ouverture: any;
     }[] = [];
     Horaires.map((row: any, key: any) => {
-      if (row.jour == 'Lundi') {
+      if (row.jour == "Lundi") {
         let jour = {
           id: row.id,
           jour: row.jour,
@@ -378,7 +385,7 @@ export default function MesHoraires({
         final.push(jour);
       }
 
-      if (row.jour == 'Mardi') {
+      if (row.jour == "Mardi") {
         let jour = {
           id: row.id,
           jour: row.jour,
@@ -389,7 +396,7 @@ export default function MesHoraires({
         final.push(jour);
       }
 
-      if (row.jour == 'Mercredi') {
+      if (row.jour == "Mercredi") {
         let jour = {
           id: row.id,
           jour: row.jour,
@@ -400,7 +407,7 @@ export default function MesHoraires({
         final.push(jour);
       }
 
-      if (row.jour == 'Jeudi') {
+      if (row.jour == "Jeudi") {
         let jour = {
           id: row.id,
           jour: row.jour,
@@ -411,7 +418,7 @@ export default function MesHoraires({
         final.push(jour);
       }
 
-      if (row.jour == 'Vendredi') {
+      if (row.jour == "Vendredi") {
         let jour = {
           id: row.id,
           jour: row.jour,
@@ -422,7 +429,7 @@ export default function MesHoraires({
         final.push(jour);
       }
 
-      if (row.jour == 'Samedi') {
+      if (row.jour == "Samedi") {
         let jour = {
           id: row.id,
           jour: row.jour,
@@ -436,31 +443,31 @@ export default function MesHoraires({
 
     // SEND TO SERVER
     axios({
-      method: 'PUT',
+      method: "PUT",
       url: ApiService.API_URL_EDIT_HORAIRE,
       data: JSON.stringify({
-        vendeur_id:userConnectedId,
+        vendeur_id: userConnectedId,
         horaire: final,
       }),
       headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
+        Accept: "application/json",
+        "Content-Type": "application/json",
       },
     })
-      .then((response: {data: any}) => {
+      .then((response: { data: any }) => {
         var api = response.data;
 
         console.log(api);
 
-        if (api.code == 'success') {
+        if (api.code == "success") {
           setLoading(false);
-          Alert.alert('Succes!!', t('Operation_reussie', preferredLangage));
+          Alert.alert("Succes!!", t("Operation_reussie", preferredLangage));
         }
       })
       .catch((error: any) => {
         console.log(error);
 
-        Alert.alert('', t('erreur_survenue', preferredLangage));
+        Alert.alert("", t("erreur_survenue", preferredLangage));
       });
   };
 
@@ -468,19 +475,21 @@ export default function MesHoraires({
     <View>
       <SafeAreaView
         style={{
-          width: '100%',
-          height: '100%',
-        }}>
+          width: "100%",
+          height: "100%",
+        }}
+      >
         <View
           style={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'flex-start',
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "flex-start",
             gap: 30,
             paddingVertical: 10,
             paddingHorizontal: 10,
             backgroundColor: couleurs.primary,
-          }}>
+          }}
+        >
           <Pressable onPress={() => navigation.goBack()}>
             <ArrowLeftIcon color={couleurs.white} />
           </Pressable>
@@ -489,8 +498,9 @@ export default function MesHoraires({
               color: couleurs.white,
               fontSize: 16,
               fontFamily: CustomFont.Poppins,
-            }}>
-            {t('Mes_Horaires', preferredLangage)}
+            }}
+          >
+            {t("Mes_Horaires", preferredLangage)}
           </Text>
         </View>
 
@@ -498,74 +508,81 @@ export default function MesHoraires({
         <ScrollView
           contentInsetAdjustmentBehavior="automatic"
           style={{
-            backgroundColor: '#f6f6f6f6',
-          }}>
-          <View style={{paddingHorizontal: 12, marginVertical: 10}}>
+            backgroundColor: "#f6f6f6f6",
+          }}
+        >
+          <View style={{ paddingHorizontal: 12, marginVertical: 10 }}>
             <View
               style={{
-                display: 'flex',
-                justifyContent: 'center',
+                display: "flex",
+                justifyContent: "center",
                 gap: 5,
-                flexDirection: 'column',
-              }}>
+                flexDirection: "column",
+              }}
+            >
               {/* LUNDI */}
               <View
                 style={{
                   borderBottomColor: couleurs.primary,
                   borderBottomWidth: 1,
-                  borderStyle: 'solid',
+                  borderStyle: "solid",
                   padding: 20,
-                  display: 'flex',
-                  justifyContent: 'space-between',
+                  display: "flex",
+                  justifyContent: "space-between",
                   gap: 15,
-                  flexDirection: 'row',
-                }}>
+                  flexDirection: "row",
+                }}
+              >
                 <Text
                   style={{
                     fontFamily: CustomFont.Poppins,
                     fontSize: 12,
                     color: couleurs.dark,
-                    alignSelf: 'center',
-                  }}>
-                  {t('Lundi', preferredLangage)}
+                    alignSelf: "center",
+                  }}
+                >
+                  {t("Lundi", preferredLangage)}
                 </Text>
                 <View
                   style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
+                    display: "flex",
+                    justifyContent: "space-between",
                     gap: 10,
-                    flexDirection: 'column',
-                  }}>
+                    flexDirection: "column",
+                  }}
+                >
                   <View
                     style={{
-                      borderStyle: 'solid',
+                      borderStyle: "solid",
                       borderColor: couleurs.primary,
                       borderWidth: 1,
                       borderRadius: 10,
-                    }}>
+                    }}
+                  >
                     <Picker
                       style={{
                         width: 200,
                         height: 30,
-                        alignSelf: 'center',
-                        position: 'relative',
+                        alignSelf: "center",
+                        position: "relative",
                         bottom: 10,
-                        color:couleurs.dark
+                        color: couleurs.dark,
                       }}
                       dropdownIconColor={couleurs.primary}
                       selectedValue={selectedHoraireOuvertureLundi}
                       onValueChange={(itemValue: any, itemIndex: any) =>
                         setSelectedHoraireOuvertureLundi(itemValue)
-                      }>
+                      }
+                    >
                       <Picker.Item
-                        label={t('Selectionner_une_heure', preferredLangage)}
-                        value={''}
+                        label={t("Selectionner_une_heure", preferredLangage)}
+                        value={""}
                         enabled={false}
-                        style={{fontSize:11}}
+                        style={{ fontSize: 11 }}
                       />
                       <Picker.Item
-                        label={t('MATIN', preferredLangage)}
-                        value={'-1'}
+                        label={t("MATIN", preferredLangage)}
+                        value={"-1"}
                         enabled={false}
                       />
                       {hours_matin.map((row, index) => (
@@ -573,13 +590,13 @@ export default function MesHoraires({
                           key={index}
                           label={row.hour}
                           value={row.hour}
-                          style={{fontSize:13}}
+                          style={{ fontSize: 13 }}
                         />
                       ))}
 
                       <Picker.Item
-                        label={t('SOIR', preferredLangage)}
-                        value={'-1'}
+                        label={t("SOIR", preferredLangage)}
+                        value={"-1"}
                         enabled={false}
                       />
                       {hours_apresmidi.map((row, index) => (
@@ -587,7 +604,7 @@ export default function MesHoraires({
                           key={index}
                           label={row.hour}
                           value={row.hour}
-                          style={{fontSize:13}}
+                          style={{ fontSize: 13 }}
                         />
                       ))}
                     </Picker>
@@ -595,34 +612,36 @@ export default function MesHoraires({
 
                   <View
                     style={{
-                      borderStyle: 'solid',
+                      borderStyle: "solid",
                       borderColor: couleurs.primary,
                       borderWidth: 1,
                       borderRadius: 10,
-                    }}>
+                    }}
+                  >
                     <Picker
                       style={{
                         width: 200,
                         height: 30,
-                        alignSelf: 'center',
-                        position: 'relative',
+                        alignSelf: "center",
+                        position: "relative",
                         bottom: 10,
-                        color:couleurs.dark
+                        color: couleurs.dark,
                       }}
                       dropdownIconColor={couleurs.primary}
                       selectedValue={selectedHoraireFermetureLundi}
                       onValueChange={(itemValue: any, itemIndex: any) =>
                         setSelectedHoraireFermetureLundi(itemValue)
-                      }>
+                      }
+                    >
                       <Picker.Item
-                        label={t('Selectionner_une_heure', preferredLangage)}
-                        value={''}
+                        label={t("Selectionner_une_heure", preferredLangage)}
+                        value={""}
                         enabled={false}
-                        style={{fontSize:11}}
+                        style={{ fontSize: 11 }}
                       />
                       <Picker.Item
-                        label={t('MATIN', preferredLangage)}
-                        value={'-1'}
+                        label={t("MATIN", preferredLangage)}
+                        value={"-1"}
                         enabled={false}
                       />
                       {hours_matin.map((row, index) => (
@@ -630,13 +649,13 @@ export default function MesHoraires({
                           key={index}
                           label={row.hour}
                           value={row.hour}
-                          style={{fontSize:13}}
+                          style={{ fontSize: 13 }}
                         />
                       ))}
 
                       <Picker.Item
-                        label={t('SOIR', preferredLangage)}
-                        value={'-1'}
+                        label={t("SOIR", preferredLangage)}
+                        value={"-1"}
                         enabled={false}
                       />
                       {hours_apresmidi.map((row, index) => (
@@ -644,7 +663,7 @@ export default function MesHoraires({
                           key={index}
                           label={row.hour}
                           value={row.hour}
-                          style={{fontSize:13}}
+                          style={{ fontSize: 13 }}
                         />
                       ))}
                     </Picker>
@@ -658,59 +677,64 @@ export default function MesHoraires({
                 style={{
                   borderBottomColor: couleurs.primary,
                   borderBottomWidth: 1,
-                  borderStyle: 'solid',
+                  borderStyle: "solid",
                   padding: 20,
-                  display: 'flex',
-                  justifyContent: 'space-between',
+                  display: "flex",
+                  justifyContent: "space-between",
                   gap: 15,
-                  flexDirection: 'row',
-                }}>
+                  flexDirection: "row",
+                }}
+              >
                 <Text
                   style={{
                     fontFamily: CustomFont.Poppins,
                     fontSize: 12,
                     color: couleurs.dark,
-                    alignSelf: 'center',
-                  }}>
-                  {t('Mardi', preferredLangage)}
+                    alignSelf: "center",
+                  }}
+                >
+                  {t("Mardi", preferredLangage)}
                 </Text>
                 <View
                   style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
+                    display: "flex",
+                    justifyContent: "space-between",
                     gap: 10,
-                    flexDirection: 'column',
-                  }}>
+                    flexDirection: "column",
+                  }}
+                >
                   <View
                     style={{
-                      borderStyle: 'solid',
+                      borderStyle: "solid",
                       borderColor: couleurs.primary,
                       borderWidth: 1,
                       borderRadius: 10,
-                    }}>
+                    }}
+                  >
                     <Picker
                       style={{
                         width: 200,
                         height: 30,
-                        alignSelf: 'center',
-                        position: 'relative',
+                        alignSelf: "center",
+                        position: "relative",
                         bottom: 10,
-                        color:couleurs.dark
+                        color: couleurs.dark,
                       }}
                       dropdownIconColor={couleurs.primary}
                       selectedValue={selectedHoraireOuvertureMardi}
                       onValueChange={(itemValue: any, itemIndex: any) =>
                         setSelectedHoraireOuvertureMardi(itemValue)
-                      }>
+                      }
+                    >
                       <Picker.Item
-                        label={t('Selectionner_une_heure', preferredLangage)}
-                        value={''}
+                        label={t("Selectionner_une_heure", preferredLangage)}
+                        value={""}
                         enabled={false}
-                        style={{fontSize:11}}
+                        style={{ fontSize: 11 }}
                       />
                       <Picker.Item
-                        label={t('MATIN', preferredLangage)}
-                        value={'-1'}
+                        label={t("MATIN", preferredLangage)}
+                        value={"-1"}
                         enabled={false}
                       />
                       {hours_matin.map((row, index) => (
@@ -718,13 +742,13 @@ export default function MesHoraires({
                           key={index}
                           label={row.hour}
                           value={row.hour}
-                          style={{fontSize:13}}
+                          style={{ fontSize: 13 }}
                         />
                       ))}
 
                       <Picker.Item
-                        label={t('SOIR', preferredLangage)}
-                        value={'-1'}
+                        label={t("SOIR", preferredLangage)}
+                        value={"-1"}
                         enabled={false}
                       />
                       {hours_apresmidi.map((row, index) => (
@@ -732,7 +756,7 @@ export default function MesHoraires({
                           key={index}
                           label={row.hour}
                           value={row.hour}
-                          style={{fontSize:13}}
+                          style={{ fontSize: 13 }}
                         />
                       ))}
                     </Picker>
@@ -740,34 +764,36 @@ export default function MesHoraires({
 
                   <View
                     style={{
-                      borderStyle: 'solid',
+                      borderStyle: "solid",
                       borderColor: couleurs.primary,
                       borderWidth: 1,
                       borderRadius: 10,
-                    }}>
+                    }}
+                  >
                     <Picker
                       style={{
                         width: 200,
                         height: 30,
-                        alignSelf: 'center',
-                        position: 'relative',
+                        alignSelf: "center",
+                        position: "relative",
                         bottom: 10,
-                        color:couleurs.dark
+                        color: couleurs.dark,
                       }}
                       dropdownIconColor={couleurs.primary}
                       selectedValue={selectedHoraireFermetureMardi}
                       onValueChange={(itemValue: any, itemIndex: any) =>
                         setSelectedHoraireFermetureMardi(itemValue)
-                      }>
+                      }
+                    >
                       <Picker.Item
-                        label={t('Selectionner_une_heure', preferredLangage)}
-                        value={''}
+                        label={t("Selectionner_une_heure", preferredLangage)}
+                        value={""}
                         enabled={false}
-                        style={{fontSize:11}}
+                        style={{ fontSize: 11 }}
                       />
                       <Picker.Item
-                        label={t('MATIN', preferredLangage)}
-                        value={'-1'}
+                        label={t("MATIN", preferredLangage)}
+                        value={"-1"}
                         enabled={false}
                       />
                       {hours_matin.map((row, index) => (
@@ -775,13 +801,13 @@ export default function MesHoraires({
                           key={index}
                           label={row.hour}
                           value={row.hour}
-                          style={{fontSize:13}}
+                          style={{ fontSize: 13 }}
                         />
                       ))}
 
                       <Picker.Item
-                        label={t('SOIR', preferredLangage)}
-                        value={'-1'}
+                        label={t("SOIR", preferredLangage)}
+                        value={"-1"}
                         enabled={false}
                       />
                       {hours_apresmidi.map((row, index) => (
@@ -789,7 +815,7 @@ export default function MesHoraires({
                           key={index}
                           label={row.hour}
                           value={row.hour}
-                          style={{fontSize:13}}
+                          style={{ fontSize: 13 }}
                         />
                       ))}
                     </Picker>
@@ -802,59 +828,64 @@ export default function MesHoraires({
                 style={{
                   borderBottomColor: couleurs.primary,
                   borderBottomWidth: 1,
-                  borderStyle: 'solid',
+                  borderStyle: "solid",
                   padding: 20,
-                  display: 'flex',
-                  justifyContent: 'space-between',
+                  display: "flex",
+                  justifyContent: "space-between",
                   gap: 15,
-                  flexDirection: 'row',
-                }}>
+                  flexDirection: "row",
+                }}
+              >
                 <Text
                   style={{
                     fontFamily: CustomFont.Poppins,
                     fontSize: 12,
                     color: couleurs.dark,
-                    alignSelf: 'center',
-                  }}>
-                  {t('Mercredi', preferredLangage)}
+                    alignSelf: "center",
+                  }}
+                >
+                  {t("Mercredi", preferredLangage)}
                 </Text>
                 <View
                   style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
+                    display: "flex",
+                    justifyContent: "space-between",
                     gap: 10,
-                    flexDirection: 'column',
-                  }}>
+                    flexDirection: "column",
+                  }}
+                >
                   <View
                     style={{
-                      borderStyle: 'solid',
+                      borderStyle: "solid",
                       borderColor: couleurs.primary,
                       borderWidth: 1,
                       borderRadius: 10,
-                    }}>
+                    }}
+                  >
                     <Picker
                       style={{
                         width: 200,
                         height: 30,
-                        alignSelf: 'center',
-                        position: 'relative',
+                        alignSelf: "center",
+                        position: "relative",
                         bottom: 10,
-                        color:couleurs.dark
+                        color: couleurs.dark,
                       }}
                       dropdownIconColor={couleurs.primary}
                       selectedValue={selectedHoraireOuvertureMercredi}
                       onValueChange={(itemValue: any, itemIndex: any) =>
                         setSelectedHoraireOuvertureMercredi(itemValue)
-                      }>
+                      }
+                    >
                       <Picker.Item
-                        label={t('Selectionner_une_heure', preferredLangage)}
-                        value={''}
+                        label={t("Selectionner_une_heure", preferredLangage)}
+                        value={""}
                         enabled={false}
-                        style={{fontSize:11}}
+                        style={{ fontSize: 11 }}
                       />
                       <Picker.Item
-                        label={t('MATIN', preferredLangage)}
-                        value={'-1'}
+                        label={t("MATIN", preferredLangage)}
+                        value={"-1"}
                         enabled={false}
                       />
                       {hours_matin.map((row, index) => (
@@ -862,13 +893,13 @@ export default function MesHoraires({
                           key={index}
                           label={row.hour}
                           value={row.hour}
-                          style={{fontSize:13}}
+                          style={{ fontSize: 13 }}
                         />
                       ))}
 
                       <Picker.Item
-                        label={t('SOIR', preferredLangage)}
-                        value={'-1'}
+                        label={t("SOIR", preferredLangage)}
+                        value={"-1"}
                         enabled={false}
                       />
                       {hours_apresmidi.map((row, index) => (
@@ -876,7 +907,7 @@ export default function MesHoraires({
                           key={index}
                           label={row.hour}
                           value={row.hour}
-                          style={{fontSize:13}}
+                          style={{ fontSize: 13 }}
                         />
                       ))}
                     </Picker>
@@ -884,34 +915,36 @@ export default function MesHoraires({
 
                   <View
                     style={{
-                      borderStyle: 'solid',
+                      borderStyle: "solid",
                       borderColor: couleurs.primary,
                       borderWidth: 1,
                       borderRadius: 10,
-                    }}>
+                    }}
+                  >
                     <Picker
                       style={{
                         width: 200,
                         height: 30,
-                        alignSelf: 'center',
-                        position: 'relative',
+                        alignSelf: "center",
+                        position: "relative",
                         bottom: 10,
-                        color:couleurs.dark
+                        color: couleurs.dark,
                       }}
                       dropdownIconColor={couleurs.primary}
                       selectedValue={selectedHoraireFermetureMercredi}
                       onValueChange={(itemValue: any, itemIndex: any) =>
                         setSelectedHoraireFermetureMercredi(itemValue)
-                      }>
+                      }
+                    >
                       <Picker.Item
-                        label={t('Selectionner_une_heure', preferredLangage)}
-                        value={''}
+                        label={t("Selectionner_une_heure", preferredLangage)}
+                        value={""}
                         enabled={false}
-                        style={{fontSize:11}}
+                        style={{ fontSize: 11 }}
                       />
                       <Picker.Item
-                        label={t('MATIN', preferredLangage)}
-                        value={'-1'}
+                        label={t("MATIN", preferredLangage)}
+                        value={"-1"}
                         enabled={false}
                       />
                       {hours_matin.map((row, index) => (
@@ -919,13 +952,13 @@ export default function MesHoraires({
                           key={index}
                           label={row.hour}
                           value={row.hour}
-                          style={{fontSize:13}}
+                          style={{ fontSize: 13 }}
                         />
                       ))}
 
                       <Picker.Item
-                        label={t('SOIR', preferredLangage)}
-                        value={'-1'}
+                        label={t("SOIR", preferredLangage)}
+                        value={"-1"}
                         enabled={false}
                       />
                       {hours_apresmidi.map((row, index) => (
@@ -933,7 +966,7 @@ export default function MesHoraires({
                           key={index}
                           label={row.hour}
                           value={row.hour}
-                          style={{fontSize:13}}
+                          style={{ fontSize: 13 }}
                         />
                       ))}
                     </Picker>
@@ -946,59 +979,64 @@ export default function MesHoraires({
                 style={{
                   borderBottomColor: couleurs.primary,
                   borderBottomWidth: 1,
-                  borderStyle: 'solid',
+                  borderStyle: "solid",
                   padding: 20,
-                  display: 'flex',
-                  justifyContent: 'space-between',
+                  display: "flex",
+                  justifyContent: "space-between",
                   gap: 15,
-                  flexDirection: 'row',
-                }}>
+                  flexDirection: "row",
+                }}
+              >
                 <Text
                   style={{
                     fontFamily: CustomFont.Poppins,
                     fontSize: 12,
                     color: couleurs.dark,
-                    alignSelf: 'center',
-                  }}>
-                  {t('Jeudi', preferredLangage)}
+                    alignSelf: "center",
+                  }}
+                >
+                  {t("Jeudi", preferredLangage)}
                 </Text>
                 <View
                   style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
+                    display: "flex",
+                    justifyContent: "space-between",
                     gap: 10,
-                    flexDirection: 'column',
-                  }}>
+                    flexDirection: "column",
+                  }}
+                >
                   <View
                     style={{
-                      borderStyle: 'solid',
+                      borderStyle: "solid",
                       borderColor: couleurs.primary,
                       borderWidth: 1,
                       borderRadius: 10,
-                    }}>
+                    }}
+                  >
                     <Picker
                       style={{
                         width: 200,
                         height: 30,
-                        alignSelf: 'center',
-                        position: 'relative',
+                        alignSelf: "center",
+                        position: "relative",
                         bottom: 10,
-                        color:couleurs.dark
+                        color: couleurs.dark,
                       }}
                       dropdownIconColor={couleurs.primary}
                       selectedValue={selectedHoraireOuvertureJeudi}
                       onValueChange={(itemValue: any, itemIndex: any) =>
                         setSelectedHoraireOuvertureJeudi(itemValue)
-                      }>
+                      }
+                    >
                       <Picker.Item
-                        label={t('Selectionner_une_heure', preferredLangage)}
-                        value={''}
+                        label={t("Selectionner_une_heure", preferredLangage)}
+                        value={""}
                         enabled={false}
-                        style={{fontSize:11}}
+                        style={{ fontSize: 11 }}
                       />
                       <Picker.Item
-                        label={t('MATIN', preferredLangage)}
-                        value={'-1'}
+                        label={t("MATIN", preferredLangage)}
+                        value={"-1"}
                         enabled={false}
                       />
                       {hours_matin.map((row, index) => (
@@ -1006,13 +1044,13 @@ export default function MesHoraires({
                           key={index}
                           label={row.hour}
                           value={row.hour}
-                          style={{fontSize:13}}
+                          style={{ fontSize: 13 }}
                         />
                       ))}
 
                       <Picker.Item
-                        label={t('SOIR', preferredLangage)}
-                        value={'-1'}
+                        label={t("SOIR", preferredLangage)}
+                        value={"-1"}
                         enabled={false}
                       />
                       {hours_apresmidi.map((row, index) => (
@@ -1020,7 +1058,7 @@ export default function MesHoraires({
                           key={index}
                           label={row.hour}
                           value={row.hour}
-                          style={{fontSize:13}}
+                          style={{ fontSize: 13 }}
                         />
                       ))}
                     </Picker>
@@ -1028,34 +1066,36 @@ export default function MesHoraires({
 
                   <View
                     style={{
-                      borderStyle: 'solid',
+                      borderStyle: "solid",
                       borderColor: couleurs.primary,
                       borderWidth: 1,
                       borderRadius: 10,
-                    }}>
+                    }}
+                  >
                     <Picker
                       style={{
                         width: 200,
                         height: 30,
-                        alignSelf: 'center',
-                        position: 'relative',
+                        alignSelf: "center",
+                        position: "relative",
                         bottom: 10,
-                        color:couleurs.dark
+                        color: couleurs.dark,
                       }}
                       dropdownIconColor={couleurs.primary}
                       selectedValue={selectedHoraireFermetureJeudi}
                       onValueChange={(itemValue: any, itemIndex: any) =>
                         setSelectedHoraireFermetureJeudi(itemValue)
-                      }>
+                      }
+                    >
                       <Picker.Item
-                        label={t('Selectionner_une_heure', preferredLangage)}
-                        value={''}
+                        label={t("Selectionner_une_heure", preferredLangage)}
+                        value={""}
                         enabled={false}
-                        style={{fontSize:11}}
+                        style={{ fontSize: 11 }}
                       />
                       <Picker.Item
-                        label={t('MATIN', preferredLangage)}
-                        value={'-1'}
+                        label={t("MATIN", preferredLangage)}
+                        value={"-1"}
                         enabled={false}
                       />
                       {hours_matin.map((row, index) => (
@@ -1063,13 +1103,13 @@ export default function MesHoraires({
                           key={index}
                           label={row.hour}
                           value={row.hour}
-                          style={{fontSize:13}}
+                          style={{ fontSize: 13 }}
                         />
                       ))}
 
                       <Picker.Item
-                        label={t('SOIR', preferredLangage)}
-                        value={'-1'}
+                        label={t("SOIR", preferredLangage)}
+                        value={"-1"}
                         enabled={false}
                       />
                       {hours_apresmidi.map((row, index) => (
@@ -1077,7 +1117,7 @@ export default function MesHoraires({
                           key={index}
                           label={row.hour}
                           value={row.hour}
-                          style={{fontSize:13}}
+                          style={{ fontSize: 13 }}
                         />
                       ))}
                     </Picker>
@@ -1090,59 +1130,64 @@ export default function MesHoraires({
                 style={{
                   borderBottomColor: couleurs.primary,
                   borderBottomWidth: 1,
-                  borderStyle: 'solid',
+                  borderStyle: "solid",
                   padding: 20,
-                  display: 'flex',
-                  justifyContent: 'space-between',
+                  display: "flex",
+                  justifyContent: "space-between",
                   gap: 15,
-                  flexDirection: 'row',
-                }}>
+                  flexDirection: "row",
+                }}
+              >
                 <Text
                   style={{
                     fontFamily: CustomFont.Poppins,
                     fontSize: 12,
                     color: couleurs.dark,
-                    alignSelf: 'center',
-                  }}>
-                  {t('Vendredi', preferredLangage)}
+                    alignSelf: "center",
+                  }}
+                >
+                  {t("Vendredi", preferredLangage)}
                 </Text>
                 <View
                   style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
+                    display: "flex",
+                    justifyContent: "space-between",
                     gap: 10,
-                    flexDirection: 'column',
-                  }}>
+                    flexDirection: "column",
+                  }}
+                >
                   <View
                     style={{
-                      borderStyle: 'solid',
+                      borderStyle: "solid",
                       borderColor: couleurs.primary,
                       borderWidth: 1,
                       borderRadius: 10,
-                    }}>
+                    }}
+                  >
                     <Picker
                       style={{
                         width: 200,
                         height: 30,
-                        alignSelf: 'center',
-                        position: 'relative',
+                        alignSelf: "center",
+                        position: "relative",
                         bottom: 10,
-                        color:couleurs.dark
+                        color: couleurs.dark,
                       }}
                       dropdownIconColor={couleurs.primary}
                       selectedValue={selectedHoraireOuvertureVendredi}
                       onValueChange={(itemValue: any, itemIndex: any) =>
                         setSelectedHoraireOuvertureVendredi(itemValue)
-                      }>
+                      }
+                    >
                       <Picker.Item
-                        label={t('Selectionner_une_heure', preferredLangage)}
-                        value={''}
+                        label={t("Selectionner_une_heure", preferredLangage)}
+                        value={""}
                         enabled={false}
-                        style={{fontSize:11}}
+                        style={{ fontSize: 11 }}
                       />
                       <Picker.Item
-                        label={t('MATIN', preferredLangage)}
-                        value={'-1'}
+                        label={t("MATIN", preferredLangage)}
+                        value={"-1"}
                         enabled={false}
                       />
                       {hours_matin.map((row, index) => (
@@ -1150,13 +1195,13 @@ export default function MesHoraires({
                           key={index}
                           label={row.hour}
                           value={row.hour}
-                          style={{fontSize:13}}
+                          style={{ fontSize: 13 }}
                         />
                       ))}
 
                       <Picker.Item
-                        label={t('SOIR', preferredLangage)}
-                        value={'-1'}
+                        label={t("SOIR", preferredLangage)}
+                        value={"-1"}
                         enabled={false}
                       />
                       {hours_apresmidi.map((row, index) => (
@@ -1164,7 +1209,7 @@ export default function MesHoraires({
                           key={index}
                           label={row.hour}
                           value={row.hour}
-                          style={{fontSize:13}}
+                          style={{ fontSize: 13 }}
                         />
                       ))}
                     </Picker>
@@ -1172,34 +1217,36 @@ export default function MesHoraires({
 
                   <View
                     style={{
-                      borderStyle: 'solid',
+                      borderStyle: "solid",
                       borderColor: couleurs.primary,
                       borderWidth: 1,
                       borderRadius: 10,
-                    }}>
+                    }}
+                  >
                     <Picker
                       style={{
                         width: 200,
                         height: 30,
-                        alignSelf: 'center',
-                        position: 'relative',
+                        alignSelf: "center",
+                        position: "relative",
                         bottom: 10,
-                        color:couleurs.dark
+                        color: couleurs.dark,
                       }}
                       dropdownIconColor={couleurs.primary}
                       selectedValue={selectedHoraireFermetureVendredi}
                       onValueChange={(itemValue: any, itemIndex: any) =>
                         setSelectedHoraireFermetureVendredi(itemValue)
-                      }>
+                      }
+                    >
                       <Picker.Item
-                        label={t('Selectionner_une_heure', preferredLangage)}
-                        value={''}
+                        label={t("Selectionner_une_heure", preferredLangage)}
+                        value={""}
                         enabled={false}
-                        style={{fontSize:11}}
+                        style={{ fontSize: 11 }}
                       />
                       <Picker.Item
-                        label={t('MATIN', preferredLangage)}
-                        value={'-1'}
+                        label={t("MATIN", preferredLangage)}
+                        value={"-1"}
                         enabled={false}
                       />
                       {hours_matin.map((row, index) => (
@@ -1207,13 +1254,13 @@ export default function MesHoraires({
                           key={index}
                           label={row.hour}
                           value={row.hour}
-                          style={{fontSize:13}}
+                          style={{ fontSize: 13 }}
                         />
                       ))}
 
                       <Picker.Item
-                        label={t('SOIR', preferredLangage)}
-                        value={'-1'}
+                        label={t("SOIR", preferredLangage)}
+                        value={"-1"}
                         enabled={false}
                       />
                       {hours_apresmidi.map((row, index) => (
@@ -1221,7 +1268,7 @@ export default function MesHoraires({
                           key={index}
                           label={row.hour}
                           value={row.hour}
-                          style={{fontSize:13}}
+                          style={{ fontSize: 13 }}
                         />
                       ))}
                     </Picker>
@@ -1234,73 +1281,78 @@ export default function MesHoraires({
                 style={{
                   borderBottomColor: couleurs.primary,
                   borderBottomWidth: 1,
-                  borderStyle: 'solid',
+                  borderStyle: "solid",
                   padding: 20,
-                  display: 'flex',
-                  justifyContent: 'space-between',
+                  display: "flex",
+                  justifyContent: "space-between",
                   gap: 15,
-                  flexDirection: 'row'
-                }}>
+                  flexDirection: "row",
+                }}
+              >
                 <Text
                   style={{
                     fontFamily: CustomFont.Poppins,
                     fontSize: 12,
                     color: couleurs.dark,
-                    alignSelf: 'center',
-                  }}>
-                  {t('Samedi', preferredLangage)}
+                    alignSelf: "center",
+                  }}
+                >
+                  {t("Samedi", preferredLangage)}
                 </Text>
                 <View
                   style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
+                    display: "flex",
+                    justifyContent: "space-between",
                     gap: 10,
-                    flexDirection: 'column'
-                  }}>
+                    flexDirection: "column",
+                  }}
+                >
                   <View
                     style={{
-                      borderStyle: 'solid',
+                      borderStyle: "solid",
                       borderColor: couleurs.primary,
                       borderWidth: 1,
                       borderRadius: 10,
-                    }}>
+                    }}
+                  >
                     <Picker
                       style={{
                         width: 200,
                         height: 30,
-                        alignSelf: 'center',
-                        position: 'relative',
+                        alignSelf: "center",
+                        position: "relative",
                         bottom: 10,
-                        color:couleurs.dark
+                        color: couleurs.dark,
                       }}
                       dropdownIconColor={couleurs.primary}
                       selectedValue={selectedHoraireOuvertureSamedi}
                       onValueChange={(itemValue: any, itemIndex: any) =>
                         setSelectedHoraireOuvertureSamedi(itemValue)
-                      }>
+                      }
+                    >
                       <Picker.Item
-                        label={t('Selectionner_une_heure', preferredLangage)}
-                        value={''}
+                        label={t("Selectionner_une_heure", preferredLangage)}
+                        value={""}
                         enabled={false}
-                        style={{fontSize:11}}
+                        style={{ fontSize: 11 }}
                       />
                       <Picker.Item
-                        label={t('MATIN', preferredLangage)}
-                        value={'-1'}
+                        label={t("MATIN", preferredLangage)}
+                        value={"-1"}
                         enabled={false}
                       />
                       {hours_matin.map((row, index) => (
-                        <Picker.Item 
+                        <Picker.Item
                           key={index}
                           label={row.hour}
                           value={row.hour}
-                          style={{fontSize:13}}
+                          style={{ fontSize: 13 }}
                         />
                       ))}
 
                       <Picker.Item
-                        label={t('SOIR', preferredLangage)}
-                        value={'-1'}
+                        label={t("SOIR", preferredLangage)}
+                        value={"-1"}
                         enabled={false}
                       />
                       {hours_apresmidi.map((row, index) => (
@@ -1308,7 +1360,7 @@ export default function MesHoraires({
                           key={index}
                           label={row.hour}
                           value={row.hour}
-                          style={{fontSize:13}}
+                          style={{ fontSize: 13 }}
                         />
                       ))}
                     </Picker>
@@ -1316,34 +1368,36 @@ export default function MesHoraires({
 
                   <View
                     style={{
-                      borderStyle: 'solid',
+                      borderStyle: "solid",
                       borderColor: couleurs.primary,
                       borderWidth: 1,
                       borderRadius: 10,
-                    }}>
+                    }}
+                  >
                     <Picker
                       style={{
                         width: 200,
                         height: 30,
-                        alignSelf: 'center',
-                        position: 'relative',
+                        alignSelf: "center",
+                        position: "relative",
                         bottom: 10,
-                        color:couleurs.dark
+                        color: couleurs.dark,
                       }}
                       dropdownIconColor={couleurs.primary}
                       selectedValue={selectedHoraireFermetureSamedi}
                       onValueChange={(itemValue: any, itemIndex: any) =>
                         setSelectedHoraireFermetureSamedi(itemValue)
-                      }>
+                      }
+                    >
                       <Picker.Item
-                        label={t('Selectionner_une_heure', preferredLangage)}
-                        value={''}
+                        label={t("Selectionner_une_heure", preferredLangage)}
+                        value={""}
                         enabled={false}
-                        style={{fontSize:11}}
+                        style={{ fontSize: 11 }}
                       />
                       <Picker.Item
-                        label={t('MATIN', preferredLangage)}
-                        value={'-1'}
+                        label={t("MATIN", preferredLangage)}
+                        value={"-1"}
                         enabled={false}
                       />
                       {hours_matin.map((row, index) => (
@@ -1351,13 +1405,13 @@ export default function MesHoraires({
                           key={index}
                           label={row.hour}
                           value={row.hour}
-                          style={{fontSize:13}}
+                          style={{ fontSize: 13 }}
                         />
                       ))}
 
                       <Picker.Item
-                        label={t('SOIR', preferredLangage)}
-                        value={'-1'}
+                        label={t("SOIR", preferredLangage)}
+                        value={"-1"}
                         enabled={false}
                       />
                       {hours_apresmidi.map((row, index) => (
@@ -1365,7 +1419,7 @@ export default function MesHoraires({
                           key={index}
                           label={row.hour}
                           value={row.hour}
-                          style={{fontSize:13}}
+                          style={{ fontSize: 13 }}
                         />
                       ))}
                     </Picker>
@@ -1376,29 +1430,31 @@ export default function MesHoraires({
           </View>
         </ScrollView>
 
-        <View style={{padding: 10}}>
+        <View style={{ padding: 10 }}>
           <TouchableOpacity
             style={{
               paddingHorizontal: 15,
-              display: 'flex',
-              justifyContent: 'center',
-              flexDirection: 'row',
+              display: "flex",
+              justifyContent: "center",
+              flexDirection: "row",
               backgroundColor: couleurs.primary,
               borderRadius: 30,
-              width: '100%',
+              width: "100%",
             }}
-            onPress={() => saveHoraire()}>
+            onPress={() => saveHoraire()}
+          >
             <Text
               style={{
-                textAlign: 'center',
+                textAlign: "center",
                 padding: 10,
                 paddingHorizontal: 20,
                 fontSize: 13,
-                fontWeight: '500',
+                fontWeight: "500",
                 color: couleurs.secondary,
                 fontFamily: CustomFont.Poppins,
-              }}>
-              {t('Enregistrer', preferredLangage)}
+              }}
+            >
+              {t("Enregistrer", preferredLangage)}
             </Text>
           </TouchableOpacity>
         </View>

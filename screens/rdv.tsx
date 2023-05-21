@@ -1,4 +1,4 @@
-import React, {useRef, useState, useEffect} from 'react';
+import React, { useRef, useState, useEffect } from "react";
 import {
   Text,
   StyleSheet,
@@ -11,16 +11,15 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   Image,
-} from 'react-native';
+} from "react-native";
 
-import ArrowLeftIcon from '../components/ArrowLeft';
-import {CustomFont, couleurs} from '../components/color';
-import ApiService from '../components/api/service';
-import axios from 'axios';
-import storage from '../components/api/localstorage';
-import translations from '../translations/translations';
-import secureStorage from '../components/api/secureStorage';
-
+import ArrowLeftIcon from "../components/ArrowLeft";
+import { CustomFont, couleurs } from "../components/color";
+import ApiService from "../components/api/service";
+import axios from "axios";
+import storage from "../components/api/localstorage";
+import translations from "../translations/translations";
+import secureStorage from "../components/api/secureStorage";
 
 export default function Rdv({
   navigation,
@@ -31,7 +30,7 @@ export default function Rdv({
 }) {
   /////////////////////////////////// LANGUAGE HANDLER ///////////////////////////////////
 
-  const [preferredLangage, setPreferredLangage] = useState('fr');
+  const [preferredLangage, setPreferredLangage] = useState("fr");
 
   const t = (key: any, langage: any) => {
     return translations[langage][key] || key;
@@ -39,25 +38,31 @@ export default function Rdv({
   useEffect(() => {
     // declare the data fetching function
     const fetchData = async () => {
-      let lang = await secureStorage.getKey('defaultlang')
-      if ( lang ) {
+      let lang = await secureStorage.getKey("defaultlang");
+      if (lang) {
         setPreferredLangage(lang);
       }
-    }
-  
+    };
+
     // call the function
     fetchData()
       // make sure to catch any error
       .catch(console.error);
-  }, [])
+  }, []);
 
-  const [userConnectedId, SetUserConnectedId] = useState('');
+  const [userConnectedId, SetUserConnectedId] = useState("");
 
-  useEffect(async () =>{
-    let _userConnectedId = await secureStorage.getKey('utilisateur')
-    if(_userConnectedId) SetUserConnectedId(_userConnectedId)
-  })
+  useEffect(() => {
+    const _fetchData = async () => {
+      let _userConnectedId = await secureStorage.getKey("utilisateur");
+      if (_userConnectedId) SetUserConnected(_userConnectedId);
+    };
 
+    // call the function
+    _fetchData()
+      // make sure to catch any error
+      .catch(console.error);
+  });
 
   //////////////////////////////////////////////////////////////////////////////////////
 
@@ -66,7 +71,7 @@ export default function Rdv({
   const [isLoadingEtab, setLoadingEtab] = useState(true);
 
   // CURRENT DATE
-  const [date, setDate] = useState('');
+  const [date, setDate] = useState("");
 
   // SELECT DATE
   const _selectDate = (date: any) => {
@@ -76,40 +81,48 @@ export default function Rdv({
   };
 
   // GET USER CONNECTED
-  const [userConnectedId, SetUserConnectedId] = useState('');
+  const [userConnectedId, SetUserConnectedId] = useState("");
 
-  useEffect(async () =>{
-    let _userConnectedId = await secureStorage.getKey('utilisateur')
-    if(_userConnectedId) SetUserConnectedId(_userConnectedId)
-  })
+  useEffect(() => {
+    // declare the data fetching function
+    const ___fetchData = async () => {
+      let _userConnectedId = await secureStorage.getKey("utilisateur");
+      if (_userConnectedId) SetUserConnectedId(_userConnectedId);
+    };
+
+    // call the function
+    ___fetchData()
+      // make sure to catch any error
+      .catch(console.error);
+  }, []);
 
   const [userConnected, SetUserConnected] = useState<any>({});
 
-   
-      const loadUserData = () => {
-        axios({
-          method: 'POST',
-          url: ApiService.API_URL_USER_DATA,
-          data: JSON.stringify({
-            id: userConnectedId
-          }),
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json'
-          }
-        })
-          .then(async (response: { data: any }) => {
-            console.log(response)
-            if (response.data.code == 'success') {
-              SetUserConnected(response.data.message.etablissement[0]);
-              setLoadingEtab(false);
-            }
-          }).catch(error => console.log(error))
-       }
-    
-       useEffect(() =>{
-        loadUserData()
-       })
+  const loadUserData = () => {
+    axios({
+      method: "POST",
+      url: ApiService.API_URL_USER_DATA,
+      data: JSON.stringify({
+        id: userConnectedId,
+      }),
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    })
+      .then(async (response: { data: any }) => {
+        console.log(response);
+        if (response.data.code == "success") {
+          SetUserConnected(response.data.message.etablissement[0]);
+          setLoadingEtab(false);
+        }
+      })
+      .catch((error) => console.log(error));
+  };
+
+  useEffect(() => {
+    loadUserData();
+  });
 
   //   GET RENDEZ-VOUS
   const [rendezvous, setRendezvous] = useState([]);
@@ -117,26 +130,26 @@ export default function Rdv({
 
   const loadRendezvous = () => {
     axios({
-      method: 'GET',
+      method: "GET",
       url: ApiService.API_URL_GET_RENDEZ_VOUS,
       data: JSON.stringify({
         vendeur_id: userConnectedId,
         // date: date
       }),
       headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
+        Accept: "application/json",
+        "Content-Type": "application/json",
       },
     })
-      .then((response: {data: any}) => {
+      .then((response: { data: any }) => {
         var api = response.data;
 
-        if (api.code == 'success') {
+        if (api.code == "success") {
           setLoading(false);
           setLoadedRendezVous(true);
           setRendezvous(api.message.reverse());
         }
-        if (api.code == 'error') {
+        if (api.code == "error") {
           //  Alert.alert('', 'Erreur survenue');
         }
       })
@@ -150,25 +163,25 @@ export default function Rdv({
 
   const confirmRdv = (id: any) => {
     axios({
-      method: 'PUT',
+      method: "PUT",
       url: ApiService.API_URL_CONFIRM_RDV,
       data: JSON.stringify({
         rendez_vous_id: id,
         statut: 1,
       }),
       headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
+        Accept: "application/json",
+        "Content-Type": "application/json",
       },
     })
-      .then((response: {data: any}) => {
+      .then((response: { data: any }) => {
         var api = response.data;
 
-        if (api.code == 'success') {
+        if (api.code == "success") {
           setLoading(false);
           loadRendezvous();
         }
-        if (api.code == 'error') {
+        if (api.code == "error") {
           // Alert.alert('', 'Erreur survenue');
         }
       })
@@ -182,19 +195,21 @@ export default function Rdv({
     <View>
       <SafeAreaView
         style={{
-          width: '100%',
-          height: '100%',
-        }}>
+          width: "100%",
+          height: "100%",
+        }}
+      >
         <View
           style={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'flex-start',
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "flex-start",
             gap: 30,
             paddingVertical: 10,
             paddingHorizontal: 10,
             backgroundColor: couleurs.primary,
-          }}>
+          }}
+        >
           <Pressable onPress={() => navigation.goBack()}>
             <ArrowLeftIcon color={couleurs.white} />
           </Pressable>
@@ -203,8 +218,9 @@ export default function Rdv({
               color: couleurs.white,
               fontSize: 16,
               fontFamily: CustomFont.Poppins,
-            }}>
-            {t('Mes_Rendez_vous', preferredLangage)}
+            }}
+          >
+            {t("Mes_Rendez_vous", preferredLangage)}
           </Text>
         </View>
 
@@ -281,9 +297,10 @@ export default function Rdv({
         <ScrollView
           contentInsetAdjustmentBehavior="automatic"
           style={{
-            backgroundColor: '#f6f6f6f6',
-          }}>
-          <View style={{marginHorizontal: 12, marginVertical: 10}}>
+            backgroundColor: "#f6f6f6f6",
+          }}
+        >
+          <View style={{ marginHorizontal: 12, marginVertical: 10 }}>
             {rendezvous.length > 0 &&
               !isLoading &&
               rendezvous.map((row: any, key: any) => (
@@ -291,17 +308,19 @@ export default function Rdv({
                   key={key}
                   style={{
                     marginTop: 10,
-                  }}>
+                  }}
+                >
                   <View
                     style={{
                       borderRadius: 15,
-                      backgroundColor: '#fff',
+                      backgroundColor: "#fff",
                       padding: 14,
-                      width: '100%',
+                      width: "100%",
                       borderWidth: 1,
                       borderColor: couleurs.primary,
-                      borderStyle: 'dashed',
-                    }}>
+                      borderStyle: "dashed",
+                    }}
+                  >
                     <Text
                       style={{
                         color: couleurs.dark,
@@ -309,24 +328,27 @@ export default function Rdv({
                         fontSize: 16,
                         fontFamily: CustomFont.Poppins,
                         opacity: 0.8,
-                      }}>
+                      }}
+                    >
                       {row.client}
                     </Text>
                     <View
                       style={{
-                        display: 'flex',
-                        justifyContent: 'flex-start',
-                        flexDirection: 'row',
-                        alignItems: 'center',
+                        display: "flex",
+                        justifyContent: "flex-start",
+                        flexDirection: "row",
+                        alignItems: "center",
                         gap: 10,
-                      }}>
+                      }}
+                    >
                       <Text
                         style={{
                           color: couleurs.dark,
                           paddingVertical: 3,
                           fontSize: 13,
                           fontFamily: CustomFont.Poppins,
-                        }}>
+                        }}
+                      >
                         {new Date(row.date).toLocaleDateString()} .
                       </Text>
                       <Text
@@ -335,7 +357,8 @@ export default function Rdv({
                           paddingVertical: 3,
                           fontSize: 13,
                           fontFamily: CustomFont.Poppins,
-                        }}>
+                        }}
+                      >
                         {row.heure}
                       </Text>
                     </View>
@@ -346,17 +369,19 @@ export default function Rdv({
                           paddingVertical: 3,
                           fontSize: 13,
                           fontFamily: CustomFont.Poppins,
-                        }}>
+                        }}
+                      >
                         {row.prix}
                       </Text>
                     )}
 
                     <View
                       style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        flexDirection: 'row',
-                      }}>
+                        display: "flex",
+                        justifyContent: "space-between",
+                        flexDirection: "row",
+                      }}
+                    >
                       <Pressable onPress={() => null}>
                         <Text
                           style={{
@@ -364,10 +389,11 @@ export default function Rdv({
                             paddingVertical: 3,
                             fontSize: 13,
                             fontFamily: CustomFont.Poppins,
-                          }}>
+                          }}
+                        >
                           {row.statut == 0
-                            ? t('Attente_de_confirmation', preferredLangage)
-                            : t('Confirme', preferredLangage)}
+                            ? t("Attente_de_confirmation", preferredLangage)
+                            : t("Confirme", preferredLangage)}
                         </Text>
                       </Pressable>
 
@@ -378,25 +404,28 @@ export default function Rdv({
                             backgroundColor: couleurs.primary,
                             borderRadius: 30,
                           }}
-                          onPress={() => confirmRdv(row.id)}>
+                          onPress={() => confirmRdv(row.id)}
+                        >
                           <View
                             style={{
-                              display: 'flex',
-                              alignItems: 'center',
-                              flexDirection: 'row',
-                              justifyContent: 'flex-start',
+                              display: "flex",
+                              alignItems: "center",
+                              flexDirection: "row",
+                              justifyContent: "flex-start",
                               gap: 5,
-                            }}>
+                            }}
+                          >
                             <Text
                               style={{
-                                textAlign: 'center',
+                                textAlign: "center",
                                 padding: 10,
                                 paddingHorizontal: 10,
                                 fontSize: 13,
-                                fontWeight: '500',
-                                color: '#fff',
-                              }}>
-                              {t('Confirmer', preferredLangage)}
+                                fontWeight: "500",
+                                color: "#fff",
+                              }}
+                            >
+                              {t("Confirmer", preferredLangage)}
                             </Text>
                           </View>
                         </Pressable>
@@ -409,22 +438,23 @@ export default function Rdv({
             {rendezvous.length == 0 && (
               <>
                 <Image
-                  source={require('../assets/images/vide.png')}
+                  source={require("../assets/images/vide.png")}
                   style={{
                     marginTop: 150,
                     width: 150,
                     height: 150,
-                    alignSelf: 'center',
+                    alignSelf: "center",
                   }}
                 />
                 <Text
                   style={{
-                    alignSelf: 'center',
+                    alignSelf: "center",
                     fontFamily: CustomFont.Poppins,
-                    color:couleurs.dark,
+                    color: couleurs.dark,
                     fontSize: 13,
-                  }}>
-                  {t('aucun_rdv', preferredLangage)}
+                  }}
+                >
+                  {t("aucun_rdv", preferredLangage)}
                 </Text>
               </>
             )}
@@ -432,14 +462,15 @@ export default function Rdv({
             {isLoading && (
               <View
                 style={{
-                  width: '100%',
+                  width: "100%",
                   height: 200,
                   marginTop: 100,
-                  display: 'flex',
-                  flexDirection: 'row',
-                  justifyContent: 'center',
-                }}>
-                <ActivityIndicator size={'large'}></ActivityIndicator>
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "center",
+                }}
+              >
+                <ActivityIndicator size={"large"}></ActivityIndicator>
               </View>
             )}
           </View>

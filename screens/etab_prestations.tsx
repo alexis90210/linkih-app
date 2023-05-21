@@ -1,4 +1,4 @@
-import React, {useRef, useState, useEffect} from 'react';
+import React, { useRef, useState, useEffect } from "react";
 import {
   Text,
   StyleSheet,
@@ -12,16 +12,15 @@ import {
   ActivityIndicator,
   Image,
   Modal,
-} from 'react-native';
+} from "react-native";
 
-import ArrowLeftIcon from '../components/ArrowLeft';
-import {CustomFont, couleurs} from '../components/color';
-import ApiService from '../components/api/service';
-import axios from 'axios';
-import storage from '../components/api/localstorage';
-import translations from '../translations/translations';
-import secureStorage from '../components/api/secureStorage';
-
+import ArrowLeftIcon from "../components/ArrowLeft";
+import { CustomFont, couleurs } from "../components/color";
+import ApiService from "../components/api/service";
+import axios from "axios";
+import storage from "../components/api/localstorage";
+import translations from "../translations/translations";
+import secureStorage from "../components/api/secureStorage";
 
 export default function MesPrestations({
   navigation,
@@ -30,10 +29,9 @@ export default function MesPrestations({
   navigation: any;
   route: any;
 }) {
-
   /////////////////////////////////// LANGUAGE HANDLER //////////////////////////////////
 
-  const [preferredLangage, setPreferredLangage] = useState('fr');
+  const [preferredLangage, setPreferredLangage] = useState("fr");
 
   const t = (key: any, langage: any) => {
     return translations[langage][key] || key;
@@ -42,18 +40,17 @@ export default function MesPrestations({
   useEffect(() => {
     // declare the data fetching function
     const fetchData = async () => {
-      let lang = await secureStorage.getKey('defaultlang')
-      if ( lang ) {
+      let lang = await secureStorage.getKey("defaultlang");
+      if (lang) {
         setPreferredLangage(lang);
       }
-    }
-  
+    };
+
     // call the function
     fetchData()
       // make sure to catch any error
       .catch(console.error);
-  }, [])
- 
+  }, []);
 
   //////////////////////////////////////////////////////////////////////////////////////
 
@@ -63,36 +60,44 @@ export default function MesPrestations({
   // GET USER CONNECTED
   const [userConnected, SetUserConnected] = useState<any>({});
 
-  const [userConnectedId, SetUserConnectedId] = useState('');
+  const [userConnectedId, SetUserConnectedId] = useState("");
 
-  useEffect(async () =>{
-    let _userConnectedId = await secureStorage.getKey('utilisateur')
-    if(_userConnectedId) SetUserConnectedId(_userConnectedId)
-  })
+  useEffect(() => {
+    const fetchData = async () => {
+      let _userConnectedId = await secureStorage.getKey("utilisateur");
+      if (_userConnectedId) SetUserConnected(_userConnectedId);
+    };
 
-    const loadUserData = () => {
-      axios({
-        method: 'POST',
-        url: ApiService.API_URL_USER_DATA,
-        data: JSON.stringify({
-          id: userConnectedId
-        }),
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json'
+    // call the function
+    fetchData()
+      // make sure to catch any error
+      .catch(console.error);
+  });
+
+  const loadUserData = () => {
+    axios({
+      method: "POST",
+      url: ApiService.API_URL_USER_DATA,
+      data: JSON.stringify({
+        id: userConnectedId,
+      }),
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    })
+      .then(async (response: { data: any }) => {
+        console.log(response);
+        if (response.data.code == "success") {
+          SetUserConnected(response.data.message.etablissement[0]);
         }
       })
-        .then(async (response: { data: any }) => {
-          console.log(response)
-          if (response.data.code == 'success') {
-            SetUserConnected(response.data.message.etablissement[0])
-          }
-        }).catch(error => console.log(error))
-     }
-  
-     useEffect(() =>{
-      loadUserData()
-     })
+      .catch((error) => console.log(error));
+  };
+
+  useEffect(() => {
+    loadUserData();
+  });
 
   //   GET GALLERIE
   const [PrestationsVendeur, setPrestationsVendeur] = useState([]);
@@ -101,22 +106,22 @@ export default function MesPrestations({
 
   const loadPrestationsVendeur = () => {
     axios({
-      method: 'GET',
+      method: "GET",
       url: ApiService.API_URL_GET_PRODUIT,
       data: JSON.stringify({
         vendeur_id: userConnectedId,
       }),
       headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
+        Accept: "application/json",
+        "Content-Type": "application/json",
       },
     })
-      .then((response: {data: any}) => {
+      .then((response: { data: any }) => {
         var api = response.data;
 
         console.log(api);
 
-        if (api.code == 'success') {
+        if (api.code == "success") {
           setLoading(false);
           setLoadedPrestationsVendeur(true);
           setPrestationsVendeur(api.message);
@@ -124,7 +129,7 @@ export default function MesPrestations({
       })
       .catch((error: any) => {
         console.log(error);
-        Alert.alert('', t('erreur_survenue', preferredLangage));
+        Alert.alert("", t("erreur_survenue", preferredLangage));
       });
   };
 
@@ -134,20 +139,22 @@ export default function MesPrestations({
     <View>
       <SafeAreaView
         style={{
-          width: '100%',
-          height: '100%',
-        }}>
+          width: "100%",
+          height: "100%",
+        }}
+      >
         <View
           style={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
             gap: 30,
             paddingVertical: 10,
             paddingHorizontal: 10,
             backgroundColor: couleurs.primary,
-            alignItems: 'center',
-          }}>
+            alignItems: "center",
+          }}
+        >
           <Pressable onPress={() => navigation.goBack()}>
             <ArrowLeftIcon color={couleurs.white} />
           </Pressable>
@@ -156,132 +163,143 @@ export default function MesPrestations({
               color: couleurs.white,
               fontSize: 16,
               fontFamily: CustomFont.Poppins,
-            }}>
-            {t('Mes_Prestations', preferredLangage)}
+            }}
+          >
+            {t("Mes_Prestations", preferredLangage)}
           </Text>
           <Pressable onPress={() => loadPrestationsVendeur()}>
             <Text
               style={{
-                color: '#fff',
+                color: "#fff",
                 fontSize: 13,
                 fontFamily: CustomFont.Poppins,
-              }}>
-                {t('Actualiser', preferredLangage)}
-              </Text>
-            </Pressable>
-          </View>
+              }}
+            >
+              {t("Actualiser", preferredLangage)}
+            </Text>
+          </Pressable>
+        </View>
 
-          {/* main */}
-          <ScrollView
-            contentInsetAdjustmentBehavior="automatic"
-            style={{
-              backgroundColor: '#f6f6f6f6',
-            }}>
-            <View style={{marginHorizontal: 12, marginVertical: 10}}>
-              {/* LOADING MODAL */}
+        {/* main */}
+        <ScrollView
+          contentInsetAdjustmentBehavior="automatic"
+          style={{
+            backgroundColor: "#f6f6f6f6",
+          }}
+        >
+          <View style={{ marginHorizontal: 12, marginVertical: 10 }}>
+            {/* LOADING MODAL */}
 
-              <Modal transparent={true} visible={!isLoadedPrestationsVendeur}>
+            <Modal transparent={true} visible={!isLoadedPrestationsVendeur}>
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: "center",
+                  flexDirection: "column",
+                  backgroundColor: "rgba(200,200,200,.5)",
+                  alignItems: "center",
+                  alignContent: "center",
+                }}
+              >
+                <ActivityIndicator
+                  color={couleurs.primary}
+                  style={{ alignSelf: "center" }}
+                  size={"large"}
+                ></ActivityIndicator>
+              </View>
+            </Modal>
+
+            {/* END LOADING */}
+
+            {PrestationsVendeur.map((row: any, key: any) => (
+              <View
+                key={key}
+                style={{
+                  width: "100%",
+                  padding: 15,
+                  borderRadius: 10,
+                  backgroundColor: couleurs.white,
+                  marginBottom: 10,
+                  shadowColor: couleurs.primary,
+                  shadowOffset: {
+                    width: 0,
+                    height: 4,
+                  },
+                  shadowOpacity: 0.19,
+                  shadowRadius: 5.62,
+                  elevation: 1,
+                }}
+              >
                 <View
                   style={{
-                    flex: 1,
-                    justifyContent: 'center',
-                    flexDirection: 'column',
-                    backgroundColor: 'rgba(200,200,200,.5)',
-                    alignItems: 'center',
-                    alignContent: 'center',
-                  }}>
-                  <ActivityIndicator
-                    color={couleurs.primary}
-                    style={{alignSelf: 'center'}}
-                    size={'large'}></ActivityIndicator>
-                </View>
-              </Modal>
-
-              {/* END LOADING */}
-
-              {PrestationsVendeur.map((row: any, key: any) => (
-                <View
-                  key={key}
-                  style={{
-                    width: '100%',
-                    padding: 15,
-                    borderRadius: 10,
-                    backgroundColor: couleurs.white,
-                    marginBottom: 10,
-                    shadowColor: couleurs.primary,
-                    shadowOffset: {
-                      width: 0,
-                      height: 4,
-                    },
-                    shadowOpacity:  0.19,
-                    shadowRadius: 5.62,
-                    elevation: 1
-                }}>
-                <View
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    width: '100%',
-                  }}>
-                  <Text style={{fontSize: 13, color: couleurs.dark}}>
-                    {t('Produit', preferredLangage)}
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    width: "100%",
+                  }}
+                >
+                  <Text style={{ fontSize: 13, color: couleurs.dark }}>
+                    {t("Produit", preferredLangage)}
                   </Text>
-                  <Text style={{color: couleurs.primary, fontSize: 13}}>
+                  <Text style={{ color: couleurs.primary, fontSize: 13 }}>
                     {row.produit}
                   </Text>
                 </View>
 
                 <View
                   style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    width: '100%',
-                  }}>
-                  <Text style={{fontSize: 13, color: couleurs.dark}}>
-                    {t('Duree', preferredLangage)}
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    width: "100%",
+                  }}
+                >
+                  <Text style={{ fontSize: 13, color: couleurs.dark }}>
+                    {t("Duree", preferredLangage)}
                   </Text>
-                  <Text style={{color: couleurs.primary, fontSize: 13}}>
+                  <Text style={{ color: couleurs.primary, fontSize: 13 }}>
                     {row.duree} h
                   </Text>
                 </View>
 
                 <View
                   style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    width: '100%',
-                  }}>
-                  <Text style={{fontSize: 13, color: couleurs.dark}}>Prix</Text>
-                  <Text style={{color: couleurs.primary, fontSize: 13}}>
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    width: "100%",
+                  }}
+                >
+                  <Text style={{ fontSize: 13, color: couleurs.dark }}>
+                    Prix
+                  </Text>
+                  <Text style={{ color: couleurs.primary, fontSize: 13 }}>
                     {row.prix} {row.devise}
                   </Text>
                 </View>
-                
               </View>
             ))}
 
             {PrestationsVendeur.length == 0 && (
               <>
                 <Image
-                  source={require('../assets/images/vide.png')}
+                  source={require("../assets/images/vide.png")}
                   style={{
                     marginTop: 150,
                     width: 150,
                     height: 150,
-                    alignSelf: 'center',
+                    alignSelf: "center",
                   }}
                 />
                 <Text
                   style={{
-                    alignSelf: 'center',
+                    alignSelf: "center",
                     fontFamily: CustomFont.Poppins,
                     fontSize: 13,
-                    color:couleurs.dark
-                  }}>
-                  {t('Aucunes_prestations', preferredLangage)}
+                    color: couleurs.dark,
+                  }}
+                >
+                  {t("Aucunes_prestations", preferredLangage)}
                 </Text>
               </>
             )}
@@ -290,28 +308,30 @@ export default function MesPrestations({
           {/* Welcome text */}
         </ScrollView>
 
-        <View style={{padding: 10}}>
+        <View style={{ padding: 10 }}>
           <TouchableOpacity
             style={{
               paddingHorizontal: 15,
-              display: 'flex',
-              justifyContent: 'center',
-              flexDirection: 'row',
+              display: "flex",
+              justifyContent: "center",
+              flexDirection: "row",
               backgroundColor: couleurs.primary,
               borderRadius: 30,
             }}
-            onPress={() => navigation.navigate('prestations_list')}>
+            onPress={() => navigation.navigate("prestations_list")}
+          >
             <Text
               style={{
-                textAlign: 'center',
+                textAlign: "center",
                 padding: 10,
                 paddingHorizontal: 20,
                 fontSize: 13,
-                fontWeight: '500',
+                fontWeight: "500",
                 color: couleurs.secondary,
                 fontFamily: CustomFont.Poppins,
-              }}>
-              {t('Creer_mes_prestations', preferredLangage)}
+              }}
+            >
+              {t("Creer_mes_prestations", preferredLangage)}
             </Text>
           </TouchableOpacity>
         </View>

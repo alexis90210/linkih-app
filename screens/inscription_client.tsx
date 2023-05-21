@@ -10,20 +10,20 @@ import {
   Alert,
   Modal,
   ActivityIndicator,
-  PermissionsAndroid
-} from 'react-native';
-import React, {useRef, useState, useEffect} from 'react';
-import {CustomFont, couleurs} from '../components/color';
-import storage from '../components/api/localstorage';
-import ApiService from '../components/api/service';
-import axios from 'axios';
-import UserPosition from '../components/api/user_position';
-import Geolocation from '@react-native-community/geolocation';
-import {useState} from 'react';
-import translations from '../translations/translations';
-import EyeSlashIcon from '../components/eye_slash';
-import EyeIcon from '../components/eye';
-import secureStorage from '../components/api/secureStorage';
+  PermissionsAndroid,
+} from "react-native";
+import React, { useRef, useState, useEffect } from "react";
+import { CustomFont, couleurs } from "../components/color";
+import storage from "../components/api/localstorage";
+import ApiService from "../components/api/service";
+import axios from "axios";
+import UserPosition from "../components/api/user_position";
+import Geolocation from "@react-native-community/geolocation";
+import { useState } from "react";
+import translations from "../translations/translations";
+import EyeSlashIcon from "../components/eye_slash";
+import EyeIcon from "../components/eye";
+import secureStorage from "../components/api/secureStorage";
 
 // Function to get permission for location
 const requestLocationPermission = async () => {
@@ -31,19 +31,19 @@ const requestLocationPermission = async () => {
     const granted = await PermissionsAndroid.request(
       PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
       {
-        title: 'Permission de localiser votre position',
-        message: 'Pouvons-nous accéder à votre emplacement?',
-        buttonNeutral: 'Demande moi plus tard',
-        buttonNegative: 'Annuler',
-        buttonPositive: 'OK',
-      },
+        title: "Permission de localiser votre position",
+        message: "Pouvons-nous accéder à votre emplacement?",
+        buttonNeutral: "Demande moi plus tard",
+        buttonNegative: "Annuler",
+        buttonPositive: "OK",
+      }
     );
-    console.log('granted', granted);
-    if (granted === 'granted') {
-      console.log('You can use Geolocation');
+    console.log("granted", granted);
+    if (granted === "granted") {
+      console.log("You can use Geolocation");
       return true;
     } else {
-      console.log('You cannot use Geolocation');
+      console.log("You cannot use Geolocation");
       return false;
     }
   } catch (err) {
@@ -59,7 +59,7 @@ export default function InscriptionClientScreen({
 }) {
   /////////////////////////////////// LANGUAGE HANDLER ///////////////////////////////////////
 
-  const [preferredLangage, setPreferredLangage] = useState('fr');
+  const [preferredLangage, setPreferredLangage] = useState("fr");
 
   const t = (key: any, langage: any) => {
     return translations[langage][key] || key;
@@ -68,18 +68,17 @@ export default function InscriptionClientScreen({
   useEffect(() => {
     // declare the data fetching function
     const fetchData = async () => {
-      let lang = await secureStorage.getKey('defaultlang')
-      if ( lang ) {
+      let lang = await secureStorage.getKey("defaultlang");
+      if (lang) {
         setPreferredLangage(lang);
       }
-    }
-  
+    };
+
     // call the function
     fetchData()
       // make sure to catch any error
       .catch(console.error);
-  }, [])
- 
+  }, []);
 
   /////////////////////////////////////////
 
@@ -92,109 +91,102 @@ export default function InscriptionClientScreen({
 
   //////////////////////////////////////////
 
+  const [clientNom, setClientNom] = useState("");
+  const [clientEmail, setClientEmail] = useState("");
+  const [clientPassword, setClientPassword] = useState("");
+  const [clientAdresse, setClientAdresse] = useState("");
+  const [clientMobile, setClientMobile] = useState("");
+  const [clientPays, setClientPays] = useState("");
 
-  const [clientNom, setClientNom] = useState('')
-  const [clientEmail, setClientEmail] = useState('')
-  const [clientPassword, setClientPassword] = useState('')
-  const [clientAdresse, setClientAdresse] = useState('')
-  const [clientMobile, setClientMobile] = useState('')
-  const [clientPays, setClientPays] = useState('')
+  const [clientLongitude, setClientLongitude] = useState("");
+  const [clientLatitude, setClientLatitude] = useState("");
 
-  const [clientLongitude, setClientLongitude] = useState('')
-  const [clientLatitude, setClientLatitude] = useState('')
+  const [clientLangue, setClientLangue] = useState("");
 
-  const [clientLangue, setClientLangue] = useState('')
-
-
-
-  useEffect(() =>{
+  useEffect(() => {
     const rep = requestLocationPermission();
-    rep.then(res =>{
+    rep.then((res) => {
       if (res) {
-        Geolocation.getCurrentPosition(info => {
-          setClientLongitude(info.coords.longitude)
-          setClientLatitude(info.coords.latitude) 
-        },
-        
-          error => {
+        Geolocation.getCurrentPosition(
+          (info) => {
+            setClientLongitude(info.coords.longitude);
+            setClientLatitude(info.coords.latitude);
+          },
+
+          (error) => {
             // See error code charts below.
             console.log(error.code, error.message);
-           
           },
-          {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
+          { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
         );
       } else {
-        navigation.goBack()
+        navigation.goBack();
       }
-    })
-    
-  })
+    });
+  });
 
   const [isProccessing, setProcessing] = useState(false);
 
   storage
     .load({
-      key: 'configuration', // Note: Do not use underscore("_") in key!
-      id: 'configuration', // Note: Do not use underscore("_") in id!
+      key: "configuration", // Note: Do not use underscore("_") in key!
+      id: "configuration", // Note: Do not use underscore("_") in id!
     })
-    .then(data => {
-      setClientLangue(data.langage.name)
-      setClientPays(data.pays.name)
+    .then((data) => {
+      setClientLangue(data.langage.name);
+      setClientPays(data.pays.name);
     });
 
   const onSubmit = () => {
-   
-
     var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     if (!clientEmail.match(mailformat)) {
-      Alert.alert('', t('email_invalide', preferredLangage), [
-        {text: 'OK', onPress: () => null},
+      Alert.alert("", t("email_invalide", preferredLangage), [
+        { text: "OK", onPress: () => null },
       ]);
       return;
     }
 
     if (clientPassword.length < 4) {
-      Alert.alert('', t('mot_de_passe_court', preferredLangage), [
-        {text: 'OK', onPress: () => null},
+      Alert.alert("", t("mot_de_passe_court", preferredLangage), [
+        { text: "OK", onPress: () => null },
       ]);
       return;
     }
     setProcessing(true);
 
     axios({
-      method: 'POST',
+      method: "POST",
       url: ApiService.API_URL_CREATE_UTILISATEUR,
       data: JSON.stringify({
         nom: clientNom,
         email: clientEmail,
         password: clientPassword,
-        role: 'ROLE_CLIENT',
+        role: "ROLE_CLIENT",
         longitude: clientLongitude,
         latitude: clientLatitude,
         adresse: clientAdresse,
         mobile: clientMobile,
         pays: clientPays,
-        langue: preferredLangage
+        langue: preferredLangage,
       }),
       headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
+        Accept: "application/json",
+        "Content-Type": "application/json",
       },
     })
-      .then((response: {data: any}) => {
+      .then((response: { data: any }) => {
         var api = response.data;
         console.log(api);
         setProcessing(false);
 
-        if (api.code == 'success') {
-     
-          navigation.navigate('inscription_client_2', {
+        if (api.code == "success") {
+          navigation.navigate("inscription_client_2", {
             api: api,
-          })
+          });
         }
-        if (api.code == 'error') {
-          Alert.alert(t('erreur_survenue', preferredLangage), api.message, [
-            {text: 'OK', onPress: () => null},
+        if (api.code == "error") {
+          Alert.alert(t("erreur_survenue", preferredLangage), api.message, [
+            { text: "OK", onPress: () => null },
           ]);
         }
       })
@@ -202,9 +194,9 @@ export default function InscriptionClientScreen({
         setProcessing(false);
         console.log(error);
         Alert.alert(
-          t('erreur_survenue', preferredLangage),
-          t('Erreur_survenue_il_se_pourrait', preferredLangage),
-          [{text: 'OK', onPress: () => null}],
+          t("erreur_survenue", preferredLangage),
+          t("Erreur_survenue_il_se_pourrait", preferredLangage),
+          [{ text: "OK", onPress: () => null }]
         );
       });
   };
@@ -213,26 +205,29 @@ export default function InscriptionClientScreen({
     <>
       <SafeAreaView
         style={{
-          width: '100%',
-          height: '100%',
-          backgroundColor: '#f6f6f6f6',
-        }}>
+          width: "100%",
+          height: "100%",
+          backgroundColor: "#f6f6f6f6",
+        }}
+      >
         {/* LOADING MODAL */}
 
         <Modal transparent={true} visible={isProccessing}>
           <View
             style={{
               flex: 1,
-              justifyContent: 'center',
-              flexDirection: 'column',
-              backgroundColor: 'rgba(200,200,200,.5)',
-              alignItems: 'center',
-              alignContent: 'center',
-            }}>
+              justifyContent: "center",
+              flexDirection: "column",
+              backgroundColor: "rgba(200,200,200,.5)",
+              alignItems: "center",
+              alignContent: "center",
+            }}
+          >
             <ActivityIndicator
               color={couleurs.primary}
-              style={{alignSelf: 'center'}}
-              size={'large'}></ActivityIndicator>
+              style={{ alignSelf: "center" }}
+              size={"large"}
+            ></ActivityIndicator>
           </View>
         </Modal>
 
@@ -241,181 +236,196 @@ export default function InscriptionClientScreen({
         <ScrollView
           contentInsetAdjustmentBehavior="automatic"
           style={{
-            backgroundColor: '#f6f6f6f6',
-          }}>
+            backgroundColor: "#f6f6f6f6",
+          }}
+        >
           <View
             style={{
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              alignItems: 'center',
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
               marginTop: 10,
-            }}>
+            }}
+          >
             <View
               style={{
                 marginVertical: 10,
-                backgroundColor: '#fff',
+                backgroundColor: "#fff",
                 borderRadius: 11,
                 padding: 20,
-                width: '90%',
+                width: "90%",
                 marginTop: 20,
-              }}>
+              }}
+            >
               <View
                 style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'flex-start',
-                  alignItems: 'flex-start',
-                }}>
-
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "flex-start",
+                  alignItems: "flex-start",
+                }}
+              >
                 <Text
                   style={{
-                    textAlign: 'center',
+                    textAlign: "center",
                     color: couleurs.dark,
                     fontSize: 13,
                     height: 30,
                     opacity: 0.85,
                     fontFamily: CustomFont.Poppins,
-                  }}>
-                  {t('Noms_Prenoms', preferredLangage)}
+                  }}
+                >
+                  {t("Noms_Prenoms", preferredLangage)}
                 </Text>
                 <TextInput
-                defaultValue={clientNom}
-                  onChangeText={input => (setClientNom(input) )}
+                  defaultValue={clientNom}
+                  onChangeText={(input) => setClientNom(input)}
                   placeholder={t(
-                    'Entrez_votre_nom_et_prenom_complet',
-                    preferredLangage,
+                    "Entrez_votre_nom_et_prenom_complet",
+                    preferredLangage
                   )}
                   style={{
-                    backgroundColor: 'transparent',
+                    backgroundColor: "transparent",
                     borderBottomWidth: 1,
                     borderBottomColor: couleurs.primary,
                     color: couleurs.primary,
-                    width: '100%',
+                    width: "100%",
                     fontFamily: CustomFont.Poppins,
                     fontSize: 13,
-                  }}></TextInput>
+                  }}
+                ></TextInput>
               </View>
 
               <View
                 style={{
                   marginTop: 20,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'flex-start',
-                  alignItems: 'flex-start',
-                }}>
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "flex-start",
+                  alignItems: "flex-start",
+                }}
+              >
                 <Text
                   style={{
-                    textAlign: 'center',
+                    textAlign: "center",
                     color: couleurs.dark,
                     fontSize: 13,
                     height: 30,
                     opacity: 0.85,
                     fontFamily: CustomFont.Poppins,
-                  }}>
-                  {t('Entrez_votre_email', preferredLangage)}
+                  }}
+                >
+                  {t("Entrez_votre_email", preferredLangage)}
                 </Text>
 
-      
-
-
                 <TextInput
-                defaultValue={clientEmail}
-                  onChangeText={input => (setClientEmail(input))}
-                  placeholder={t('Entrez_votre_email', preferredLangage)}
+                  defaultValue={clientEmail}
+                  onChangeText={(input) => setClientEmail(input)}
+                  placeholder={t("Entrez_votre_email", preferredLangage)}
                   style={{
-                    backgroundColor: 'transparent',
+                    backgroundColor: "transparent",
                     borderBottomWidth: 1,
                     borderBottomColor: couleurs.primary,
                     color: couleurs.primary,
-                    width: '100%',
+                    width: "100%",
                     fontFamily: CustomFont.Poppins,
                     fontSize: 13,
-                  }}></TextInput>
+                  }}
+                ></TextInput>
               </View>
 
               <View
                 style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'flex-start',
-                  alignItems: 'flex-start',
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "flex-start",
+                  alignItems: "flex-start",
                   marginTop: 23,
                   marginBottom: 40,
-                }}>
+                }}
+              >
                 <Text
                   style={{
-                    textAlign: 'center',
+                    textAlign: "center",
                     color: couleurs.dark,
                     fontSize: 13,
                     height: 30,
                     opacity: 0.85,
                     fontFamily: CustomFont.Poppins,
-                  }}>
-                  {t('mot_de_passe', preferredLangage)}
+                  }}
+                >
+                  {t("mot_de_passe", preferredLangage)}
                 </Text>
-                  <View
+                <View
                   style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    justifyContent: 'flex-start',
-                    width: '100%',
-                    flexWrap: 'nowrap',
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "flex-start",
+                    width: "100%",
+                    flexWrap: "nowrap",
                     borderBottomWidth: 1,
                     borderBottomColor: couleurs.primary,
-                  }}>
-
+                  }}
+                >
                   <TextInput
                     textContentType="password"
                     keyboardType="default"
-                    placeholder={t('entrez_votre_mot_de_passe', preferredLangage)}
+                    placeholder={t(
+                      "entrez_votre_mot_de_passe",
+                      preferredLangage
+                    )}
                     secureTextEntry={!isVisible}
                     defaultValue={clientPassword}
-                    onChangeText={input => (setClientPassword(input))}
-                    placeholderTextColor={'rgba(100,100,100,.7)'}
+                    onChangeText={(input) => setClientPassword(input)}
+                    placeholderTextColor={"rgba(100,100,100,.7)"}
                     style={{
-                      backgroundColor: 'transparent',
+                      backgroundColor: "transparent",
                       color: couleurs.primary,
                       fontSize: 13,
-                      flex:1,
+                      flex: 1,
                       fontFamily: CustomFont.Poppins,
-                    }}></TextInput>
+                    }}
+                  ></TextInput>
                   <TouchableOpacity
-                    style={{margin: 5, width: 20, height: 20}}
-                    onPress={_setVisible}>
+                    style={{ margin: 5, width: 20, height: 20 }}
+                    onPress={_setVisible}
+                  >
                     {isVisible && <EyeSlashIcon />}
                     {!isVisible && <EyeIcon color={couleurs.primary} />}
                   </TouchableOpacity>
                 </View>
 
-                  {/*  */}
+                {/*  */}
               </View>
 
               <View
                 style={{
-                  alignItems: 'center',
+                  alignItems: "center",
                   backgroundColor: couleurs.primary,
                   borderRadius: 30,
                   marginBottom: 20,
-                }}>
+                }}
+              >
                 <TouchableOpacity
                   style={{
                     paddingHorizontal: 10,
-                    width: '70%',
+                    width: "70%",
                   }}
-                  onPress={() => onSubmit()}>
+                  onPress={() => onSubmit()}
+                >
                   <Text
                     style={{
-                      textAlign: 'center',
+                      textAlign: "center",
                       padding: 10,
                       paddingHorizontal: 20,
                       fontSize: 13,
                       fontFamily: CustomFont.Poppins,
                       color: couleurs.secondary,
-                    }}>
-                    {t('valider', preferredLangage)}
+                    }}
+                  >
+                    {t("valider", preferredLangage)}
                   </Text>
                 </TouchableOpacity>
               </View>
@@ -423,27 +433,30 @@ export default function InscriptionClientScreen({
 
             <View
               style={{
-                alignItems: 'center',
-                backgroundColor: 'transparent',
+                alignItems: "center",
+                backgroundColor: "transparent",
                 borderRadius: 30,
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'center',
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "center",
                 marginTop: 70,
-              }}>
+              }}
+            >
               <TouchableOpacity
                 style={{
                   paddingHorizontal: 10,
                 }}
-                onPress={() => null}>
+                onPress={() => null}
+              >
                 <Text
                   style={{
-                    textAlign: 'center',
+                    textAlign: "center",
                     fontSize: 13,
                     fontFamily: CustomFont.Poppins,
                     color: couleurs.primary,
-                  }}>
-                  {t('Besoin_d_aide', preferredLangage)}
+                  }}
+                >
+                  {t("Besoin_d_aide", preferredLangage)}
                 </Text>
               </TouchableOpacity>
             </View>

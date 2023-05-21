@@ -1,4 +1,4 @@
-import React, {useRef, useState, useEffect} from 'react';
+import React, { useRef, useState, useEffect } from "react";
 import {
   Text,
   StyleSheet,
@@ -9,15 +9,14 @@ import {
   Alert,
   Modal,
   ActivityIndicator,
-} from 'react-native';
+} from "react-native";
 
-import {CustomFont, couleurs} from '../components/color';
-import axios from 'axios';
-import ApiService from '../components/api/service';
-import storage from '../components/api/localstorage';
-import translations from '../translations/translations';
-import secureStorage from '../components/api/secureStorage';
-
+import { CustomFont, couleurs } from "../components/color";
+import axios from "axios";
+import ApiService from "../components/api/service";
+import storage from "../components/api/localstorage";
+import translations from "../translations/translations";
+import secureStorage from "../components/api/secureStorage";
 
 export default function Reabonnement({
   navigation,
@@ -28,7 +27,7 @@ export default function Reabonnement({
 }) {
   /////////////////////////////////// LANGUAGE HANDLER ///////////////////////////////////
 
-  const [preferredLangage, setPreferredLangage] = useState('fr');
+  const [preferredLangage, setPreferredLangage] = useState("fr");
 
   const t = (key: any, langage: any) => {
     return translations[langage][key] || key;
@@ -37,25 +36,31 @@ export default function Reabonnement({
   useEffect(() => {
     // declare the data fetching function
     const fetchData = async () => {
-      let lang = await secureStorage.getKey('defaultlang')
-      if ( lang ) {
+      let lang = await secureStorage.getKey("defaultlang");
+      if (lang) {
         setPreferredLangage(lang);
       }
-    }
-  
+    };
+
     // call the function
     fetchData()
       // make sure to catch any error
       .catch(console.error);
-  }, [])
+  }, []);
 
-  const [userConnectedId, SetUserConnectedId] = useState('');
+  const [userConnectedId, SetUserConnectedId] = useState("");
 
-  useEffect(async () =>{
-    let _userConnectedId = await secureStorage.getKey('utilisateur')
-    if(_userConnectedId) SetUserConnectedId(_userConnectedId)
-  })
+  useEffect(() => {
+    const fetchData = async () => {
+      let _userConnectedId = await secureStorage.getKey("utilisateur");
+      if (_userConnectedId) SetUserConnected(_userConnectedId);
+    };
 
+    // call the function
+    fetchData()
+      // make sure to catch any error
+      .catch(console.error);
+  });
 
   //////////////////////////////////////////////////////////////////////////////////////
 
@@ -63,29 +68,30 @@ export default function Reabonnement({
   const [userConnected, SetUserConnected] = useState<any>({});
   const [isProccessing, setIsProccessing] = useState(false);
 
-    const loadUserData = () => {
-      axios({
-        method: 'POST',
-        url: ApiService.API_URL_USER_DATA,
-        data: JSON.stringify({
-          id: userConnectedId
-        }),
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json'
+  const loadUserData = () => {
+    axios({
+      method: "POST",
+      url: ApiService.API_URL_USER_DATA,
+      data: JSON.stringify({
+        id: userConnectedId,
+      }),
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    })
+      .then(async (response: { data: any }) => {
+        console.log(response);
+        if (response.data.code == "success") {
+          SetUserConnected(response.data.message.etablissement[0]);
         }
       })
-        .then(async (response: { data: any }) => {
-          console.log(response)
-          if (response.data.code == 'success') {
-            SetUserConnected(response.data.message.etablissement[0]);
-          }
-        }).catch(error => console.log(error))
-     }
-  
-     useEffect(() =>{
-      loadUserData()
-     })
+      .catch((error) => console.log(error));
+  };
+
+  useEffect(() => {
+    loadUserData();
+  });
 
   // S'ABONNER
   const sabonnerMaintenant = (abonnement: any) => {
@@ -96,25 +102,25 @@ export default function Reabonnement({
     });
 
     axios({
-      method: 'POST',
+      method: "POST",
       url: ApiService.API_URL_ADD_ABONNEMENT_VENDEUR,
       data: JSON.stringify({
         vendeur_id: userConnectedId,
         abonnement_id: abonnement.id,
       }),
       headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
+        Accept: "application/json",
+        "Content-Type": "application/json",
       },
     })
-      .then((response: {data: any}) => {
+      .then((response: { data: any }) => {
         setIsProccessing(false);
         var api = response.data;
 
         console.log(api);
 
-        if (api.code == 'success') {
-          navigation.navigate('paiement_screen', {
+        if (api.code == "success") {
+          navigation.navigate("paiement_screen", {
             route:
               ApiService.API_BASE_URL_HTTPS +
               `stripe/${abonnement.montant}/${abonnement.devise}`,
@@ -143,20 +149,20 @@ export default function Reabonnement({
 
   const loadMonAbonnement = () => {
     axios({
-      method: 'GET',
+      method: "GET",
       url: ApiService.API_URL_GET_ABONNEMENT,
       data: JSON.stringify({
         vendeur_id: userConnectedId,
       }),
       headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
+        Accept: "application/json",
+        "Content-Type": "application/json",
       },
     })
-      .then((response: {data: any}) => {
+      .then((response: { data: any }) => {
         var api = response.data;
 
-        if (api.code == 'success') {
+        if (api.code == "success") {
           setMonAbonnement(api.message);
         }
       })
@@ -168,22 +174,22 @@ export default function Reabonnement({
 
   const loadAbonnementList = () => {
     axios({
-      method: 'GET',
+      method: "GET",
       url: ApiService.API_URL_LISTE_ABONNEMENTS,
       headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
+        Accept: "application/json",
+        "Content-Type": "application/json",
       },
     })
-      .then((response: {data: any}) => {
+      .then((response: { data: any }) => {
         var api = response.data;
         setIsLoadingAbonnement(true);
 
-        if (api.code == 'success') {
+        if (api.code == "success") {
           setAbonnements(api.message);
           loadMonAbonnement();
         }
-        if (api.code == 'error') {
+        if (api.code == "error") {
           // Alert.alert('Liste des Abonnements',api.message);
         }
       })
@@ -202,72 +208,80 @@ export default function Reabonnement({
     <View>
       <SafeAreaView
         style={{
-          width: '100%',
-          height: '100%',
-          backgroundColor: '#f6f6f6',
-        }}>
+          width: "100%",
+          height: "100%",
+          backgroundColor: "#f6f6f6",
+        }}
+      >
         {/* LOADING MODAL */}
 
         <Modal transparent={true} visible={isProccessing}>
           <View
             style={{
               flex: 1,
-              justifyContent: 'center',
-              flexDirection: 'column',
-              backgroundColor: 'rgba(200,200,200,.5)',
-              alignItems: 'center',
-              alignContent: 'center',
-            }}>
+              justifyContent: "center",
+              flexDirection: "column",
+              backgroundColor: "rgba(200,200,200,.5)",
+              alignItems: "center",
+              alignContent: "center",
+            }}
+          >
             <ActivityIndicator
               color={couleurs.primary}
-              style={{alignSelf: 'center'}}
-              size={'large'}></ActivityIndicator>
+              style={{ alignSelf: "center" }}
+              size={"large"}
+            ></ActivityIndicator>
           </View>
         </Modal>
 
         {/* END LOADING */}
-        <View style={{flex: 1, paddingHorizontal: 10, paddingVertical: 20}}>
+        <View style={{ flex: 1, paddingHorizontal: 10, paddingVertical: 20 }}>
           <ScrollView>
             {mon_abonnement.nom && (
               <View
                 style={{
                   borderRadius: 20,
-                  backgroundColor: '#fff',
+                  backgroundColor: "#fff",
                   padding: 20,
-                }}>
+                }}
+              >
                 <View
                   style={{
-                    display: 'flex',
-                    justifyContent: 'flex-start',
-                    flexDirection: 'column',
-                  }}>
+                    display: "flex",
+                    justifyContent: "flex-start",
+                    flexDirection: "column",
+                  }}
+                >
                   <Text
                     style={{
                       fontFamily: CustomFont.Poppins,
                       fontSize: 13,
                       color: couleurs.primary,
                       borderBottomWidth: 1,
-                      borderStyle: 'solid',
-                      borderColor: '#ddd',
+                      borderStyle: "solid",
+                      borderColor: "#ddd",
                     }}
-                    numberOfLines={1}>
-                    {t('Detail_de_l_abonnement', preferredLangage)}
+                    numberOfLines={1}
+                  >
+                    {t("Detail_de_l_abonnement", preferredLangage)}
                   </Text>
 
                   <View
                     style={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      flexDirection: 'row',
+                      display: "flex",
+                      justifyContent: "space-between",
+                      flexDirection: "row",
                       marginTop: 10,
-                    }}>
+                    }}
+                  >
                     <Text
                       style={{
                         fontFamily: CustomFont.Poppins,
                         fontSize: 13,
                         color: couleurs.dark,
-                      }}>
-                      {t('Abonnement', preferredLangage)}
+                      }}
+                    >
+                      {t("Abonnement", preferredLangage)}
                     </Text>
 
                     <Text
@@ -275,24 +289,29 @@ export default function Reabonnement({
                         fontFamily: CustomFont.Poppins,
                         fontSize: 13,
                         color: couleurs.primary,
-                      }}>
-                        {preferredLangage == 'fr' ? mon_abonnement.nom : mon_abonnement.en_nom}
+                      }}
+                    >
+                      {preferredLangage == "fr"
+                        ? mon_abonnement.nom
+                        : mon_abonnement.en_nom}
                     </Text>
                   </View>
 
                   <View
                     style={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      flexDirection: 'row',
-                    }}>
+                      display: "flex",
+                      justifyContent: "space-between",
+                      flexDirection: "row",
+                    }}
+                  >
                     <Text
                       style={{
                         fontFamily: CustomFont.Poppins,
                         fontSize: 13,
                         color: couleurs.dark,
-                      }}>
-                      {t('Type_Abonnement', preferredLangage)}
+                      }}
+                    >
+                      {t("Type_Abonnement", preferredLangage)}
                     </Text>
 
                     <Text
@@ -300,24 +319,27 @@ export default function Reabonnement({
                         fontFamily: CustomFont.Poppins,
                         fontSize: 13,
                         color: couleurs.primary,
-                      }}>
+                      }}
+                    >
                       {mon_abonnement.code}
                     </Text>
                   </View>
 
                   <View
                     style={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      flexDirection: 'row',
-                    }}>
+                      display: "flex",
+                      justifyContent: "space-between",
+                      flexDirection: "row",
+                    }}
+                  >
                     <Text
                       style={{
                         fontFamily: CustomFont.Poppins,
                         fontSize: 13,
                         color: couleurs.dark,
-                      }}>
-                      {t('Debut_d_activation', preferredLangage)}
+                      }}
+                    >
+                      {t("Debut_d_activation", preferredLangage)}
                     </Text>
 
                     <Text
@@ -326,24 +348,27 @@ export default function Reabonnement({
                         fontSize: 13,
                         color: couleurs.dark,
                         opacity: 0.6,
-                      }}>
+                      }}
+                    >
                       {mon_abonnement.activation}
                     </Text>
                   </View>
 
                   <View
                     style={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      flexDirection: 'row',
-                    }}>
+                      display: "flex",
+                      justifyContent: "space-between",
+                      flexDirection: "row",
+                    }}
+                  >
                     <Text
                       style={{
                         fontFamily: CustomFont.Poppins,
                         fontSize: 13,
                         color: couleurs.dark,
-                      }}>
-                      {t('Date_d_expiration', preferredLangage)}
+                      }}
+                    >
+                      {t("Date_d_expiration", preferredLangage)}
                     </Text>
 
                     <Text
@@ -352,7 +377,8 @@ export default function Reabonnement({
                         fontSize: 13,
                         color: couleurs.dark,
                         opacity: 0.6,
-                      }}>
+                      }}
+                    >
                       {mon_abonnement.expiration}
                     </Text>
                   </View>
@@ -363,20 +389,22 @@ export default function Reabonnement({
             {!mon_abonnement.nom && (
               <View
                 style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  justifyContent: 'center',
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "center",
                   backgroundColor: couleurs.primaryLight,
                   borderRadius: 10,
                   paddingVertical: 20,
-                }}>
+                }}
+              >
                 <Text
                   style={{
                     fontFamily: CustomFont.Poppins,
                     fontSize: 13,
                     padding: 10,
-                  }}>
-                  {t('Vous_n_avez_aucun_abonnement_actif', preferredLangage)}
+                  }}
+                >
+                  {t("Vous_n_avez_aucun_abonnement_actif", preferredLangage)}
                 </Text>
               </View>
             )}
@@ -388,8 +416,9 @@ export default function Reabonnement({
                 color: couleurs.dark,
                 marginVertical: 20,
                 paddingHorizontal: 15,
-              }}>
-              {t('Tous_les_abonnements', preferredLangage)}
+              }}
+            >
+              {t("Tous_les_abonnements", preferredLangage)}
             </Text>
 
             {abonnements.map((row: any, key: any) => (
@@ -400,32 +429,36 @@ export default function Reabonnement({
                   borderColor: couleurs.primary,
                   borderRadius: 10,
                   marginBottom: 10,
-                }}>
+                }}
+              >
                 <View
                   style={{
                     backgroundColor: couleurs.primary,
                     borderTopLeftRadius: 10,
                     borderTopRightRadius: 10,
                     paddingVertical: 10,
-                  }}>
-                  <Text style={{color: couleurs.white, alignSelf: 'center'}}>
-                  { preferredLangage == 'fr' ? row.nom : row.en_nom}
+                  }}
+                >
+                  <Text style={{ color: couleurs.white, alignSelf: "center" }}>
+                    {preferredLangage == "fr" ? row.nom : row.en_nom}
                   </Text>
                 </View>
 
                 <View
                   style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
                     paddingHorizontal: 30,
                     paddingVertical: 10,
-                  }}>
+                  }}
+                >
                   <Text
                     style={{
                       color: couleurs.primary,
                       fontSize: 13,
-                    }}>
+                    }}
+                  >
                     {row.code}
                   </Text>
                   <View>
@@ -433,7 +466,8 @@ export default function Reabonnement({
                       style={{
                         color: couleurs.primary,
                         fontSize: 16,
-                      }}>
+                      }}
+                    >
                       {row.devise} {row.montant}
                     </Text>
                   </View>
@@ -442,29 +476,32 @@ export default function Reabonnement({
                 <View
                   style={{
                     marginBottom: 20,
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'center',
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "center",
                     backgroundColor: couleurs.primary,
                     borderRadius: 30,
                     marginHorizontal: 40,
-                  }}>
+                  }}
+                >
                   <TouchableOpacity
                     style={{
                       paddingHorizontal: 10,
-                      width: '80%',
+                      width: "80%",
                     }}
-                    onPress={() => sabonnerMaintenant(row)}>
+                    onPress={() => sabonnerMaintenant(row)}
+                  >
                     <Text
                       style={{
-                        textAlign: 'center',
-                        alignSelf: 'center',
+                        textAlign: "center",
+                        alignSelf: "center",
                         color: couleurs.white,
                         padding: 10,
                         paddingHorizontal: 20,
                         fontSize: 13,
-                      }}>
-                      {t('S_abonner_maintenant', preferredLangage)}
+                      }}
+                    >
+                      {t("S_abonner_maintenant", preferredLangage)}
                     </Text>
                   </TouchableOpacity>
                 </View>

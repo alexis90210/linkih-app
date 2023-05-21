@@ -1,5 +1,5 @@
-import React, {useRef, useState, useEffect} from 'react';
-import { StackActions } from '@react-navigation/native';
+import React, { useRef, useState, useEffect } from "react";
+import { StackActions } from "@react-navigation/native";
 import {
   SafeAreaView,
   ScrollView,
@@ -9,19 +9,18 @@ import {
   Alert,
   TouchableOpacity,
   ActivityIndicator,
-  Modal
-} from 'react-native';
+  Modal,
+} from "react-native";
 
-import { CustomFont, couleurs } from '../components/color';
-import axios from 'axios';
-import ApiService, { setupAxiosAuth } from '../components/api/service';
-import storage from '../components/api/localstorage';
-import translations from '../translations/translations';
-import ArrowRightIcon from '../components/ArrowRight';
-import EyeSlashIcon from '../components/eye_slash';
-import EyeIcon from '../components/eye';
-import secureStorage from '../components/api/secureStorage';
-
+import { CustomFont, couleurs } from "../components/color";
+import axios from "axios";
+import ApiService, { setupAxiosAuth } from "../components/api/service";
+import storage from "../components/api/localstorage";
+import translations from "../translations/translations";
+import ArrowRightIcon from "../components/ArrowRight";
+import EyeSlashIcon from "../components/eye_slash";
+import EyeIcon from "../components/eye";
+import secureStorage from "../components/api/secureStorage";
 
 // IdentificationProprietaireScreen
 export default function IdentificationProprietaireScreen({
@@ -35,7 +34,7 @@ export default function IdentificationProprietaireScreen({
 
   /////////////////////////////////// LANGUAGE HANDLER //////////////////////////////////
 
-  const [preferredLangage, setPreferredLangage] = useState('fr');
+  const [preferredLangage, setPreferredLangage] = useState("fr");
 
   const t = (key: any, langage: any) => {
     return translations[langage][key] || key;
@@ -44,18 +43,17 @@ export default function IdentificationProprietaireScreen({
   useEffect(() => {
     // declare the data fetching function
     const fetchData = async () => {
-      let lang = await secureStorage.getKey('defaultlang')
-      if ( lang ) {
+      let lang = await secureStorage.getKey("defaultlang");
+      if (lang) {
         setPreferredLangage(lang);
       }
-    }
-  
+    };
+
     // call the function
     fetchData()
       // make sure to catch any error
       .catch(console.error);
-  }, [])
- 
+  }, []);
 
   //////////////////////////////////////////////////////////////////////////////////////
   var [isVisible, setVisible] = useState(false);
@@ -67,16 +65,16 @@ export default function IdentificationProprietaireScreen({
 
   //////////////////////////////////////////
   storage.save({
-    key: 'typeuser', // Note: Do not use underscore("_") in key!
-    id: 'typeuser', // Note: Do not use underscore("_") in id!
+    key: "typeuser", // Note: Do not use underscore("_") in key!
+    id: "typeuser", // Note: Do not use underscore("_") in id!
     data: {
       type: route.params?.is,
     },
   });
 
   const [isProccessing, setIsProccessing] = useState(false);
-  const [password, setPassword] = useState('');
-  const [identifiant, setIdentifiant] = useState('');
+  const [password, setPassword] = useState("");
+  const [identifiant, setIdentifiant] = useState("");
 
   if (route.params?.login && route.params?.login.length > 0) {
     if (!identifiant) {
@@ -86,17 +84,17 @@ export default function IdentificationProprietaireScreen({
 
   const logUser = async () => {
     if (!identifiant) {
-      Alert.alert('', t('Veuillez_entrer_un_identifiant', preferredLangage), [
-        { text: 'OK', onPress: () => null },
+      Alert.alert("", t("Veuillez_entrer_un_identifiant", preferredLangage), [
+        { text: "OK", onPress: () => null },
       ]);
       return;
     }
 
     if (!password) {
       Alert.alert(
-        '',
-        t('Veuillez_entrer_un_mot_de_passe_valide', preferredLangage),
-        [{ text: 'OK', onPress: () => null }],
+        "",
+        t("Veuillez_entrer_un_mot_de_passe_valide", preferredLangage),
+        [{ text: "OK", onPress: () => null }]
       );
       return;
     }
@@ -104,16 +102,16 @@ export default function IdentificationProprietaireScreen({
     setIsProccessing(true);
 
     axios({
-      method: 'POST',
+      method: "POST",
       url: ApiService.API_URL_LOGIN,
       data: JSON.stringify({
         login: identifiant,
         password: password,
-        role: 'ROLE_VENDEUR',
+        role: "ROLE_VENDEUR",
       }),
       headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
+        Accept: "application/json",
+        "Content-Type": "application/json",
       },
     })
       .then(async (response: { data: any }) => {
@@ -130,98 +128,100 @@ export default function IdentificationProprietaireScreen({
         }
         /*** ======================= TODO: EDIT IF NEEDED (e.g: remove logs...) ========================== */
 
-        console.log('login ===', api);
+        console.log("login ===", api);
 
-        if (api.code == 'success') {
+        if (api.code == "success") {
           storage.save({
-            key: 'credentials', // Note: Do not use underscore("_") in key!
-            id: 'credentials', // Note: Do not use underscore("_") in id!
+            key: "credentials", // Note: Do not use underscore("_") in key!
+            id: "credentials", // Note: Do not use underscore("_") in id!
             data: {
               pays: api.message,
             },
           });
 
           storage.save({
-            key: 'firstusage', // Note: Do not use underscore("_") in key!
-            id: 'firstusage', // Note: Do not use underscore("_") in id!
+            key: "firstusage", // Note: Do not use underscore("_") in key!
+            id: "firstusage", // Note: Do not use underscore("_") in id!
             data: {
               isNew: false,
               isClient: false,
             },
           });
 
-          secureStorage.setKey('firstusage', '1') // vendeur
+          secureStorage.setKey("firstusage", "1"); // vendeur
 
           axios({
-            method: 'GET',
+            method: "GET",
             url: ApiService.API_URL_USER_DATA,
             data: JSON.stringify({
               id: api.message.id,
             }),
             headers: {
-              Accept: 'application/json',
-              'Content-Type': 'application/json',
+              Accept: "application/json",
+              "Content-Type": "application/json",
             },
           })
             .then((response: { data: any }) => {
               setIsProccessing(false);
 
               storage.save({
-                key: 'userconnected', // Note: Do not use underscore("_") in key!
-                id: 'userconnected', // Note: Do not use underscore("_") in id!
+                key: "userconnected", // Note: Do not use underscore("_") in key!
+                id: "userconnected", // Note: Do not use underscore("_") in id!
                 data: {
                   ...response.data,
                   role: api.message.role,
                 },
               });
 
-              secureStorage.setKey('etablissement', response.data.etablissement.id) // vendeur
+              secureStorage.setKey(
+                "etablissement",
+                response.data.etablissement.id
+              ); // vendeur
 
-
-
-              navigation.dispatch(StackActions.push('MonEtablissement', {
-                vendeur_id: response.data.etablissement.id,
-                isProprietaire: true,
-              }))
-
+              navigation.dispatch(
+                StackActions.push("MonEtablissement", {
+                  vendeur_id: response.data.etablissement.id,
+                  isProprietaire: true,
+                })
+              );
             })
-            .catch(error => {
+            .catch((error) => {
               setIsProccessing(false);
               Alert.alert(
-                '',
+                "",
                 t(
-                  'Nous_n_avons_pas_pu_recuper_vos_informations',
-                  preferredLangage,
+                  "Nous_n_avons_pas_pu_recuper_vos_informations",
+                  preferredLangage
                 ),
-                [{ text: 'OK', onPress: () => null }],
+                [{ text: "OK", onPress: () => null }]
               );
             });
         }
 
-        if (api.code == 'error') {
+        if (api.code == "error") {
           setIsProccessing(false);
 
           if (api.status) {
-            Alert.alert('', api.message, [
+            Alert.alert("", api.message, [
               {
-                text: t('Confirmer_maintenant', preferredLangage),
+                text: t("Confirmer_maintenant", preferredLangage),
                 onPress: () =>
-                  navigation.navigate('confirmation_screen', {
+                  navigation.navigate("confirmation_screen", {
                     client_id: api.id,
                   }),
               },
             ]);
           } else {
             Alert.alert(
-              '',
-              t('login_incorect', preferredLangage),
+              "",
+              t("login_incorect", preferredLangage),
               [
                 {
-                  text: 'OK',
+                  text: "OK",
                   onPress: () => null,
                 },
               ],
-              { cancelable: true },
+              { cancelable: true }
             );
           }
         }
@@ -229,33 +229,36 @@ export default function IdentificationProprietaireScreen({
       .catch((error: any) => {
         setIsProccessing(false);
         console.log(error);
-        Alert.alert('', error, [{ text: 'OK', onPress: () => null }]);
+        Alert.alert("", error, [{ text: "OK", onPress: () => null }]);
       });
   };
   return (
     <>
       <SafeAreaView
         style={{
-          width: '100%',
-          height: '100%',
-          backgroundColor: '#f6f6f6f6',
-        }}>
+          width: "100%",
+          height: "100%",
+          backgroundColor: "#f6f6f6f6",
+        }}
+      >
         {/* LOADING MODAL */}
 
         <Modal transparent={true} visible={isProccessing}>
           <View
             style={{
               flex: 1,
-              justifyContent: 'center',
-              flexDirection: 'column',
-              backgroundColor: 'rgba(200,200,200,.5)',
-              alignItems: 'center',
-              alignContent: 'center',
-            }}>
+              justifyContent: "center",
+              flexDirection: "column",
+              backgroundColor: "rgba(200,200,200,.5)",
+              alignItems: "center",
+              alignContent: "center",
+            }}
+          >
             <ActivityIndicator
               color={couleurs.primary}
-              style={{ alignSelf: 'center' }}
-              size={'large'}></ActivityIndicator>
+              style={{ alignSelf: "center" }}
+              size={"large"}
+            ></ActivityIndicator>
           </View>
         </Modal>
 
@@ -263,117 +266,128 @@ export default function IdentificationProprietaireScreen({
         <ScrollView
           contentInsetAdjustmentBehavior="automatic"
           style={{
-            backgroundColor: '#f6f6f6f6',
-          }}>
+            backgroundColor: "#f6f6f6f6",
+          }}
+        >
           <View
             style={{
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              alignItems: 'center',
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
               marginTop: 10,
-            }}>
+            }}
+          >
             <View
               style={{
                 marginVertical: 10,
-                backgroundColor: '#fff',
+                backgroundColor: "#fff",
                 borderRadius: 11,
                 padding: 20,
-                width: '90%',
+                width: "90%",
                 marginTop: 20,
-              }}>
+              }}
+            >
               <View
                 style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'flex-start',
-                  alignItems: 'flex-start',
-                }}>
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "flex-start",
+                  alignItems: "flex-start",
+                }}
+              >
                 <Text
                   style={{
-                    textAlign: 'center',
+                    textAlign: "center",
                     color: couleurs.dark,
                     fontSize: 13,
                     height: 30,
                     opacity: 0.85,
                     marginTop: 14,
                     fontFamily: CustomFont.Poppins,
-                  }}>
-                  {t('Identifiant', preferredLangage)}
+                  }}
+                >
+                  {t("Identifiant", preferredLangage)}
                 </Text>
                 <TextInput
                   defaultValue={identifiant}
-                  onChangeText={input => setIdentifiant(input)}
+                  onChangeText={(input) => setIdentifiant(input)}
                   placeholder={t(
-                    'Veuillez_entrer_un_identifiant',
-                    preferredLangage,
+                    "Veuillez_entrer_un_identifiant",
+                    preferredLangage
                   )}
                   style={{
-                    backgroundColor: 'transparent',
+                    backgroundColor: "transparent",
                     borderBottomWidth: 1,
-                    borderBottomColor: '#E2C6BB',
+                    borderBottomColor: "#E2C6BB",
                     color: couleurs.primary,
-                    width: '100%',
-                    fontWeight: '600',
+                    width: "100%",
+                    fontWeight: "600",
                     padding: 0,
                     fontFamily: CustomFont.Poppins,
-                  }}></TextInput>
+                  }}
+                ></TextInput>
               </View>
 
               <View
                 style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'flex-start',
-                  alignItems: 'flex-start',
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "flex-start",
+                  alignItems: "flex-start",
                   marginTop: 23,
                   marginBottom: 40,
-                }}>
+                }}
+              >
                 <Text
                   style={{
-                    textAlign: 'center',
+                    textAlign: "center",
                     color: couleurs.dark,
                     fontSize: 13,
                     height: 30,
                     opacity: 0.85,
                     fontFamily: CustomFont.Poppins,
-                  }}>
-                  {t('mot_de_passe', preferredLangage)}
+                  }}
+                >
+                  {t("mot_de_passe", preferredLangage)}
                 </Text>
                 <View
                   style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    justifyContent: 'flex-start',
-                    width: '100%',
-                    flexWrap: 'nowrap',
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "flex-start",
+                    width: "100%",
+                    flexWrap: "nowrap",
                     borderBottomWidth: 1,
                     borderBottomColor: couleurs.primary,
-                  }}>
+                  }}
+                >
                   <TextInput
                     textContentType="password"
                     keyboardType="default"
                     placeholder={t(
-                      'entrez_votre_mot_de_passe',
-                      preferredLangage,
+                      "entrez_votre_mot_de_passe",
+                      preferredLangage
                     )}
                     secureTextEntry={!isVisible}
                     defaultValue={password}
-                    onChangeText={input => {
+                    onChangeText={(input) => {
                       setPassword(input);
                     }}
-                    placeholderTextColor={'rgba(100,100,100,.7)'}
+                    placeholderTextColor={"rgba(100,100,100,.7)"}
                     style={{
-                      backgroundColor: 'transparent',
+                      backgroundColor: "transparent",
                       color: couleurs.primary,
                       fontSize: 13,
                       flex: 1,
                       fontFamily: CustomFont.Poppins,
-                    }}></TextInput>
+                    }}
+                  ></TextInput>
                   <TouchableOpacity
                     style={{ margin: 5, width: 20, height: 20 }}
-                    onPress={_setVisible}>
+                    onPress={_setVisible}
+                  >
                     {isVisible && <EyeSlashIcon />}
                     {!isVisible && <EyeIcon color={couleurs.primary} />}
                   </TouchableOpacity>
@@ -382,51 +396,57 @@ export default function IdentificationProprietaireScreen({
 
               <View
                 style={{
-                  alignItems: 'center',
+                  alignItems: "center",
                   backgroundColor: couleurs.primary,
                   borderRadius: 30,
                   marginBottom: 20,
-                }}>
+                }}
+              >
                 <TouchableOpacity
                   style={{
                     paddingHorizontal: 10,
-                    width: '70%',
+                    width: "70%",
                   }}
-                  onPress={() => logUser()}>
+                  onPress={() => logUser()}
+                >
                   <Text
                     style={{
-                      textAlign: 'center',
+                      textAlign: "center",
                       padding: 10,
                       paddingHorizontal: 20,
                       fontSize: 13,
                       color: couleurs.secondary,
                       fontFamily: CustomFont.Poppins,
-                    }}>
-                    {t('Se_connecter', preferredLangage)}
+                    }}
+                  >
+                    {t("Se_connecter", preferredLangage)}
                   </Text>
                 </TouchableOpacity>
               </View>
 
               <View
                 style={{
-                  alignItems: 'center',
-                  backgroundColor: 'transparent',
-                  display: 'flex',
-                  flexDirection: 'row',
-                  justifyContent: 'flex-end',
+                  alignItems: "center",
+                  backgroundColor: "transparent",
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "flex-end",
                   marginVertical: 5,
-                }}>
+                }}
+              >
                 <TouchableOpacity
                   style={{}}
-                  onPress={() => navigation.navigate('recup_pass_screen')}>
+                  onPress={() => navigation.navigate("recup_pass_screen")}
+                >
                   <Text
                     style={{
-                      textAlign: 'center',
+                      textAlign: "center",
                       fontSize: 13,
                       color: couleurs.dark,
                       fontFamily: CustomFont.Poppins,
-                    }}>
-                    {t('Mot_de_passe_oublie', preferredLangage)}
+                    }}
+                  >
+                    {t("Mot_de_passe_oublie", preferredLangage)}
                   </Text>
                 </TouchableOpacity>
               </View>
@@ -435,43 +455,47 @@ export default function IdentificationProprietaireScreen({
 
           <View
             style={{
-              alignItems: 'center',
-              backgroundColor: 'transparent',
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'center',
+              alignItems: "center",
+              backgroundColor: "transparent",
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "center",
               paddingTop: 15,
               marginTop: 10,
-            }}>
+            }}
+          >
             <View
               style={{
-                alignItems: 'center',
+                alignItems: "center",
                 backgroundColor: couleurs.primaryLight,
                 borderRadius: 30,
                 marginBottom: 20,
-              }}>
+              }}
+            >
               <TouchableOpacity
                 style={{
                   paddingHorizontal: 10,
-                  width: '100%',
-                  display: 'flex',
-                  flexDirection: 'row',
-                  justifyContent: 'center',
-                  alignItems: 'center',
+                  width: "100%",
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  alignItems: "center",
                 }}
                 onPress={() =>
-                  navigation.navigate('inscription_proprietaire_1')
-                }>
+                  navigation.navigate("inscription_proprietaire_1")
+                }
+              >
                 <Text
                   style={{
-                    textAlign: 'center',
+                    textAlign: "center",
                     padding: 10,
                     paddingHorizontal: 20,
                     fontSize: 13,
                     color: couleurs.dark,
                     fontFamily: CustomFont.Poppins,
-                  }}>
-                  {t('Je_cree_mon_compte', preferredLangage)}
+                  }}
+                >
+                  {t("Je_cree_mon_compte", preferredLangage)}
                 </Text>
               </TouchableOpacity>
             </View>
@@ -479,28 +503,31 @@ export default function IdentificationProprietaireScreen({
 
           <View
             style={{
-              alignItems: 'center',
-              backgroundColor: 'transparent',
+              alignItems: "center",
+              backgroundColor: "transparent",
               borderRadius: 30,
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'center',
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "center",
               marginVertical: 10,
               marginTop: 30,
-            }}>
+            }}
+          >
             <TouchableOpacity
               style={{
                 paddingHorizontal: 10,
               }}
-              onPress={() => null}>
+              onPress={() => null}
+            >
               <Text
                 style={{
-                  textAlign: 'center',
+                  textAlign: "center",
                   fontSize: 13,
                   color: couleurs.primary,
                   fontFamily: CustomFont.Poppins,
-                }}>
-                {t('Avez_vous_besoin_d_aide', preferredLangage)}
+                }}
+              >
+                {t("Avez_vous_besoin_d_aide", preferredLangage)}
               </Text>
             </TouchableOpacity>
           </View>

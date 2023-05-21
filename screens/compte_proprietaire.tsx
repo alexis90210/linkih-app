@@ -1,4 +1,4 @@
-import React, {useRef, useState, useEffect} from 'react';
+import React, { useRef, useState, useEffect } from "react";
 import {
   Text,
   StyleSheet,
@@ -7,48 +7,57 @@ import {
   SafeAreaView,
   ScrollView,
   Image,
-} from 'react-native';
+} from "react-native";
 
-import ArrowLeftIcon from '../components/ArrowLeft';
-import EditIcon from '../components/Edit';
-import { couleurs } from '../components/color';
+import ArrowLeftIcon from "../components/ArrowLeft";
+import EditIcon from "../components/Edit";
+import { couleurs } from "../components/color";
 
-export default function CompteProprietaire({navigation}: {navigation: any}) {
+export default function CompteProprietaire({
+  navigation,
+}: {
+  navigation: any;
+}) {
   return (
     <View>
       <SafeAreaView
         style={{
-          width: '100%',
-          height: '100%',
-        }}>
+          width: "100%",
+          height: "100%",
+        }}
+      >
         <View
           style={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'flex-start',
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "flex-start",
             gap: 30,
             paddingVertical: 15,
             paddingHorizontal: 10,
-          }}>
-          <Pressable onPress={() => navigation.navigate('main')}>
+          }}
+        >
+          <Pressable onPress={() => navigation.navigate("main")}>
             <ArrowLeftIcon color={couleurs.primary} />
           </Pressable>
-          <Text style={{color: couleurs.dark, fontSize: 18, fontWeight: '700'}}>
+          <Text
+            style={{ color: couleurs.dark, fontSize: 18, fontWeight: "700" }}
+          >
             Mon etablissement
           </Text>
         </View>
         <ScrollView
           contentInsetAdjustmentBehavior="automatic"
           style={{
-            backgroundColor: '#f6f6f6f6',
-          }}>
+            backgroundColor: "#f6f6f6f6",
+          }}
+        >
           {/* Banner Image */}
-          <View style={{paddingHorizontal: 12, width: '100%'}}>
+          <View style={{ paddingHorizontal: 12, width: "100%" }}>
             <Image
-              source={require('../assets/images/1.jpg')}
+              source={require("../assets/images/1.jpg")}
               style={{
                 height: 200,
-                width: '100%',
+                width: "100%",
                 borderRadius: 15,
                 marginTop: 2,
               }}
@@ -58,29 +67,32 @@ export default function CompteProprietaire({navigation}: {navigation: any}) {
           <View
             style={{
               borderRadius: 15,
-              width: '100%',
-              position: 'absolute',
+              width: "100%",
+              position: "absolute",
               top: 145,
               left: 0,
               paddingHorizontal: 24,
               zIndex: 10,
-            }}>
+            }}
+          >
             <View
               style={{
                 borderRadius: 15,
-                backgroundColor: '#fff',
+                backgroundColor: "#fff",
                 padding: 14,
-                width: '100%',
-                shadowColor: 'gray',
+                width: "100%",
+                shadowColor: "gray",
                 height: 155,
-              }}>
+              }}
+            >
               <Text
                 style={{
                   color: couleurs.dark,
                   paddingVertical: 3,
                   fontSize: 17,
-                  fontWeight: '700',
-                }}>
+                  fontWeight: "700",
+                }}
+              >
                 Hisoka Tegiro
               </Text>
               <Text
@@ -89,8 +101,9 @@ export default function CompteProprietaire({navigation}: {navigation: any}) {
                   paddingVertical: 3,
                   opacity: 0.7,
                   fontSize: 13,
-                  fontWeight: '600',
-                }}>
+                  fontWeight: "600",
+                }}
+              >
                 hisoka.tegiro@gmail.com
               </Text>
               <Text
@@ -98,49 +111,60 @@ export default function CompteProprietaire({navigation}: {navigation: any}) {
                   color: couleurs.dark,
                   paddingVertical: 3,
                   fontSize: 16,
-                  fontWeight: '600',
-                }}>
+                  fontWeight: "600",
+                }}
+              >
                 06 950 0886
               </Text>
 
               <View
                 style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  justifyContent: 'flex-end',
-                }}>
-               <Pressable onPress={() => navigation.navigate('inscription_proprietaire_1', {
-                updateEtab:true,
-                vendeur_id:1
-               })}>
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "flex-end",
+                }}
+              >
+                <Pressable
+                  onPress={() =>
+                    navigation.navigate("inscription_proprietaire_1", {
+                      updateEtab: true,
+                      vendeur_id: 1,
+                    })
+                  }
+                >
                   <View
                     style={{
                       backgroundColor: couleurs.primary,
                       padding: 10,
                       borderRadius: 15,
-                    }}>
+                    }}
+                  >
                     <EditIcon />
                   </View>
-               </Pressable>
+                </Pressable>
               </View>
             </View>
           </View>
 
-          <View style={{marginHorizontal: 12, marginBottom: 60, marginTop:120}}>
+          <View
+            style={{ marginHorizontal: 12, marginBottom: 60, marginTop: 120 }}
+          >
             <View
               style={{
-                display: 'flex',
-                justifyContent: 'flex-start',
-                flexDirection: 'row',
+                display: "flex",
+                justifyContent: "flex-start",
+                flexDirection: "row",
                 gap: 10,
-              }}>
+              }}
+            >
               <Text
                 style={{
                   color: couleurs.dark,
                   paddingVertical: 3,
                   fontSize: 13,
-                  fontWeight: '600',
-                }}>
+                  fontWeight: "600",
+                }}
+              >
                 Client depuis
               </Text>
               <Text
@@ -148,8 +172,9 @@ export default function CompteProprietaire({navigation}: {navigation: any}) {
                   color: couleurs.primary,
                   paddingVertical: 3,
                   fontSize: 13,
-                  fontWeight: '600',
-                }}>
+                  fontWeight: "600",
+                }}
+              >
                 14-02-2023
               </Text>
             </View>
@@ -159,27 +184,30 @@ export default function CompteProprietaire({navigation}: {navigation: any}) {
                 color: couleurs.dark,
                 paddingVertical: 3,
                 fontSize: 16,
-                fontWeight: '800',
+                fontWeight: "800",
                 marginVertical: 15,
-              }}>
+              }}
+            >
               Adresse
             </Text>
 
             <View
               style={{
                 borderRadius: 15,
-                backgroundColor: '#fff',
+                backgroundColor: "#fff",
                 padding: 14,
-                width: '100%',
-              }}>
+                width: "100%",
+              }}
+            >
               <Text
                 style={{
                   color: couleurs.dark,
                   paddingVertical: 3,
                   fontSize: 16,
-                  fontWeight: '600',
+                  fontWeight: "600",
                   opacity: 0.8,
-                }}>
+                }}
+              >
                 Republique du Congo
               </Text>
               <Text
@@ -188,45 +216,50 @@ export default function CompteProprietaire({navigation}: {navigation: any}) {
                   paddingVertical: 3,
                   opacity: 0.7,
                   fontSize: 13,
-                  fontWeight: '600',
-                }}>
+                  fontWeight: "600",
+                }}
+              >
                 Brazzaville, vers boulevrd denis
               </Text>
             </View>
 
             <View
               style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                flexDirection: 'row',
-                alignItems: 'center',
-              }}>
+                display: "flex",
+                justifyContent: "space-between",
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
               <View>
                 <Text
                   style={{
                     color: couleurs.dark,
                     paddingVertical: 3,
                     fontSize: 16,
-                    fontWeight: '800',
+                    fontWeight: "800",
                     marginVertical: 15,
-                  }}>
+                  }}
+                >
                   Mon abonnement
                 </Text>
               </View>
               <View
                 style={{
-                  display: 'flex',
-                  justifyContent: 'flex-start',
-                  flexDirection: 'row',
+                  display: "flex",
+                  justifyContent: "flex-start",
+                  flexDirection: "row",
                   gap: 10,
-                }}>
+                }}
+              >
                 <Text
                   style={{
                     color: couleurs.dark,
                     paddingVertical: 3,
                     fontSize: 13,
-                    fontWeight: '600',
-                  }}>
+                    fontWeight: "600",
+                  }}
+                >
                   expire le
                 </Text>
                 <Text
@@ -234,8 +267,9 @@ export default function CompteProprietaire({navigation}: {navigation: any}) {
                     color: couleurs.primary,
                     paddingVertical: 3,
                     fontSize: 13,
-                    fontWeight: '600',
-                  }}>
+                    fontWeight: "600",
+                  }}
+                >
                   14-02-2023
                 </Text>
               </View>
@@ -244,34 +278,38 @@ export default function CompteProprietaire({navigation}: {navigation: any}) {
             <View
               style={{
                 borderRadius: 15,
-                backgroundColor: '#fff',
+                backgroundColor: "#fff",
                 padding: 14,
-                width: '100%',
-              }}>
+                width: "100%",
+              }}
+            >
               <Text
                 style={{
                   color: couleurs.dark,
                   paddingVertical: 3,
                   fontSize: 16,
-                  fontWeight: '600',
+                  fontWeight: "600",
                   opacity: 0.8,
-                }}>
+                }}
+              >
                 Pack Proprietaire
               </Text>
               <View
                 style={{
-                  display: 'flex',
-                  justifyContent: 'flex-start',
-                  flexDirection: 'row',
+                  display: "flex",
+                  justifyContent: "flex-start",
+                  flexDirection: "row",
                   gap: 10,
-                }}>
+                }}
+              >
                 <Text
                   style={{
                     color: couleurs.dark,
                     paddingVertical: 3,
                     fontSize: 13,
-                    fontWeight: '800',
-                  }}>
+                    fontWeight: "800",
+                  }}
+                >
                   13
                 </Text>
                 <Text
@@ -279,8 +317,9 @@ export default function CompteProprietaire({navigation}: {navigation: any}) {
                     color: couleurs.primary,
                     paddingVertical: 3,
                     fontSize: 13,
-                    fontWeight: '600',
-                  }}>
+                    fontWeight: "600",
+                  }}
+                >
                   € TTC / mois
                 </Text>
               </View>
@@ -288,38 +327,42 @@ export default function CompteProprietaire({navigation}: {navigation: any}) {
 
             <View
               style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                flexDirection: 'row',
-                alignItems: 'center',
-              }}>
+                display: "flex",
+                justifyContent: "space-between",
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
               <View>
                 <Text
                   style={{
                     color: couleurs.dark,
                     paddingVertical: 3,
                     fontSize: 16,
-                    fontWeight: '800',
+                    fontWeight: "800",
                     marginVertical: 15,
-                  }}>
+                  }}
+                >
                   Mes Rendez-Vous
                 </Text>
               </View>
               <View
                 style={{
-                  display: 'flex',
-                  justifyContent: 'flex-end',
-                  flexDirection: 'row',
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  flexDirection: "row",
                   gap: 10,
-                }}>
-                <Pressable onPress={() => navigation.navigate('rdv')}>
+                }}
+              >
+                <Pressable onPress={() => navigation.navigate("rdv")}>
                   <Text
                     style={{
                       color: couleurs.primary,
                       paddingVertical: 3,
                       fontSize: 13,
-                      fontWeight: '600',
-                    }}>
+                      fontWeight: "600",
+                    }}
+                  >
                     voir tout
                   </Text>
                 </Pressable>
@@ -329,35 +372,39 @@ export default function CompteProprietaire({navigation}: {navigation: any}) {
             <View
               style={{
                 borderRadius: 15,
-                backgroundColor: '#fff',
+                backgroundColor: "#fff",
                 padding: 14,
-                width: '100%',
-              }}>
+                width: "100%",
+              }}
+            >
               <Text
                 style={{
                   color: couleurs.dark,
                   paddingVertical: 3,
                   fontSize: 16,
-                  fontWeight: '600',
+                  fontWeight: "600",
                   opacity: 0.8,
-                }}>
+                }}
+              >
                 Le grand Salon sud
               </Text>
               <View
                 style={{
-                  display: 'flex',
-                  justifyContent: 'flex-start',
-                  flexDirection: 'row',
-                  alignItems: 'center',
+                  display: "flex",
+                  justifyContent: "flex-start",
+                  flexDirection: "row",
+                  alignItems: "center",
                   gap: 10,
-                }}>
+                }}
+              >
                 <Text
                   style={{
                     color: couleurs.dark,
                     paddingVertical: 3,
                     fontSize: 13,
-                    fontWeight: '800',
-                  }}>
+                    fontWeight: "800",
+                  }}
+                >
                   Lundi .
                 </Text>
                 <Text
@@ -365,25 +412,28 @@ export default function CompteProprietaire({navigation}: {navigation: any}) {
                     color: couleurs.primary,
                     paddingVertical: 3,
                     fontSize: 13,
-                    fontWeight: '600',
-                  }}>
+                    fontWeight: "600",
+                  }}
+                >
                   15:30:50
                 </Text>
               </View>
               <View
                 style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                }}>
+                  display: "flex",
+                  justifyContent: "space-between",
+                  flexDirection: "row",
+                  alignItems: "center",
+                }}
+              >
                 <Text
                   style={{
                     color: couleurs.dark,
                     paddingVertical: 3,
                     fontSize: 13,
-                    fontWeight: '600',
-                  }}>
+                    fontWeight: "600",
+                  }}
+                >
                   Maquillage
                 </Text>
 
@@ -393,8 +443,9 @@ export default function CompteProprietaire({navigation}: {navigation: any}) {
                       color: couleurs.primary,
                       paddingVertical: 3,
                       fontSize: 13,
-                      fontWeight: '600',
-                    }}>
+                      fontWeight: "600",
+                    }}
+                  >
                     Annuler
                   </Text>
                 </Pressable>
@@ -404,37 +455,41 @@ export default function CompteProprietaire({navigation}: {navigation: any}) {
             <View
               style={{
                 borderRadius: 15,
-                backgroundColor: '#fff',
+                backgroundColor: "#fff",
                 padding: 14,
-                width: '100%',
+                width: "100%",
                 borderTopWidth: 1,
-                borderTopColor: '#f2f2f2',
-              }}>
+                borderTopColor: "#f2f2f2",
+              }}
+            >
               <Text
                 style={{
                   color: couleurs.dark,
                   paddingVertical: 3,
                   fontSize: 16,
-                  fontWeight: '600',
+                  fontWeight: "600",
                   opacity: 0.8,
-                }}>
+                }}
+              >
                 Le grand Salon Nord
               </Text>
               <View
                 style={{
-                  display: 'flex',
-                  justifyContent: 'flex-start',
-                  flexDirection: 'row',
-                  alignItems: 'center',
+                  display: "flex",
+                  justifyContent: "flex-start",
+                  flexDirection: "row",
+                  alignItems: "center",
                   gap: 10,
-                }}>
+                }}
+              >
                 <Text
                   style={{
                     color: couleurs.dark,
                     paddingVertical: 3,
                     fontSize: 13,
-                    fontWeight: '800',
-                  }}>
+                    fontWeight: "800",
+                  }}
+                >
                   Jeudi .
                 </Text>
                 <Text
@@ -442,25 +497,28 @@ export default function CompteProprietaire({navigation}: {navigation: any}) {
                     color: couleurs.primary,
                     paddingVertical: 3,
                     fontSize: 13,
-                    fontWeight: '600',
-                  }}>
+                    fontWeight: "600",
+                  }}
+                >
                   15:30:50
                 </Text>
               </View>
               <View
                 style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                }}>
+                  display: "flex",
+                  justifyContent: "space-between",
+                  flexDirection: "row",
+                  alignItems: "center",
+                }}
+              >
                 <Text
                   style={{
                     color: couleurs.dark,
                     paddingVertical: 3,
                     fontSize: 13,
-                    fontWeight: '600',
-                  }}>
+                    fontWeight: "600",
+                  }}
+                >
                   Soin ongle
                 </Text>
 
@@ -470,8 +528,9 @@ export default function CompteProprietaire({navigation}: {navigation: any}) {
                       color: couleurs.primary,
                       paddingVertical: 3,
                       fontSize: 13,
-                      fontWeight: '600',
-                    }}>
+                      fontWeight: "600",
+                    }}
+                  >
                     Annuler
                   </Text>
                 </Pressable>

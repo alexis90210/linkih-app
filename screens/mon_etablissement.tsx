@@ -1,4 +1,4 @@
-import React, {useRef, useState, useEffect} from 'react';
+import React, { useRef, useState, useEffect } from "react";
 import {
   Text,
   StyleSheet,
@@ -9,18 +9,17 @@ import {
   Image,
   Pressable,
   Dimensions,
-} from 'react-native';
-import RdvIcon from '../components/rdv';
-import {AirbnbRating} from 'react-native-ratings';
-import {CustomFont, couleurs} from '../components/color';
-import HomeIcon from '../components/home';
-import storage from '../components/api/localstorage';
-import MapIcon from '../components/map';
-import ArrowRightIcon from '../components/ArrowRight';
-import translations from '../translations/translations';
-import * as Progress from 'react-native-progress';
-import secureStorage from '../components/api/secureStorage';
-
+} from "react-native";
+import RdvIcon from "../components/rdv";
+import { AirbnbRating } from "react-native-ratings";
+import { CustomFont, couleurs } from "../components/color";
+import HomeIcon from "../components/home";
+import storage from "../components/api/localstorage";
+import MapIcon from "../components/map";
+import ArrowRightIcon from "../components/ArrowRight";
+import translations from "../translations/translations";
+import * as Progress from "react-native-progress";
+import secureStorage from "../components/api/secureStorage";
 
 export default function MonEtablissement({
   route,
@@ -31,103 +30,118 @@ export default function MonEtablissement({
 }) {
   /////////////////////////////////// LANGUAGE HANDLER ///////////////////////////////////
 
-  const [preferredLangage, setPreferredLangage] = useState('fr');
+  const [preferredLangage, setPreferredLangage] = useState("fr");
 
   const t = (key: any, langage: any) => {
     return translations[langage][key] || key;
   };
 
-
   useEffect(() => {
     // declare the data fetching function
     const fetchData = async () => {
-      let lang = await secureStorage.getKey('defaultlang')
-      if ( lang ) {
+      let lang = await secureStorage.getKey("defaultlang");
+      if (lang) {
         setPreferredLangage(lang);
       }
-    }
-  
+    };
+
     // call the function
     fetchData()
       // make sure to catch any error
       .catch(console.error);
-  }, [])
- 
+  }, []);
 
   //////////////////////////////////////////////////////////////////////////////////////
 
   const propsTitle = route.params?.nomEtab;
-  var title = t('mon_etablissement', preferredLangage);
+  var title = t("mon_etablissement", preferredLangage);
 
   const [etablissement, setEtablissement] = useState<any>({});
   const [proprietaire, setProprietaire] = useState<any>({});
   const [lien_reseaux_sociaux, setLien_reseaux_sociaux] = useState<any[]>([]);
   const [horaire_ouverture, setHoraire_ouverture] = useState<any[]>([]);
 
+  useEffect(() => {
+    // declare the data fetching function
+    const _fetchData = async () => {
+      let role = await secureStorage.getKey("role");
+      if (role) {
+        SetUserRole(role);
 
-    useEffect(async () => {
-      let role = await secureStorage.getKey('role')
-        if ( role ) {
-          SetUserRole(role);
+        if (role != "ROLE_VENDEUR") {
+          navigation.navigate("identification_proprietaire");
+        }
+      }
+    };
 
-          if (role != 'ROLE_VENDEUR') {
-            navigation.navigate('identification_proprietaire');
-          }
-        }    
+    // call the function
+    _fetchData()
+      // make sure to catch any error
+      .catch(console.error);
+  }, []);
+
+  const [userConnectedId, SetUserConnectedId] = useState("");
+
+  useEffect(() => {
+    const fetchData = async () => {
+      let _userConnectedId = await secureStorage.getKey("utilisateur");
+      if (_userConnectedId) SetUserConnected(_userConnectedId);
+    };
+
+    // call the function
+    fetchData()
+      // make sure to catch any error
+      .catch(console.error);
+  });
+
+  const loadUserData = () => {
+    axios({
+      method: "POST",
+      url: ApiService.API_URL_USER_DATA,
+      data: JSON.stringify({
+        id: userConnectedId,
+      }),
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
     })
-
-    const [userConnectedId, SetUserConnectedId] = useState('');
-
-    useEffect(async () =>{
-      let _userConnectedId = await secureStorage.getKey('utilisateur')
-      if(_userConnectedId) SetUserConnectedId(_userConnectedId)
-    })
-
-    const loadUserData = () => {
-      axios({
-        method: 'POST',
-        url: ApiService.API_URL_USER_DATA,
-        data: JSON.stringify({
-          id: userConnectedId
-        }),
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json'
+      .then(async (response: { data: any }) => {
+        console.log(response);
+        if (response.data.code == "success") {
+          setEtablissement(response.data.message.etablissement[0]);
+          setProprietaire(response.data.message.utilisateur[0]);
+          setLien_reseaux_sociaux(response.data.message.lien_reseaux_sociaux);
+          setHoraire_ouverture(response.data.message.horaire_ouverture);
         }
       })
-        .then(async (response: { data: any }) => {
-          console.log(response)
-          if (response.data.code == 'success') {
-            setEtablissement(response.data.message.etablissement[0]);
-            setProprietaire(response.data.message.utilisateur[0]);
-            setLien_reseaux_sociaux(response.data.message.lien_reseaux_sociaux);
-            setHoraire_ouverture(response.data.message.horaire_ouverture);
-          }
-        }).catch(error => console.log(error))
-     }
-  
-     useEffect(() =>{
-      loadUserData()
-     })
+      .catch((error) => console.log(error));
+  };
+
+  useEffect(() => {
+    loadUserData();
+  });
 
   return (
     <View>
       <SafeAreaView
         style={{
-          width: '100%',
-          height: '100%',
-        }}>
+          width: "100%",
+          height: "100%",
+        }}
+      >
         <View
           style={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
             gap: 30,
             paddingVertical: 10,
             paddingHorizontal: 10,
             backgroundColor: couleurs.primary,
-          }}>
-          <TouchableOpacity onPress={() => navigation.navigate('main')}>
+          }}
+        >
+          <TouchableOpacity onPress={() => navigation.navigate("main")}>
             <HomeIcon color={couleurs.white} />
           </TouchableOpacity>
           <Text
@@ -135,29 +149,31 @@ export default function MonEtablissement({
               color: couleurs.white,
               fontSize: 18,
               fontFamily: CustomFont.Poppins,
-            }}>
+            }}
+          >
             {title}
           </Text>
-          <TouchableOpacity onPress={() => navigation.navigate('map')}>
+          <TouchableOpacity onPress={() => navigation.navigate("map")}>
             <MapIcon color={couleurs.white} />
           </TouchableOpacity>
         </View>
         <ScrollView
           contentInsetAdjustmentBehavior="automatic"
           style={{
-            backgroundColor: '#f6f6f6f6',
-          }}>
+            backgroundColor: "#f6f6f6f6",
+          }}
+        >
           {/* Banner Image */}
-          <View style={{width: '100%'}}>
+          <View style={{ width: "100%" }}>
             <Image
               source={
                 etablissement.logo
-                  ? {uri: 'data:image/png;base64,' + etablissement.logo}
-                  : require('../assets/images/cover.jpg')
+                  ? { uri: "data:image/png;base64," + etablissement.logo }
+                  : require("../assets/images/cover.jpg")
               }
               style={{
                 height: 200,
-                width: '100%',
+                width: "100%",
                 // borderRadius: 15,
                 // marginTop: 2,
                 borderWidth: 1,
@@ -169,32 +185,35 @@ export default function MonEtablissement({
           <View
             style={{
               borderRadius: 15,
-              width: '100%',
-              position: 'absolute',
+              width: "100%",
+              position: "absolute",
               top: 130,
               left: 0,
               paddingHorizontal: 14,
               zIndex: 10,
-              display:'flex',
-              justifyContent:'space-between',
-              alignItems:'center',
-            }}>
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
             <View
               style={{
                 borderRadius: 15,
                 backgroundColor: couleurs.white,
                 padding: 14,
-                width: '100%',
-                shadowColor: 'gray',
+                width: "100%",
+                shadowColor: "gray",
                 height: 155,
-              }}>
+              }}
+            >
               <Text
                 style={{
                   color: couleurs.dark,
                   paddingVertical: 3,
                   fontSize: 17,
                   fontFamily: CustomFont.Poppins,
-                }}>
+                }}
+              >
                 {etablissement.nom}
               </Text>
               <Text
@@ -203,7 +222,8 @@ export default function MonEtablissement({
                   paddingVertical: 3,
                   fontSize: 14,
                   fontFamily: CustomFont.Poppins,
-                }}>
+                }}
+              >
                 {etablissement.mail}
               </Text>
               <Text
@@ -212,45 +232,69 @@ export default function MonEtablissement({
                   paddingVertical: 3,
                   fontSize: 14,
                   fontFamily: CustomFont.Poppins,
-                }}>
+                }}
+              >
                 {etablissement.mobile}
               </Text>
 
-              <View style={{display: 'flex', flexDirection: 'row', marginTop:6, justifyContent:'flex-start', alignItems:'center'}}>
-           
-                <Progress.Bar progress={etablissement.note || 0} width={Dimensions.get('screen').width - 100} height={8}
-                color={couleurs.success}
-                style={{backgroundColor:couleurs.Light, borderColor:couleurs.Light}} />
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  marginTop: 6,
+                  justifyContent: "flex-start",
+                  alignItems: "center",
+                }}
+              >
+                <Progress.Bar
+                  progress={etablissement.note || 0}
+                  width={Dimensions.get("screen").width - 100}
+                  height={8}
+                  color={couleurs.success}
+                  style={{
+                    backgroundColor: couleurs.Light,
+                    borderColor: couleurs.Light,
+                  }}
+                />
 
-                <Text style={{fontFamily:CustomFont.Poppins, color:couleurs.dark}}>{'  '}{etablissement.note || 0} Avis</Text>
+                <Text
+                  style={{
+                    fontFamily: CustomFont.Poppins,
+                    color: couleurs.dark,
+                  }}
+                >
+                  {"  "}
+                  {etablissement.note || 0} Avis
+                </Text>
               </View>
             </View>
-
-            
           </View>
 
           <View
-            style={{marginHorizontal: 12, marginBottom: 60, marginTop: 100}}>
+            style={{ marginHorizontal: 12, marginBottom: 60, marginTop: 100 }}
+          >
             <View
               style={{
-                display: 'flex',
-                justifyContent: 'flex-start',
-                flexDirection: 'row',
+                display: "flex",
+                justifyContent: "flex-start",
+                flexDirection: "row",
                 gap: 10,
                 borderRadius: 15,
-                backgroundColor: '#fff',
+                backgroundColor: "#fff",
                 padding: 14,
-                width: '100%',
-                alignSelf: 'center',
-                shadowColor: 'gray',
-              }}>
+                width: "100%",
+                alignSelf: "center",
+                shadowColor: "gray",
+              }}
+            >
               <Text
                 style={{
                   fontSize: 13,
-                  color:couleurs.dark,
+                  color: couleurs.dark,
                   fontFamily: CustomFont.Poppins,
-                }}>
-                {t('Vendeur_depuis', preferredLangage)}
+                }}
+              >
+                {t("Vendeur_depuis", preferredLangage)}
               </Text>
               <Text
                 style={{
@@ -258,7 +302,8 @@ export default function MonEtablissement({
                   paddingVertical: 3,
                   fontSize: 13,
                   fontFamily: CustomFont.Poppins,
-                }}>
+                }}
+              >
                 {proprietaire.date_creation}
               </Text>
             </View>
@@ -267,21 +312,23 @@ export default function MonEtablissement({
             <View
               style={{
                 borderRadius: 15,
-                backgroundColor: '#fff',
+                backgroundColor: "#fff",
                 padding: 14,
-                width: '100%',
-                alignSelf: 'center',
-                shadowColor: 'gray',
+                width: "100%",
+                alignSelf: "center",
+                shadowColor: "gray",
                 marginTop: 10,
-              }}>
+              }}
+            >
               <Text
                 style={{
                   color: couleurs.primary,
                   paddingVertical: 3,
                   fontSize: 13,
                   fontFamily: CustomFont.Poppins,
-                }}>
-                {t('Pays_et_region_de_l_etablissement', preferredLangage)}
+                }}
+              >
+                {t("Pays_et_region_de_l_etablissement", preferredLangage)}
               </Text>
 
               <Text
@@ -290,7 +337,8 @@ export default function MonEtablissement({
                   paddingVertical: 3,
                   fontSize: 13,
                   opacity: 0.8,
-                }}>
+                }}
+              >
                 {proprietaire.pays}
               </Text>
               <Text
@@ -299,7 +347,8 @@ export default function MonEtablissement({
                   paddingVertical: 3,
                   opacity: 0.7,
                   fontSize: 13,
-                }}>
+                }}
+              >
                 {etablissement.adresse}
               </Text>
             </View>
@@ -308,30 +357,34 @@ export default function MonEtablissement({
             <View
               style={{
                 borderRadius: 15,
-                backgroundColor: '#fff',
+                backgroundColor: "#fff",
                 padding: 14,
-                width: '100%',
-                alignSelf: 'center',
-                shadowColor: 'gray',
+                width: "100%",
+                alignSelf: "center",
+                shadowColor: "gray",
                 marginTop: 10,
-              }}>
+              }}
+            >
               <View
                 style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  flexDirection: 'row',
-                }}>
+                  display: "flex",
+                  justifyContent: "space-between",
+                  flexDirection: "row",
+                }}
+              >
                 <Text
                   style={{
                     fontFamily: CustomFont.Poppins,
                     fontSize: 13,
                     paddingBottom: 12,
                     color: couleurs.primary,
-                  }}>
-                  {t('Heure_d_ouverture', preferredLangage)}
+                  }}
+                >
+                  {t("Heure_d_ouverture", preferredLangage)}
                 </Text>
                 <TouchableOpacity
-                  onPress={() => navigation.navigate('mes_horaires')}>
+                  onPress={() => navigation.navigate("mes_horaires")}
+                >
                   <ArrowRightIcon color={couleurs.primary} />
                 </TouchableOpacity>
               </View>
@@ -340,46 +393,55 @@ export default function MonEtablissement({
                 <View
                   key={Math.random()}
                   style={{
-                    display: 'flex',
-                    flexDirection: 'row',
+                    display: "flex",
+                    flexDirection: "row",
                     gap: 4,
-                    backgroundColor: '#fff',
+                    backgroundColor: "#fff",
                     padding: 8,
-                    alignItems: 'center',
-                    width: '100%',
-                    justifyContent: 'space-between',
-                    borderBottomColor: '#ddd',
+                    alignItems: "center",
+                    width: "100%",
+                    justifyContent: "space-between",
+                    borderBottomColor: "#ddd",
                     borderBottomWidth:
                       key + 1 != horaire_ouverture.length ? 1 : 0,
                     marginBottom: 2,
-                  }}>
+                  }}
+                >
                   <View
                     style={{
-                      display: 'flex',
-                      flexDirection: 'row',
+                      display: "flex",
+                      flexDirection: "row",
                       gap: 3,
-                      backgroundColor: '#fff',
+                      backgroundColor: "#fff",
                       borderRadius: 50,
-                      alignItems: 'center',
-                      width: '100%',
-                      justifyContent: 'space-between',
-                    }}>
+                      alignItems: "center",
+                      width: "100%",
+                      justifyContent: "space-between",
+                    }}
+                  >
                     <Text
                       style={{
                         color: couleurs.dark,
                         fontSize: 13,
                         fontFamily: CustomFont.Poppins,
-                      }}>
+                      }}
+                    >
                       {row.jour}
                     </Text>
                     <Text
                       style={{
-                        color: !(row.heure_ouverture && row.heure_fermeture) ? 'rgba(240,20,25,.8)' : couleurs.primary,
+                        color: !(row.heure_ouverture && row.heure_fermeture)
+                          ? "rgba(240,20,25,.8)"
+                          : couleurs.primary,
                         fontSize: 13,
                         fontFamily: CustomFont.Poppins,
-                      }}>
-                      {(row.heure_ouverture && row.heure_fermeture ) && `${row.heure_ouverture}-${row.heure_fermeture}`}
-                      {!(row.heure_ouverture && row.heure_fermeture) && t('Ferme', preferredLangage) }
+                      }}
+                    >
+                      {row.heure_ouverture &&
+                        row.heure_fermeture &&
+                        `${row.heure_ouverture}-${row.heure_fermeture}`}
+                      {!(row.heure_ouverture && row.heure_fermeture) &&
+                        t("Ferme", preferredLangage)}
                     </Text>
                   </View>
                 </View>
@@ -439,27 +501,30 @@ export default function MonEtablissement({
             <View
               style={{
                 borderRadius: 15,
-                backgroundColor: '#fff',
+                backgroundColor: "#fff",
                 padding: 14,
-                width: '100%',
-                alignSelf: 'center',
-                shadowColor: 'gray',
+                width: "100%",
+                alignSelf: "center",
+                shadowColor: "gray",
                 marginTop: 10,
-              }}>
+              }}
+            >
               <View
                 style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  flexDirection: 'row',
-                }}>
+                  display: "flex",
+                  justifyContent: "space-between",
+                  flexDirection: "row",
+                }}
+              >
                 <Text
                   style={{
                     fontFamily: CustomFont.Poppins,
                     fontSize: 13,
                     paddingBottom: 12,
                     color: couleurs.primary,
-                  }}>
-                  {t('lien_reseaux_sociaux', preferredLangage)}
+                  }}
+                >
+                  {t("lien_reseaux_sociaux", preferredLangage)}
                 </Text>
                 <TouchableOpacity onPress={() => null}>
                   <ArrowRightIcon color={couleurs.primary} />
@@ -468,75 +533,76 @@ export default function MonEtablissement({
 
               <View
                 style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  flexWrap: 'wrap',
+                  display: "flex",
+                  flexDirection: "row",
+                  flexWrap: "wrap",
                   gap: 10,
-                }}>
+                }}
+              >
                 {lien_reseaux_sociaux.map(
                   (row: any, key: any) =>
-                    row.nom == 'facebook' && (
+                    row.nom == "facebook" && (
                       <Image
                         key={key}
-                        source={require('../assets/social/facebook.png')}
-                        style={{width: 30, height: 30}}
+                        source={require("../assets/social/facebook.png")}
+                        style={{ width: 30, height: 30 }}
                       />
-                    ),
+                    )
                 )}
 
                 {lien_reseaux_sociaux.map(
                   (row: any, key: any) =>
-                    row.nom == 'twitter' && (
+                    row.nom == "twitter" && (
                       <Image
                         key={key}
-                        source={require('../assets/social/twitter.png')}
-                        style={{width: 30, height: 30}}
+                        source={require("../assets/social/twitter.png")}
+                        style={{ width: 30, height: 30 }}
                       />
-                    ),
+                    )
                 )}
 
                 {lien_reseaux_sociaux.map(
                   (row: any, key: any) =>
-                    row.nom == 'instagram' && (
+                    row.nom == "instagram" && (
                       <Image
                         key={key}
-                        source={require('../assets/social/instagram.png')}
-                        style={{width: 30, height: 30}}
+                        source={require("../assets/social/instagram.png")}
+                        style={{ width: 30, height: 30 }}
                       />
-                    ),
+                    )
                 )}
 
                 {lien_reseaux_sociaux.map(
                   (row: any, key: any) =>
-                    row.nom == 'linkedin' && (
+                    row.nom == "linkedin" && (
                       <Image
                         key={key}
-                        source={require('../assets/social/linkedin.png')}
-                        style={{width: 30, height: 30}}
+                        source={require("../assets/social/linkedin.png")}
+                        style={{ width: 30, height: 30 }}
                       />
-                    ),
+                    )
                 )}
 
                 {lien_reseaux_sociaux.map(
                   (row: any, key: any) =>
-                    row.nom == 'youtube' && (
+                    row.nom == "youtube" && (
                       <Image
                         key={key}
-                        source={require('../assets/social/youtube.png')}
-                        style={{width: 30, height: 30}}
+                        source={require("../assets/social/youtube.png")}
+                        style={{ width: 30, height: 30 }}
                       />
-                    ),
+                    )
                 )}
 
                 {lien_reseaux_sociaux.map(
                   (row: any, key: any) =>
-                    row.nom == 'tik-tok' && (
+                    row.nom == "tik-tok" && (
                       <Image
                         key={key}
-                        source={require('../assets/social/tik-tok.png')}
-                        style={{width: 30, height: 30}}
+                        source={require("../assets/social/tik-tok.png")}
+                        style={{ width: 30, height: 30 }}
                       />
-                    ),
+                    )
                 )}
               </View>
             </View>
@@ -546,19 +612,20 @@ export default function MonEtablissement({
         </ScrollView>
         <View
           style={{
-            alignItems: 'center',
+            alignItems: "center",
             marginVertical: 10,
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'center',
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "center",
             backgroundColor: couleurs.white,
-            position: 'absolute',
+            position: "absolute",
             bottom: -10,
-            width: '100%',
+            width: "100%",
             paddingVertical: 7,
             gap: 30,
             zIndex: 100,
-          }}>
+          }}
+        >
           <Pressable
             style={{
               paddingHorizontal: 30,
@@ -566,26 +633,29 @@ export default function MonEtablissement({
               backgroundColor: couleurs.primary,
               borderRadius: 30,
             }}
-            onPress={() => navigation.navigate('rdv')}>
+            onPress={() => navigation.navigate("rdv")}
+          >
             <View
               style={{
-                display: 'flex',
-                alignItems: 'center',
-                flexDirection: 'row',
-                justifyContent: 'flex-start',
+                display: "flex",
+                alignItems: "center",
+                flexDirection: "row",
+                justifyContent: "flex-start",
                 gap: 5,
-              }}>
-              <RdvIcon color={'#fff'} />
+              }}
+            >
+              <RdvIcon color={"#fff"} />
               <Text
                 style={{
-                  textAlign: 'center',
+                  textAlign: "center",
                   padding: 10,
                   paddingHorizontal: 20,
                   fontSize: 13,
-                  fontWeight: '500',
-                  color: '#fff',
-                }}>
-                {t('Mes_Rendez_vous', preferredLangage)}
+                  fontWeight: "500",
+                  color: "#fff",
+                }}
+              >
+                {t("Mes_Rendez_vous", preferredLangage)}
               </Text>
             </View>
           </Pressable>

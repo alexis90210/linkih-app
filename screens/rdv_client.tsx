@@ -1,4 +1,4 @@
-import React, {useRef, useState, useEffect} from 'react';
+import React, { useRef, useState, useEffect } from "react";
 import {
   Text,
   StyleSheet,
@@ -9,18 +9,17 @@ import {
   Alert,
   ActivityIndicator,
   Image,
-} from 'react-native';
+} from "react-native";
 
-import ArrowLeftIcon from '../components/ArrowLeft';
-import {CustomFont, couleurs} from '../components/color';
-import {sous_categories} from '../components/api/categories';
-import storage from '../components/api/localstorage';
-import axios from 'axios';
-import ApiService from '../components/api/service';
-import {TouchableOpacity} from 'react-native-gesture-handler';
-import translations from '../translations/translations';
-import secureStorage from '../components/api/secureStorage';
-
+import ArrowLeftIcon from "../components/ArrowLeft";
+import { CustomFont, couleurs } from "../components/color";
+import { sous_categories } from "../components/api/categories";
+import storage from "../components/api/localstorage";
+import axios from "axios";
+import ApiService from "../components/api/service";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import translations from "../translations/translations";
+import secureStorage from "../components/api/secureStorage";
 
 export default function RdvClient({
   navigation,
@@ -31,7 +30,7 @@ export default function RdvClient({
 }) {
   /////////////////////////////////// LANGUAGE HANDLER ///////////////////////////////////
 
-  const [preferredLangage, setPreferredLangage] = useState('fr');
+  const [preferredLangage, setPreferredLangage] = useState("fr");
 
   const t = (key: any, langage: any) => {
     return translations[langage][key] || key;
@@ -40,17 +39,17 @@ export default function RdvClient({
   useEffect(() => {
     // declare the data fetching function
     const fetchData = async () => {
-      let lang = await secureStorage.getKey('defaultlang')
-      if ( lang ) {
+      let lang = await secureStorage.getKey("defaultlang");
+      if (lang) {
         setPreferredLangage(lang);
       }
-    }
-  
+    };
+
     // call the function
     fetchData()
       // make sure to catch any error
       .catch(console.error);
-  }, [])
+  }, []);
 
   //////////////////////////////////////////////////////////////////////////////////////
 
@@ -58,7 +57,7 @@ export default function RdvClient({
   const [isLoading, setLoading] = useState(false);
 
   // CURRENT DATE
-  const [date, setDate] = useState('');
+  const [date, setDate] = useState("");
 
   // SELECT DATE
   const _selectDate = (date: any) => {
@@ -68,12 +67,19 @@ export default function RdvClient({
   };
 
   // GET USER CONNECTED
-  const [userConnectedId, SetUserConnectedId] = useState('');
+  const [userConnectedId, SetUserConnectedId] = useState("");
 
-  useEffect(async () =>{
-    let _userConnectedId = await secureStorage.getKey('utilisateur')
-    if(_userConnectedId) SetUserConnectedId(_userConnectedId)
-  })
+  useEffect(() => {
+    const fetchData = async () => {
+      let _userConnectedId = await secureStorage.getKey("utilisateur");
+      if (_userConnectedId) SetUserConnected(_userConnectedId);
+    };
+
+    // call the function
+    fetchData()
+      // make sure to catch any error
+      .catch(console.error);
+  });
 
   //   GET RENDEZ-VOUS
   const [rendezvous, setRendezvous] = useState([]);
@@ -81,25 +87,25 @@ export default function RdvClient({
 
   const loadRendezvous = () => {
     axios({
-      method: 'GET',
+      method: "GET",
       url: ApiService.API_URL_GET_RENDEZ_VOUS,
       data: JSON.stringify({
         utilisateur_id: userConnectedId,
         // date: date
       }),
       headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
+        Accept: "application/json",
+        "Content-Type": "application/json",
       },
     })
-      .then((response: {data: any}) => {
+      .then((response: { data: any }) => {
         var api = response.data;
 
-        if (api.code == 'success') {
+        if (api.code == "success") {
           setLoading(false);
           setRendezvous(api.message);
         }
-        if (api.code == 'error') {
+        if (api.code == "error") {
           //  Alert.alert('', 'Erreur survenue');
         }
       })
@@ -109,28 +115,29 @@ export default function RdvClient({
       });
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     loadRendezvous();
-  })
-
+  });
 
   return (
     <View>
       <SafeAreaView
         style={{
-          width: '100%',
-          height: '100%',
-        }}>
+          width: "100%",
+          height: "100%",
+        }}
+      >
         <View
           style={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'flex-start',
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "flex-start",
             gap: 30,
             paddingVertical: 10,
             paddingHorizontal: 10,
             backgroundColor: couleurs.primary,
-          }}>
+          }}
+        >
           <Pressable onPress={() => navigation.goBack()}>
             <ArrowLeftIcon color={couleurs.white} />
           </Pressable>
@@ -139,8 +146,9 @@ export default function RdvClient({
               color: couleurs.white,
               fontSize: 16,
               fontFamily: CustomFont.Poppins,
-            }}>
-            {t('Mes_Rendez_vous', preferredLangage)}
+            }}
+          >
+            {t("Mes_Rendez_vous", preferredLangage)}
           </Text>
         </View>
 
@@ -217,29 +225,30 @@ export default function RdvClient({
         <ScrollView
           contentInsetAdjustmentBehavior="automatic"
           style={{
-            backgroundColor: '#f6f6f6f6',
-          }}>
-          <View style={{marginHorizontal: 12, marginVertical: 10}}>
-
-          {rendezvous.length == 0 && (
+            backgroundColor: "#f6f6f6f6",
+          }}
+        >
+          <View style={{ marginHorizontal: 12, marginVertical: 10 }}>
+            {rendezvous.length == 0 && (
               <>
                 <Image
-                  source={require('../assets/images/vide.png')}
+                  source={require("../assets/images/vide.png")}
                   style={{
                     marginTop: 150,
                     width: 150,
                     height: 150,
-                    alignSelf: 'center',
+                    alignSelf: "center",
                   }}
                 />
                 <Text
                   style={{
-                    alignSelf: 'center',
+                    alignSelf: "center",
                     fontFamily: CustomFont.Poppins,
-                    color:couleurs.dark,
+                    color: couleurs.dark,
                     fontSize: 13,
-                  }}>
-                  {t('aucun_rdv', preferredLangage)}
+                  }}
+                >
+                  {t("aucun_rdv", preferredLangage)}
                 </Text>
               </>
             )}
@@ -251,17 +260,19 @@ export default function RdvClient({
                   key={key}
                   style={{
                     marginTop: 10,
-                  }}>
+                  }}
+                >
                   <View
                     style={{
                       borderRadius: 15,
-                      backgroundColor: '#fff',
+                      backgroundColor: "#fff",
                       padding: 14,
-                      width: '100%',
+                      width: "100%",
                       borderWidth: 1,
                       borderColor: couleurs.primary,
-                      borderStyle: 'dashed',
-                    }}>
+                      borderStyle: "dashed",
+                    }}
+                  >
                     <Text
                       style={{
                         color: couleurs.dark,
@@ -269,24 +280,27 @@ export default function RdvClient({
                         fontSize: 16,
                         fontFamily: CustomFont.Poppins,
                         opacity: 0.8,
-                      }}>
+                      }}
+                    >
                       {row.boutique}
                     </Text>
                     <View
                       style={{
-                        display: 'flex',
-                        justifyContent: 'flex-start',
-                        flexDirection: 'row',
-                        alignItems: 'center',
+                        display: "flex",
+                        justifyContent: "flex-start",
+                        flexDirection: "row",
+                        alignItems: "center",
                         gap: 10,
-                      }}>
+                      }}
+                    >
                       <Text
                         style={{
                           color: couleurs.dark,
                           paddingVertical: 3,
                           fontSize: 13,
                           fontFamily: CustomFont.Poppins,
-                        }}>
+                        }}
+                      >
                         {new Date(row.date).toLocaleDateString()} .
                       </Text>
                       <Text
@@ -295,7 +309,8 @@ export default function RdvClient({
                           paddingVertical: 3,
                           fontSize: 13,
                           fontFamily: CustomFont.Poppins,
-                        }}>
+                        }}
+                      >
                         {row.heure}
                       </Text>
                     </View>
@@ -306,7 +321,8 @@ export default function RdvClient({
                           paddingVertical: 3,
                           fontSize: 13,
                           fontFamily: CustomFont.Poppins,
-                        }}>
+                        }}
+                      >
                         {route.prix}
                       </Text>
                     )}
@@ -318,10 +334,11 @@ export default function RdvClient({
                           paddingVertical: 3,
                           fontSize: 13,
                           fontFamily: CustomFont.Poppins,
-                        }}>
+                        }}
+                      >
                         {row.statut == 0
-                          ? t('Attente_de_confirmation', preferredLangage)
-                          : t('Confirme', preferredLangage)}
+                          ? t("Attente_de_confirmation", preferredLangage)
+                          : t("Confirme", preferredLangage)}
                       </Text>
                     </Pressable>
                   </View>
@@ -331,14 +348,15 @@ export default function RdvClient({
             {isLoading && (
               <View
                 style={{
-                  width: '100%',
+                  width: "100%",
                   height: 200,
                   marginTop: 100,
-                  display: 'flex',
-                  flexDirection: 'row',
-                  justifyContent: 'center',
-                }}>
-                <ActivityIndicator size={'large'}></ActivityIndicator>
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "center",
+                }}
+              >
+                <ActivityIndicator size={"large"}></ActivityIndicator>
               </View>
             )}
           </View>

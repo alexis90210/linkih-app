@@ -1,4 +1,4 @@
-import React, {useRef, useState, useEffect} from 'react';
+import React, { useRef, useState, useEffect } from "react";
 import {
   Text,
   StyleSheet,
@@ -11,24 +11,24 @@ import {
   Modal,
   Alert,
   Platform,
-} from 'react-native';
+} from "react-native";
 
-import ArrowLeftIcon from '../components/ArrowLeft';
-import EditIcon from '../components/Edit';
-import {AirbnbRating} from 'react-native-ratings';
-import CloseIcon from '../components/close';
-import {CustomFont, couleurs} from '../components/color';
-import {TimePickerModal} from 'react-native-paper-dates';
-import {Picker} from '@react-native-picker/picker';
-import planning from '../components/api/planning';
-import {sous_categories} from '../components/api/categories';
-import MinusIcon from '../components/minus';
-import AddIcon from '../components/add';
-import axios from 'axios';
-import ApiService from '../components/api/service';
-import CallIcon from '../components/call';
-import translations from '../translations/translations';
-import storage from '../components/api/localstorage';
+import ArrowLeftIcon from "../components/ArrowLeft";
+import EditIcon from "../components/Edit";
+import { AirbnbRating } from "react-native-ratings";
+import CloseIcon from "../components/close";
+import { CustomFont, couleurs } from "../components/color";
+import { TimePickerModal } from "react-native-paper-dates";
+import { Picker } from "@react-native-picker/picker";
+import planning from "../components/api/planning";
+import { sous_categories } from "../components/api/categories";
+import MinusIcon from "../components/minus";
+import AddIcon from "../components/add";
+import axios from "axios";
+import ApiService from "../components/api/service";
+import CallIcon from "../components/call";
+import translations from "../translations/translations";
+import storage from "../components/api/localstorage";
 
 export default function AutreEtablissement({
   route,
@@ -37,51 +37,48 @@ export default function AutreEtablissement({
   route: any;
   navigation: any;
 }) {
+  const [preferredLangage, setPreferredLangage] = useState("fr");
+  const t = (key: any, langage: any) => {
+    return translations[langage][key] || key;
+  };
 
-
-    const [preferredLangage , setPreferredLangage] = useState('fr');
-    const t = (key:any , langage:any) => {
-      return translations[langage][key] || key
-    }
-  
-    useEffect(() => {
-      // declare the data fetching function
-      const fetchData = async () => {
-        let lang = await secureStorage.getKey('defaultlang')
-        if ( lang ) {
-          setPreferredLangage(lang);
-        }
+  useEffect(() => {
+    // declare the data fetching function
+    const fetchData = async () => {
+      let lang = await secureStorage.getKey("defaultlang");
+      if (lang) {
+        setPreferredLangage(lang);
       }
-    
-      // call the function
-      fetchData()
-        // make sure to catch any error
-        .catch(console.error);
-    }, [])
-  
-  
-  const openMaps = (latitude:any, longitude:any) => {
-    const scheme = Platform.select({ ios: 'maps:0,0?q=', android: 'geo:0,0?q=' });
+    };
+
+    // call the function
+    fetchData()
+      // make sure to catch any error
+      .catch(console.error);
+  }, []);
+
+  const openMaps = (latitude: any, longitude: any) => {
+    const scheme = Platform.select({
+      ios: "maps:0,0?q=",
+      android: "geo:0,0?q=",
+    });
     const latLng = `${latitude},${longitude}`;
-    const label = 'Linkih';
+    const label = "Linkih";
     const url = Platform.select({
       ios: `${scheme}${label}@${latLng}`,
-      android: `${scheme}${latLng}(${label})`
-    })
-  
-    url ? Linking.openURL(url) : console.log('Plateform not recognize');
+      android: `${scheme}${latLng}(${label})`,
+    });
+
+    url ? Linking.openURL(url) : console.log("Plateform not recognize");
   };
-  
+
   // Utilisation
   // openMaps(48.8566, 2.3522); // Ouvre la position de Paris dans Google Maps
-  
-  
-  
-  
+
   /////////////////////////////////////
-    
+
   const propsTitle = route.params?.nomEtab;
-  var title = t('mon_etablissement', preferredLangage);
+  var title = t("mon_etablissement", preferredLangage);
   var isConsulting = false;
   if (propsTitle) {
     title = propsTitle;
@@ -93,36 +90,36 @@ export default function AutreEtablissement({
 
   const loadVendeurData = () => {
     axios({
-      method: 'GET',
+      method: "GET",
       url: ApiService.API_URL_GET_VENDEURS,
       data: JSON.stringify({
         vendeur_id: route.params?.vendeur_data?.id,
       }),
       headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
+        Accept: "application/json",
+        "Content-Type": "application/json",
       },
     })
-      .then((response: {data: any}) => {
-        console.log('==>', response.data.message[0]);
+      .then((response: { data: any }) => {
+        console.log("==>", response.data.message[0]);
 
         var api = response.data;
-        if (api.code == 'success') {
+        if (api.code == "success") {
           setVendeurData(api.message[0]);
         }
 
-        if (api.code == 'error') {
-          Alert.alert('', api.message);
+        if (api.code == "error") {
+          Alert.alert("", api.message);
         }
       })
       .catch((error: any) => {
         console.log(error);
-        Alert.alert('', error);
+        Alert.alert("", error);
       });
   };
-  useEffect(()=>{
+  useEffect(() => {
     loadVendeurData();
-  })
+  });
 
   /// END
 
@@ -131,21 +128,18 @@ export default function AutreEtablissement({
   const activeModal = () => setVisibleModal(true);
   const desactiveModal = () => setVisibleModal(false);
 
-
-  const [userConnectedId, SetUserConnectedId] = useState('');
-  useEffect( () =>{
-    
-
+  const [userConnectedId, SetUserConnectedId] = useState("");
+  useEffect(() => {
     const fetchData = async () => {
-      let _userConnectedId = await secureStorage.getKey('utilisateur')
-    if(_userConnectedId) SetUserConnected(_userConnectedId)
-    }
-  
+      let _userConnectedId = await secureStorage.getKey("utilisateur");
+      if (_userConnectedId) SetUserConnected(_userConnectedId);
+    };
+
     // call the function
     fetchData()
       // make sure to catch any error
       .catch(console.error);
-  })
+  });
 
   //////////////////////////
   const [visibleHeureModal, setVisibleHeureModal] = React.useState(false);
@@ -162,35 +156,34 @@ export default function AutreEtablissement({
     minutes: any;
   }) => {
     setVisibleHeureModal(false);
-    console.log({hours, minutes});
+    console.log({ hours, minutes });
   };
 
   //////////////////////////////////////////////////
 
-  const rateEtab = (rate:any) => {
-    console.log( userConnectedId );
-    
+  const rateEtab = (rate: any) => {
+    console.log(userConnectedId);
+
     axios({
-      method: 'POST',
+      method: "POST",
       url: ApiService.API_CREATE_NOTE_VENDEUR,
       data: JSON.stringify({
         vendeur_id: route.params.vendeur_data.id,
-        note:rate,
-        client_id: userConnectedId
+        note: rate,
+        client_id: userConnectedId,
       }),
       headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
+        Accept: "application/json",
+        "Content-Type": "application/json",
       },
-    }).then( (response: {data: any}) => {
-      console.log(response.data);
-      
     })
-    .catch( (error: any) => {
-      console.log(error);
-      
-    })
-  }
+      .then((response: { data: any }) => {
+        console.log(response.data);
+      })
+      .catch((error: any) => {
+        console.log(error);
+      });
+  };
 
   //////////////////////////////////////////////////
   const [selectedJour, setSelectedJour] = useState();
@@ -201,34 +194,33 @@ export default function AutreEtablissement({
 
   const loadPrestations = () => {
     axios({
-      method: 'GET',
+      method: "GET",
       url: ApiService.API_URL_GET_PRODUIT,
       data: JSON.stringify({
         vendeur_id: route.params?.vendeur_data?.id,
       }),
       headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
+        Accept: "application/json",
+        "Content-Type": "application/json",
       },
     })
-      .then((response: {data: any}) => {
+      .then((response: { data: any }) => {
         var api = response.data;
 
         console.log("=============", api.message);
-        
 
-        if (api.code == 'success') {
+        if (api.code == "success") {
           setSections(api.message);
           setSetSectionsLoaded(true);
         }
 
-        if (api.code == 'error') {
-          Alert.alert('', api.message);
+        if (api.code == "error") {
+          Alert.alert("", api.message);
         }
       })
       .catch((error: any) => {
         console.log(error);
-        Alert.alert('', error);
+        Alert.alert("", error);
       });
   };
 
@@ -241,32 +233,32 @@ export default function AutreEtablissement({
 
   const loadHoraires = () => {
     axios({
-      method: 'GET',
+      method: "GET",
       url: ApiService.API_URL_GET_VENDEURS_HORAIRES,
       data: JSON.stringify({
         vendeur_id: route.params?.vendeur_data?.id,
       }),
       headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
+        Accept: "application/json",
+        "Content-Type": "application/json",
       },
     })
-      .then((response: {data: any}) => {
+      .then((response: { data: any }) => {
         console.log(response.data);
 
         var api = response.data;
-        if (api.code == 'success') {
+        if (api.code == "success") {
           sethoraires(api.message);
           setSethorairesLoaded(true);
         }
 
-        if (api.code == 'error') {
-          Alert.alert('', api.message);
+        if (api.code == "error") {
+          Alert.alert("", api.message);
         }
       })
       .catch((error: any) => {
         console.log(error);
-        Alert.alert('', error);
+        Alert.alert("", error);
       });
   };
   // CHECK LOAD OF HORAIRES
@@ -277,9 +269,9 @@ export default function AutreEtablissement({
     setSections((prevState: any) =>
       prevState.map((section: any) =>
         section.id === id
-          ? {...section, isCollapsed: !section.isCollapsed}
-          : section,
-      ),
+          ? { ...section, isCollapsed: !section.isCollapsed }
+          : section
+      )
     );
   };
 
@@ -291,32 +283,35 @@ export default function AutreEtablissement({
   });
 
   //  RENDER ITEM
-  const renderItem = ({item}: {item: any}) => (
+  const renderItem = ({ item }: { item: any }) => (
     <View
       style={{
         marginBottom: 2,
         backgroundColor: couleurs.white,
-      }}>
+      }}
+    >
       <TouchableOpacity onPress={() => toggleCollapse(item.id)}>
         <View
           style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            flexDirection: 'row',
+            display: "flex",
+            justifyContent: "space-between",
+            flexDirection: "row",
             borderRadius: 15,
-            backgroundColor: '#fff',
+            backgroundColor: "#fff",
             padding: 14,
-            width: '100%',
-            shadowColor: 'gray',
-          }}>
+            width: "100%",
+            shadowColor: "gray",
+          }}
+        >
           <Text
             numberOfLines={1}
             style={{
               fontFamily: CustomFont.Poppins,
-              textTransform: 'uppercase',
+              textTransform: "uppercase",
               fontSize: 13,
               color: !item.isCollapsed ? couleurs.primary : couleurs.dark,
-            }}>
+            }}
+          >
             {item.title}
           </Text>
           {!item.isCollapsed ? (
@@ -329,47 +324,52 @@ export default function AutreEtablissement({
       {item.isCollapsed ? null : (
         <View
           style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            flexDirection: 'column',
-            backgroundColor: '#fff',
+            display: "flex",
+            justifyContent: "space-between",
+            flexDirection: "column",
+            backgroundColor: "#fff",
             padding: 14,
-            width: '100%',
-            shadowColor: 'gray',
-            borderTopColor: 'rgba(0,0,0,.1)',
+            width: "100%",
+            shadowColor: "gray",
+            borderTopColor: "rgba(0,0,0,.1)",
             borderTopWidth: 1,
-          }}>
+          }}
+        >
           {/* redirect to personnalisation */}
           {item.data.map((row: any, i: any) => (
             <TouchableOpacity
               onPress={() =>
-                navigation.navigate('personnalisation_reservation', {
+                navigation.navigate("personnalisation_reservation", {
                   props: row,
                 })
-              }>
+              }
+            >
               <View
                 key={i}
                 style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  flexDirection: 'row',
-                  borderBottomColor: 'rgba(0,0,0,.1)',
+                  display: "flex",
+                  justifyContent: "space-between",
+                  flexDirection: "row",
+                  borderBottomColor: "rgba(0,0,0,.1)",
                   borderBottomWidth: item.data.length != i + 1 ? 1 : 0,
                   paddingVertical: 6,
-                }}>
+                }}
+              >
                 <View
                   style={{
-                    display: 'flex',
-                    justifyContent: 'flex-start',
-                    flexDirection: 'column',
-                  }}>
+                    display: "flex",
+                    justifyContent: "flex-start",
+                    flexDirection: "column",
+                  }}
+                >
                   <Text
                     style={{
                       fontFamily: CustomFont.Poppins,
                       fontSize: 13,
                       color: couleurs.primary,
                     }}
-                    numberOfLines={1}>
+                    numberOfLines={1}
+                  >
                     {row.title}
                   </Text>
                   <Text
@@ -379,7 +379,8 @@ export default function AutreEtablissement({
                       color: couleurs.dark,
                       opacity: 0.6,
                     }}
-                    numberOfLines={1}>
+                    numberOfLines={1}
+                  >
                     {row.content}
                   </Text>
                 </View>
@@ -388,7 +389,8 @@ export default function AutreEtablissement({
                     fontFamily: CustomFont.Poppins,
                     color: couleurs.primary,
                   }}
-                  numberOfLines={1}>
+                  numberOfLines={1}
+                >
                   {row.price}
                 </Text>
               </View>
@@ -399,27 +401,27 @@ export default function AutreEtablissement({
     </View>
   );
 
-
   // console.log(sections);
-  
 
   return (
     <View>
       <SafeAreaView
         style={{
-          width: '100%',
-          height: '100%',
-        }}>
+          width: "100%",
+          height: "100%",
+        }}
+      >
         <View
           style={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'flex-start',
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "flex-start",
             gap: 30,
             paddingVertical: 15,
             paddingHorizontal: 10,
             backgroundColor: couleurs.primary,
-          }}>
+          }}
+        >
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <ArrowLeftIcon color={couleurs.white} />
           </TouchableOpacity>
@@ -428,26 +430,28 @@ export default function AutreEtablissement({
               color: couleurs.white,
               fontSize: 18,
               fontFamily: CustomFont.Poppins,
-            }}>
+            }}
+          >
             {title}
           </Text>
         </View>
         <ScrollView
           contentInsetAdjustmentBehavior="automatic"
           style={{
-            backgroundColor: '#f6f6f6f6',
-          }}>
+            backgroundColor: "#f6f6f6f6",
+          }}
+        >
           {/* Banner Image */}
-          <View style={{paddingHorizontal: 12, marginTop: 5, width: '100%'}}>
+          <View style={{ paddingHorizontal: 12, marginTop: 5, width: "100%" }}>
             <Image
               source={
                 VendeurData.logo
-                  ? {uri: 'data:image/png;base64,' + VendeurData.logo}
-                  : require('../assets/images/1.jpg')
+                  ? { uri: "data:image/png;base64," + VendeurData.logo }
+                  : require("../assets/images/1.jpg")
               }
               style={{
                 height: 200,
-                width: '100%',
+                width: "100%",
                 borderRadius: 15,
                 marginTop: 2,
               }}
@@ -457,29 +461,32 @@ export default function AutreEtablissement({
           <View
             style={{
               borderRadius: 15,
-              width: '100%',
-              position: 'absolute',
+              width: "100%",
+              position: "absolute",
               top: 145,
               left: 0,
               paddingHorizontal: 24,
-              zIndex: 10
-            }}>
+              zIndex: 10,
+            }}
+          >
             <View
               style={{
                 borderRadius: 15,
                 backgroundColor: couleurs.primary,
                 padding: 14,
-                width: '100%',
-                shadowColor: 'gray',
+                width: "100%",
+                shadowColor: "gray",
                 height: 155,
-              }}>
+              }}
+            >
               <Text
                 style={{
                   color: couleurs.white,
                   paddingVertical: 3,
                   fontSize: 13,
                   fontFamily: CustomFont.Poppins,
-                }}>
+                }}
+              >
                 {VendeurData.nom}
               </Text>
               <Text
@@ -489,7 +496,8 @@ export default function AutreEtablissement({
                   opacity: 0.7,
                   fontSize: 13,
                   fontFamily: CustomFont.Poppins,
-                }}>
+                }}
+              >
                 {VendeurData.email}
               </Text>
               <Text
@@ -498,24 +506,24 @@ export default function AutreEtablissement({
                   paddingVertical: 3,
                   fontSize: 16,
                   fontFamily: CustomFont.Poppins,
-                }}>
+                }}
+              >
                 {VendeurData.mobile}
               </Text>
 
-              <View style={{display: 'flex', flexDirection: 'row'}}>
+              <View style={{ display: "flex", flexDirection: "row" }}>
                 {isConsulting && (
                   <AirbnbRating
-                    onFinishRating= { (rate) => {
-                      rateEtab(rate)                      
+                    onFinishRating={(rate) => {
+                      rateEtab(rate);
                     }}
                     reviewSize={4}
                     reviewColor={couleurs.primary}
                     showRating={false}
                     count={4}
-                    reviews={['Terrible', 'Bad', 'Good', 'Very Good']}
+                    reviews={["Terrible", "Bad", "Good", "Very Good"]}
                     defaultRating={VendeurData.note}
                     size={14}
-                    
                   />
                 )}
               </View>
@@ -525,14 +533,16 @@ export default function AutreEtablissement({
                   backgroundColor: couleurs.white,
                   padding: 10,
                   borderRadius: 14,
-                  position: 'absolute',
+                  position: "absolute",
                   bottom: 20,
                   right: 20,
-                }}>
+                }}
+              >
                 {!isConsulting && <EditIcon />}
                 {isConsulting && (
                   <TouchableOpacity
-                    onPress={() => Linking.openURL(`tel:${VendeurData.mobile}`)}>
+                    onPress={() => Linking.openURL(`tel:${VendeurData.mobile}`)}
+                  >
                     <CallIcon color={couleurs.primary} />
                   </TouchableOpacity>
                 )}
@@ -541,7 +551,8 @@ export default function AutreEtablissement({
           </View>
 
           <View
-            style={{marginHorizontal: 12, marginBottom: 10, marginTop: 100}}>
+            style={{ marginHorizontal: 12, marginBottom: 10, marginTop: 100 }}
+          >
             {/* SALON OVERVIEW */}
 
             {sections.length > 0 && (
@@ -551,170 +562,196 @@ export default function AutreEtablissement({
                   paddingVertical: 15,
                   fontSize: 13,
                   fontFamily: CustomFont.Poppins,
-                  width: '100%',
-                  textAlign: 'center',
-                }}>
-                  {t('choisir_une_prestation_a_reserver', preferredLangage)}
+                  width: "100%",
+                  textAlign: "center",
+                }}
+              >
+                {t("choisir_une_prestation_a_reserver", preferredLangage)}
               </Text>
             )}
 
-            <View style={{
-              display: 'flex',
-              justifyContent: 'flex-start',
-              flexDirection: 'column',
-              gap: 10,
-              borderRadius: 15,
-              backgroundColor: '#fff',
-              padding: 14,
-              width: '100%',
-              alignSelf: 'center',
-              shadowColor: 'gray'
-            }}>
-            {sections.map((row: any, i: any) => (
-              <TouchableOpacity
-                key={i}
-                onPress={() =>
-                  navigation.navigate('personnalisation_reservation_creneau', {
-                    props: {...row, vendeur_id:route.params?.vendeur_data?.id,},
-                  })
-                }>
-                <View
+            <View
+              style={{
+                display: "flex",
+                justifyContent: "flex-start",
+                flexDirection: "column",
+                gap: 10,
+                borderRadius: 15,
+                backgroundColor: "#fff",
+                padding: 14,
+                width: "100%",
+                alignSelf: "center",
+                shadowColor: "gray",
+              }}
+            >
+              {sections.map((row: any, i: any) => (
+                <TouchableOpacity
                   key={i}
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    flexDirection: 'row',
-                    borderBottomColor: 'rgba(0,0,0,.1)',
-                    borderBottomWidth: sections.length != i + 1 ? 1 : 0,
-                    paddingVertical: 6                    
-                  }}>
+                  onPress={() =>
+                    navigation.navigate(
+                      "personnalisation_reservation_creneau",
+                      {
+                        props: {
+                          ...row,
+                          vendeur_id: route.params?.vendeur_data?.id,
+                        },
+                      }
+                    )
+                  }
+                >
                   <View
+                    key={i}
                     style={{
-                      display: 'flex',
-                      justifyContent: 'flex-start',
-                      flexDirection: 'column',
-                      width:'100%'
+                      display: "flex",
+                      justifyContent: "space-between",
+                      flexDirection: "row",
+                      borderBottomColor: "rgba(0,0,0,.1)",
+                      borderBottomWidth: sections.length != i + 1 ? 1 : 0,
+                      paddingVertical: 6,
+                    }}
+                  >
+                    <View
+                      style={{
+                        display: "flex",
+                        justifyContent: "flex-start",
+                        flexDirection: "column",
+                        width: "100%",
+                      }}
+                    >
+                      <View
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          flexDirection: "row",
+                          width: "100%",
+                        }}
+                      >
+                        <Text
+                          style={{
+                            fontFamily: CustomFont.Poppins,
+                            fontSize: 13,
+                            color: couleurs.dark,
+                          }}
+                          numberOfLines={1}
+                        >
+                          {t("Produit", preferredLangage)}
+                        </Text>
+                        <Text
+                          style={{
+                            fontFamily: CustomFont.Poppins,
+                            fontSize: 13,
+                            color: couleurs.primary,
+                          }}
+                          numberOfLines={2}
+                        >
+                          {row.produit}
+                        </Text>
+                      </View>
 
-                    }}>
-                    <View style={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      flexDirection: 'row',
-                      width:'100%'
-                    }}>
-                    <Text
-                      style={{
-                        fontFamily: CustomFont.Poppins,
-                        fontSize: 13,
-                        color: couleurs.dark,
-                      }}
-                      numberOfLines={1}>
-                      {t('Produit', preferredLangage)}
-                    </Text>
-                    <Text
-                      style={{
-                        fontFamily: CustomFont.Poppins,
-                        fontSize: 13,
-                        color: couleurs.primary,
-                      }}
-                      numberOfLines={2}>
-                      {row.produit}
-                    </Text>
-                    </View>
+                      <View
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          flexDirection: "row",
+                          width: "100%",
+                        }}
+                      >
+                        <Text
+                          style={{
+                            fontFamily: CustomFont.Poppins,
+                            fontSize: 13,
+                            color: couleurs.dark,
+                          }}
+                          numberOfLines={1}
+                        >
+                          {t("duree_de_la_prestation", preferredLangage)}
+                        </Text>
+                        <Text
+                          style={{
+                            fontFamily: CustomFont.Poppins,
+                            fontSize: 13,
+                            color: couleurs.primary,
+                          }}
+                          numberOfLines={1}
+                        >
+                          {row.duree} h
+                        </Text>
+                      </View>
 
-                    <View style={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      flexDirection: 'row',
-                      width:'100%'
-                    }}>
-                    <Text
-                      style={{
-                        fontFamily: CustomFont.Poppins,
-                        fontSize: 13,
-                        color: couleurs.dark,
-                      }}
-                      numberOfLines={1}>
-                     {t('duree_de_la_prestation', preferredLangage)}
-                    </Text>
-                    <Text
-                      style={{
-                        fontFamily: CustomFont.Poppins,
-                        fontSize: 13,
-                        color: couleurs.primary,
-                      }}
-                      numberOfLines={1}>
-                      {row.duree} h
-                    </Text>
-                    </View>
-
-                    <View style={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      flexDirection: 'row',
-                      width:'100%'
-                    }}>
-                    <Text
-                      style={{
-                        fontFamily: CustomFont.Poppins,
-                        fontSize: 13,
-                        color: couleurs.dark,
-                      }}
-                      numberOfLines={1}>
-                      {t('montant_de_la_prestation', preferredLangage)}
-                    </Text>
-                    <Text
-                      style={{
-                        fontFamily: CustomFont.Poppins,
-                        fontSize: 13,
-                        color: couleurs.primary,
-                      }}
-                      numberOfLines={1}>
-                      {row.prix} {row.devise}
-                    </Text>
+                      <View
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          flexDirection: "row",
+                          width: "100%",
+                        }}
+                      >
+                        <Text
+                          style={{
+                            fontFamily: CustomFont.Poppins,
+                            fontSize: 13,
+                            color: couleurs.dark,
+                          }}
+                          numberOfLines={1}
+                        >
+                          {t("montant_de_la_prestation", preferredLangage)}
+                        </Text>
+                        <Text
+                          style={{
+                            fontFamily: CustomFont.Poppins,
+                            fontSize: 13,
+                            color: couleurs.primary,
+                          }}
+                          numberOfLines={1}
+                        >
+                          {row.prix} {row.devise}
+                        </Text>
+                      </View>
                     </View>
                   </View>
-                </View>
-              </TouchableOpacity>
-            ))}
+                </TouchableOpacity>
+              ))}
             </View>
 
             {sections.length == 0 && (
               <View>
                 <View
                   style={{
-                    alignItems: 'center',
+                    alignItems: "center",
                     backgroundColor: couleurs.primary,
                     paddingHorizontal: 30,
                     borderRadius: 10,
-                    width: '100%',
+                    width: "100%",
                     height: 40,
-                  }}>
+                  }}
+                >
                   <TouchableOpacity
                     style={{
                       paddingHorizontal: 10,
-                      position: 'relative',
+                      position: "relative",
                       bottom: -3,
-                      display: 'flex',
-                      justifyContent: 'flex-start',
-                      alignItems: 'center',
-                      flexDirection: 'row',
-                      flexWrap: 'nowrap',
+                      display: "flex",
+                      justifyContent: "flex-start",
+                      alignItems: "center",
+                      flexDirection: "row",
+                      flexWrap: "nowrap",
                     }}
                     onPress={() =>
-                      navigation.navigate('simple_rdv', {
+                      navigation.navigate("simple_rdv", {
                         id: VendeurData.id,
                       })
-                    }>
+                    }
+                  >
                     <Text
                       style={{
-                        textAlign: 'center',
+                        textAlign: "center",
                         padding: 5,
                         fontSize: 13,
                         color: couleurs.white,
                         fontFamily: CustomFont.Poppins,
-                      }}>
-                      {t('prendre_un_rendez_vous', preferredLangage)}
+                      }}
+                    >
+                      {t("prendre_un_rendez_vous", preferredLangage)}
                     </Text>
                   </TouchableOpacity>
                 </View>
@@ -724,25 +761,27 @@ export default function AutreEtablissement({
             <View
               style={{
                 marginTop: 10,
-                display: 'flex',
-                justifyContent: 'flex-start',
-                flexDirection: 'row',
+                display: "flex",
+                justifyContent: "flex-start",
+                flexDirection: "row",
                 gap: 10,
                 borderRadius: 15,
-                backgroundColor: '#fff',
+                backgroundColor: "#fff",
                 padding: 14,
-                width: '100%',
-                alignSelf: 'center',
-                shadowColor: 'gray',
-              }}>
+                width: "100%",
+                alignSelf: "center",
+                shadowColor: "gray",
+              }}
+            >
               <Text
                 style={{
                   color: couleurs.dark,
                   paddingVertical: 3,
                   fontSize: 13,
                   fontFamily: CustomFont.Poppins,
-                }}>
-                {t('membre_depuis', preferredLangage)}
+                }}
+              >
+                {t("membre_depuis", preferredLangage)}
               </Text>
               <Text
                 style={{
@@ -750,7 +789,8 @@ export default function AutreEtablissement({
                   paddingVertical: 3,
                   fontSize: 13,
                   fontFamily: CustomFont.Poppins,
-                }}>
+                }}
+              >
                 {VendeurData.creation}
               </Text>
             </View>
@@ -758,21 +798,23 @@ export default function AutreEtablissement({
             <View
               style={{
                 borderRadius: 15,
-                backgroundColor: '#fff',
+                backgroundColor: "#fff",
                 padding: 14,
-                width: '100%',
-                alignSelf: 'center',
-                shadowColor: 'gray',
+                width: "100%",
+                alignSelf: "center",
+                shadowColor: "gray",
                 marginTop: 10,
-              }}>
+              }}
+            >
               <Text
                 style={{
                   color: couleurs.primary,
                   paddingVertical: 3,
                   fontSize: 17,
                   fontFamily: CustomFont.Poppins,
-                }}>
-                {t('adresse', preferredLangage)}
+                }}
+              >
+                {t("adresse", preferredLangage)}
               </Text>
 
               <Text
@@ -782,7 +824,8 @@ export default function AutreEtablissement({
                   fontSize: 13,
                   fontFamily: CustomFont.Poppins,
                   opacity: 0.8,
-                }}>
+                }}
+              >
                 {VendeurData.pays}
               </Text>
               <Text
@@ -792,7 +835,8 @@ export default function AutreEtablissement({
                   opacity: 0.7,
                   fontSize: 13,
                   fontFamily: CustomFont.Poppins,
-                }}>
+                }}
+              >
                 {VendeurData.adresse}
               </Text>
             </View>
@@ -801,59 +845,65 @@ export default function AutreEtablissement({
               style={{
                 marginTop: 10,
                 borderRadius: 15,
-                backgroundColor: '#fff',
+                backgroundColor: "#fff",
                 padding: 14,
-                width: '100%',
-                alignSelf: 'center',
-                shadowColor: 'gray',
-              }}>
+                width: "100%",
+                alignSelf: "center",
+                shadowColor: "gray",
+              }}
+            >
               <Text
                 style={{
                   color: couleurs.primary,
                   paddingVertical: 3,
                   fontSize: 16,
                   fontFamily: CustomFont.Poppins,
-                }}>
-                {t('heure_d_ouverture', preferredLangage)}
+                }}
+              >
+                {t("heure_d_ouverture", preferredLangage)}
               </Text>
 
               <View
                 style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  flexWrap: 'wrap',
-                  justifyContent: 'flex-start',
+                  display: "flex",
+                  flexDirection: "row",
+                  flexWrap: "wrap",
+                  justifyContent: "flex-start",
                   marginTop: 10,
                   gap: 5,
-                }}>
+                }}
+              >
                 {horaires.map((row: any, key: any) => (
                   <View
                     key={key}
                     style={{
-                      display: 'flex',
-                      flexDirection: 'row',
+                      display: "flex",
+                      flexDirection: "row",
                       gap: 4,
-                      backgroundColor: '#fff',
+                      backgroundColor: "#fff",
                       padding: 5,
                       borderRadius: 50,
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                    }}>
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                    }}
+                  >
                     <View
                       style={{
-                        display: 'flex',
-                        flexDirection: 'column',
+                        display: "flex",
+                        flexDirection: "column",
                         gap: 3,
                         backgroundColor: couleurs.primary,
                         padding: 6,
                         borderRadius: 10,
                         width: 106,
-                      }}>
+                      }}
+                    >
                       <Text
                         style={{
                           color: couleurs.white,
                           fontFamily: CustomFont.Poppins,
-                        }}>
+                        }}
+                      >
                         {row.jour}
                       </Text>
                       <Text
@@ -861,7 +911,8 @@ export default function AutreEtablissement({
                           color: couleurs.white,
                           fontSize: 11,
                           fontFamily: CustomFont.Poppins,
-                        }}>
+                        }}
+                      >
                         {row.ouverture}-{row.fermeture}
                       </Text>
                     </View>
@@ -875,55 +926,57 @@ export default function AutreEtablissement({
                 marginTop: 20,
                 marginBottom: 100,
                 borderRadius: 15,
-                backgroundColor: '#fff',
+                backgroundColor: "#fff",
                 padding: 14,
-                width: '100%',
-                alignSelf: 'center',
-                shadowColor: 'gray',
-              }}>
+                width: "100%",
+                alignSelf: "center",
+                shadowColor: "gray",
+              }}
+            >
               <Text
                 style={{
                   color: couleurs.primary,
                   paddingVertical: 3,
                   fontSize: 13,
                   fontFamily: CustomFont.Poppins,
-                }}>
-                {t('lien_reseaux_sociaux', preferredLangage)}
+                }}
+              >
+                {t("lien_reseaux_sociaux", preferredLangage)}
               </Text>
 
               <View
                 style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  flexWrap: 'wrap',
+                  display: "flex",
+                  flexDirection: "row",
+                  flexWrap: "wrap",
                   gap: 10,
                   marginTop: 20,
-                }}>
+                }}
+              >
                 <Image
-                  source={require('../assets/social/facebook.png')}
-                  style={{width: 35, height: 35}}
+                  source={require("../assets/social/facebook.png")}
+                  style={{ width: 35, height: 35 }}
                 />
 
                 <Image
-                  source={require('../assets/social/twitter.png')}
-                  style={{width: 35, height: 35}}
+                  source={require("../assets/social/twitter.png")}
+                  style={{ width: 35, height: 35 }}
                 />
 
                 <Image
-                  source={require('../assets/social/instagram.png')}
-                  style={{width: 35, height: 35}}
+                  source={require("../assets/social/instagram.png")}
+                  style={{ width: 35, height: 35 }}
                 />
 
                 <Image
-                  source={require('../assets/social/linkedin.png')}
-                  style={{width: 35, height: 35}}
+                  source={require("../assets/social/linkedin.png")}
+                  style={{ width: 35, height: 35 }}
                 />
 
                 <Image
-                  source={require('../assets/social/youtube.png')}
-                  style={{width: 35, height: 35}}
+                  source={require("../assets/social/youtube.png")}
+                  style={{ width: 35, height: 35 }}
                 />
-                
               </View>
             </View>
           </View>
@@ -933,108 +986,119 @@ export default function AutreEtablissement({
         {isConsulting && (
           <View
             style={{
-              alignItems: 'center',
+              alignItems: "center",
               marginVertical: 10,
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'center',
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "center",
               gap: 10,
-              position: 'absolute',
+              position: "absolute",
               backgroundColor: couleurs.white,
               paddingVertical: 7,
-              width: '100%',
+              width: "100%",
               bottom: -10,
-            }}>
-
+            }}
+          >
             <View
+              style={{
+                alignItems: "center",
+                backgroundColor: couleurs.primary,
+                paddingHorizontal: 10,
+                borderRadius: 30,
+                height: 40,
+              }}
+            >
+              <TouchableOpacity
+                style={{
+                  paddingHorizontal: 10,
+                  position: "relative",
+                  bottom: -3,
+                  display: "flex",
+                  justifyContent: "flex-start",
+                  alignItems: "center",
+                  flexDirection: "row",
+                  flexWrap: "nowrap",
+                }}
+                onPress={() =>
+                  navigation.navigate("simple_rdv", {
+                    id: VendeurData.id,
+                  })
+                }
+              >
+                <Text
                   style={{
-                    alignItems: 'center',
-                    backgroundColor: couleurs.primary,
-                    paddingHorizontal: 10,
-                    borderRadius: 30,
-                    height: 40,
-                  }}>
-                  <TouchableOpacity
-                    style={{
-                      paddingHorizontal: 10,
-                      position: 'relative',
-                      bottom: -3,
-                      display: 'flex',
-                      justifyContent: 'flex-start',
-                      alignItems: 'center',
-                      flexDirection: 'row',
-                      flexWrap: 'nowrap',
-                    }}
-                    onPress={() =>
-                      navigation.navigate('simple_rdv', {
-                        id: VendeurData.id,
-                      })
-                    }>
-                    <Text
-                      style={{
-                        textAlign: 'center',
-                        padding: 5,
-                        fontSize: 13,
-                        color: couleurs.white,
-                        fontFamily: CustomFont.Poppins,
-                      }}>
-                      {t('Prendre_un_RDV', preferredLangage)}
-                    </Text>
-                  </TouchableOpacity>
-                </View>
+                    textAlign: "center",
+                    padding: 5,
+                    fontSize: 13,
+                    color: couleurs.white,
+                    fontFamily: CustomFont.Poppins,
+                  }}
+                >
+                  {t("Prendre_un_RDV", preferredLangage)}
+                </Text>
+              </TouchableOpacity>
+            </View>
             <TouchableOpacity
               style={{
                 padding: 8,
                 backgroundColor: couleurs.primary,
                 borderRadius: 30,
               }}
-              onPress={() => Linking.openURL(`tel:${VendeurData.mobile}`)}>
+              onPress={() => Linking.openURL(`tel:${VendeurData.mobile}`)}
+            >
               <View
                 style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  flexDirection: 'row',
-                  justifyContent: 'flex-start',
+                  display: "flex",
+                  alignItems: "center",
+                  flexDirection: "row",
+                  justifyContent: "flex-start",
                   gap: 5,
-                }}>
-                <CallIcon color={'#fff'} />
+                }}
+              >
+                <CallIcon color={"#fff"} />
               </View>
             </TouchableOpacity>
             <View
               style={{
-                alignItems: 'center',
+                alignItems: "center",
                 backgroundColor: couleurs.primary,
                 borderRadius: 30,
                 paddingHorizontal: 15,
                 height: 40,
-              }}>
+              }}
+            >
               <TouchableOpacity
                 style={{
                   paddingHorizontal: 10,
-                  position: 'relative',
+                  position: "relative",
                   bottom: -3,
-                  display: 'flex',
-                  justifyContent: 'flex-start',
-                  alignItems: 'center',
-                  flexDirection: 'row',
-                  flexWrap: 'nowrap',
+                  display: "flex",
+                  justifyContent: "flex-start",
+                  alignItems: "center",
+                  flexDirection: "row",
+                  flexWrap: "nowrap",
                 }}
                 onPress={() => {
-                  openMaps(Number(route.params.vendeur_data.latitude) , Number(route.params.vendeur_data.longitude))
-                }}>
+                  openMaps(
+                    Number(route.params.vendeur_data.latitude),
+                    Number(route.params.vendeur_data.longitude)
+                  );
+                }}
+              >
                 <Image
-                  source={require('../assets/images/itinary.png')}
-                  style={{width: 15, height: 15}}
+                  source={require("../assets/images/itinary.png")}
+                  style={{ width: 15, height: 15 }}
                 />
                 <Text
                   style={{
-                    textAlign: 'center',
+                    textAlign: "center",
                     padding: 5,
                     fontSize: 13,
                     color: couleurs.white,
                     fontFamily: CustomFont.Poppins,
-                  }}>
-                  {t('Itineraire', preferredLangage)}
+                  }}
+                >
+                  {t("Itineraire", preferredLangage)}
                 </Text>
               </TouchableOpacity>
             </View>
@@ -1042,49 +1106,53 @@ export default function AutreEtablissement({
         )}
 
         {/* MODAL RENDEZ-VOUS */}
-        <Modal visible={isVisibleModal} transparent={true} style={{flex: 1}}>
+        <Modal visible={isVisibleModal} transparent={true} style={{ flex: 1 }}>
           <View
             style={{
               flex: 1,
-              backgroundColor: 'rgba(0, 0, 0, 0.3)',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
+              backgroundColor: "rgba(0, 0, 0, 0.3)",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
             <View
               style={{
-                display: 'flex',
-                flexDirection: 'column',
-                backgroundColor: '#fff',
+                display: "flex",
+                flexDirection: "column",
+                backgroundColor: "#fff",
                 borderRadius: 15,
                 padding: 10,
-                width: '100%',
-              }}>
+                width: "100%",
+              }}
+            >
               <Text
                 style={{
                   padding: 15,
                   fontSize: 17,
-                  fontWeight: 'bold',
-                  color: 'rgba(0,0,0,.7)',
+                  fontWeight: "bold",
+                  color: "rgba(0,0,0,.7)",
                   fontFamily: CustomFont.Poppins,
-                }}>
-                {t('prendre_un_rendez_vous', preferredLangage)}
+                }}
+              >
+                {t("prendre_un_rendez_vous", preferredLangage)}
               </Text>
-              <View style={{width: '100%', paddingHorizontal: 10}}>
-                <View style={{height: 450}}>
+              <View style={{ width: "100%", paddingHorizontal: 10 }}>
+                <View style={{ height: 450 }}>
                   <ScrollView>
                     {/* prestation selectionnee */}
                     <View>
-                      <View style={{paddingVertical: 10}}>
+                      <View style={{ paddingVertical: 10 }}>
                         <Text
                           style={{
-                            fontWeight: '400',
+                            fontWeight: "400",
                             fontSize: 13,
                             paddingLeft: 5,
                             paddingBottom: 12,
                             color: couleurs.dark,
                             fontFamily: CustomFont.Poppins,
-                          }}>
-                          {t('Prestation_selectionnee', preferredLangage)}
+                          }}
+                        >
+                          {t("Prestation_selectionnee", preferredLangage)}
                         </Text>
                       </View>
 
@@ -1092,16 +1160,18 @@ export default function AutreEtablissement({
                         style={{
                           borderWidth: 1,
                           borderRadius: 10,
-                          width: '100%',
+                          width: "100%",
                           height: 40,
                           borderColor: couleurs.primary,
-                        }}>
+                        }}
+                      >
                         <Picker
-                          style={{position: 'relative', bottom: 8}}
+                          style={{ position: "relative", bottom: 8 }}
                           selectedValue={selectedCategorie}
                           onValueChange={(itemValue: any, itemIndex: any) =>
                             setSelectedCategorie(itemValue)
-                          }>
+                          }
+                        >
                           {sous_categories.map((row, i) => (
                             <Picker.Item key={i} label={row} value={row} />
                           ))}
@@ -1111,17 +1181,18 @@ export default function AutreEtablissement({
 
                     {/* date rdv */}
                     <View>
-                      <View style={{paddingVertical: 10}}>
+                      <View style={{ paddingVertical: 10 }}>
                         <Text
                           style={{
-                            fontWeight: '400',
+                            fontWeight: "400",
                             fontSize: 13,
                             paddingLeft: 5,
                             paddingBottom: 12,
                             color: couleurs.dark,
                             fontFamily: CustomFont.Poppins,
-                          }}>
-                          {t('Quel_jour', preferredLangage)}
+                          }}
+                        >
+                          {t("Quel_jour", preferredLangage)}
                         </Text>
                       </View>
 
@@ -1129,16 +1200,18 @@ export default function AutreEtablissement({
                         style={{
                           borderWidth: 1,
                           borderRadius: 10,
-                          width: '100%',
+                          width: "100%",
                           height: 40,
                           borderColor: couleurs.primary,
-                        }}>
+                        }}
+                      >
                         <Picker
-                          style={{position: 'relative', bottom: 8}}
+                          style={{ position: "relative", bottom: 8 }}
                           selectedValue={selectedJour}
                           onValueChange={(itemValue: any, itemIndex: any) =>
                             setSelectedJour(itemValue)
-                          }>
+                          }
+                        >
                           {planning.map((row, i) => (
                             <Picker.Item key={i} label={row} value={row} />
                           ))}
@@ -1148,35 +1221,38 @@ export default function AutreEtablissement({
 
                     {/* date rdv */}
                     <View>
-                      <View style={{paddingVertical: 10}}>
+                      <View style={{ paddingVertical: 10 }}>
                         <Text
                           style={{
-                            fontWeight: '400',
+                            fontWeight: "400",
                             fontSize: 13,
                             paddingLeft: 5,
                             paddingBottom: 12,
                             color: couleurs.dark,
                             fontFamily: CustomFont.Poppins,
-                          }}>
-                          {t('A_quelle_heure', preferredLangage)}
+                          }}
+                        >
+                          {t("A_quelle_heure", preferredLangage)}
                         </Text>
                       </View>
 
                       <TouchableOpacity
-                        onPress={() => setVisibleHeureModal(true)}>
+                        onPress={() => setVisibleHeureModal(true)}
+                      >
                         <View
                           style={{
                             borderWidth: 1,
                             borderRadius: 10,
-                            width: '100%',
+                            width: "100%",
                             height: 40,
-                            display: 'flex',
-                            justifyContent: 'center',
+                            display: "flex",
+                            justifyContent: "center",
                             gap: 5,
-                            flexDirection: 'row',
+                            flexDirection: "row",
                             borderColor: couleurs.primary,
-                          }}>
-                          <Text style={{position: 'relative', top: 9}}>
+                          }}
+                        >
+                          <Text style={{ position: "relative", top: 9 }}>
                             00:00
                           </Text>
                         </View>
@@ -1188,28 +1264,30 @@ export default function AutreEtablissement({
                 <View
                   style={{
                     padding: 15,
-                    justifyContent: 'space-between',
+                    justifyContent: "space-between",
                     paddingVertical: 30,
-                    display: 'flex',
-                    flexDirection: 'row',
-                  }}>
+                    display: "flex",
+                    flexDirection: "row",
+                  }}
+                >
                   <TouchableOpacity
                     onPress={desactiveModal}
                     style={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      alignItems: 'center',
+                      display: "flex",
+                      flexDirection: "row",
+                      alignItems: "center",
                       gap: 10,
-                      justifyContent: 'flex-start',
-                    }}>
+                      justifyContent: "flex-start",
+                    }}
+                  >
                     <CloseIcon color={couleurs.primary} />
                     <Text
                       style={{
-                        color: 'rgba(100,100,100,.8)',
+                        color: "rgba(100,100,100,.8)",
                         fontFamily: CustomFont.Poppins,
-                      }}>
-                      
-                      {t('Quitter', preferredLangage)}
+                      }}
+                    >
+                      {t("Quitter", preferredLangage)}
                     </Text>
                   </TouchableOpacity>
 
@@ -1219,25 +1297,28 @@ export default function AutreEtablissement({
                       backgroundColor: couleurs.primary,
                       borderRadius: 30,
                     }}
-                    onPress={() => null}>
+                    onPress={() => null}
+                  >
                     <View
                       style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        flexDirection: 'row',
-                        justifyContent: 'flex-start',
+                        display: "flex",
+                        alignItems: "center",
+                        flexDirection: "row",
+                        justifyContent: "flex-start",
                         gap: 5,
-                      }}>
+                      }}
+                    >
                       <Text
                         style={{
-                          textAlign: 'center',
+                          textAlign: "center",
                           padding: 10,
                           paddingHorizontal: 20,
                           fontSize: 13,
                           fontFamily: CustomFont.Poppins,
                           color: couleurs.secondary,
-                        }}>
-                        {t('valider_le_RDV', preferredLangage)}
+                        }}
+                      >
+                        {t("valider_le_RDV", preferredLangage)}
                       </Text>
                     </View>
                   </TouchableOpacity>
