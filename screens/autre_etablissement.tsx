@@ -29,6 +29,7 @@ import ApiService from "../components/api/service";
 import CallIcon from "../components/call";
 import translations from "../translations/translations";
 import storage from "../components/api/localstorage";
+import secureStorage from "../components/api/secureStorage";
 
 export default function AutreEtablissement({
   route,
@@ -132,7 +133,7 @@ export default function AutreEtablissement({
   useEffect(() => {
     const fetchData = async () => {
       let _userConnectedId = await secureStorage.getKey("utilisateur");
-      if (_userConnectedId) SetUserConnected(_userConnectedId);
+      if (_userConnectedId) SetUserConnectedId(_userConnectedId);
     };
 
     // call the function

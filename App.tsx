@@ -54,12 +54,9 @@ import ConfirmationCompteScreenClient from './screens/confirmation_screen_client
 import RecuperationPasswordClient from './screens/_recuperation_password_client';
 import { setupAxiosAuth } from './components/api/service';
 
-
 const Stack = createNativeStackNavigator();
 
 export default function App() {
-
-
   const [initialRouteName, setInitialRouteName] = useState('splash');
   const [appLoaded, setAppLoaded] = useState<boolean>(false);
 
@@ -67,26 +64,29 @@ export default function App() {
     (async () => {
       try {
         await Promise.all([
-          storage.load({
-            key: 'firstusage', // Note: Do not use underscore("_") in key!
-            id: 'firstusage', // Note: Do not use underscore("_") in id!
-          }).then(data => {
-            if (data.isClient) {
-              setInitialRouteName('identification_client');
-            } else {
-              setInitialRouteName('identification_proprietaire');
-            }
-          }).catch(error => {
-            console.log(error);
-          }),
+          storage
+            .load({
+              key: 'firstusage', // Note: Do not use underscore("_") in key!
+              id: 'firstusage', // Note: Do not use underscore("_") in id!
+            })
+            .then(data => {
+              if (data.isClient) {
+                setInitialRouteName('identification_client');
+              } else {
+                setInitialRouteName('identification_proprietaire');
+              }
+            })
+            .catch(error => {
+              console.log(error);
+            }),
 
           // Configure jwt auth in axios.
-          setupAxiosAuth().catch(e => console.log("setupAxiosAuthError", e))
+          setupAxiosAuth().catch(e => console.log('setupAxiosAuthError', e)),
         ]);
       } catch (error) {
-        console.log(error)
+        console.log(error);
       } finally {
-        setAppLoaded(true)
+        setAppLoaded(true);
       }
     })();
   }, []);
@@ -97,10 +97,7 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator
-        initialRouteName={initialRouteName}
-      >
-
+      <Stack.Navigator initialRouteName={initialRouteName}>
         {/* splash */}
         <Stack.Screen
           name="splash"
@@ -119,7 +116,11 @@ export default function App() {
           component={ConfigurationScreen}
           options={{
             title: 'Configuration',
-            headerTitleStyle: { fontSize: 16, color: couleurs.white, fontFamily: CustomFont.Poppins, },
+            headerTitleStyle: {
+              fontSize: 16,
+              color: couleurs.white,
+              fontFamily: CustomFont.Poppins,
+            },
             headerTintColor: couleurs.white,
             headerShown: false,
             headerStyle: {
@@ -140,7 +141,7 @@ export default function App() {
 
             presentation: 'modal',
             animationTypeForReplace: 'push',
-            animation: 'slide_from_right'
+            animation: 'slide_from_right',
           }}
         />
 
@@ -153,11 +154,9 @@ export default function App() {
 
             presentation: 'modal',
             animationTypeForReplace: 'push',
-            animation: 'slide_from_right'
+            animation: 'slide_from_right',
           }}
         />
-
-
 
         {/* identification_client */}
         <Stack.Screen
@@ -167,7 +166,11 @@ export default function App() {
             title: 'Connexion client',
 
             headerShadowVisible: false,
-            headerTitleStyle: { fontSize: 16, color: couleurs.white, fontFamily: CustomFont.Poppins, },
+            headerTitleStyle: {
+              fontSize: 16,
+              color: couleurs.white,
+              fontFamily: CustomFont.Poppins,
+            },
             headerTintColor: couleurs.white,
             headerShown: true,
             headerStyle: {
@@ -185,7 +188,11 @@ export default function App() {
           component={PersonnalisationReservation}
           options={{
             headerShadowVisible: false,
-            headerTitleStyle: { fontSize: 16, color: couleurs.white, fontFamily: CustomFont.Poppins, },
+            headerTitleStyle: {
+              fontSize: 16,
+              color: couleurs.white,
+              fontFamily: CustomFont.Poppins,
+            },
             headerTintColor: couleurs.white,
             headerShown: false,
             headerStyle: {
@@ -203,7 +210,11 @@ export default function App() {
           component={PersonnalisationReservationCreneau}
           options={{
             headerShadowVisible: false,
-            headerTitleStyle: { fontSize: 16, color: couleurs.white, fontFamily: CustomFont.Poppins, },
+            headerTitleStyle: {
+              fontSize: 16,
+              color: couleurs.white,
+              fontFamily: CustomFont.Poppins,
+            },
             headerTintColor: couleurs.white,
             headerShown: false,
             headerStyle: {
@@ -222,7 +233,11 @@ export default function App() {
           options={{
             title: 'Inscription client',
             headerShadowVisible: false,
-            headerTitleStyle: { fontSize: 16, color: couleurs.white, fontFamily: CustomFont.Poppins, },
+            headerTitleStyle: {
+              fontSize: 16,
+              color: couleurs.white,
+              fontFamily: CustomFont.Poppins,
+            },
             headerTintColor: couleurs.white,
             headerShown: true,
             headerStyle: {
@@ -241,7 +256,11 @@ export default function App() {
           options={{
             title: 'Re/Abonnement',
             headerShadowVisible: false,
-            headerTitleStyle: { fontSize: 16, color: couleurs.white, fontFamily: CustomFont.Poppins, },
+            headerTitleStyle: {
+              fontSize: 16,
+              color: couleurs.white,
+              fontFamily: CustomFont.Poppins,
+            },
             headerTintColor: couleurs.white,
             headerShown: true,
             headerStyle: {
@@ -253,9 +272,6 @@ export default function App() {
           }}
         />
 
-
-
-
         {/* identification_proprietaire */}
         <Stack.Screen
           name="identification_proprietaire"
@@ -263,7 +279,11 @@ export default function App() {
           options={{
             title: 'Connexion proprietaire',
             headerShadowVisible: false,
-            headerTitleStyle: { fontSize: 16, color: couleurs.white, fontFamily: CustomFont.Poppins, },
+            headerTitleStyle: {
+              fontSize: 16,
+              color: couleurs.white,
+              fontFamily: CustomFont.Poppins,
+            },
             headerTintColor: couleurs.white,
             headerShown: true,
             headerStyle: {
@@ -282,7 +302,11 @@ export default function App() {
           options={{
             title: 'Creation du compte proprietaire',
             headerShadowVisible: false,
-            headerTitleStyle: { fontSize: 16, color: couleurs.white, fontFamily: CustomFont.Poppins, },
+            headerTitleStyle: {
+              fontSize: 16,
+              color: couleurs.white,
+              fontFamily: CustomFont.Poppins,
+            },
             headerTintColor: couleurs.white,
             headerShown: true,
             headerStyle: {
@@ -301,7 +325,11 @@ export default function App() {
           options={{
             title: 'Creation du compte proprietaire',
             headerShadowVisible: false,
-            headerTitleStyle: { fontSize: 16, color: couleurs.primary, fontFamily: CustomFont.Poppins, },
+            headerTitleStyle: {
+              fontSize: 16,
+              color: couleurs.primary,
+              fontFamily: CustomFont.Poppins,
+            },
             headerTintColor: couleurs.primary,
             headerShown: false,
             presentation: 'modal',
@@ -317,7 +345,11 @@ export default function App() {
           options={{
             title: 'Image de couverture',
             headerShadowVisible: false,
-            headerTitleStyle: { fontSize: 16, color: couleurs.primary, fontFamily: CustomFont.Poppins },
+            headerTitleStyle: {
+              fontSize: 16,
+              color: couleurs.primary,
+              fontFamily: CustomFont.Poppins,
+            },
             headerTintColor: couleurs.primary,
             headerShown: false,
             presentation: 'modal',
@@ -333,7 +365,11 @@ export default function App() {
           options={{
             title: '',
             headerShadowVisible: false,
-            headerTitleStyle: { fontSize: 16, color: couleurs.primary, fontFamily: CustomFont.Poppins, },
+            headerTitleStyle: {
+              fontSize: 16,
+              color: couleurs.primary,
+              fontFamily: CustomFont.Poppins,
+            },
             headerTintColor: couleurs.primary,
             headerShown: false,
             presentation: 'modal',
@@ -349,7 +385,11 @@ export default function App() {
           options={{
             title: '',
             headerShadowVisible: false,
-            headerTitleStyle: { fontSize: 16, color: couleurs.primary, fontFamily: CustomFont.Poppins, },
+            headerTitleStyle: {
+              fontSize: 16,
+              color: couleurs.primary,
+              fontFamily: CustomFont.Poppins,
+            },
             headerTintColor: couleurs.primary,
             headerShown: false,
             presentation: 'modal',
@@ -364,7 +404,11 @@ export default function App() {
           component={Main}
           options={{
             headerShadowVisible: true,
-            headerTitleStyle: { fontSize: 16, color: couleurs.primary, fontFamily: CustomFont.Poppins, },
+            headerTitleStyle: {
+              fontSize: 16,
+              color: couleurs.primary,
+              fontFamily: CustomFont.Poppins,
+            },
             headerTintColor: couleurs.primary,
             headerShown: false,
             presentation: 'modal',
@@ -380,7 +424,11 @@ export default function App() {
           options={{
             title: 'Mon compte',
             headerShadowVisible: false,
-            headerTitleStyle: { fontSize: 16, color: couleurs.primary, fontFamily: CustomFont.Poppins, },
+            headerTitleStyle: {
+              fontSize: 16,
+              color: couleurs.primary,
+              fontFamily: CustomFont.Poppins,
+            },
             headerTintColor: couleurs.primary,
             headerShown: false,
             presentation: 'modal',
@@ -396,7 +444,11 @@ export default function App() {
           options={{
             title: 'Mon rdv',
             headerShadowVisible: false,
-            headerTitleStyle: { fontSize: 16, color: couleurs.primary, fontFamily: CustomFont.Poppins, },
+            headerTitleStyle: {
+              fontSize: 16,
+              color: couleurs.primary,
+              fontFamily: CustomFont.Poppins,
+            },
             headerTintColor: couleurs.primary,
             headerShown: false,
             presentation: 'modal',
@@ -412,7 +464,11 @@ export default function App() {
           options={{
             title: 'La carte',
             headerShadowVisible: false,
-            headerTitleStyle: { fontSize: 16, color: couleurs.primary, fontFamily: CustomFont.Poppins, },
+            headerTitleStyle: {
+              fontSize: 16,
+              color: couleurs.primary,
+              fontFamily: CustomFont.Poppins,
+            },
             headerTintColor: couleurs.primary,
             headerShown: false,
             presentation: 'modal',
@@ -428,7 +484,11 @@ export default function App() {
           options={{
             title: 'Resultat de la recherche',
             headerShadowVisible: false,
-            headerTitleStyle: { fontSize: 16, color: couleurs.primary, fontFamily: CustomFont.Poppins, },
+            headerTitleStyle: {
+              fontSize: 16,
+              color: couleurs.primary,
+              fontFamily: CustomFont.Poppins,
+            },
             headerTintColor: couleurs.primary,
             headerShown: false,
             presentation: 'modal',
@@ -444,7 +504,11 @@ export default function App() {
           options={{
             title: 'Resultat de la recherche',
             headerShadowVisible: false,
-            headerTitleStyle: { fontSize: 16, color: couleurs.primary, fontFamily: CustomFont.Poppins, },
+            headerTitleStyle: {
+              fontSize: 16,
+              color: couleurs.primary,
+              fontFamily: CustomFont.Poppins,
+            },
             headerTintColor: couleurs.primary,
             headerShown: false,
             presentation: 'modal',
@@ -460,7 +524,11 @@ export default function App() {
           options={{
             title: 'Espace etablissement',
             headerShadowVisible: false,
-            headerTitleStyle: { fontSize: 16, color: couleurs.primary, fontFamily: CustomFont.Poppins, },
+            headerTitleStyle: {
+              fontSize: 16,
+              color: couleurs.primary,
+              fontFamily: CustomFont.Poppins,
+            },
             headerTintColor: couleurs.primary,
             headerShown: false,
             presentation: 'modal',
@@ -476,7 +544,11 @@ export default function App() {
           options={{
             title: 'Espace etablissement',
             headerShadowVisible: false,
-            headerTitleStyle: { fontSize: 16, color: couleurs.primary, fontFamily: CustomFont.Poppins, },
+            headerTitleStyle: {
+              fontSize: 16,
+              color: couleurs.primary,
+              fontFamily: CustomFont.Poppins,
+            },
             headerTintColor: couleurs.primary,
             headerShown: false,
             presentation: 'modal',
@@ -492,7 +564,11 @@ export default function App() {
           options={{
             title: 'Edition compte',
             headerShadowVisible: false,
-            headerTitleStyle: { fontSize: 16, color: couleurs.primary, fontFamily: CustomFont.Poppins, },
+            headerTitleStyle: {
+              fontSize: 16,
+              color: couleurs.primary,
+              fontFamily: CustomFont.Poppins,
+            },
             headerTintColor: couleurs.primary,
             headerShown: true,
             presentation: 'modal',
@@ -508,7 +584,11 @@ export default function App() {
           options={{
             title: 'Menu screen',
             headerShadowVisible: false,
-            headerTitleStyle: { fontSize: 16, color: couleurs.primary, fontFamily: CustomFont.Poppins, },
+            headerTitleStyle: {
+              fontSize: 16,
+              color: couleurs.primary,
+              fontFamily: CustomFont.Poppins,
+            },
             headerTintColor: couleurs.primary,
             headerShown: false,
             presentation: 'modal',
@@ -517,15 +597,18 @@ export default function App() {
           }}
         />
 
-
         {/* EditAdresse */}
         <Stack.Screen
           name="edit_adresse"
           component={EditAdresse}
           options={{
-            title: 'Selectionnez l\'addresse',
+            title: "Selectionnez l'addresse",
             headerShadowVisible: false,
-            headerTitleStyle: { fontSize: 16, color: couleurs.primary, fontFamily: CustomFont.Poppins, },
+            headerTitleStyle: {
+              fontSize: 16,
+              color: couleurs.primary,
+              fontFamily: CustomFont.Poppins,
+            },
             headerTintColor: couleurs.primary,
             headerShown: false,
             presentation: 'modal',
@@ -541,7 +624,11 @@ export default function App() {
           options={{
             title: 'Bilan reservation',
             headerShadowVisible: false,
-            headerTitleStyle: { fontSize: 16, color: couleurs.primary, fontFamily: CustomFont.Poppins, },
+            headerTitleStyle: {
+              fontSize: 16,
+              color: couleurs.primary,
+              fontFamily: CustomFont.Poppins,
+            },
             headerTintColor: couleurs.primary,
             headerShown: false,
             presentation: 'modal',
@@ -557,7 +644,11 @@ export default function App() {
           options={{
             title: 'rdv client',
             headerShadowVisible: false,
-            headerTitleStyle: { fontSize: 16, color: couleurs.primary, fontFamily: CustomFont.Poppins, },
+            headerTitleStyle: {
+              fontSize: 16,
+              color: couleurs.primary,
+              fontFamily: CustomFont.Poppins,
+            },
             headerTintColor: couleurs.primary,
             headerShown: false,
             presentation: 'modal',
@@ -566,7 +657,6 @@ export default function App() {
           }}
         />
 
-
         {/* SimpleRdv */}
         <Stack.Screen
           name="simple_rdv"
@@ -574,7 +664,11 @@ export default function App() {
           options={{
             title: 'rdv client',
             headerShadowVisible: false,
-            headerTitleStyle: { fontSize: 16, color: couleurs.primary, fontFamily: CustomFont.Poppins, },
+            headerTitleStyle: {
+              fontSize: 16,
+              color: couleurs.primary,
+              fontFamily: CustomFont.Poppins,
+            },
             headerTintColor: couleurs.primary,
             headerShown: false,
             presentation: 'modal',
@@ -590,7 +684,11 @@ export default function App() {
           options={{
             title: 'rdv client',
             headerShadowVisible: false,
-            headerTitleStyle: { fontSize: 16, color: couleurs.primary, fontFamily: CustomFont.Poppins, },
+            headerTitleStyle: {
+              fontSize: 16,
+              color: couleurs.primary,
+              fontFamily: CustomFont.Poppins,
+            },
             headerTintColor: couleurs.primary,
             headerShown: false,
             presentation: 'modal',
@@ -606,7 +704,11 @@ export default function App() {
           options={{
             title: 'Gallerie',
             headerShadowVisible: false,
-            headerTitleStyle: { fontSize: 16, color: couleurs.primary, fontFamily: CustomFont.Poppins, },
+            headerTitleStyle: {
+              fontSize: 16,
+              color: couleurs.primary,
+              fontFamily: CustomFont.Poppins,
+            },
             headerTintColor: couleurs.primary,
             headerShown: false,
             presentation: 'modal',
@@ -622,7 +724,11 @@ export default function App() {
           options={{
             title: 'Mes Horaires',
             headerShadowVisible: false,
-            headerTitleStyle: { fontSize: 16, color: couleurs.primary, fontFamily: CustomFont.Poppins, },
+            headerTitleStyle: {
+              fontSize: 16,
+              color: couleurs.primary,
+              fontFamily: CustomFont.Poppins,
+            },
             headerTintColor: couleurs.primary,
             headerShown: false,
             presentation: 'modal',
@@ -631,7 +737,6 @@ export default function App() {
           }}
         />
 
-
         {/* MaCategorie */}
         <Stack.Screen
           name="mes_categories"
@@ -639,7 +744,11 @@ export default function App() {
           options={{
             title: 'Mes Horaires',
             headerShadowVisible: false,
-            headerTitleStyle: { fontSize: 16, color: couleurs.primary, fontFamily: CustomFont.Poppins, },
+            headerTitleStyle: {
+              fontSize: 16,
+              color: couleurs.primary,
+              fontFamily: CustomFont.Poppins,
+            },
             headerTintColor: couleurs.primary,
             headerShown: false,
             presentation: 'modal',
@@ -655,7 +764,11 @@ export default function App() {
           options={{
             title: 'Mes Horaires',
             headerShadowVisible: false,
-            headerTitleStyle: { fontSize: 16, color: couleurs.primary, fontFamily: CustomFont.Poppins, },
+            headerTitleStyle: {
+              fontSize: 16,
+              color: couleurs.primary,
+              fontFamily: CustomFont.Poppins,
+            },
             headerTintColor: couleurs.primary,
             headerShown: false,
             presentation: 'modal',
@@ -671,7 +784,11 @@ export default function App() {
           options={{
             title: 'Choisir une prestation',
             headerShadowVisible: false,
-            headerTitleStyle: { fontSize: 16, color: couleurs.primary, fontFamily: CustomFont.Poppins, },
+            headerTitleStyle: {
+              fontSize: 16,
+              color: couleurs.primary,
+              fontFamily: CustomFont.Poppins,
+            },
             headerTintColor: couleurs.primary,
             headerShown: false,
             presentation: 'modal',
@@ -680,7 +797,6 @@ export default function App() {
           }}
         />
 
-
         {/* PaiementScreen */}
         <Stack.Screen
           name="paiement_screen"
@@ -688,7 +804,11 @@ export default function App() {
           options={{
             title: 'Portail de paiement',
             headerShadowVisible: false,
-            headerTitleStyle: { fontSize: 16, color: couleurs.primary, fontFamily: CustomFont.Poppins, },
+            headerTitleStyle: {
+              fontSize: 16,
+              color: couleurs.primary,
+              fontFamily: CustomFont.Poppins,
+            },
             headerTintColor: couleurs.primary,
             headerShown: true,
             presentation: 'modal',
@@ -704,7 +824,11 @@ export default function App() {
           options={{
             title: 'Recuperation Mot de passe',
             headerShadowVisible: false,
-            headerTitleStyle: { fontSize: 16, color: couleurs.primary, fontFamily: CustomFont.Poppins, },
+            headerTitleStyle: {
+              fontSize: 16,
+              color: couleurs.primary,
+              fontFamily: CustomFont.Poppins,
+            },
             headerTintColor: couleurs.primary,
             headerShown: true,
             presentation: 'modal',
@@ -720,7 +844,11 @@ export default function App() {
           options={{
             title: 'Recuperation Mot de passe',
             headerShadowVisible: false,
-            headerTitleStyle: { fontSize: 16, color: couleurs.primary, fontFamily: CustomFont.Poppins, },
+            headerTitleStyle: {
+              fontSize: 16,
+              color: couleurs.primary,
+              fontFamily: CustomFont.Poppins,
+            },
             headerTintColor: couleurs.primary,
             headerShown: true,
             presentation: 'modal',
@@ -736,7 +864,11 @@ export default function App() {
           options={{
             title: 'Itineaire',
             headerShadowVisible: false,
-            headerTitleStyle: { fontSize: 16, color: couleurs.primary, fontFamily: CustomFont.Poppins, },
+            headerTitleStyle: {
+              fontSize: 16,
+              color: couleurs.primary,
+              fontFamily: CustomFont.Poppins,
+            },
             headerTintColor: couleurs.primary,
             headerShown: false,
             presentation: 'modal',
@@ -752,7 +884,11 @@ export default function App() {
           options={{
             title: 'inscription_client_2',
             headerShadowVisible: false,
-            headerTitleStyle: { fontSize: 16, color: couleurs.primary, fontFamily: CustomFont.Poppins, },
+            headerTitleStyle: {
+              fontSize: 16,
+              color: couleurs.primary,
+              fontFamily: CustomFont.Poppins,
+            },
             headerTintColor: couleurs.primary,
             headerShown: false,
             presentation: 'modal',
@@ -768,7 +904,11 @@ export default function App() {
           options={{
             title: 'inscription_client_3',
             headerShadowVisible: false,
-            headerTitleStyle: { fontSize: 16, color: couleurs.primary, fontFamily: CustomFont.Poppins, },
+            headerTitleStyle: {
+              fontSize: 16,
+              color: couleurs.primary,
+              fontFamily: CustomFont.Poppins,
+            },
             headerTintColor: couleurs.primary,
             headerShown: false,
             presentation: 'modal',
@@ -784,7 +924,11 @@ export default function App() {
           options={{
             title: 'ConfirmationCompteScreenClient',
             headerShadowVisible: false,
-            headerTitleStyle: { fontSize: 16, color: couleurs.primary, fontFamily: CustomFont.Poppins, },
+            headerTitleStyle: {
+              fontSize: 16,
+              color: couleurs.primary,
+              fontFamily: CustomFont.Poppins,
+            },
             headerTintColor: couleurs.primary,
             headerShown: false,
             presentation: 'modal',

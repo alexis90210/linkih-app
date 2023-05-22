@@ -68,7 +68,7 @@ export default function MesHoraires({
   useEffect(() => {
     const fetchData = async () => {
       let _userConnectedId = await secureStorage.getKey("utilisateur");
-      if (_userConnectedId) SetUserConnected(_userConnectedId);
+      if (_userConnectedId) SetUserConnectedId(_userConnectedId);
     };
 
     // call the function

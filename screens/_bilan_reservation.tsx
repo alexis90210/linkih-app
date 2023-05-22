@@ -19,6 +19,7 @@ import axios from "axios";
 import ApiService from "../components/api/service";
 import storage from "../components/api/localstorage";
 import translations from "../translations/translations";
+import secureStorage from "../components/api/secureStorage";
 
 export default function BilanReservation({
   navigation,

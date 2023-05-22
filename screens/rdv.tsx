@@ -55,7 +55,7 @@ export default function Rdv({
   useEffect(() => {
     const _fetchData = async () => {
       let _userConnectedId = await secureStorage.getKey("utilisateur");
-      if (_userConnectedId) SetUserConnected(_userConnectedId);
+      if (_userConnectedId) SetUserConnectedId(_userConnectedId);
     };
 
     // call the function

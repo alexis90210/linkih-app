@@ -17,6 +17,7 @@ import { CustomFont, couleurs } from "../components/color";
 import ApiService from "../components/api/service";
 import axios from "axios";
 import storage from "../components/api/localstorage";
+import secureStorage from "../components/api/secureStorage";
 
 export default function MaCategorie({
   navigation,
@@ -36,7 +37,7 @@ export default function MaCategorie({
   useEffect(() => {
     const fetchData = async () => {
       let _userConnectedId = await secureStorage.getKey("utilisateur");
-      if (_userConnectedId) SetUserConnected(_userConnectedId);
+      if (_userConnectedId) SetUserConnectedId(_userConnectedId);
     };
 
     // call the function

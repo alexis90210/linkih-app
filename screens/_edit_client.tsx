@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   SafeAreaView,
@@ -18,6 +18,7 @@ import axios from "axios";
 import Geolocation from "@react-native-community/geolocation";
 import ImagePicker from "react-native-image-crop-picker";
 import translations from "../translations/translations";
+import secureStorage from "../components/api/secureStorage";
 
 // Function to get permission for location
 const requestLocationPermission = async () => {

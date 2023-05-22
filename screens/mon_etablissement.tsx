@@ -20,6 +20,8 @@ import ArrowRightIcon from "../components/ArrowRight";
 import translations from "../translations/translations";
 import * as Progress from "react-native-progress";
 import secureStorage from "../components/api/secureStorage";
+import axios from "axios";
+import ApiService from "../components/api/service";
 
 export default function MonEtablissement({
   route,
@@ -60,7 +62,7 @@ export default function MonEtablissement({
   const [proprietaire, setProprietaire] = useState<any>({});
   const [lien_reseaux_sociaux, setLien_reseaux_sociaux] = useState<any[]>([]);
   const [horaire_ouverture, setHoraire_ouverture] = useState<any[]>([]);
-
+  const [userConnectedRole, SetUserRole] = useState("");
   useEffect(() => {
     // declare the data fetching function
     const _fetchData = async () => {
@@ -85,7 +87,7 @@ export default function MonEtablissement({
   useEffect(() => {
     const fetchData = async () => {
       let _userConnectedId = await secureStorage.getKey("utilisateur");
-      if (_userConnectedId) SetUserConnected(_userConnectedId);
+      if (_userConnectedId) SetUserConnectedId(_userConnectedId);
     };
 
     // call the function

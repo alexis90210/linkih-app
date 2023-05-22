@@ -16,6 +16,7 @@ import ApiService from "../components/api/service";
 import axios from "axios";
 import translations from "../translations/translations";
 import CloseIcon from "../components/close";
+import secureStorage from "../components/api/secureStorage";
 
 // RecuperationPassword
 export default function RecuperationPassword({

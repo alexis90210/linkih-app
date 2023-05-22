@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { StackActions } from "@react-navigation/native";
 import {
   SafeAreaView,
@@ -109,6 +109,9 @@ export default function IdentificationClientScreen({
       },
     })
       .then(async (response: { data: any }) => {
+
+        let api = response.data;
+
         /**  Setup Jwt token  */
         /*** ======================= TODO: EDIT IF NEEDED (e.g: remove logs...) ========================== */
         console.log({ loginResp: api });
@@ -136,7 +139,7 @@ export default function IdentificationClientScreen({
           },
         })
           .then(async (response: { data: any }) => {
-            var api = response.data;
+            let api = response.data;
             if (api.code == "success") {
               setProcessing(false);
 

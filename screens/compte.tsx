@@ -16,6 +16,8 @@ import { CustomFont, couleurs } from "../components/color";
 import storage from "../components/api/localstorage";
 import translations from "../translations/translations";
 import secureStorage from "../components/api/secureStorage";
+import ApiService from "../components/api/service";
+import axios from "axios";
 
 export default function Compte({ navigation }: { navigation: any }) {
   /////////////////////////////////// LANGUAGE HANDLER //////////////////////////////////
@@ -46,7 +48,7 @@ export default function Compte({ navigation }: { navigation: any }) {
   useEffect(() => {
     const fetchData = async () => {
       let _userConnectedId = await secureStorage.getKey("utilisateur");
-      if (_userConnectedId) SetUserConnected(_userConnectedId);
+      if (_userConnectedId) SetUserConnectedId(_userConnectedId);
     };
 
     // call the function
@@ -83,7 +85,6 @@ export default function Compte({ navigation }: { navigation: any }) {
               data: response.data.message,
             });
 
-          setisLoadedProprietaire(true);
         }
       })
       .catch((error) => console.log(error));

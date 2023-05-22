@@ -55,7 +55,7 @@ export default function ConfigurationDefaultCategorie({
   useEffect(() => {
     const fetchData = async () => {
       let _userConnectedId = await secureStorage.getKey("utilisateur");
-      if (_userConnectedId) SetUserConnected(_userConnectedId);
+      if (_userConnectedId) SetUserConnectedId(_userConnectedId);
     };
 
     // call the function
@@ -78,6 +78,7 @@ export default function ConfigurationDefaultCategorie({
   const [isLoadedCategorie, setLoadedCategorie] = useState(false);
 
 
+  const [userConnectedRole, SetUserRole] = useState("");
 
   useEffect(() => {
     // declare the data fetching function
@@ -85,13 +86,13 @@ export default function ConfigurationDefaultCategorie({
       let role = await secureStorage.getKey("role");
       if (role) {
         SetUserRole(role);
-  
+
         if (role != "ROLE_VENDEUR") {
           navigation.navigate("identification_proprietaire");
         }
       }
     }
-  
+
     // call the function
     __fetchData()
       // make sure to catch any error

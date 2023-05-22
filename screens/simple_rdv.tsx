@@ -19,6 +19,8 @@ import axios from "axios";
 import ApiService from "../components/api/service";
 import storage from "../components/api/localstorage";
 import translations from "../translations/translations";
+import secureStorage from "../components/api/secureStorage";
+
 
 axios.defaults.headers.common["Authorization"] = "Bearer ";
 
@@ -60,7 +62,7 @@ export default function SimpleRdv({
   useEffect(() => {
     const fetchData = async () => {
       let _userConnectedId = await secureStorage.getKey("utilisateur");
-      if (_userConnectedId) SetUserConnected(_userConnectedId);
+      if (_userConnectedId) SetUserConnectedId(_userConnectedId);
     };
 
     // call the function

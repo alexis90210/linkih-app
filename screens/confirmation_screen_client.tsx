@@ -13,7 +13,6 @@ import { CustomFont, couleurs } from "../components/color";
 import axios from "axios";
 import ApiService from "../components/api/service";
 import translations from "../translations/translations";
-import storage from "../components/api/localstorage";
 import secureStorage from "../components/api/secureStorage";
 
 // confirmationCompteScreenClient
