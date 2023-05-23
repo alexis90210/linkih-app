@@ -106,8 +106,7 @@ export default function IdentificationProprietaireScreen({
       url: ApiService.API_URL_LOGIN,
       data: JSON.stringify({
         login: identifiant,
-        password: password,
-        role: "ROLE_VENDEUR",
+        password: password
       }),
       headers: {
         Accept: "application/json",
@@ -128,103 +127,94 @@ export default function IdentificationProprietaireScreen({
         }
         /*** ======================= TODO: EDIT IF NEEDED (e.g: remove logs...) ========================== */
 
-        console.log("login ===", api);
+        // user logged data
 
-        if (api.code == "success") {
-          storage.save({
-            key: "credentials", // Note: Do not use underscore("_") in key!
-            id: "credentials", // Note: Do not use underscore("_") in id!
-            data: {
-              pays: api.message,
-            },
-          });
+        axios({
+          method: "GET",
+          url: ApiService.API_URL_LOGGED_USER_DATA,
+          data: JSON.stringify({
+            login: identifiant,
+            password: password,
+            role: "ROLE_VENDEUR",
+          }),
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+        }).then(async (response: { data: any }) => {
+          let api = response.data;
 
-          storage.save({
-            key: "firstusage", // Note: Do not use underscore("_") in key!
-            id: "firstusage", // Note: Do not use underscore("_") in id!
-            data: {
-              isNew: false,
-              isClient: false,
-            },
-          });
+          if (api.code == "success") {
 
-          secureStorage.setKey("firstusage", "1"); // vendeur
-
-          axios({
-            method: "GET",
-            url: ApiService.API_URL_USER_DATA,
-            data: JSON.stringify({
-              id: api.message.id,
-            }),
-            headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json",
-            },
-          })
-            .then((response: { data: any }) => {
-              setIsProccessing(false);
-
-              storage.save({
-                key: "userconnected", // Note: Do not use underscore("_") in key!
-                id: "userconnected", // Note: Do not use underscore("_") in id!
-                data: {
-                  ...response.data,
-                  role: api.message.role,
-                },
-              });
-
-              secureStorage.setKey(
-                "etablissement",
-                response.data.etablissement.id
-              ); // vendeur
-
-              navigation.dispatch(
-                StackActions.push("MonEtablissement", {
-                  vendeur_id: response.data.etablissement.id,
-                  isProprietaire: true,
-                })
-              );
+            axios({
+              method: "GET",
+              url: ApiService.API_URL_USER_DATA,
+              data: JSON.stringify({
+                id: api.message.id,
+              }),
+              headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+              },
             })
-            .catch((error) => {
-              setIsProccessing(false);
+              .then(async (response: { data: any }) => {
+                setIsProccessing(false);
+                await secureStorage.setKey("firstusage", "1"); // client
+                await secureStorage.setKey("utilisateur", api.message.id);
+                await secureStorage.setKey("isProprietaire", "1");
+                await secureStorage.setKey("role", "ROLE_VENDEUR");
+                await secureStorage.setKey(
+                  "etablissement",
+                  response.data.etablissement.id
+                ); // vendeur
+
+                navigation.dispatch(StackActions.push("MonEtablissement"));
+
+              })
+              .catch((error) => {
+                setIsProccessing(false);
+                Alert.alert(
+                  "",
+                  t(
+                    "Nous_n_avons_pas_pu_recuper_vos_informations",
+                    preferredLangage
+                  ),
+                  [{ text: "OK", onPress: () => null }]
+                );
+              });
+          }
+
+          if (api.code == "error") {
+            setIsProccessing(false);
+
+            if (api.status) {
+              Alert.alert("", api.message, [
+                {
+                  text: t("Confirmer_maintenant", preferredLangage),
+                  onPress: () =>
+                    navigation.navigate("confirmation_screen", {
+                      client_id: api.id,
+                    }),
+                },
+              ]);
+            } else {
               Alert.alert(
                 "",
-                t(
-                  "Nous_n_avons_pas_pu_recuper_vos_informations",
-                  preferredLangage
-                ),
-                [{ text: "OK", onPress: () => null }]
+                t("login_incorect", preferredLangage),
+                [
+                  {
+                    text: "OK",
+                    onPress: () => null,
+                  },
+                ],
+                { cancelable: true }
               );
-            });
-        }
-
-        if (api.code == "error") {
-          setIsProccessing(false);
-
-          if (api.status) {
-            Alert.alert("", api.message, [
-              {
-                text: t("Confirmer_maintenant", preferredLangage),
-                onPress: () =>
-                  navigation.navigate("confirmation_screen", {
-                    client_id: api.id,
-                  }),
-              },
-            ]);
-          } else {
-            Alert.alert(
-              "",
-              t("login_incorect", preferredLangage),
-              [
-                {
-                  text: "OK",
-                  onPress: () => null,
-                },
-              ],
-              { cancelable: true }
-            );
+            }
           }
-        }
+        })
+
+
+
       })
       .catch((error: any) => {
         setIsProccessing(false);

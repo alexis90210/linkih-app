@@ -53,6 +53,7 @@ import InscriptionClient3 from './screens/inscription_client_3';
 import ConfirmationCompteScreenClient from './screens/confirmation_screen_client';
 import RecuperationPasswordClient from './screens/_recuperation_password_client';
 import { setupAxiosAuth } from './components/api/service';
+import secureStorage from './components/api/secureStorage';
 
 const Stack = createNativeStackNavigator();
 
@@ -63,26 +64,18 @@ export default function App() {
   useEffect(() => {
     (async () => {
       try {
-        await Promise.all([
-          storage
-            .load({
-              key: 'firstusage', // Note: Do not use underscore("_") in key!
-              id: 'firstusage', // Note: Do not use underscore("_") in id!
-            })
-            .then(data => {
-              if (data.isClient) {
-                setInitialRouteName('identification_client');
-              } else {
-                setInitialRouteName('identification_proprietaire');
-              }
-            })
-            .catch(error => {
-              console.log(error);
-            }),
 
-          // Configure jwt auth in axios.
-          setupAxiosAuth().catch(e => console.log('setupAxiosAuthError', e)),
-        ]);
+        let exists = await secureStorage.keyExists("firstusage");
+
+        if (exists) {
+          let value = await secureStorage.getKey("firstusage");
+          if (value == "1") setInitialRouteName('identification_proprietaire');
+          if (value == "2") setInitialRouteName('identification_client');
+        }
+
+        // Configure jwt auth in axios.
+        setupAxiosAuth().catch(e => console.log('setupAxiosAuthError', e))
+
       } catch (error) {
         console.log(error);
       } finally {
