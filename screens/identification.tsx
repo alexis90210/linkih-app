@@ -22,6 +22,7 @@ import ArrowLeftIcon from "../components/ArrowLeft";
 import ApiService from "../components/api/service";
 import translations from "../translations/translations";
 import storage from "../components/api/localstorage";
+import secureStorage from "../components/api/secureStorage";
 
 // IdentificationScreen
 export default function IdentificationScreen({

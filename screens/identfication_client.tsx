@@ -56,7 +56,7 @@ export default function IdentificationClientScreen({
       .catch(console.error);
   }, []);
 
-  //////////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////
 
   var [isVisible, setVisible] = useState(false);
 
@@ -72,9 +72,11 @@ export default function IdentificationClientScreen({
 
   const [isProccessing, setProcessing] = useState(false);
 
+ useEffect(()=>{
   if (route.params?.login && route.params?.login.length > 0) {
     setIdentifiant(route.params?.login);
   }
+ })
 
   const logUser = async () => {
     if (!identifiant) {

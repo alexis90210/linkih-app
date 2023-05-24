@@ -8,7 +8,7 @@ class ApiService {
 
   // BASE API URL
   static API_BASE_URL_HTTPS = 'https://linkih.hlconception.com/';
-  static API_BASE_URL = 'https://linkih.hlconception.com/';
+  static API_BASE_URL =  "http://192.168.1.92:8000/"; // 'https://linkih.hlconception.com/'; //
   static API_URL = this.API_BASE_URL + 'api/v1/';
 
   // EXTERNAL API KEYS
@@ -31,7 +31,7 @@ class ApiService {
 
   // FETCH USING GET
   static API_URL_STRIPE_PAIEMENT_PORTAIL = this.API_BASE_URL + 'stripe';
-  static API_URL_LOGGED_USER_DATA = this.API_BASE_URL + 'logged/user-data';
+  static API_URL_LOGGED_USER_DATA = this.API_URL + 'logged/user-data';
   static API_URL_LISTE_ABONNEMENTS = this.API_URL + 'liste/abonnements';
   static API_URL_GET_VENDEURS = this.API_URL + 'vendeurs';
   static API_URL_GET_CATEGORIES = this.API_URL + 'sous-categories';

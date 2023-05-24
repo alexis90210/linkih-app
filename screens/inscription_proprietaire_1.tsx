@@ -92,14 +92,16 @@ export default function InscriptionProprietaireScreen1({
   const [EtablissementLongitude, setEtablissementLongitude] = useState("");
 
   useEffect(() => {
-    if (requestLocationPermission()) {
-      Geolocation.getCurrentPosition((info) => {
-        EtablissementLongitude(info.coords.longitude);
-        EtablissementLatitude(info.coords.latitude);
-      });
-    } else {
-      navigation.goBack();
-    }
+    (async () => {
+      if (await requestLocationPermission()) {
+        Geolocation.getCurrentPosition((info) => {
+          setEtablissementLatitude(info.coords.longitude.toString());
+          setEtablissementLongitude(info.coords.latitude.toString());
+        });
+      } else {
+        navigation.goBack();
+      }
+    })()
   });
 
   const getEtablissementData = () => {
@@ -208,7 +210,7 @@ export default function InscriptionProprietaireScreen1({
                   placeholderTextColor={"rgba(100,100,100,.7)"}
                   placeholder={t("Entrez_le_nom_entreprise", preferredLangage)}
                   defaultValue={EtablissementNom}
-                  onChangeText={(input) => EtablissementNom(input)}
+                  onChangeText={(input) => setEtablissementNom(input)}
                   style={{
                     backgroundColor: "transparent",
                     borderBottomWidth: 1,

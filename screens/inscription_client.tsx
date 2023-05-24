@@ -109,8 +109,8 @@ export default function InscriptionClientScreen({
       if (res) {
         Geolocation.getCurrentPosition(
           (info) => {
-            setClientLongitude(info.coords.longitude);
-            setClientLatitude(info.coords.latitude);
+            setClientLongitude(info.coords.longitude.toString());
+            setClientLatitude(info.coords.latitude.toString());
           },
 
           (error) => {
@@ -154,6 +154,20 @@ export default function InscriptionClientScreen({
     }
     setProcessing(true);
 
+    console.log({
+      nom: clientNom,
+      email: clientEmail,
+      password: clientPassword,
+      role: "ROLE_CLIENT",
+      longitude: clientLongitude,
+      latitude: clientLatitude,
+      adresse: clientAdresse,
+      mobile: clientMobile,
+      pays: clientPays,
+      langue: preferredLangage,
+    });
+    
+
     axios({
       method: "POST",
       url: ApiService.API_URL_CREATE_UTILISATEUR,
@@ -168,15 +182,11 @@ export default function InscriptionClientScreen({
         mobile: clientMobile,
         pays: clientPays,
         langue: preferredLangage,
-      }),
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
+      })
     })
       .then((response: { data: any }) => {
         var api = response.data;
-        console.log(api);
+        console.log('reponse api ', api);
         setProcessing(false);
 
         if (api.code == "success") {
@@ -192,7 +202,7 @@ export default function InscriptionClientScreen({
       })
       .catch((error: any) => {
         setProcessing(false);
-        console.log(error);
+        console.log('error creation ', error);
         Alert.alert(
           t("erreur_survenue", preferredLangage),
           t("Erreur_survenue_il_se_pourrait", preferredLangage),

@@ -18,6 +18,7 @@ import ApiService from "../components/api/service";
 import translations from "../translations/translations";
 import storage from "../components/api/localstorage";
 import secureStorage from "../components/api/secureStorage";
+import { StackActions } from "@react-navigation/native";
 
 // InscriptionClient3
 export default function InscriptionClient3({
@@ -55,10 +56,10 @@ export default function InscriptionClient3({
   const loginNow = () => {
     console.log(route.params.api);
 
-    navigation.navigate("identification_client", {
+    navigation.dispatch(StackActions.push("identification_client", {
       login: route.params.api.login,
       api: route.params.api,
-    });
+    }));
   };
 
   return (

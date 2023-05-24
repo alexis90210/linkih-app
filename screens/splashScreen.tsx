@@ -6,12 +6,9 @@ import {
   View,
   TouchableOpacity,
   Image,
-  ActivityIndicator,
-  Modal,
   StatusBar,
 } from "react-native";
 import { CustomFont, couleurs } from "../components/color";
-import storage from "../components/api/localstorage";
 import translations from "../translations/translations";
 import secureStorage from "../components/api/secureStorage";
 
@@ -26,9 +23,12 @@ export default function SplashScreen({ navigation }: { navigation: any }) {
   useEffect(() => {
     // declare the data fetching function
     const fetchData = async () => {
-      let lang = await secureStorage.getKey("defaultlang");
-      if (lang) {
-        setPreferredLangage(lang);
+      let exist = await secureStorage.keyExists("defaultlang");
+      if(exist){
+        let lang = await secureStorage.getKey("defaultlang");
+        if (lang) {
+          setPreferredLangage(lang);
+        }
       }
     };
 
@@ -40,7 +40,7 @@ export default function SplashScreen({ navigation }: { navigation: any }) {
 
   secureStorage.getKey("firstusage").then(
     (res) => {
-      if (res == 1) {
+      if (res == "1") {
         secureStorage.getKey("firstusage").then((etablissement) => {
           navigation.dispatch(
             StackActions.push("MonEtablissement", {
