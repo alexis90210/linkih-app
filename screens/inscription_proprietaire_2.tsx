@@ -247,15 +247,15 @@ export default function InscriptionProprietaireScreen2({
   const [nom_prenom_responsable, setNPR] = useState("");
   const [poste_occupe, setPO] = useState("");
 
-  storage
-    .load({
-      key: "configuration", // Note: Do not use underscore("_") in key!
-      id: "configuration", // Note: Do not use underscore("_") in id!
+    useEffect(() => {
+      (async ()=> {
+        let langue = await secureStorage.getKey('langue')
+        let pays = await secureStorage.getKey('pays')
+
+        etablissement.langue = langue;
+        etablissement.pays = pays;
+      })()
     })
-    .then((data) => {
-      etablissement.langue = data.langage.name;
-      etablissement.pays = data.pays.name;
-    });
 
   const nextPage = () => {
     console.log(stepper);

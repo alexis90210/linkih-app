@@ -127,15 +127,17 @@ export default function InscriptionClientScreen({
 
   const [isProccessing, setProcessing] = useState(false);
 
-  storage
-    .load({
-      key: "configuration", // Note: Do not use underscore("_") in key!
-      id: "configuration", // Note: Do not use underscore("_") in id!
+
+    useEffect(() => {
+      (async ()=> {
+        let langue = await secureStorage.getKey('langue')
+        let pays = await secureStorage.getKey('pays')
+
+
+        setClientLangue(langue ? langue : '' );
+        setClientPays(pays ? pays : '');
+      })()
     })
-    .then((data) => {
-      setClientLangue(data.langage.name);
-      setClientPays(data.pays.name);
-    });
 
   const onSubmit = () => {
     var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;

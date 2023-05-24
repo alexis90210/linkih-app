@@ -62,7 +62,8 @@ export default function ConfigurationScreen({
 
   const [Stepper, setStepper] = useState(0);
 
-  const selectCountry = (item: any) => {
+  const selectCountry = async (item: any) => {
+    await secureStorage.setKey('pays', item.name ); 
     setCurrentCountry(item);
     setStepper(1);
   };
@@ -84,7 +85,8 @@ export default function ConfigurationScreen({
     // add more langages here
   ];
 
-  const selectLanguage = (item: any) => {
+  const selectLanguage = async (item: any) => {
+    await secureStorage.setKey('langue', item.code ); 
     setCurrentLanguage(item);
     if (currentLanguage.code) {
       saveConfiguration();
@@ -113,18 +115,8 @@ export default function ConfigurationScreen({
 
   // get and save configuration
 
-  const saveConfiguration = () => {
-    secureStorage.setKey("defaultlang", currentLanguage.code);
-
-    storage.save({
-      key: "configuration", // Note: Do not use underscore("_") in key!
-      id: "configuration", // Note: Do not use underscore("_") in id!
-      data: {
-        pays: currentCountry,
-        langage: currentLanguage,
-      },
-    });
-
+  const saveConfiguration = async () => {
+    await secureStorage.setKey("defaultlang", currentLanguage.code);
     navigation.navigate("identification");
   };
 

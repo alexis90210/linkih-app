@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
-import { StackActions } from "@react-navigation/native";
+import { CommonActions, StackActions } from "@react-navigation/native";
 import {
   ScrollView,
   Text,
@@ -30,6 +30,64 @@ export default function SplashScreen({ navigation }: { navigation: any }) {
           setPreferredLangage(lang);
         }
       }
+
+      let identification = await secureStorage.keyExists('identification')
+
+      if ( identification) {
+
+        const resetAction = CommonActions.reset({
+          index: 0,
+          routes: [
+            {
+              name: 'identification',
+              params: {
+               
+              },
+            },
+          ],
+        });
+        navigation.dispatch(resetAction);
+
+      }
+
+      let langue = await secureStorage.keyExists('langue')
+
+      if ( langue ) {
+
+        const resetAction = CommonActions.reset({
+          index: 0,
+          routes: [
+            {
+              name: 'identification',
+              params: {
+               
+              },
+            },
+          ],
+        });
+        navigation.dispatch(resetAction);
+
+      }
+      let pays = await secureStorage.keyExists('pays')
+
+      if ( pays) {
+
+        const resetAction = CommonActions.reset({
+          index: 0,
+          routes: [
+            {
+              name: 'configuration',
+              params: {
+               
+              },
+            },
+          ],
+        });
+        navigation.dispatch(resetAction);
+
+      } 
+
+      
     };
 
     // call the function
@@ -38,32 +96,7 @@ export default function SplashScreen({ navigation }: { navigation: any }) {
       .catch(console.error);
   }, []);
 
-  secureStorage.getKey("firstusage").then(
-    (res) => {
-      if (res == "1") {
-        secureStorage.getKey("firstusage").then((etablissement) => {
-          navigation.dispatch(
-            StackActions.push("MonEtablissement", {
-              vendeur_id: etablissement,
-              isProprietaire: true,
-            })
-          );
-        });
-      } else {
-        secureStorage.getKey("utilisateur").then((utilisateur) => {
-          navigation.dispatch(
-            StackActions.push("main", {
-              utilisateur_id: utilisateur,
-              isProprietaire: false,
-            })
-          );
-        });
-      }
-    },
-    (err) => {
-      console.log(err);
-    }
-  );
+ 
 
   return (
     <ScrollView

@@ -102,15 +102,16 @@ export default function EditClientScreen({
     });
   });
 
-  storage
-    .load({
-      key: "configuration", // Note: Do not use underscore("_") in key!
-      id: "configuration", // Note: Do not use underscore("_") in id!
+
+    useEffect(() => {
+      (async ()=> {
+        let langue = await secureStorage.getKey('langue')
+        let pays = await secureStorage.getKey('pays')
+
+        client.langue = langue;
+        client.pays = pays;
+      })()
     })
-    .then((data) => {
-      client.langue = data.langage.name;
-      client.pays = data.pays.name;
-    });
 
   const onSubmit = () => {
     console.log(client);

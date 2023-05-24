@@ -24,6 +24,7 @@ import axios from "axios";
 import ApiService from "../components/api/service";
 import translations from "../translations/translations";
 import secureStorage from "../components/api/secureStorage";
+import { CommonActions } from "@react-navigation/native";
 
 function MenuScreen({ navigation }: { navigation: any }) {
   /////////////////////////////////// LANGUAGE HANDLER ///////////////////////////////////
@@ -150,6 +151,21 @@ function MenuScreen({ navigation }: { navigation: any }) {
         Alert.alert("", error);
       });
   };
+
+
+  // logout
+  const logoutUser = async () => {
+
+    await secureStorage.removeKey("utilisateur");
+
+    const resetAction = CommonActions.reset({
+      index: 0,
+      routes: [{ name: isVendeur
+        ? "identification_proprietaire"
+        : "identification_client" , params:  {  }}],                
+    });
+    navigation.dispatch(resetAction);
+  }
 
   return (
     <SafeAreaView
@@ -556,12 +572,10 @@ function MenuScreen({ navigation }: { navigation: any }) {
                 backgroundColor: "#fff",
                 paddingHorizontal: 10,
               }}
-              onPress={() =>
-                navigation.navigate(
-                  isVendeur
-                    ? "identification_proprietaire"
-                    : "identification_client"
-                )
+              onPress={() =>{
+                logoutUser()
+                
+                }
               }
             >
               <LogoutIcon color={couleurs.primary} />

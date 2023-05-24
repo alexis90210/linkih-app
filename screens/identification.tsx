@@ -41,6 +41,9 @@ export default function IdentificationScreen({
   useEffect(() => {
     // declare the data fetching function
     const fetchData = async () => {
+
+      await secureStorage.setKey("identification", '1');
+      
       let lang = await secureStorage.getKey("defaultlang");
       if (lang) {
         setPreferredLangage(lang);
