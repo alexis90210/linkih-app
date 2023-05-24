@@ -98,101 +98,141 @@ export default function IdentificationClientScreen({
     }
 
     setProcessing(true);
-    axios({
-      method: "POST",
-      url: ApiService.API_URL_LOGIN,
-      data: JSON.stringify({
-        login: identifiant,
-        password: password,
-      }),
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-    })
-      .then(async (response: { data: any }) => {
 
-        let api = response.data;
-
-        /**  Setup Jwt token  */
-        /*** ======================= TODO: EDIT IF NEEDED (e.g: remove logs...) ========================== */
-        console.log({ loginResp: api });
-        try {
-          await secureStorage.setKey("token", api.token);
-          await setupAxiosAuth(api.token);
-        } catch (error) {
-          console.log("settoken error", error);
-        }
-        /*** ======================= TODO: EDIT IF NEEDED (e.g: remove logs...) ========================== */
-
-        // user logged data
-
-        axios({
-          method: "GET",
-          url: ApiService.API_URL_LOGGED_USER_DATA,
-          data: JSON.stringify({
-            login: identifiant,
-            password: password,
-            role: "ROLE_CLIENT",
-          }),
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-        })
-          .then(async (response: { data: any }) => {
-            let api = response.data;
-            if (api.code == "success") {
-              setProcessing(false);
-
-              await secureStorage.setKey("firstusage", "2"); // client
-              await secureStorage.setKey("utilisateur", response.data.id);
-              await secureStorage.setKey("isProprietaire", "0");
-              await secureStorage.setKey("role", "ROLE_CLIENT");
-
-              navigation.dispatch(StackActions.push("main"));
-            }
-
-            if (api.code == "error") {
-              setProcessing(false);
-
-              if (api.status) {
-                Alert.alert("", api.message, [
-                  {
-                    text: t("Confirmer_maintenant", preferredLangage),
-                    onPress: () =>
-                      navigation.navigate("ConfirmationCompteScreenClient", {
-                        id: api.id,
-                      }),
-                  },
-                ]);
-              } else {
-                Alert.alert(
-                  "",
-                  t("login_incorect", preferredLangage),
-                  [
-                    {
-                      text: "OK",
-                      onPress: () => null,
-                    },
-                  ],
-                  { cancelable: true }
-                );
-              }
-            }
-            setProcessing(false);
-          })
-          .catch((error: any) => {
-            console.log(error);
-            setProcessing(false);
-            Alert.alert("Erreur", error, [{ text: "OK", onPress: () => null }]);
-          });
+    try {
+      axios({
+        method: "POST",
+        url: ApiService.API_URL_LOGIN,
+        data: JSON.stringify({
+          login: identifiant,
+          password: password,
+        }),
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
       })
-      .catch((error: any) => {
-        console.log(error);
-        setProcessing(false);
-        Alert.alert("Erreur", error, [{ text: "OK", onPress: () => null }]);
-      });
+        .then(async (response: { data: any }) => {
+  
+          let api = response.data;
+  
+          /**  Setup Jwt token  */
+          /*** ======================= TODO: EDIT IF NEEDED (e.g: remove logs...) ========================== */
+          console.log({ loginResp: api });
+          try {
+            await secureStorage.setKey("token", api.token);
+            await setupAxiosAuth(api.token);
+          } catch (error) {
+            console.log("settoken error", error);
+          }
+          /*** ======================= TODO: EDIT IF NEEDED (e.g: remove logs...) ========================== */
+  
+          // user logged data
+
+          if ( api.compte_actif != 1 || api.compte_confirme != 1) {
+            Alert.alert("", api.message, [
+              {
+                text: t("Confirmer_maintenant", preferredLangage),
+                onPress: () =>
+                  navigation.navigate("ConfirmationCompteScreenClient", {
+                    id: api.id,
+                  }),
+              },
+            ]);
+          } else {
+
+            await secureStorage.setKey("firstusage", "2"); // client
+            await secureStorage.setKey("utilisateur", api.id.toString());
+            await secureStorage.setKey("isProprietaire", "0");
+            await secureStorage.setKey("role", "ROLE_CLIENT");
+
+            navigation.dispatch(StackActions.push("main"));
+
+          }
+  
+          // axios({
+          //   method: "GET",
+          //   url: ApiService.API_URL_LOGGED_USER_DATA,
+          //   data: JSON.stringify({
+          //     login: identifiant,
+          //     password: password,
+          //     role: "ROLE_CLIENT",
+          //   }),
+          //   headers: {
+          //     Accept: "application/json",
+          //     "Content-Type": "application/json",
+          //   },
+          // })
+          //   .then(async (response: { data: any }) => {
+          //     let api = response.data;
+          //     if (api.code == "success") {
+          //       setProcessing(false);
+  
+          //       await secureStorage.setKey("firstusage", "2"); // client
+          //       await secureStorage.setKey("utilisateur", response.data.id);
+          //       await secureStorage.setKey("isProprietaire", "0");
+          //       await secureStorage.setKey("role", "ROLE_CLIENT");
+  
+          //       navigation.dispatch(StackActions.push("main"));
+          //     }
+  
+          //     if (api.code == "error") {
+          //       setProcessing(false);
+  
+          //       if (api.status) {
+          //         Alert.alert("", api.message, [
+          //           {
+          //             text: t("Confirmer_maintenant", preferredLangage),
+          //             onPress: () =>
+          //               navigation.navigate("ConfirmationCompteScreenClient", {
+          //                 id: api.id,
+          //               }),
+          //           },
+          //         ]);
+          //       } else {
+          //         Alert.alert(
+          //           "",
+          //           t("login_incorect", preferredLangage),
+          //           [
+          //             {
+          //               text: "OK",
+          //               onPress: () => null,
+          //             },
+          //           ],
+          //           { cancelable: true }
+          //         );
+          //       }
+          //     }
+          //     setProcessing(false);
+          //   })
+          //   .catch((error: any) => {
+          //     console.log(error);
+          //     setProcessing(false);
+          //     Alert.alert("Erreur", error, [{ text: "OK", onPress: () => null }]);
+          //   });
+        })
+        .catch((error: any) => {
+          console.log(error);
+          setProcessing(false);
+          Alert.alert("Erreur", error, [{ text: "OK", onPress: () => null }]);
+        });
+
+        // Alert.alert(
+        //   "",
+        //   t("login_incorect", preferredLangage),
+        //   [
+        //     {
+        //       text: "OK",
+        //       onPress: () => null,
+        //     },
+        //   ],
+        //   { cancelable: true }
+        // );
+    }
+    catch (error) {
+      console.log(error);
+      
+    }
   };
 
   return (
@@ -374,7 +414,7 @@ export default function IdentificationClientScreen({
                     paddingHorizontal: 10,
                     width: "70%",
                   }}
-                  onPress={() => (!isProccessing ? logUser() : null)}
+                  onPress={() => logUser()}
                 >
                   <Text
                     style={{
