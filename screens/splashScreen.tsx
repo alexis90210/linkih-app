@@ -31,24 +31,24 @@ export default function SplashScreen({ navigation }: { navigation: any }) {
         }
       }
 
-      let identification = await secureStorage.keyExists('identification')
+      // let identification = await secureStorage.keyExists('identification')
 
-      if ( identification) {
+      // if ( identification) {
 
-        const resetAction = CommonActions.reset({
-          index: 0,
-          routes: [
-            {
-              name: 'identification',
-              params: {
+      //   const resetAction = CommonActions.reset({
+      //     index: 0,
+      //     routes: [
+      //       {
+      //         name: 'identification',
+      //         params: {
                
-              },
-            },
-          ],
-        });
-        navigation.dispatch(resetAction);
+      //         },
+      //       },
+      //     ],
+      //   });
+      //   navigation.dispatch(resetAction);
 
-      }
+      // }
 
       let langue = await secureStorage.keyExists('langue')
 
@@ -68,24 +68,24 @@ export default function SplashScreen({ navigation }: { navigation: any }) {
         navigation.dispatch(resetAction);
 
       }
-      let pays = await secureStorage.keyExists('pays')
+      // let pays = await secureStorage.keyExists('pays')
 
-      if ( pays) {
+      // if ( pays) {
 
-        const resetAction = CommonActions.reset({
-          index: 0,
-          routes: [
-            {
-              name: 'configuration',
-              params: {
+      //   const resetAction = CommonActions.reset({
+      //     index: 0,
+      //     routes: [
+      //       {
+      //         name: 'configuration',
+      //         params: {
                
-              },
-            },
-          ],
-        });
-        navigation.dispatch(resetAction);
+      //         },
+      //       },
+      //     ],
+      //   });
+      //   navigation.dispatch(resetAction);
 
-      } 
+      // } 
 
       
     };
